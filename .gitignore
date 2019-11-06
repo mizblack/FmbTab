@@ -1,0 +1,9 @@
+
+.idea/
+.gradle/5.4.1/
+.gradle/buildOutputCleanup/
+.gradle/vcs-1/
+app/app.iml
+golfpay_tablet.iml
+local.properties
+gradle.properties
