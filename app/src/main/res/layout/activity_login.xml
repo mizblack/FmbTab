@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.LoginActivity">
+
+    <ImageView
+        android:id="@+id/kt_logo"
+        android:layout_width="193.5dp"
+        android:layout_height="25.8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="107.5dp"
+        android:src="@drawable/logo" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75.8dp">
+        <com.kt.wmms.view.TextInputBar
+            android:id="@+id/ll_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.kt.wmms.view.TextInputBar
+            android:id="@+id/ll_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_id"
+            />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/ll_pw"
+            android:layout_marginTop="24.5dp"
+            android:layout_weight="1"
+            android:background="#eeeeee" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line"
+            android:layout_marginTop="28dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp">
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/northern"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/wmmsRed"
+                    android:text="북부"
+                    android:textColor="@color/wmmsTextGrey"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/southern"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/wmmsRed"
+                    android:text="남부"
+                    android:textColor="#222222"
+                    android:textSize="12sp" />
+
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/chk_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:buttonTint="@color/wmmsRed"
+                android:paddingEnd="16dp"
+                android:text="아이디 저장"
+                android:textColor="@color/wmmsTextGrey"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/wmmsRed"
+            android:text="로그인"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</LinearLayout>

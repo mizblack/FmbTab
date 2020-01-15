@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/takeover_test"
+            android:icon="@drawable/ic_test"
+            android:title="인수시험" />
+        <item
+            android:id="@+id/nav_device_search"
+            android:title=" - 장비검색" />
+        <item
+            android:id="@+id/nav_map"
+            android:title=" - 지도검색"
+            android:enabled="false" />
+        <item
+            android:id="@+id/nav_base_station"
+            android:icon="@drawable/ic_list"
+            android:title="국소 정보"
+            android:enabled="false"
+            />
+        <item
+            android:id="@+id/failover_inspection"
+            android:icon="@drawable/ic_build"
+            android:title="장애 점검"
+            android:enabled="false"
+            />
+        <item
+            android:id="@+id/manual"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="업무 메뉴얼"
+            android:enabled="false"
+            />
+    </group>
+
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

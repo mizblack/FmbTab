@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary" >#008577</color>
+    <color name="colorPrimaryDark" >#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="control_background">#cc4285f4</color>
+    <color name="bg"> #3dd6df</color>
+    <color name="txtColorWhite"> #FFFFFF</color>
+    <color name="bgColorWhite"> #FFFFFF</color>
+    <color name="txtRed"> #FF0000</color>
+    <color name="txtPink"> #FF1C74</color>
+    <color name="txtGray"> #E2E2E2</color>
+    <color name="txtBlack"> #000000</color>
+    <color name="lightPink">  #f97dad</color>
+    <color name="text">  #f97dad</color>
+    <color name="wmmsRed">   #ec2028</color>
+    <color name="wmmsTextGrey">#666666</color>
+    <!--                                   -->
+    <color name="ebonyBlack">#2d2e31</color>
+    <color name="white">#ffffff</color>
+    <color name="darkGray">#7e8181</color>
+    <color name="gray">#999999</color>
+    <color name="gray50">#88999999</color>
+    <color name="martini">#aeacab</color>
+    <color name="zumthor">#ccd7db</color>
+    <color name="lightGray">#cccccc</color>
+    <color name="lightGray50">#88cccccc</color>
+    <color name="irisBlue">#00abc5</color>
+    <color name="aliceBlue">#ebeff1</color>
+    <color name="lightAliceBlue">#f5f7f8</color>
+    <color name="mediumTurquoise">#4dc4d7</color>
+    <color name="wewakPink">#f69EA7</color>
+    <color name="translucentBlack">#88000000</color>
+    <color name="mandy">#ea494f</color>
+    <color name="pattensBlue">#e6ebed</color>
+    <color name="pattensBlue01">#d9e1e4</color>
 </resources>

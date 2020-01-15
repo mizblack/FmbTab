@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:padding="@dimen/layout_padding">
+
+        <TextView
+            android:id="@+id/test_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginRight="250dp"
+            android:contentDescription="vcfvgdfgdsgdsgv"
+            android:gravity="center_vertical"
+            android:textStyle="bold" />
+        <!--android:layout_alignBaseline="@id/test_title"-->
+        <TextView
+            android:id="@+id/btn_expandable"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="+"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_nothing"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/value_item_h"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="invisible">-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="인수 항목이 존재하지 않습니다." />-->
+
+        <!--</LinearLayout>-->
+    </FrameLayout>
+</LinearLayout>

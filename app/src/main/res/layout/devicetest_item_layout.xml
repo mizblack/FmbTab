@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_lay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:padding="@dimen/layout_padding">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        card:cardBackgroundColor="#f9f9f9"
+        card:cardCornerRadius="8dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/device_test_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/value_item_h"
+                    android:layout_alignBaseline="@id/btn_camera"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="30dp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/ll_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/device_test_title"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_info1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/value_item_h"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:text="항목1" />
+
+                    <TextView
+                        android:id="@+id/tv_info2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/value_item_h"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:singleLine="true"
+                        android:text="항목2" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_camera"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_camera" />
+
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/label_layout0"
+                layout="@layout/devicetest_itemlabel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/label_layout1"
+                layout="@layout/devicetest_itemlabel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/label_layout2"
+                layout="@layout/devicetest_itemlabel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+            <!--<include-->
+            <!--android:id="@+id/label_layout3"-->
+            <!--layout="@layout/devicetest_itemlabel_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+            <!--<include-->
+            <!--android:id="@+id/label_layout4"-->
+            <!--layout="@layout/devicetest_itemlabel_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

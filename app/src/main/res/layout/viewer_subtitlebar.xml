@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/bgColorWhite"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/subPageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#212121"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBaseline="@id/btnCamera"
+            />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_delete"
+            tools:ignore="ContentDescription"
+            android:layout_alignParentEnd="true"
+            android:background="#ffffff"
+            android:layout_marginEnd="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/btnCamera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_camera"
+            tools:ignore="ContentDescription"
+            android:layout_toLeftOf="@id/btnDelete"
+            android:background="#ffffff"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/divider"
+        tools:ignore="ContentDescription" />
+
+</LinearLayout>

@@ -1,3 +1,56 @@
 <resources>
-    <string name="app_name">GolfpayTabletApp</string>
+    <string name="app_name">FmbTab</string>
+    <string name="intro_message">Camera </string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title"></string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+
+    <string name="default_alert_title">wMMS</string>
+    <string name="default_info">기초정보</string>
+    <string name="takeover_test">인수시험</string>
+    <string name="regular_inspection">정기점검</string>
+    <string name="failover_inspection">장애점검</string>
+    <string name="repair_maintenance">수리/정비</string>
+    <string name="nms_compare">NMS비교\n현황</string>
+    <!--<string name="stats">통계</string>-->
+    <string name="manual">업무메뉴얼</string>
+    <string name="network">네트워크단</string>
+    <string name="kakao_app_key">c74d93584d22fbf8a2fcc9f83a59e529</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="device_id">RRKG30277T</string>
+    <string name="device_name">연천읍_부곡리190-0전주_1.8Gfdjldjflsjflsjflsjflsdjfljflsjflsdjsl</string>
+    <string name="address">연천읍_부곡리190-0</string>
+    <string name="id_blank">아이디를 입력해 주세요.</string>
+    <string name="pw_blank">비밀번호를 입력해 주세요.</string>
+    <string name="txt_facility">시설정보</string>
+    <string name="txt_performance">성능정보</string>
+    <string name="txt_micell">기타정보</string>
+    <string name="txt_takevoer_confirm">인수확인</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="txt_device_place">집중국명:</string>
+    <string name="txt_ru_name">RU명:</string>
+    <string name="txt_ru_id">RU ID:</string>
+    <string name="txt_ru_feature">RU 형상</string>
+    <string name="txt_du_port">DU Port No.:</string>
+    <string name="txt_manage_area">운용지역 Eng팀/센터:</string>
+    <string name="txt_device_manufacture">장비제조사:</string>
+    <string name="txt_ru_barcode">RU바코드번호:</string>
+    <string name="txt_partner_company">장비제조사:</string>
+    <string name="txt_test_date">시험일자:</string>
+    <string name="msg_search_progress">검색중입니다....</string>
+    <string name="msg_login_prog">로그인중입니다....</string>
+    <string name="msg_img_search_prog">이미지 검색중입니다....</string>
+    msg_login_progress
+    <string name="msg_versioncheck">최신 버전을 확인 중입니다.</string>
+    <string name="msg_insert_progress">인수시험 등록중입니다....</string>
 </resources>

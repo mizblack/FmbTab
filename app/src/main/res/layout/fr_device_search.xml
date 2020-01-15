@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/subtitle"
+        layout="@layout/subtitle_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subtitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_locationCode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item0"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="위치코드"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item0"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_deviceId"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item1"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="장비 ID"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item1"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_deviceName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item2"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="장비 명"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item2"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_deviceType"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item3"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="장비 type"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item3"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_cityProvince"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item4"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="시/도"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item4"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_county"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item5"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="시/군/구"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item5"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_dong"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/textbaer_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/tv_item6"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2.5"
+                    android:gravity="center_vertical"
+                    android:paddingStart="5dp"
+                    android:paddingRight="5dp"
+                    android:text="읍/면/동"
+                    android:textColor="#666666"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_item6"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@id/tv_item"
+                    android:layout_weight="6.5"
+                    android:background="@drawable/et_input"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/wmmsRed"
+        android:text="검색"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+</RelativeLayout>

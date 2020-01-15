@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/layout_padding"
+    >
+
+    <LinearLayout
+        android:id="@+id/ll_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/label_value"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/value_item_h"
+            android:layout_weight="4"
+            android:gravity="start|center_vertical"
+            android:text="default"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/value_item_h"
+            android:layout_weight="5"
+            android:layout_marginRight="20dp">
+
+            <Switch
+                android:id="@+id/sw_value"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:visibility="invisible"
+                android:buttonTint="@color/wmmsRed"
+                />
+
+            <EditText
+                android:id="@+id/et_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:visibility="invisible"
+                android:background="@drawable/input_defualt_copy_2"
+                android:paddingStart="5dp"
+                android:gravity="start|center_vertical"
+                android:inputType="textVisiblePassword"
+                android:imeOptions="actionDone"
+                />
+
+            <Spinner
+                android:id="@+id/sp_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_select"
+                android:clickable="true"
+                android:text=""
+                android:visibility="invisible"
+                android:spinnerMode="dialog"
+                android:gravity="start"
+                />
+
+        </FrameLayout>
+        <Button
+            android:id="@+id/btn_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@drawable/ic_info"
+            />
+    </LinearLayout>
+
+</LinearLayout>
