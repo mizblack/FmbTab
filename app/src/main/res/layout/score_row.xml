@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rank"
+            style="@style/MainRankOrHoleOrPuttOrMeterTextView"
+            android:layout_width="70dp"
+            android:paddingTop="16dp"
+            android:text="-"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/MainRankOrHoleOrPuttOrMeterTextView"
+                android:paddingTop="16dp"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/putt"
+                style="@style/MainRankOrHoleOrPuttOrMeterTextView"
+                android:paddingBottom="16dp"
+                android:text="Putt" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:id="@+id/hole1LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole1"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole1putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole2LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole2"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole2putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole3LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole3"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole3putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole4LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole4"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole4putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole5LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole5"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole5putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole6LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole6"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole6putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole7LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole7"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole7putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole8LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole8"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole8putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hole9LinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hole9"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/hole9putt"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:id="@+id/inOrOutLinearLayout00"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inOrOutColumn00"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/inOrOutTotal00"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:id="@+id/inOrOutLinearLayout01"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inOrOutColumn01"
+                style="@style/MainHoleTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/inOrOutTotal01"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/ebonyBlack"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/totalColumn"
+                style="@style/MainHoleTextView"
+
+                android:textColor="@color/white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/total"
+                style="@style/MainPuttTextView" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

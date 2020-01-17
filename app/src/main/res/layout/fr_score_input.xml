@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/translucentBlack"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="1160dp"
+            android:layout_height="600dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="Hole -"
+                    android:textColor="@color/black"
+                    android:textSize="26dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text=" / "
+                    android:textColor="@color/black"
+                    android:textSize="26dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Par-"
+                    android:textColor="@color/black"
+                    android:textSize="26dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:gravity="center_vertical"
+                    android:text="- Course (-)"
+                    android:textColor="@color/black"
+                    android:textSize="26dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/cancelLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="42dp"
+                    android:paddingEnd="42dp">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:background="@drawable/score_close"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="60dp"
+                android:orientation="horizontal"
+                tools:ignore="DisableBaselineAlignment">
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MainColumnInOrOutTextView"
+                        android:layout_marginBottom="20dp"
+                        android:text="Player"
+                        android:textColor="@color/black"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/member00NameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="26dp" />
+
+                    <TextView
+                        android:id="@+id/member01NameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="26dp" />
+
+                    <TextView
+                        android:id="@+id/member02NameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="26dp" />
+
+                    <TextView
+                        android:id="@+id/member03NameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="26dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="500dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingEnd="30dp">
+
+                    <TextView
+                        style="@style/MainColumnInOrOutTextView"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="0dp"
+                        android:text="Score"
+                        android:textColor="@color/irisBlue"
+                        android:textStyle="normal" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/member00ScoreScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member00ScoreLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member01ScoreScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member01ScoreLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member02ScoreScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member02ScoreLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member03ScoreScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member03ScoreLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member00ScoreTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member00ScoreLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member00ScoreScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member00ScoreLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member00ScoreDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member00ScoreInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member01ScoreTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member01ScoreLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member01ScoreScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member01ScoreLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member01ScoreDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member01ScoreInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member02ScoreTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member02ScoreLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member02ScoreScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member02ScoreLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member02ScoreDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member02ScoreInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member03ScoreTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member03ScoreLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member03ScoreScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member03ScoreLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="200dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member03ScoreDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member03ScoreInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MainColumnInOrOutTextView"
+                        android:layout_marginBottom="20dp"
+                        android:paddingStart="0dp"
+                        android:text="Putt"
+                        android:textColor="@color/irisBlue"
+                        android:textStyle="normal" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/member00PuttScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none"
+                        tools:ignore="NestedWeights">
+
+                        <LinearLayout
+                            android:id="@+id/member00PuttLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member01PuttScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member01PuttLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member02PuttScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member02PuttLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:id="@+id/member03PuttScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/member03PuttLinearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal" />
+
+                    </HorizontalScrollView>
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member00PuttTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            tools:ignore="TooManyViews" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member00PuttLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member00PuttScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member00PuttScrollView"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member00PuttDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member00PuttInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member01PuttTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member01PuttLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member01PuttScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none"-->
+                    <!--                                tools:ignore="TooManyViews">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member01PuttLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member01PuttDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member01PuttInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member02PuttTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member02PuttLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member02PuttScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member02PuttLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member02PuttDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member02PuttInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="90dp"-->
+
+                    <!--                        android:orientation="horizontal"-->
+                    <!--                        tools:ignore="NestedWeights,UselessLeaf">-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:layout_width="90dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:orientation="vertical">-->
+
+                    <!--                            <View-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="1dp"-->
+                    <!--                                android:background="@color/irisBlue" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member03PuttTextView"-->
+                    <!--                                android:layout_width="match_parent"-->
+                    <!--                                android:layout_height="0dp"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="-"-->
+                    <!--                                android:textColor="@color/irisBlue"-->
+                    <!--                                android:textSize="26dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                        <View-->
+                    <!--                            android:layout_width="10dp"-->
+                    <!--                            android:layout_height="match_parent" />-->
+
+                    <!--                        <LinearLayout-->
+                    <!--                            android:id="@+id/member03PuttLinearLayout"-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:layout_weight="1">-->
+
+                    <!--                            <HorizontalScrollView-->
+                    <!--                                android:id="@+id/member03PuttScrollView"-->
+                    <!--                                android:layout_width="0dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:layout_weight="1"-->
+                    <!--                                android:scrollbars="none">-->
+
+                    <!--                                <LinearLayout-->
+                    <!--                                    android:id="@+id/member03PuttLinearLayout01"-->
+                    <!--                                    android:layout_width="wrap_content"-->
+                    <!--                                    android:layout_height="match_parent"-->
+                    <!--                                    android:orientation="horizontal">-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        tools:ignore="TooDeepLayout" />-->
+
+                    <!--                                    <LinearLayout-->
+                    <!--                                        android:layout_width="wrap_content"-->
+                    <!--                                        android:layout_height="match_parent"-->
+                    <!--                                        android:orientation="horizontal" />-->
+
+                    <!--                                    <View-->
+                    <!--                                        android:layout_width="150dp"-->
+                    <!--                                        android:layout_height="match_parent" />-->
+
+                    <!--                                </LinearLayout>-->
+
+                    <!--                            </HorizontalScrollView>-->
+
+                    <!--                            <View-->
+                    <!--                                android:id="@+id/member03PuttDivider"-->
+                    <!--                                android:layout_width="1dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:background="@color/lightGray"-->
+                    <!--                                android:visibility="gone" />-->
+
+                    <!--                            <TextView-->
+                    <!--                                android:id="@+id/member03PuttInputTextView"-->
+                    <!--                                android:layout_width="90dp"-->
+                    <!--                                android:layout_height="match_parent"-->
+                    <!--                                android:gravity="center"-->
+                    <!--                                android:text="입력"-->
+                    <!--                                android:textColor="@color/lightGray"-->
+                    <!--                                android:textSize="24dp" />-->
+
+                    <!--                        </LinearLayout>-->
+
+                    <!--                    </LinearLayout>-->
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

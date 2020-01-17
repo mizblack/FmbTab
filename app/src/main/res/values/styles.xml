@@ -43,4 +43,73 @@
 
     </style>
 
+    <style name="MainRankOrHoleOrPuttOrMeterTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MainColumnHoleNumberTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>"
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MainColumnParOrMetersTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:text">-</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="MainColumnInOrOutTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>"
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MainHoleTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:text">-</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textSize">36dp</item>
+    </style>
+
+    <style name="MainPuttTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:text">-</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="MainTabTitleTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:text">-</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+
+
 </resources>

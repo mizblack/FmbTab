@@ -14,16 +14,29 @@ import android.widget.Toast;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
+import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.EditorFragment;
+import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
+import com.eye3.golfpay.fmb_tab.fragment.NearestLongestFragment;
+import com.eye3.golfpay.fmb_tab.fragment.NoticeFragment;
+import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
+import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ScoreInputFragment;
+import com.eye3.golfpay.fmb_tab.fragment.SettingsFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.google.android.material.navigation.NavigationView;
+
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 
-
-public class MainActivity extends BaseActivity  implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private FmbCustomDialog wmmsDlg;
     final int CAMERA_REQUEST_CODE = 1;
@@ -54,9 +67,21 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 //            }
 //        });
 
-        GoHomeScreen();
-    }
+        //GoHomeScreen();
+//        GoNativeScreenAdd(new ScoreFragment(), null);
+//        GoNativeScreenAdd(new QRScanFragment(), null);
+//        GoNativeScreenAdd(new SettingsFragment(), null);
+//        GoNativeScreenAdd(new CourseFragment(), null);
+//        GoNativeScreenAdd(new ScoreInputFragment(), null);
+//        GoNativeScreenAdd(new NearestLongestFragment(), null);
+//        GoNativeScreenAdd(new OrderFragment(), null);
+//        GoNativeScreenAdd(new ShadePaymentFragment(), null);
+//        GoNativeScreenAdd(new ControlFragment(), null);
+//        GoNativeScreenAdd(new CaddieFragment(), null);
+//        GoNativeScreenAdd(new EditorFragment(), null);
+        GoNativeScreenAdd(new NoticeFragment(), null);
 
+    }
 
 
     private void init() {
@@ -152,7 +177,8 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         return true;
     }
 
-    /**.
+    /**
+     * .
      * 메뉴 열기
      */
     public void OpenMenuMap() {

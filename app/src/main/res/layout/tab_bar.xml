@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/courseLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/course01Text"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="16dp"
+                android:text="코스1 (전반)" />
+
+            <TextView
+                android:id="@+id/course02Text"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="40dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="코스2" />
+
+            <TextView
+                android:id="@+id/course03Text"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="40dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="코스3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pinkNearestOrLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/nearest_longest"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/pinkNearestOrLongest"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="10dp"
+                android:text="Nearest"
+                android:textColor="@color/mandy" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/viewRankingViewDetailLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/rankingText"
+                style="@style/MainTabTitleTextView"
+                android:text="RANKING  " />
+
+            <TextView
+                android:id="@+id/viewRankingText"
+                style="@style/MainTabTitleTextView"
+                android:text="·  순위보기  " />
+
+            <TextView
+                android:id="@+id/viewDetailText"
+                style="@style/MainTabTitleTextView"
+                android:text="·  상세보기" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/nearestLongestLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/nearest"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="60dp"
+                android:text="NEAREST" />
+
+            <TextView
+                android:id="@+id/longest"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="60dp"
+                android:text="LONGEST" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/orderLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/order00TextView"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="16dp"
+                android:text="스타트하우스" />
+
+            <TextView
+                android:id="@+id/order01TextView"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="40dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="별그늘집"
+                android:textColor="@color/lightGray" />
+
+            <TextView
+                android:id="@+id/order02TextView"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="40dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="해그늘집"
+                android:textColor="@color/lightGray" />
+
+            <TextView
+                android:id="@+id/menuTextView"
+                style="@style/MainTabTitleTextView"
+                android:layout_marginStart="40dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="한식/분식" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/rightLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/rightButton"
+                style="@style/MainTabTitleTextView"
+                android:text="" />
+
+            <ImageView
+                android:id="@+id/rightButtonIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/score_up"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
