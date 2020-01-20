@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppCompatNoTitle"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.CameraActivity"
+        <activity android:name=".activity.MainActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

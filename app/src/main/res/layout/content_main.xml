@@ -14,8 +14,8 @@
         />
 
     <include
-        android:id="@+id/wwms_title_include"
-        layout="@layout/wmms_title"
+        android:id="@+id/main_bottom_bar"
+        layout="@layout/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />

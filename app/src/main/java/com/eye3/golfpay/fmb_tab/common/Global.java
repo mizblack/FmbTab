@@ -35,15 +35,11 @@ public class Global {
     /**
      * 접속 호스트 주소. 운영
      */
-    public static final String HOST_ADDRESS_REAL = "https://";
+    public static final String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
     /**
      * 접속 호스트 주소. 개발계
      */
-    public static final String HOST_ADDRESS_DEV = "http://49.247.3.140:8080";   //cloud
-  //  public static final String HOST_ADDRESS_DEV = "http://10.10.169.151:8080";
-    //   public static final String HOST_ADDRESS_DEV     = "http://10.10.169.248:8080"; //mr Bae
-    //  public static final String HOST_ADDRESS_DEV = "http://210.116.118.194:8080"; //unovous server
-
+    public static final String HOST_ADDRESS_DEV = "http://10.50.21.62:8000/api/v1/";
     public static String appToken;
 
     public static final String ru = "RU";
