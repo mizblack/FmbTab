@@ -2,5 +2,5 @@
 <resources>
     <!--스마트폰 오른쪽 out에서 into 스마트폰으로 들어오는 속도 조절-->
     <integer name="anim_duration">300</integer>
-    <integer name="anim_duration_slow">1000</integer>
+    <integer name="anim_duration_slow">500</integer>
 </resources>

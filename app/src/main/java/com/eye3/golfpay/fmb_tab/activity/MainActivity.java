@@ -5,18 +5,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.databinding.ActivityMainBinding;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
@@ -42,13 +46,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements NavigationView.OnNavigationItemSelectedListener {
 
     private FmbCustomDialog wmmsDlg;
     final int CAMERA_REQUEST_CODE = 1;
     NavigationView navigationView;
     DrawerLayout drawer_layout;
     FmbCustomDialog commonDialog;
+    TextView gpsTxtView , scoreTxtView, controlTxtView;
+    ImageView markView, cancelView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +96,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    private void startLocationService(){
+    private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -103,7 +109,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }
     }
-
 
 
     private void init() {
@@ -119,7 +124,62 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        });
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        //  loginWelcomMsg(Global.userInfo.userName);
+        cancelView=  findViewById(R.id.content_login).findViewById(R .id.cancelIcon);
+        cancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+        gpsTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.gpsTextView);
+        gpsTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new CourseFragment(), null);
+            }
+        });
+
+        scoreTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.scoreTextView);
+        scoreTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+            }
+        });
+
+        controlTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.controlTextView);
+        controlTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ControlFragment(), null);
+            }
+        });
+
+        markView = findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
+        markView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.openDrawer(GravityCompat.END);
+            }
+        });
+//**************************************************************************************************************
+       // 메뉴뷰 이벤트처리
+        findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeDrawerViewToMenuView();
+            }
+        });
+
+      //  getBind().contentLogin.menuViewInclude.
+
+
+    }
+
+    protected void changeDrawerViewToMenuView(){
+        findViewById(R.id.content_login).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
+        findViewById(R.id.content_login).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
+
     }
 
     private void showLogoutDialog(final Context context, String msg) {
