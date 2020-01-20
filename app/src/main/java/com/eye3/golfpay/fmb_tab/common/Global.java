@@ -40,6 +40,7 @@ public class Global {
      * 접속 호스트 주소. 개발계
      */
     public static final String HOST_ADDRESS_DEV = "http://10.50.21.62:8000/api/v1/";
+
     public static String appToken;
 
     public static final String ru = "RU";
