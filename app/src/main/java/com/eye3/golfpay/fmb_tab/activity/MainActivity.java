@@ -1,6 +1,9 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,11 +30,14 @@ import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreInputFragment;
 import com.eye3.golfpay.fmb_tab.fragment.SettingsFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
+import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -51,14 +57,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         init();
+        startLocationService();
 
         //홈타이틀 이벤트
-        ((Button) findViewById(R.id.btnDrawerOpen)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventForTitleView(v);
-            }
-        });
+//        ((Button) findViewById(R.id.btnDrawerOpen)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EventForTitleView(v);
+//            }
+//        });
 
 //        ((ImageButton) findViewById(R.id.btnTitleHome)).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -82,6 +89,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         GoNativeScreenAdd(new NoticeFragment(), null);
 
     }
+
+    private void startLocationService(){
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
+            } else {
+                startService(new Intent(getApplicationContext(), CartLocationService.class));
+            }
+        }
+    }
+
 
 
     private void init() {
