@@ -53,4 +53,6 @@
     msg_login_progress
     <string name="msg_versioncheck">최신 버전을 확인 중입니다.</string>
     <string name="msg_insert_progress">인수시험 등록중입니다....</string>
+    <string name="txt_noti_cont">카트 좌표정보</string>
+
 </resources>
