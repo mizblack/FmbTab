@@ -44,12 +44,20 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         backPressCloseHandler = new BackPressCloseHandler(this);
+
+        systemUIHide();
 //        Realm.init(this);
 //        RealmConfiguration configuration = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
 //        Realm.setDefaultConfiguration(configuration);
 //        Realm.deleteRealm(Realm.getDefaultConfiguration());
 //        mRealm = Realm.getInstance(Realm.getDefaultConfiguration());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        systemUIHide();
     }
 
     protected void setBind(@LayoutRes int layId) {
@@ -330,6 +338,17 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 //                ( (MainActivity) this).OpenMenuMap();
 //                break;
 //        }
+    }
+
+    public void systemUIHide() {
+        View decorView = getWindow().getDecorView();
+        final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
 }
