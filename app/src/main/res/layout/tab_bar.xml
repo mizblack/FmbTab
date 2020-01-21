@@ -12,7 +12,8 @@
             android:id="@+id/courseLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/course01Text"
@@ -47,6 +48,7 @@
             android:orientation="horizontal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:visibility="gone"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -107,47 +109,6 @@
                 style="@style/MainTabTitleTextView"
                 android:layout_marginStart="60dp"
                 android:text="LONGEST" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/orderLinearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/order00TextView"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="16dp"
-                android:text="스타트하우스" />
-
-            <TextView
-                android:id="@+id/order01TextView"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="40dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="별그늘집"
-                android:textColor="@color/lightGray" />
-
-            <TextView
-                android:id="@+id/order02TextView"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="40dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="해그늘집"
-                android:textColor="@color/lightGray" />
-
-            <TextView
-                android:id="@+id/menuTextView"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="40dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="한식/분식" />
 
         </LinearLayout>
 
