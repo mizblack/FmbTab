@@ -21,16 +21,27 @@ import com.eye3.golfpay.fmb_tab.R;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 /*
-*  wmmms 메뉴 화면
+ *  wmmms 메뉴 화면
  */
 public class ScoreFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
     Button mBtnTaokeoverTest;
+
+    private View tabBar;
+    private TextView course01TextView;
+    private TextView course02TextView;
+    private TextView course03TextView;
+    private View course01Tab;
+    private View course02Tab;
+    private View course03Tab;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +55,39 @@ public class ScoreFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fr_score, container, false);
 
+    }
 
+    private void tabTitleOnClick(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view == course01TextView) {
+                    course01TextView.setTextColor(0xff000000);
+                    course02TextView.setTextColor(0xffcccccc);
+                    course03TextView.setTextColor(0xffcccccc);
 
+                    course01Tab.setVisibility(View.VISIBLE);
+                    course02Tab.setVisibility(View.GONE);
+                    course03Tab.setVisibility(View.GONE);
+                } else if (view == course02TextView) {
+                    course01TextView.setTextColor(0xffcccccc);
+                    course02TextView.setTextColor(0xff000000);
+                    course03TextView.setTextColor(0xffcccccc);
+
+                    course01Tab.setVisibility(View.GONE);
+                    course02Tab.setVisibility(View.VISIBLE);
+                    course03Tab.setVisibility(View.GONE);
+                } else if (view == course03TextView) {
+                    course01TextView.setTextColor(0xffcccccc);
+                    course02TextView.setTextColor(0xffcccccc);
+                    course03TextView.setTextColor(0xff000000);
+
+                    course01Tab.setVisibility(View.GONE);
+                    course02Tab.setVisibility(View.GONE);
+                    course03Tab.setVisibility(View.VISIBLE);
+                }
+                            }
+        });
     }
 
     @Override
@@ -53,15 +95,28 @@ public class ScoreFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 //        SetTitle("KT WMMS");
 //        SetDividerVisibility(false);
-     //   setDrawerLayoutEnable(true);
+        //   setDrawerLayoutEnable(true);
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-      //  mBtnTaokeoverTest.setOnClickListener();
+
+        tabBar = Objects.requireNonNull(getView()).findViewById(R.id.tab_bar);
+        course01TextView = tabBar.findViewById(R.id.course01Text);
+        course02TextView = tabBar.findViewById(R.id.course02Text);
+        course03TextView = tabBar.findViewById(R.id.course03Text);
+        course01Tab = getView().findViewById(R.id.course01Tab);
+        course02Tab = getView().findViewById(R.id.course02Tab);
+        course03Tab = getView().findViewById(R.id.course03Tab);
+
+        tabTitleOnClick(course01TextView);
+        tabTitleOnClick(course02TextView);
+        tabTitleOnClick(course03TextView);
+
+        //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
+        //  mBtnTaokeoverTest.setOnClickListener();
 //        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -76,8 +131,8 @@ public class ScoreFragment extends BaseFragment {
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
 
-   //     private ArrayList<AllocationSchedule> mList;
-   //     private WeakReference<MainActivity> activityWeakReference;
+        //     private ArrayList<AllocationSchedule> mList;
+        //     private WeakReference<MainActivity> activityWeakReference;
         protected LinearLayout ll_item;
         private boolean allocatedCheck;  // Default: false
 
@@ -103,9 +158,9 @@ public class ScoreFragment extends BaseFragment {
 
 
         public ScoreAdapter(Context context, ArrayList<String> list) {
-           // activityWeakReference = new WeakReference<>((MainActivity)context);
-          //  this.mList = list;
-         //   allocatedCheck = false;
+            // activityWeakReference = new WeakReference<>((MainActivity)context);
+            //  this.mList = list;
+            //   allocatedCheck = false;
         }
 
 
@@ -115,7 +170,7 @@ public class ScoreFragment extends BaseFragment {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
 
             ScoreItemViewHolder viewHolder = new ScoreItemViewHolder(view);
-          //  ll_item = view.findViewById(R.id.ll_schedule_item);
+            //  ll_item = view.findViewById(R.id.ll_schedule_item);
 
             return viewHolder;
         }
@@ -155,7 +210,6 @@ public class ScoreFragment extends BaseFragment {
 
 
     }
-
 
 
 }
