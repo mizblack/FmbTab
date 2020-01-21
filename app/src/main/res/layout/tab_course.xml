@@ -25,33 +25,39 @@
             android:layout_height="1dp"
             android:background="@color/lightGray" />
 
-        <include
-            android:id="@+id/scoreRow00"
-            layout="@layout/score_row"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/scoreRecylerView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="400dp"
+            />
 
-        <include
-            android:id="@+id/scoreRow01"
-            layout="@layout/score_row"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+<!--        <include-->
+<!--            android:id="@+id/scoreRow00"-->
+<!--            layout="@layout/score_row"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" />-->
 
-        <include
-            android:id="@+id/scoreRow02"
-            layout="@layout/score_row"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+<!--        <include-->
+<!--            android:id="@+id/scoreRow01"-->
+<!--            layout="@layout/score_row"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" />-->
 
-        <include
-            android:id="@+id/scoreRow03"
-            layout="@layout/score_row"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+<!--        <include-->
+<!--            android:id="@+id/scoreRow02"-->
+<!--            layout="@layout/score_row"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" />-->
+
+<!--        <include-->
+<!--            android:id="@+id/scoreRow03"-->
+<!--            layout="@layout/score_row"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1" />-->
 
     </LinearLayout>
 

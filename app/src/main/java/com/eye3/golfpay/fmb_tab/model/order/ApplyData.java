@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class ApplyData implements Serializable {
 
     private ShadeMenuTemp shadeMenuTemp;
-    private Menu menu;
+    private RestaurantMenu menu;
 
     private int quantity;
 
@@ -26,11 +26,11 @@ public class ApplyData implements Serializable {
         return quantity;
     }
 
-    public Menu getMenu() {
+    public RestaurantMenu getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu menu) {
+    public void setMenu(RestaurantMenu menu) {
         this.menu = menu;
     }
 }

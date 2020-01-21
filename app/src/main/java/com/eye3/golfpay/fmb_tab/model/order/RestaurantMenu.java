@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 @SuppressWarnings("unused")
-public class Menu implements Serializable {
+public class RestaurantMenu implements Serializable {
 
     @SerializedName("id")
     private int mId;

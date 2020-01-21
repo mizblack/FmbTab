@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class OrderDataTemp implements Serializable {
 
     private ShadeMenuTemp shadeMenuTemp;
-    private Menu menu;
+    private RestaurantMenu menu;
 
     private int member00Quantity = 0;
     private int member01Quantity = 0;
@@ -86,11 +86,11 @@ public class OrderDataTemp implements Serializable {
         this.member03Quantity = member03Quantity;
     }
 
-    public Menu getMenu() {
+    public RestaurantMenu getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu menu) {
+    public void setMenu(RestaurantMenu menu) {
         this.menu = menu;
     }
 }

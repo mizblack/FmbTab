@@ -14,7 +14,7 @@ public class Category implements Serializable {
     @SerializedName("category_name")
     private String mCategoryName;
     @SerializedName("menu")
-    private ArrayList<Menu> mMenu;
+    private ArrayList<RestaurantMenu> mMenu;
 
     public int getCategoryId() {
         return mCategoryId;
@@ -32,11 +32,11 @@ public class Category implements Serializable {
         mCategoryName = categoryName;
     }
 
-    public ArrayList<Menu> getMenu() {
+    public ArrayList<RestaurantMenu> getMenu() {
         return mMenu;
     }
 
-    public void setMenu(ArrayList<Menu> menu) {
+    public void setMenu(ArrayList<RestaurantMenu> menu) {
         mMenu = menu;
     }
 

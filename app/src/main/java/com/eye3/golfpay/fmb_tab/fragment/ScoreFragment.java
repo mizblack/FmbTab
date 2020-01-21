@@ -14,23 +14,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-/*
-*  wmmms 메뉴 화면
- */
+
 public class ScoreFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
-    Button mBtnTaokeoverTest;
+    ArrayList<String[]> scores = new ArrayList<>();
+    ScoreAdapter mScoreAdapter;
+    LinearLayoutManager mManager;
+    RecyclerView recycleScore;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +41,39 @@ public class ScoreFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+
+        String[] points = new String[11];
+        String[] points1 = new String[11];
+        String[] points2 = new String[11];
+        String[] points3 = new String[11];
+        String[] points4 = new String[11];
+        points[0] = "3rd";   points[1] = "홍길동";   points[2] = "4";   points[3] = "4";  points[4] = "4";  points[5] = "5";  points[6] = "4";  points[7] = "4";  points[8] = "4";  points[9] = "4"; points[10] = "4";
+        points1[0] = "2nd";   points1[1] = "김영광";   points1[2] = "4";   points1[3] = "4";  points1[4] = "4";  points1[5] = "5";  points1[6] = "4";  points1[7] = "4";  points1[8] = "4";  points1[9] = "4";  points1[10] = "4";
+        points2[0] = "1nd";   points2[1] = "김치욱";   points2[2] = "4";   points2[3] = "4";  points2[4] = "4";  points2[5] = "5";  points2[6] = "4";  points2[7] = "4";  points2[8] = "4";  points2[9] = "4";  points2[10] = "4";
+        points3[0] = "5th";   points3[1] = "한상예";   points3[2] = "4";   points3[3] = "4";  points3[4] = "4";  points3[5] = "5";  points3[6] = "4";  points3[7] = "4";  points3[8] = "4";  points3[9] = "4";  points3[10] = "4";
+        points4[0] = "3nd";   points4[1] = "노근수";   points4[2] = "4";   points4[3] = "4";  points4[4] = "4";  points4[5] = "5";  points4[6] = "4";  points4[7] = "4";  points4[8] = "4";  points4[9] = "4";  points4[10] = "4";
+        scores.add(points);
+        scores.add(points1);
+        scores.add(points2);
+        scores.add(points3);
+        scores.add(points4);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fr_score, container, false);
+        View v = inflater.inflate(R.layout.fr_score, container, false);
+        recycleScore = v.findViewById(R.id.scoreRecylerView);
+        recycleScore.setHasFixedSize(true);
+        mManager = new LinearLayoutManager(getActivity());
+        recycleScore.setLayoutManager(mManager);
+   //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
+        mScoreAdapter = new ScoreAdapter(getActivity(), scores);
+        recycleScore.setAdapter(mScoreAdapter);
+        mScoreAdapter.notifyDataSetChanged();
 
-
+        return v;
 
     }
 
@@ -72,48 +101,52 @@ public class ScoreFragment extends BaseFragment {
 ////                startActivity(intent);
 //            }
 //        });
+//        recycleScore.setHasFixedSize(true);
+//        mManager = new LinearLayoutManager(getActivity());
+//        recycleScore.setLayoutManager(mManager);
+//        //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
+//        mScoreAdapter = new ScoreAdapter(getActivity(), scores);
+//        recycleScore.setAdapter(mScoreAdapter);
+//        mScoreAdapter.notifyDataSetChanged();
     }
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
-
-   //     private ArrayList<AllocationSchedule> mList;
-   //     private WeakReference<MainActivity> activityWeakReference;
+        ArrayList<String[]> scoresList;
         protected LinearLayout ll_item;
-        private boolean allocatedCheck;  // Default: false
 
+        public ScoreAdapter(Context context,   ArrayList<String[]> scoresList) {
+            this.scoresList = scoresList;
+
+        }
 
         public class ScoreItemViewHolder extends RecyclerView.ViewHolder {
-            protected TextView scheduleTime;
-            protected TextView depature;
-            protected TextView destination;
-            protected TextView supplyExist;
-            protected TextView imgNum;
-            protected TextView beforeSchedule;
+             protected TextView[] tvPar = new TextView[9];
+             protected TextView tvRank , tvName;
 
             public ScoreItemViewHolder(View view) {
                 super(view);
-//                this.scheduleTime = view.findViewById(R.id.schedule_time);
-//                this.beforeSchedule = view.findViewById(R.id.before_schedule_time);
-//                this.depature = view.findViewById(R.id.departure);
-//                this.destination = view.findViewById(R.id.destination);
-//                this.supplyExist = view.findViewById(R.id.supply);
-//                this.imgNum = view.findViewById(R.id.schedule_num);
+                tvRank   = view.findViewById(R.id.rank);
+                tvName   = view.findViewById(R.id.name);
+
+                tvPar[0]   = view.findViewById(R.id.hole1);
+                tvPar[1]   = view.findViewById(R.id.hole2);
+                tvPar[2]   = view.findViewById(R.id.hole3);
+                tvPar[3]   = view.findViewById(R.id.hole4);
+                tvPar[4]   = view.findViewById(R.id.hole5);
+                tvPar[5]   = view.findViewById(R.id.hole6);
+                tvPar[6]   = view.findViewById(R.id.hole7);
+                tvPar[7]   = view.findViewById(R.id.hole8);
+                tvPar[8]   = view.findViewById(R.id.hole9);
+
             }
-        }
-
-
-        public ScoreAdapter(Context context, ArrayList<String> list) {
-           // activityWeakReference = new WeakReference<>((MainActivity)context);
-          //  this.mList = list;
-         //   allocatedCheck = false;
         }
 
 
         // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
         @Override
         public ScoreItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
-
+          //  View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.score_row, viewGroup, false);
             ScoreItemViewHolder viewHolder = new ScoreItemViewHolder(view);
           //  ll_item = view.findViewById(R.id.ll_schedule_item);
 
@@ -121,36 +154,28 @@ public class ScoreFragment extends BaseFragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ScoreItemViewHolder scheduleItem, int i) {
+        public void onBindViewHolder(@NonNull ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;
-//            scheduleItem.imgNum.setText(String.valueOf(i + 1));
-//            scheduleItem.scheduleTime.setText(getReserveTimeIn("HH:mm", mList.get(i).resvDatetime));
-//            scheduleItem.beforeSchedule.setText(getDifferenceFromResvTime(mList.get(i).resvDatetime) );
-//            scheduleItem.depature.setText( "출발지: " +mList.get(i).resvOrgPoi);
-//            scheduleItem.destination.setText( "도착지: " + mList.get(i).resvDstPoi);
-//
-//            if(mList.get(i).serviceCount > 0) {
-//                scheduleItem.supplyExist.setVisibility(View.VISIBLE);
-//            } else {
-//                scheduleItem.supplyExist.setVisibility(View.INVISIBLE);
-//            }
-//
-//            if(!mList.get(pos).allocationStatus.equalsIgnoreCase("ALLOCATED") && !allocatedCheck) {
-//                // 제일 처음 들어오는 항목이고, 배차상태가 ALLOCATED가 아닐경우 Idx를 요청하고나서 각 상태별 화면으로 이동시킴
-//                getAllocDetail(mList.get(pos).allocationIdx, mList.get(pos).allocationStatus);
-//            }
-//
-//            ll_item.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    checkAllocationStatus(mList.get(pos).allocationStatus, pos);
-//                }
-//            });
+            for(int k = 0; scoresList.get(i).length > k ;k++) {
+                String[] list = scoresList.get(i);
+                scoreItemViewHolder.tvRank.setText(list[0]);
+                scoreItemViewHolder.tvName.setText(list[1]);
+
+                scoreItemViewHolder.tvPar[0].setText(list[2]);
+                scoreItemViewHolder.tvPar[1].setText(list[3]);
+                scoreItemViewHolder.tvPar[2].setText(list[4]);
+                scoreItemViewHolder.tvPar[3].setText(list[5]);
+                scoreItemViewHolder.tvPar[4].setText(list[6]);
+                scoreItemViewHolder.tvPar[5].setText(list[7]);
+                scoreItemViewHolder.tvPar[6].setText(list[8]);
+                scoreItemViewHolder.tvPar[7].setText(list[9]);
+                scoreItemViewHolder.tvPar[8].setText(list[10]);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return scores.size();
         }
 
 
