@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-
 /*
  *  wmmms 메뉴 화면
  */
@@ -61,11 +60,61 @@ public class ScoreFragment extends BaseFragment {
         String[] points2 = new String[11];
         String[] points3 = new String[11];
         String[] points4 = new String[11];
-        points[0] = "3rd";   points[1] = "홍길동";   points[2] = "4";   points[3] = "4";  points[4] = "4";  points[5] = "5";  points[6] = "4";  points[7] = "4";  points[8] = "4";  points[9] = "4"; points[10] = "4";
-        points1[0] = "2nd";   points1[1] = "김영광";   points1[2] = "4";   points1[3] = "4";  points1[4] = "4";  points1[5] = "5";  points1[6] = "4";  points1[7] = "4";  points1[8] = "4";  points1[9] = "4";  points1[10] = "4";
-        points2[0] = "1nd";   points2[1] = "김치욱";   points2[2] = "4";   points2[3] = "4";  points2[4] = "4";  points2[5] = "5";  points2[6] = "4";  points2[7] = "4";  points2[8] = "4";  points2[9] = "4";  points2[10] = "4";
-        points3[0] = "5th";   points3[1] = "한상예";   points3[2] = "4";   points3[3] = "4";  points3[4] = "4";  points3[5] = "5";  points3[6] = "4";  points3[7] = "4";  points3[8] = "4";  points3[9] = "4";  points3[10] = "4";
-        points4[0] = "3nd";   points4[1] = "노근수";   points4[2] = "4";   points4[3] = "4";  points4[4] = "4";  points4[5] = "5";  points4[6] = "4";  points4[7] = "4";  points4[8] = "4";  points4[9] = "4";  points4[10] = "4";
+        points[0] = "3rd";
+        points[1] = "홍길동";
+        points[2] = "4";
+        points[3] = "4";
+        points[4] = "4";
+        points[5] = "5";
+        points[6] = "4";
+        points[7] = "4";
+        points[8] = "4";
+        points[9] = "4";
+        points[10] = "4";
+        points1[0] = "2nd";
+        points1[1] = "김영광";
+        points1[2] = "4";
+        points1[3] = "4";
+        points1[4] = "4";
+        points1[5] = "5";
+        points1[6] = "4";
+        points1[7] = "4";
+        points1[8] = "4";
+        points1[9] = "4";
+        points1[10] = "4";
+        points2[0] = "1nd";
+        points2[1] = "김치욱";
+        points2[2] = "4";
+        points2[3] = "4";
+        points2[4] = "4";
+        points2[5] = "5";
+        points2[6] = "4";
+        points2[7] = "4";
+        points2[8] = "4";
+        points2[9] = "4";
+        points2[10] = "4";
+        points3[0] = "5th";
+        points3[1] = "한상예";
+        points3[2] = "4";
+        points3[3] = "4";
+        points3[4] = "4";
+        points3[5] = "5";
+        points3[6] = "4";
+        points3[7] = "4";
+        points3[8] = "4";
+        points3[9] = "4";
+        points3[10] = "4";
+        points4[0] = "3nd";
+        points4[1] = "노근수";
+        points4[2] = "4";
+        points4[3] = "4";
+        points4[4] = "4";
+        points4[5] = "5";
+        points4[6] = "4";
+        points4[7] = "4";
+        points4[8] = "4";
+        points4[9] = "4";
+        points4[10] = "4";
         scores.add(points);
         scores.add(points1);
         scores.add(points2);
@@ -82,7 +131,7 @@ public class ScoreFragment extends BaseFragment {
         recycleScore.setHasFixedSize(true);
         mManager = new LinearLayoutManager(getActivity());
         recycleScore.setLayoutManager(mManager);
-   //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
+        //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
         mScoreAdapter = new ScoreAdapter(getActivity(), scores);
         recycleScore.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
@@ -197,36 +246,36 @@ public class ScoreFragment extends BaseFragment {
         ArrayList<String[]> scoresList;
         protected LinearLayout ll_item;
 
-        public ScoreAdapter(Context context,   ArrayList<String[]> scoresList) {
+        public ScoreAdapter(Context context, ArrayList<String[]> scoresList) {
             this.scoresList = scoresList;
-
         }
 
         public class ScoreItemViewHolder extends RecyclerView.ViewHolder {
-             protected TextView[] tvPar = new TextView[9];
-             protected TextView tvRank , tvName;
+            protected TextView[] tvPar = new TextView[9];
+            protected TextView tvRank, tvName;
 
             public ScoreItemViewHolder(View view) {
                 super(view);
-                tvRank   = view.findViewById(R.id.rank);
-                tvName   = view.findViewById(R.id.name);
+                tvRank = view.findViewById(R.id.rank);
+                tvName = view.findViewById(R.id.name);
 
-                tvPar[0]   = view.findViewById(R.id.hole1);
-                tvPar[1]   = view.findViewById(R.id.hole2);
-                tvPar[2]   = view.findViewById(R.id.hole3);
-                tvPar[3]   = view.findViewById(R.id.hole4);
-                tvPar[4]   = view.findViewById(R.id.hole5);
-                tvPar[5]   = view.findViewById(R.id.hole6);
-                tvPar[6]   = view.findViewById(R.id.hole7);
-                tvPar[7]   = view.findViewById(R.id.hole8);
-                tvPar[8]   = view.findViewById(R.id.hole9);
+                tvPar[0] = view.findViewById(R.id.hole1);
+                tvPar[1] = view.findViewById(R.id.hole2);
+                tvPar[2] = view.findViewById(R.id.hole3);
+                tvPar[3] = view.findViewById(R.id.hole4);
+                tvPar[4] = view.findViewById(R.id.hole5);
+                tvPar[5] = view.findViewById(R.id.hole6);
+                tvPar[6] = view.findViewById(R.id.hole7);
+                tvPar[7] = view.findViewById(R.id.hole8);
+                tvPar[8] = view.findViewById(R.id.hole9);
 
             }
+        }
 
         // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
         @Override
         public ScoreItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-          //  View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
+            //  View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.score_row, viewGroup, false);
             ScoreItemViewHolder viewHolder = new ScoreItemViewHolder(view);
             //  ll_item = view.findViewById(R.id.ll_schedule_item);
@@ -237,7 +286,7 @@ public class ScoreFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(@NonNull ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;
-            for(int k = 0; scoresList.get(i).length > k ;k++) {
+            for (int k = 0; scoresList.get(i).length > k; k++) {
                 String[] list = scoresList.get(i);
                 scoreItemViewHolder.tvRank.setText(list[0]);
                 scoreItemViewHolder.tvName.setText(list[1]);
@@ -261,9 +310,6 @@ public class ScoreFragment extends BaseFragment {
 
 
     }
-
-
-
 }
 
 
