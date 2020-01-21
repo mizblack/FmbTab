@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class DataInterface extends BasicDataInterface {
     private static DataInterface instance;
     protected String TAG = getClass().getSimpleName();
-//    private MacaronCustomDialog dialog;
+//    private FmbCustomDialog dialog;
 
     public interface ResponseCallback<T> {
         void onSuccess(T response);
@@ -57,7 +57,7 @@ public class DataInterface extends BasicDataInterface {
     }
 
 //    private void showDialog(Context context, String title, String msg) {
-//        dialog = new MacaronCustomDialog(context, title, msg, "확인", new View.OnClickListener() {
+//        dialog = new FmbCustomDialog(context, title, msg, "확인", new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                dialog.dismiss();
