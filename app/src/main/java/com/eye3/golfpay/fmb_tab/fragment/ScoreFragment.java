@@ -86,7 +86,7 @@ public class ScoreFragment extends BaseFragment {
                     course02Tab.setVisibility(View.GONE);
                     course03Tab.setVisibility(View.VISIBLE);
                 }
-                            }
+            }
         });
     }
 
@@ -110,6 +110,10 @@ public class ScoreFragment extends BaseFragment {
         course01Tab = getView().findViewById(R.id.course01Tab);
         course02Tab = getView().findViewById(R.id.course02Tab);
         course03Tab = getView().findViewById(R.id.course03Tab);
+
+        course01TextView.setTextColor(0xff000000);
+        course02TextView.setTextColor(0xffcccccc);
+        course03TextView.setTextColor(0xffcccccc);
 
         tabTitleOnClick(course01TextView);
         tabTitleOnClick(course02TextView);
