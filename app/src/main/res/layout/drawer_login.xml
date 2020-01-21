@@ -1,145 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include
-        android:id="@+id/menu_view_include"
-        layout="@layout/view_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/login_view_include"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/irisBlue"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <View
+        <include
+            android:id="@+id/menu_view_include"
+            layout="@layout/view_menu"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@+id/login_view_include"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
-            android:layout_marginEnd="120dp"
+            android:layout_height="match_parent"
+            android:background="@color/irisBlue"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/nameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="이름을 입력해 주세요."
-                android:inputType="textPersonName"
-                android:maxLines="1"
-                android:paddingStart="20dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
             <View
-                android:id="@+id/nameDivider"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white" />
-
-            <EditText
-                android:id="@+id/phoneNumberEditText"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="전화번호를 입력해 주세요."
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:paddingStart="20dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/mediumTurquoise"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:ignore="TextFields" />
-
-            <View
-                android:id="@+id/phoneNumberDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/mediumTurquoise" />
-
-            <TextView
-                android:id="@+id/startTextView"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/shape_white_edge"
-                android:gravity="center"
-                android:text="시작하기"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.2" />
-
-        <LinearLayout
-            android:id="@+id/startQRLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/qr"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:gravity="center"
-                android:text="QR 코드로 시작하기"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/cancelIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/x_button" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginEnd="120dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/nameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="이름을 입력해 주세요."
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/nameDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white" />
+
+                <EditText
+                    android:id="@+id/phoneNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="전화번호를 입력해 주세요."
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/mediumTurquoise"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:ignore="TextFields" />
+
+                <View
+                    android:id="@+id/phoneNumberDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/mediumTurquoise" />
+
+                <TextView
+                    android:id="@+id/startTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_white_edge"
+                    android:gravity="center"
+                    android:text="시작하기"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2" />
+
+            <LinearLayout
+                android:id="@+id/startQRLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/qr"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:text="QR 코드로 시작하기"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/cancelIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/x_button" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</FrameLayout>
+    </FrameLayout>
 </layout>

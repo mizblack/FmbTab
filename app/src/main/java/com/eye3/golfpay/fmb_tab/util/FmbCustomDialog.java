@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
 
+
 public class FmbCustomDialog extends Dialog {
 
 
@@ -29,6 +30,7 @@ public class FmbCustomDialog extends Dialog {
     private String mLeftTitle;
     private String mRightTitle;
     private Spanned mSpannedContent;
+   // private boolean isThemePink = false;
     private FmbCustomDialog dialog = this;
 
     private View.OnClickListener mLeftClickListener;
@@ -45,42 +47,46 @@ public class FmbCustomDialog extends Dialog {
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.wmms_custom_dlg);
-        //layout 파일을 통해 dialog창 background 커스텀 화
+        setContentView(R.layout.fmb_custom_dlg);
+
         mTitleView = findViewById(R.id.dlg_title);
         mContentView = findViewById(R.id.dlg_msg);
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);
         mSingleButton = findViewById(R.id.btnSingle);
         mLayoutButtons = findViewById(R.id.layoutButtons);
-        mClosButton = findViewById(R.id.btn_dlg_close);
-        mClosButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+     //   mClosButton = findViewById(R.id.btn_dlg_close);
+//        mClosButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
         // 제목과 내용을 생성자에서 셋팅한다.
-        if ("".equals(mTitle) )
-            mTitleView.setVisibility(View.GONE);
-        else
-            mTitleView.setText(mTitle);
+        mTitleView.setText(mTitle);
 
         if (mSpannedContent != null) {
             mContentView.setText(mSpannedContent);
         } else {
             mContentView.setText(mContent);
         }
+//
+//        if (isThemePink) {
+//            mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
+//            mSingleButton.setBackgroundResource(R.drawable.background_popup_pink_button);
+//        }
 
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {
+     //       mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
+
             mLayoutButtons.setVisibility(View.VISIBLE);
             mSingleButton.setVisibility(View.GONE);
             mLeftButton.setOnClickListener(mLeftClickListener);
             mLeftButton.setText(mLeftTitle);
             mRightButton.setOnClickListener(mRightClickListener);
             mRightButton.setText(mRightTitle);
-        } else if (mSingleClickListener != null) {
+        } else if(mSingleClickListener != null){
             mLayoutButtons.setVisibility(View.GONE);
             mSingleButton.setVisibility(View.VISIBLE);
             mSingleButton.setOnClickListener(mSingleClickListener);
@@ -88,16 +94,24 @@ public class FmbCustomDialog extends Dialog {
         }
     }
 
-    //    클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
-//    사용 예제
-//    wmmsDlg = new FmbCustomDialog(MainActivity_old.this, "타이틀", "Test.......", "확인", new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            wmmsDlg.dismiss();
-//            // code to do next.....
-//        }
-//    });
-//    wmmsDlg.show();
+    // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
+    public FmbCustomDialog(Context context, String title, String content, String btnTitle,
+                           View.OnClickListener singleListener, boolean isThemePink) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+
+        if (title != null) {
+            this.mTitle = title;
+        } else {
+            this.mTitle = context.getResources().getString(R.string.app_name);
+        }
+
+        this.mContent = content;
+        this.mSingleClickListener = singleListener;
+        this.mSingleTitle = btnTitle;
+     //   this.isThemePink = isThemePink;
+    }
+
+    // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
     public FmbCustomDialog(Context context, String title, String content, String btnTitle,
                            View.OnClickListener singleListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -105,32 +119,45 @@ public class FmbCustomDialog extends Dialog {
         if (title != null) {
             this.mTitle = title;
         } else {
-            //  this.mTitle = context.getResources().getString(R.string.app_name);
+            this.mTitle = context.getResources().getString(R.string.app_name);
         }
 
         this.mContent = content;
         this.mSingleClickListener = singleListener;
         this.mSingleTitle = btnTitle;
-
     }
-
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public FmbCustomDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
-                           View.OnClickListener leftListener, View.OnClickListener rightListener) {
+                           View.OnClickListener leftListener,
+                           View.OnClickListener rightListener, boolean isThemePink) {
+        super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
+
+        if (title != null) {
+            this.mTitle = title;
+        } else {
+            this.mTitle = context.getResources().getString(R.string.app_name);
+        }
+
+        this.mContent = content;
+        this.mLeftClickListener = leftListener;
+        this.mRightClickListener = rightListener;
+        this.mLeftTitle = leftBtnTitle;
+        this.mRightTitle = rightBtnTitle;
+    //    this.isThemePink = isThemePink;
+    }
+
+    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
+    public FmbCustomDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
+                           View.OnClickListener leftListener,
+                           View.OnClickListener rightListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            //   this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-         if(mTitle != null) {
-             if ("".equals(mTitle))
-                 mTitleView.setVisibility(View.GONE);
-             else
-                 mTitleView.setText(mTitle);
-         }
+        if (title != null) {
+            this.mTitle = title;
+        } else {
+            this.mTitle = context.getResources().getString(R.string.app_name);
+        }
 
         this.mContent = content;
         this.mLeftClickListener = leftListener;
@@ -139,6 +166,25 @@ public class FmbCustomDialog extends Dialog {
         this.mRightTitle = rightBtnTitle;
     }
 
+    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
+    public FmbCustomDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
+                           View.OnClickListener leftListener,
+                           View.OnClickListener rightListener, boolean isThemePink) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+
+        if (title != null) {
+            this.mTitle = title;
+        } else {
+            this.mTitle = context.getResources().getString(R.string.app_name);
+        }
+
+        this.mSpannedContent = content;
+        this.mLeftClickListener = leftListener;
+        this.mRightClickListener = rightListener;
+        this.mLeftTitle = leftBtnTitle;
+        this.mRightTitle = rightBtnTitle;
+      //  this.isThemePink = isThemePink;
+    }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public FmbCustomDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
