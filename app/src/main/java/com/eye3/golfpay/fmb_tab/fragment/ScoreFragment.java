@@ -1,8 +1,7 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -34,13 +30,16 @@ public class ScoreFragment extends BaseFragment {
     Button mBtnTaokeoverTest;
 
     private View tabBar;
+    private View courseLinearLayout;
+    private View pinkNearestOrLinearLayout;
     private TextView course01TextView;
     private TextView course02TextView;
     private TextView course03TextView;
     private View course01Tab;
     private View course02Tab;
     private View course03Tab;
-
+    private View rightLinearLayout;
+    private TextView rightButtonTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +89,16 @@ public class ScoreFragment extends BaseFragment {
         });
     }
 
+    private void rightLinearLayoutOnClick() {
+        rightLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoNativeScreen(new RankingFragment(), null);
+            }
+        });
+    }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -99,25 +108,35 @@ public class ScoreFragment extends BaseFragment {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         tabBar = Objects.requireNonNull(getView()).findViewById(R.id.tab_bar);
+        courseLinearLayout = tabBar.findViewById(R.id.courseLinearLayout);
+        pinkNearestOrLinearLayout = tabBar.findViewById(R.id.pinkNearestOrLinearLayout);
         course01TextView = tabBar.findViewById(R.id.course01Text);
         course02TextView = tabBar.findViewById(R.id.course02Text);
         course03TextView = tabBar.findViewById(R.id.course03Text);
         course01Tab = getView().findViewById(R.id.course01Tab);
         course02Tab = getView().findViewById(R.id.course02Tab);
         course03Tab = getView().findViewById(R.id.course03Tab);
+        rightButtonTextView = tabBar.findViewById(R.id.rightButton);
+        rightLinearLayout = tabBar.findViewById(R.id.rightLinearLayout);
 
+        courseLinearLayout.setVisibility(View.VISIBLE);
+        pinkNearestOrLinearLayout.setVisibility(View.VISIBLE);
         course01TextView.setTextColor(0xff000000);
         course02TextView.setTextColor(0xffcccccc);
         course03TextView.setTextColor(0xffcccccc);
+        rightButtonTextView.setText("Ranking");
 
         tabTitleOnClick(course01TextView);
         tabTitleOnClick(course02TextView);
         tabTitleOnClick(course03TextView);
+
+        rightLinearLayoutOnClick();
 
         //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
         //  mBtnTaokeoverTest.setOnClickListener();
