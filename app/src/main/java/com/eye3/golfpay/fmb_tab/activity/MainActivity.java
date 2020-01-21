@@ -35,11 +35,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FmbCustomDialog wmmsDlg;
     final int CAMERA_REQUEST_CODE = 1;
     NavigationView navigationView;
     DrawerLayout drawer_layout;
-    FmbCustomDialog commonDialog;
+    FmbCustomDialog fmbDialog;
     TextView gpsTxtView , scoreTxtView, controlTxtView;
     ImageView markView, cancelView;
 
@@ -79,7 +78,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 //        GoNativeScreenAdd(new ControlFragment(), null);
 //        GoNativeScreenAdd(new CaddieFragment(), null);
 //        GoNativeScreenAdd(new EditorFragment(), null);
-        GoNativeScreenAdd(new NoticeFragment(), null);
+        GoNativeScreen(new NoticeFragment(), null);
 
     }
 
@@ -116,6 +115,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
+
             }
         });
         gpsTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.gpsTextView);
@@ -123,6 +123,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new CourseFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -131,6 +132,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -139,6 +141,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ControlFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -155,12 +158,124 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 changeDrawerViewToMenuView();
+                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
-      //  getBind().contentLogin.menuViewInclude.
+        findViewById(R.id.startQRLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new QRScanFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+ //******************************************************************************************************
+
+        findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fmbDialog = new FmbCustomDialog(MainActivity.this, "Logout" , "로그아웃 하시겠습니까?", "아니오", "네", leftListener, rightListener, true);
+                fmbDialog.show();
+            }
+        });
 
 
+        // 캐디수첩
+        findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("likeYn", "Y");
+//                bundle.putString("arrowBack", "y");
+                GoNativeScreen(new CaddieFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+        //그늘집 주문하기
+        findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new OrderFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+        //공지사항
+        findViewById(R.id.noticeLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new CaddieFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //
+            }
+        });
+         //설정
+        findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new SettingsFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.scoreLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.controlLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ControlFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.closeLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.closeDrawer(GravityCompat.END);
+
+            }
+        });
+
+
+    //   getBind().contentLogin.loginViewInclude.start
+
+   //     getBind().contentLogin.menuViewInclude.
+
+
+    }
+
+    private View.OnClickListener leftListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            fmbDialog.dismiss();
+        }
+    };
+
+    private View.OnClickListener rightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            drawer.closeDrawer(GravityCompat.END);
+            fmbDialog.dismiss();
+
+         //   setLogout();
+        }
+    };
+
+    private void setLogout(){
+        finish();
     }
 
     protected void changeDrawerViewToMenuView(){
@@ -169,35 +284,29 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 
     }
 
-    private void showLogoutDialog(final Context context, String msg) {
-        commonDialog = new FmbCustomDialog(context, null, msg, "확인", "취소", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {   //확인버튼 이벤트
-//                mRealm.executeTransaction(new Realm.Transaction() {
-//                    @Override
-//                    public void execute(Realm realm) {
-//                        RealmResults<UserInfo> result = realm.where(UserInfo.class).equalTo("userId", Global.userInfo.userId).findAll();
-//                        result.deleteAllFromRealm();
-//                    }
-//                });
-                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }   //취소버튼 이벤트
-        }, new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                commonDialog.dismiss();
-            }
-        });
-
-        try {
-            if (commonDialog != null)
-                commonDialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void showLogoutDialog(final Context context, String msg) {
+//        fmbDialog = new FmbCustomDialog(context, null, msg, "확인", "취소", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {   //확인버튼 이벤트
+//
+//                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+//                finish();
+//            }   //취소버튼 이벤트
+//        }, new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//                fmbDialog.dismiss();
+//            }
+//        });
+//
+//        try {
+//            if (fmbDialog != null)
+//                fmbDialog.show();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -293,4 +402,5 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             super.onBackPressed();
         }
     }
+
 }
