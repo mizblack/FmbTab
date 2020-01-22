@@ -1,6 +1,5 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,16 +10,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
-import com.eye3.golfpay.fmb_tab.databinding.ActivityMainBinding;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
-import com.eye3.golfpay.fmb_tab.fragment.NoticeFragment;
 import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
@@ -35,9 +30,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    final int CAMERA_REQUEST_CODE = 1;
     NavigationView navigationView;
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
@@ -52,35 +46,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         setContentView(R.layout.activity_main);
         init();
         startLocationService();
-
-        //홈타이틀 이벤트
-//        ((Button) findViewById(R.id.btnDrawerOpen)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventForTitleView(v);
-//            }
-//        });
-
-//        ((ImageButton) findViewById(R.id.btnTitleHome)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventForTitleView(v);
-//            }
-//        });
-
-        //GoHomeScreen();
-        GoNativeScreen(new ScoreFragment(), null);
-//        GoNativeScreenAdd(new QRScanFragment(), null);
-//        GoNativeScreenAdd(new SettingsFragment(), null);
-//        GoNativeScreenAdd(new CourseFragment(), null);
-//        GoNativeScreenAdd(new ScoreInputFragment(), null);
-//        GoNativeScreenAdd(new NearestLongestFragment(), null);
-//        GoNativeScreenAdd(new OrderFragment(), null);
-//        GoNativeScreenAdd(new ShadePaymentFragment(), null);
-//        GoNativeScreenAdd(new ControlFragment(), null);
-//        GoNativeScreenAdd(new CaddieFragment(), null);
-//        GoNativeScreenAdd(new EditorFragment(), null);
-  //      GoNativeScreen(new NoticeFragment(), null);
 
     }
 
@@ -110,9 +75,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 //                showLogoutDialog(MainActivity.this, "정말로 로그아웃 하시겠습니까?");
 //            }
 //        });
+
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.openDrawer(GravityCompat.END);
-        cancelView=  findViewById(R.id.content_login).findViewById(R .id.cancelIcon);
+        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,7 +126,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 changeDrawerViewToMenuView();
-              //  drawer_layout.closeDrawer(GravityCompat.END);
+                GoNativeScreen(new ScoreFragment(), null);
             }
         });
 
@@ -218,6 +184,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
               //
             }
         });
+        findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new CourseFragment(),null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
          //설정
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,10 +226,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         });
 
 
-    //   getBind().contentLogin.loginViewInclude.start
+    }
 
-   //     getBind().contentLogin.menuViewInclude.
+    public void showMainBottomBar(){
+         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
+    }
 
+    public void hideMainBottomBar(){
+        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.INVISIBLE);
 
     }
 
@@ -281,8 +259,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     }
 
     protected void changeDrawerViewToMenuView(){
-        findViewById(R.id.content_login).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
-        findViewById(R.id.content_login).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
+        findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
+        findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
 
     }
 
@@ -405,4 +383,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+         systemUIHide();
+    }
 }

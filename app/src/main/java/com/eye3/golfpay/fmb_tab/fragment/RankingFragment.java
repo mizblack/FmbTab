@@ -15,10 +15,6 @@ import com.eye3.golfpay.fmb_tab.R;
 
 import java.util.Objects;
 
-
-/*
- *  wmmms 메뉴 화면
- */
 public class RankingFragment extends BaseFragment {
 
 

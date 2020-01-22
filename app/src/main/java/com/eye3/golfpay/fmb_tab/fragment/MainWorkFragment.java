@@ -12,9 +12,6 @@ import androidx.annotation.Nullable;
 import com.eye3.golfpay.fmb_tab.R;
 
 
-/*
-*  wmmms 메뉴 화면
- */
 public class MainWorkFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();

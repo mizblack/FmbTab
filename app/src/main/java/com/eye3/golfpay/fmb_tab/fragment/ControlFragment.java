@@ -11,9 +11,6 @@ import androidx.annotation.Nullable;
 import com.eye3.golfpay.fmb_tab.R;
 
 
-/*
-*  wmmms 메뉴 화면
- */
 public class ControlFragment extends BaseFragment {
 
 

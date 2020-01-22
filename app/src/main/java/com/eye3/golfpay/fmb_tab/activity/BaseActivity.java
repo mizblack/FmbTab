@@ -45,19 +45,23 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
-        systemUIHide();
-//        Realm.init(this);
-//        RealmConfiguration configuration = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
-//        Realm.setDefaultConfiguration(configuration);
-//        Realm.deleteRealm(Realm.getDefaultConfiguration());
-//        mRealm = Realm.getInstance(Realm.getDefaultConfiguration());
 
     }
+
+    public void showMainBottomBar(){
+        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
+    }
+
+    public void hideMainBottomBar(){
+        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.INVISIBLE);
+
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        systemUIHide();
+     //   systemUIHide();
     }
 
     protected void setBind(@LayoutRes int layId) {
@@ -350,5 +354,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
     }
+
+
 
 }

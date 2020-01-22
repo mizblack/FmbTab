@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,7 +31,6 @@ public class ScoreFragment extends BaseFragment {
     ScoreAdapter mScoreAdapter;
     LinearLayoutManager mManager;
     RecyclerView recycleScore;
-    Button mBtnTaokeoverTest;
 
     private View tabBar;
     private View courseLinearLayout;
@@ -128,11 +128,10 @@ public class ScoreFragment extends BaseFragment {
         recycleScore.setHasFixedSize(true);
         mManager = new LinearLayoutManager(getActivity());
         recycleScore.setLayoutManager(mManager);
-        //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
         mScoreAdapter = new ScoreAdapter(getActivity(), scores);
         recycleScore.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
-
+        ((MainActivity) mParentActivity ).showMainBottomBar();
         return v;
     }
 

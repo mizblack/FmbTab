@@ -9,11 +9,8 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 
-
-/*
-*  wmmms 메뉴 화면
- */
 public class CourseFragment extends BaseFragment {
 
 
@@ -30,7 +27,9 @@ public class CourseFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fr_course, container, false);
+        View v = inflater.inflate(R.layout.fr_course, container, false);
+        ((MainActivity) mParentActivity ).hideMainBottomBar();
+        return v;
     }
 
     @Override

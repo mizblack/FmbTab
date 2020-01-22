@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -25,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.CameraActivity;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +37,6 @@ import static android.app.Activity.RESULT_OK;
 public class CaddieFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
-    Button mBtnTaokeoverTest;
     LinearLayout mImgClubPic;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
@@ -65,13 +63,15 @@ public class CaddieFragment extends BaseFragment {
                 if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
                 { ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
                             0);
-                    sendTakePhotoIntent();
+                 //   sendTakePhotoIntent();
                 } else {
                     sendTakePhotoIntent();
                 }
             }
         });
+        ((MainActivity) mParentActivity ).showMainBottomBar();
         mPhoto = v.findViewById(R.id.caddieImageView);
+
         return v;
     }
 

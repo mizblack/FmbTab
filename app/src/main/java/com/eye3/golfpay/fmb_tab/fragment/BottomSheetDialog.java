@@ -13,9 +13,6 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
-/**
- * Created by charlie on 2017. 11. 22
- */
 
 public class BottomSheetDialog extends BottomSheetDialogFragment implements View.OnClickListener{
 
