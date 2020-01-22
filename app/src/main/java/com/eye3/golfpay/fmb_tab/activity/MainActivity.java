@@ -27,6 +27,7 @@ import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.SettingsFragment;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
+import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.app.ActivityCompat;
@@ -41,6 +42,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     NavigationView navigationView;
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
+    SettingsCustomDialog settingsCustomDialog;
     TextView gpsTxtView , scoreTxtView, controlTxtView;
     ImageView markView, cancelView;
 
@@ -222,8 +224,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new SettingsFragment(),null);
-                drawer_layout.closeDrawer(GravityCompat.END);
+//                GoNativeScreen(new SettingsFragment(),null);
+//                drawer_layout.closeDrawer(GravityCompat.END);
+                settingsCustomDialog = new SettingsCustomDialog(MainActivity.this);
+                settingsCustomDialog.show();
             }
         });
 

@@ -30,7 +30,7 @@ public class SettingsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fr_settings, container, false);
+        return inflater.inflate(R.layout.settings_custom_dlg, container, false);
     }
 
     @Override
