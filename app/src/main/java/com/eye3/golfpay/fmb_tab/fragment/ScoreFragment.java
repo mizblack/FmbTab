@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-/*
- *  wmmms 메뉴 화면
- */
 public class ScoreFragment extends BaseFragment {
 
 

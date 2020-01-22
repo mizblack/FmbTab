@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 //        });
 
         //GoHomeScreen();
-//        GoNativeScreenAdd(new ScoreFragment(), null);
+        GoNativeScreen(new ScoreFragment(), null);
 //        GoNativeScreenAdd(new QRScanFragment(), null);
 //        GoNativeScreenAdd(new SettingsFragment(), null);
 //        GoNativeScreenAdd(new CourseFragment(), null);
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 //        GoNativeScreenAdd(new ControlFragment(), null);
 //        GoNativeScreenAdd(new CaddieFragment(), null);
 //        GoNativeScreenAdd(new EditorFragment(), null);
-        GoNativeScreen(new NoticeFragment(), null);
+  //      GoNativeScreen(new NoticeFragment(), null);
 
     }
 
@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
 //            }
 //        });
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        drawer_layout.openDrawer(GravityCompat.END);
         cancelView=  findViewById(R.id.content_login).findViewById(R .id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
             @Override
             public void onClick(View v) {
                 changeDrawerViewToMenuView();
-                drawer_layout.closeDrawer(GravityCompat.END);
+              //  drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 

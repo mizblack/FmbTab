@@ -418,12 +418,14 @@
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
+                    android:id="@+id/club_pic"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@color/pattensBlue01"
                     android:gravity="center">
 
                     <ImageView
+                        android:id="@+id/photo_view"
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:src="@drawable/camera"
