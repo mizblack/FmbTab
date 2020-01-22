@@ -19,7 +19,6 @@ public class RankingFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
-    Button mBtnTaokeoverTest;
 
     private View tabBar;
     private View viewRankingViewDetailLinearLayout;

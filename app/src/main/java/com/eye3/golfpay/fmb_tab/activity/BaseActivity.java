@@ -26,7 +26,7 @@ import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
 
 public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     private T mVd;
-    protected BaseFragment mNativeFragment;
+    protected BaseFragment mBaseFragment;
     protected String TAG = getClass().getSimpleName();
     private ProgressDialog pd; // 프로그레스바 선언
     protected BackPressCloseHandler backPressCloseHandler;
@@ -53,7 +53,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     }
 
     public void hideMainBottomBar(){
-        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.INVISIBLE);
+        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.GONE);
 
     }
 
@@ -120,14 +120,14 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
             return;
         }
 
-        mNativeFragment = fragment;
+        mBaseFragment = fragment;
         if (bundle != null) {
-            mNativeFragment.setArguments(bundle);
+            mBaseFragment.setArguments(bundle);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-        transaction.replace(R.id.vw_NativeContent, mNativeFragment).commitAllowingStateLoss();
+        transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
     }
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle) {
@@ -135,23 +135,23 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
             return;
         }
 
-        mNativeFragment = fragment;
+        mBaseFragment = fragment;
         if (bundle != null) {
-            mNativeFragment.setArguments(bundle);
+            mBaseFragment.setArguments(bundle);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-        transaction.replace(R.id.vw_NativeContent, mNativeFragment).addToBackStack(null).commitAllowingStateLoss();
+        transaction.replace(R.id.vw_NativeContent, mBaseFragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle, String backStack) {
         if (fragment == null)
             return;
 
-        mNativeFragment = fragment;
+        mBaseFragment = fragment;
         if (bundle != null) {
-            mNativeFragment.setArguments(bundle);
+            mBaseFragment.setArguments(bundle);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -160,11 +160,11 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         } else {
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         }
-        transaction.replace(R.id.vw_NativeContent, mNativeFragment).commitAllowingStateLoss();
+        transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
 
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.vw_NativeContent, mNativeFragment).addToBackStack(null).commitAllowingStateLoss();
+//        transaction.replace(R.id.vw_NativeContent, mBaseFragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
     /**
@@ -195,7 +195,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         GoNativeScreenAdd(new MainWorkFragment(), null);
         //   GoNativeScreenAdd(new FrTakeoverTestmain(), null);
 //        if (bundle != null) {
-//            mNativeFragment.setArguments(bundle);
+//            mBaseFragment.setArguments(bundle);
 //        }
     }
 
@@ -205,18 +205,18 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
      * @param bundle Parameter 번들
      */
     protected void GoRootScreen(Bundle bundle) {
-        mNativeFragment = getRootFragment();
+        mBaseFragment = getRootFragment();
 
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.vw_NativeContent, mNativeFragment).commit();
+//        transaction.replace(R.id.vw_NativeContent, mBaseFragment).commit();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isForward) {
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         }
-        transaction.replace(R.id.vw_NativeContent, mNativeFragment).commit();
+        transaction.replace(R.id.vw_NativeContent, mBaseFragment).commit();
 
     }
 
@@ -262,8 +262,8 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 //        mDlHomeView.addDrawerListener(new DrawerLayout.DrawerListener() {
 //            @Override
 //            public void onDrawerSlide(View drawerView, float slideOffset) {
-//                if (mNativeFragment != null) {
-//                  //  mNativeFragment.checkMyMenuPosition();
+//                if (mBaseFragment != null) {
+//                  //  mBaseFragment.checkMyMenuPosition();
 //                }
 //            }
 //
@@ -288,7 +288,12 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
 
     //   }
-    private void openDrawer() {
+    public void hideDrawer() {
+        ( (MainActivity) this).HideMenuMap();
+    }
+
+    public void openDrawer() {
+        ( (MainActivity) this).OpenMenuMap();
     }
 
     public void showProgress(String msg) {

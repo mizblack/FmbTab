@@ -16,10 +16,11 @@ import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
-import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.SettingsFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
+import com.eye3.golfpay.fmb_tab.model.order.teeup.Player;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -165,7 +166,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new OrderFragment(),null);
+                GoNativeScreen(new ShadePaymentFragment(),null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -228,14 +229,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    public void showMainBottomBar(){
-         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
-    }
-
-    public void hideMainBottomBar(){
-        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.INVISIBLE);
-
-    }
 
     private View.OnClickListener leftListener = new View.OnClickListener() {
         @Override
@@ -258,7 +251,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         finish();
     }
 
-    protected void changeDrawerViewToMenuView(){
+    public void changeDrawerViewToMenuView(){
         findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
         findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
 
@@ -340,7 +333,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * 메뉴 열기
      */
     public void OpenMenuMap() {
-        if (mNativeFragment != null) {
+        if (mBaseFragment != null) {
             UIThread.executeInUIThread(new Runnable() {
                 @Override
                 public void run() {
@@ -359,8 +352,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      *
      * @return true: 닫기 성공, false: 실패 (or 무시)
      */
-    protected boolean HideMenuMap() {
-        if (mNativeFragment != null) {
+    public boolean HideMenuMap() {
+        if (mBaseFragment != null) {
             UIThread.executeInUIThread(new Runnable() {
                 @Override
                 public void run() {

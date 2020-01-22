@@ -14,7 +14,6 @@ public class QRScanFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
-    Button mBtnTaokeoverTest;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

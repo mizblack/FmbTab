@@ -9,7 +9,9 @@
         android:id="@+id/vw_NativeContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_background" />
+        android:background="@drawable/login_background"
+        android:layout_above="@+id/main_bottom_bar"
+        />
 
     <include
         android:id="@+id/main_bottom_bar"
@@ -17,6 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

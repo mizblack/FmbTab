@@ -10,7 +10,7 @@ public class Global {
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
-    public static String SavedDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WMMS";
+    public static String SavedDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FMB_TAB";
     //==  public static String   photoPath = "/storage/emulated/0/WMMS/pic.jpg"; //위와 동일한 경로
     //내부 저장소 sd카드없어도 저장됨
 //    public static String SavedDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/WMMS"  ;  // .getAbsolutePath();
@@ -43,10 +43,8 @@ public class Global {
 
     public static String appToken;
 
-    public static final String ru = "RU";
-    public static final String du = "DU";
     public static String imageBaseDir = HOST_ADDRESS_DEV  + "/attachments";
-//    public static String[] searchItem = new String[7];
+
     public interface NotiAlarmChannelID {
         String CHANNEL_LOC = "macaron_loc";
         String CHANNEL_FLOATING = "macaron_floating";
@@ -54,17 +52,5 @@ public class Global {
         String CHANNEL_PUSH = "macaron_push";
     }
 
-    public interface AppVersionCheck {
-        String CHAUFFEUR_SYSTEM = "CHAUFFEUR_SYSTEM";
-        String CHAUFFEUR_VERSION = "CHAUFFEUR_VERSION";
-        String VERSION = "VERSION";
-        String MESSAGE = "MESSAGE";
-        String ACTION = "ACTION";
-    }
-
-    public interface ErrorCode {
-        String EC902 = "EC902";  // 운행중일때 고객이 예약취소시
-        String EC105 = "EC105";  // 다른사람이 해당 차량 사용시
-    }
 
 }
