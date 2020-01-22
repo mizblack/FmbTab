@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.model.Device;
 import com.eye3.golfpay.fmb_tab.model.Token;
+import com.eye3.golfpay.fmb_tab.model.login.Login;
 
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface HttpService {
 
@@ -48,6 +50,8 @@ public interface HttpService {
     @POST("/wmms/api/acceptCheckDeviceMasterSearch")
     Call<ResponseData<Device>> apiAcceptCheckDeviceMasterSearch(@FieldMap Map<String, Object> params);
 
+    @POST("caddyLogin")
+    Call<Login> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
 
 
 }

@@ -22,6 +22,7 @@ import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Security;
@@ -40,9 +41,6 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
-import retrofit2.Call;
-
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -98,7 +96,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
     }
 
     void login(String id, String pwd) {
+        DataInterface.getInstance().doCaddyLogin(id, pwd, new DataInterface.ResponseCallback<Login>() {
 
+            @Override
+            public void onSuccess(Login response) {
+
+            }
+
+            @Override
+            public void onError(Login response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     @SuppressLint("CutPasteId")
@@ -125,7 +139,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements N
                 try {
                     login(nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
 //                            loginView.login("test@test.test", "@12345");
-                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+                } catch (NoSuchPaddingException
+                        | NoSuchAlgorithmException
+                        | InvalidAlgorithmParameterException
+                        | InvalidKeyException
+                        | BadPaddingException
+                        | IllegalBlockSizeException e) {
 //                        } catch (Exception e) {
                     e.printStackTrace();
                 }

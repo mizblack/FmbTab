@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 
 import com.eye3.golfpay.fmb_tab.model.Token;
+import com.eye3.golfpay.fmb_tab.model.login.Login;
 
 import java.util.HashMap;
 
@@ -37,9 +38,9 @@ public class DataInterface extends BasicDataInterface {
     }
 
     public static DataInterface getInstance(String url) {
-            synchronized (DataInterface.class) {
-                    instance = new DataInterface(url);
-            }
+        synchronized (DataInterface.class) {
+            instance = new DataInterface(url);
+        }
 
         return instance;
     }
@@ -55,6 +56,28 @@ public class DataInterface extends BasicDataInterface {
     public static boolean isCallSuccess(Response response) {
         return response.isSuccessful();
     }
+
+    public void doCaddyLogin(String id, String pwd, ResponseCallback<Login> responseCallback) {
+        try {
+            Call<Login> call = service.doCaddyLogin(id, pwd);
+
+            call.enqueue(new Callback<Login>() {
+
+                @Override
+                public void onResponse(Call<Login> call, Response<Login> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Login> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 //    private void showDialog(Context context, String title, String msg) {
 //        dialog = new FmbCustomDialog(context, title, msg, "확인", new View.OnClickListener() {
