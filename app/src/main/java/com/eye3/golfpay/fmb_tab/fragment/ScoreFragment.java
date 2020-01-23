@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -43,6 +45,8 @@ public class ScoreFragment extends BaseFragment {
     private View course03Tab;
     private View rightLinearLayout;
     private TextView rightButtonTextView;
+    private ArrayList<Course> CourseList = new ArrayList<>();
+    LinearLayout[] ScoreTab  = new LinearLayout[4];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,18 @@ public class ScoreFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+
+        Course first_course = new Course();
+        Hole[] first_course_hole = new Hole[9] ;
+        for(int i=0; first_course_hole.length >  i ;i++){
+            Hole a_hole = new Hole(String.valueOf(i+1), 4, 300);
+            first_course.arrHole[i] =  a_hole;
+
+        }
+
+        first_course.CourseName = "코스1" ;
+        first_course.CourseId = "1";
+
 
         String[] points = new String[11];
         String[] points1 = new String[11];
@@ -131,6 +147,9 @@ public class ScoreFragment extends BaseFragment {
         mScoreAdapter = new ScoreAdapter(getActivity(), scores);
         recycleScore.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
+
+        ScoreTab[0]  = v.findViewById(R.id.course01Tab);
+
         ((MainActivity) mParentActivity ).showMainBottomBar();
         return v;
     }

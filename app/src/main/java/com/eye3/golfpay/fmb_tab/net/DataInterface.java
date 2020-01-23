@@ -57,27 +57,6 @@ public class DataInterface extends BasicDataInterface {
         return response.isSuccessful();
     }
 
-    public void doCaddyLogin(String id, String pwd, ResponseCallback<Login> responseCallback) {
-        try {
-            Call<Login> call = service.doCaddyLogin(id, pwd);
-
-            call.enqueue(new Callback<Login>() {
-
-                @Override
-                public void onResponse(Call<Login> call, Response<Login> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<Login> call, Throwable t) {
-
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
 
 //    private void showDialog(Context context, String title, String msg) {
 //        dialog = new FmbCustomDialog(context, title, msg, "확인", new View.OnClickListener() {

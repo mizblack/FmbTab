@@ -18,6 +18,7 @@ public class Course implements Serializable {
 
     @SerializedName("hole_list")
     @Expose
-   public  ArrayList<Hole> holeList = new ArrayList<>();
+ //  public  ArrayList<Hole> holeList = new ArrayList<>();
+   public Hole[] arrHole = new Hole[9];
 
 }

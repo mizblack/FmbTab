@@ -20,27 +20,14 @@ import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
-import com.eye3.golfpay.fmb_tab.model.login.Login;
-import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
-import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
-import com.eye3.golfpay.fmb_tab.util.Security;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -77,7 +64,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        });
 
         //GoHomeScreen();
-  //      GoNativeScreen(new ScoreFragment(), null);
+        //      GoNativeScreen(new ScoreFragment(), null);
 //        GoNativeScreenAdd(new QRScanFragment(), null);
 //        GoNativeScreenAdd(new SettingsFragment(), null);
 //        GoNativeScreenAdd(new CourseFragment(), null);
@@ -88,7 +75,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        GoNativeScreenAdd(new ControlFragment(), null);
 //        GoNativeScreenAdd(new CaddieFragment(), null);
 //        GoNativeScreenAdd(new EditorFragment(), null);
-  //      GoNativeScreen(new NoticeFragment(), null);
+        //      GoNativeScreen(new NoticeFragment(), null);
 
     }
 
@@ -107,25 +94,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    void login(String id, String pwd) {
-        DataInterface.getInstance().doCaddyLogin(id, pwd, new DataInterface.ResponseCallback<Login>() {
-
-            @Override
-            public void onSuccess(Login response) {
-
-            }
-
-            @Override
-            public void onError(Login response) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
-    }
 
     @SuppressLint("CutPasteId")
     private void init() {
@@ -148,22 +116,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    login(nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
-//                            loginView.login("test@test.test", "@12345");
-                } catch (NoSuchPaddingException
-                        | NoSuchAlgorithmException
-                        | InvalidAlgorithmParameterException
-                        | InvalidKeyException
-                        | BadPaddingException
-                        | IllegalBlockSizeException e) {
-//                        } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
         });
         cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
-        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
+        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,7 +207,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(),null);
+                GoNativeScreen(new ShadePaymentFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -267,19 +224,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 //
-              //
+                //
             }
         });
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(),null);
+                GoNativeScreen(new CourseFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
         //설정
 
-         //설정
+        //설정
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -471,8 +428,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         systemUIHide();
-
-        ScoreBoard board = new ScoreBoard();
 
     }
 }

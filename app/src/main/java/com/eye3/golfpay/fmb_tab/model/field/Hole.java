@@ -19,4 +19,11 @@ public class Hole  implements Serializable {
     @Expose
     public int distance;
 
+    public Hole(String holeId, int par, int distance){
+        this.holeId = holeId;
+        this.par = par;
+        this.distance = distance;
+    }
+
+
 }

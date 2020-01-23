@@ -22,7 +22,7 @@ public class Player implements Serializable {
     @Expose
     public String totalRank;
 
-    public ArrayList<Course> playedCourseList = new ArrayList<>();
+  //  public ArrayList<Course> playedCourseList = new ArrayList<>();  //플레이한 코스
     public ArrayList<HoleScoreSet> courseScores = new ArrayList<>(); //코스 전체 점수
 
 }

@@ -50,8 +50,4 @@ public interface HttpService {
     @POST("/wmms/api/acceptCheckDeviceMasterSearch")
     Call<ResponseData<Device>> apiAcceptCheckDeviceMasterSearch(@FieldMap Map<String, Object> params);
 
-    @POST("caddyLogin")
-    Call<Login> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
-
-
 }
