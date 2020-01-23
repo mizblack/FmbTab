@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 try {
                     login(getApplicationContext(), nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
                 } catch (NoSuchPaddingException
