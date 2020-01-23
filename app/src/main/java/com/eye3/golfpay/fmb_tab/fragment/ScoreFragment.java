@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 
