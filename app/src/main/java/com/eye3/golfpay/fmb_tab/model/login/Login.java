@@ -1,6 +1,7 @@
 
 package com.eye3.golfpay.fmb_tab.model.login;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,10 +10,13 @@ import java.io.Serializable;
 public class Login implements Serializable {
 
     @SerializedName("caddy_no")
+    @Expose
     private int mCaddyNo;
     @SerializedName("ret_code")
+    @Expose
     private String mRetCode;
     @SerializedName("ret_msg")
+    @Expose
     private String mRetMsg;
 
     public int getCaddyNo() {

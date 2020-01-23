@@ -6,11 +6,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ResponseData<T> {
-	@SerializedName("resultCode")
+	@SerializedName("ret_code")
 	@Expose
 	private String  resultCode = "";
 
-	@SerializedName("resultMessage")
+	@SerializedName("ret_msg")
 	@Expose
 	private String resultMessage = "";
 

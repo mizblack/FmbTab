@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 
 import com.eye3.golfpay.fmb_tab.model.Token;
+import com.eye3.golfpay.fmb_tab.model.login.Login;
 
 import java.util.HashMap;
 
@@ -37,9 +38,9 @@ public class DataInterface extends BasicDataInterface {
     }
 
     public static DataInterface getInstance(String url) {
-            synchronized (DataInterface.class) {
-                    instance = new DataInterface(url);
-            }
+        synchronized (DataInterface.class) {
+            instance = new DataInterface(url);
+        }
 
         return instance;
     }
@@ -105,21 +106,17 @@ public class DataInterface extends BasicDataInterface {
     }
 
 
-    public void logIn(final Context context, HashMap<String, Object> params, final ResponseCallback callback) {
-
+    public void logIn(String id, String pwd, final ResponseCallback<ResponseData<Login>> callback) {
         try {
-            Call<ResponseData<Token>> call = service.login(params);
-
-            call.enqueue(new Callback<ResponseData<Token>>() {
+            Call<ResponseData<Login>> call = service.doCaddyLogin(id, pwd);
+            call.enqueue(new Callback<ResponseData<Login>>() {
                 @Override
-                public void onResponse(Call<ResponseData<Token>> call, Response<ResponseData<Token>> response) {
-                    processCommonError(context, callback, response, false);
+                public void onResponse(Call<ResponseData<Login>> call, Response<ResponseData<Login>> response) {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseData<Token>> call, Throwable t) {
+                public void onFailure(Call<ResponseData<Login>> call, Throwable t) {
                     if (callback == null) return;
-
                     t.printStackTrace();
                     callback.onFailure(t);
                 }
