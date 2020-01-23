@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
@@ -20,14 +22,28 @@ import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
+import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
+import com.eye3.golfpay.fmb_tab.util.Security;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,6 +110,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    private void login(final Context context, String id, String pwd) {
+        showProgress("로그인 중입니다....");
+        DataInterface.getInstance().login(id, pwd, new DataInterface.ResponseCallback<ResponseData<Login>>() {
+
+            @Override
+            public void onSuccess(ResponseData<Login> response) {
+                hideProgress();
+                if ("ok".equals(response.getData().getRetCode())) {
+                    Toast.makeText(context, "onSuccess, CaddyNo : " + response.getData().getCaddyNo(), Toast.LENGTH_LONG).show();
+                    hideProgress();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<Login> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+    }
 
     @SuppressLint("CutPasteId")
     private void init() {
@@ -120,7 +160,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
-        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
+        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,6 +207,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    login(getApplicationContext(), nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
+                } catch (NoSuchPaddingException
+                        | NoSuchAlgorithmException
+                        | InvalidAlgorithmParameterException
+                        | InvalidKeyException
+                        | BadPaddingException
+                        | IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                }
+
                 changeDrawerViewToMenuView();
                 //  drawer_layout.closeDrawer(GravityCompat.END);
             }
@@ -207,7 +258,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(), null);
+                GoNativeScreen(new ShadePaymentFragment(),null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -230,7 +281,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(), null);
+                GoNativeScreen(new CourseFragment(),null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -428,6 +479,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         systemUIHide();
+
+        ScoreBoard board = new ScoreBoard();
 
     }
 }

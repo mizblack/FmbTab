@@ -57,7 +57,6 @@ public class DataInterface extends BasicDataInterface {
         return response.isSuccessful();
     }
 
-
 //    private void showDialog(Context context, String title, String msg) {
 //        dialog = new FmbCustomDialog(context, title, msg, "확인", new View.OnClickListener() {
 //            @Override
@@ -107,21 +106,17 @@ public class DataInterface extends BasicDataInterface {
     }
 
 
-    public void logIn(final Context context, HashMap<String, Object> params, final ResponseCallback callback) {
-
+    public void login(String id, String pwd, final ResponseCallback<ResponseData<Login>> callback) {
         try {
-            Call<ResponseData<Token>> call = service.login(params);
-
-            call.enqueue(new Callback<ResponseData<Token>>() {
+            Call<ResponseData<Login>> call = service.doCaddyLogin(id, pwd);
+            call.enqueue(new Callback<ResponseData<Login>>() {
                 @Override
-                public void onResponse(Call<ResponseData<Token>> call, Response<ResponseData<Token>> response) {
-                    processCommonError(context, callback, response, false);
+                public void onResponse(Call<ResponseData<Login>> call, Response<ResponseData<Login>> response) {
                 }
 
                 @Override
-                public void onFailure(Call<ResponseData<Token>> call, Throwable t) {
+                public void onFailure(Call<ResponseData<Login>> call, Throwable t) {
                     if (callback == null) return;
-
                     t.printStackTrace();
                     callback.onFailure(t);
                 }
