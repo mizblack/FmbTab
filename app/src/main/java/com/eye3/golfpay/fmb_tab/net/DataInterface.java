@@ -106,7 +106,7 @@ public class DataInterface extends BasicDataInterface {
     }
 
 
-    public void logIn(String id, String pwd, final ResponseCallback<ResponseData<Login>> callback) {
+    public void login(String id, String pwd, final ResponseCallback<ResponseData<Login>> callback) {
         try {
             Call<ResponseData<Login>> call = service.doCaddyLogin(id, pwd);
             call.enqueue(new Callback<ResponseData<Login>>() {

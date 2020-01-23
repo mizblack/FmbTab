@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,15 +21,15 @@ import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
-import com.eye3.golfpay.fmb_tab.fragment.SettingsFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
-import com.eye3.golfpay.fmb_tab.model.order.teeup.Player;
+import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Security;
+import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.app.ActivityCompat;
@@ -44,13 +45,14 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    final int CAMERA_REQUEST_CODE = 1;
     NavigationView navigationView;
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, nameEditText, phoneNumberEditText;
+    SettingsCustomDialog settingsCustomDialog;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText;
     ImageView markView, cancelView;
 
     @Override
@@ -62,8 +64,38 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
         startLocationService();
 
+        //홈타이틀 이벤트
+//        ((Button) findViewById(R.id.btnDrawerOpen)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EventForTitleView(v);
+//            }
+//        });
+
+//        ((ImageButton) findViewById(R.id.btnTitleHome)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EventForTitleView(v);
+//            }
+//        });
+
+        //GoHomeScreen();
+        //      GoNativeScreen(new ScoreFragment(), null);
+//        GoNativeScreenAdd(new QRScanFragment(), null);
+//        GoNativeScreenAdd(new SettingsFragment(), null);
+//        GoNativeScreenAdd(new CourseFragment(), null);
+//        GoNativeScreenAdd(new ScoreInputFragment(), null);
+//        GoNativeScreenAdd(new NearestLongestFragment(), null);
+//        GoNativeScreenAdd(new OrderFragment(), null);
+//        GoNativeScreenAdd(new ShadePaymentFragment(), null);
+//        GoNativeScreenAdd(new ControlFragment(), null);
+//        GoNativeScreenAdd(new CaddieFragment(), null);
+//        GoNativeScreenAdd(new EditorFragment(), null);
+        //      GoNativeScreen(new NoticeFragment(), null);
+
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -80,7 +112,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
-        DataInterface.getInstance().logIn(id, pwd, new DataInterface.ResponseCallback<ResponseData<Login>>() {
+        DataInterface.getInstance().login(id, pwd, new DataInterface.ResponseCallback<ResponseData<Login>>() {
 
             @Override
             public void onSuccess(ResponseData<Login> response) {
@@ -103,7 +135,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
-
+    @SuppressLint("CutPasteId")
     private void init() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
@@ -115,10 +147,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                showLogoutDialog(MainActivity.this, "정말로 로그아웃 하시겠습니까?");
 //            }
 //        });
-
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.openDrawer(GravityCompat.END);
+
+        startTextView = findViewById(R.id.loginNmenu).findViewById(R.id.startTextView);
+        nameEditText = findViewById(R.id.loginNmenu).findViewById(R.id.nameEditText);
+        phoneNumberEditText = findViewById(R.id.loginNmenu).findViewById(R.id.phoneNumberEditText);
+        startTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
+        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,10 +204,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 //**************************************************************************************************************
         // 메뉴뷰 이벤트처리
-
-        nameEditText = findViewById(R.id.loginNmenu).findViewById(R.id.nameEditText);
-        phoneNumberEditText = findViewById(R.id.loginNmenu).findViewById(R.id.phoneNumberEditText);
-
         findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +219,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
 
                 changeDrawerViewToMenuView();
-                GoNativeScreen(new ScoreFragment(), null);
+                //  drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -220,7 +258,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(), null);
+                GoNativeScreen(new ShadePaymentFragment(),null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -237,22 +275,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 //
+                //
             }
         });
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(), null);
+                GoNativeScreen(new CourseFragment(),null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
+        //설정
 
         //설정
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new SettingsFragment(), null);
-                drawer_layout.closeDrawer(GravityCompat.END);
+//                GoNativeScreen(new SettingsFragment(),null);
+//                drawer_layout.closeDrawer(GravityCompat.END);
+                settingsCustomDialog = new SettingsCustomDialog(MainActivity.this);
+                settingsCustomDialog.show();
             }
         });
 
@@ -281,8 +323,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
 
-    }
+        //   getBind().contentLogin.loginViewInclude.start
 
+        //     getBind().contentLogin.menuViewInclude.
+
+
+    }
 
     private View.OnClickListener leftListener = new View.OnClickListener() {
         @Override
@@ -308,7 +354,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void changeDrawerViewToMenuView() {
         findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
         findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
-
     }
 
 //    private void showLogoutDialog(final Context context, String msg) {
@@ -434,5 +479,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         systemUIHide();
+
+        ScoreBoard board = new ScoreBoard();
+
     }
 }

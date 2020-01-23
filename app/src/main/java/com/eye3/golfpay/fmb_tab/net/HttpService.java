@@ -28,7 +28,7 @@ public interface HttpService {
 //    Call<ResponseData<ChauffeurInfo>> getChauffeur(@Body Map<String, Object> params);
 //
 
-//    @POST("/api/auth/logout")
+    //    @POST("/api/auth/logout")
 //    Call<ResponseData<Object>> logout(@Body Map<String, Object> params, @Header("Authorization") String auth);
     @FormUrlEncoded
     @POST("/wmms/api/user")
@@ -41,5 +41,6 @@ public interface HttpService {
 
     @POST("caddyLogin")
     Call<ResponseData<Login>> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
+
 
 }

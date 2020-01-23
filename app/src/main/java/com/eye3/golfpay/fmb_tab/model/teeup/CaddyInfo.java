@@ -1,4 +1,4 @@
-package com.eye3.golfpay.fmb_tab.model.order.teeup;
+package com.eye3.golfpay.fmb_tab.model.teeup;
 
 import com.google.gson.annotations.SerializedName;
 
