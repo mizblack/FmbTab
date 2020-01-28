@@ -7,20 +7,28 @@ import java.io.Serializable;
 
 public class Hole  implements Serializable {
 
-    @SerializedName("holeId")
+    @SerializedName("id")
     @Expose
-    public String holeId;
+    public String id;
+
+    @SerializedName("cc_id")
+    @Expose
+    public String cc_id;
+
+    @SerializedName("hole_no")
+    @Expose
+    public String hole_no;
 
     @SerializedName("par")
     @Expose
-    public int par;
+    public String par;
 
     @SerializedName("distance")
     @Expose
-    public int distance;
+    public String distance;
 
-    public Hole(String holeId, int par, int distance){
-        this.holeId = holeId;
+    public Hole(String id, String par, String distance){
+        this.id = id;
         this.par = par;
         this.distance = distance;
     }

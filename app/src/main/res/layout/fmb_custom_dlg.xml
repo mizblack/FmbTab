@@ -8,8 +8,8 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:layout_width="500dp"
-            android:layout_height="400dp"
+            android:layout_width="1300dp"
+            android:layout_height="600dp"
             android:layout_centerInParent="true">
 
 <!--            <ImageButton-->

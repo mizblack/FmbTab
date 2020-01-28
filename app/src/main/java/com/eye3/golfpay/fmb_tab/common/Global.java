@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.common;
 
 import android.os.Environment;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class Global {
 
     public static TeeUpTime teeUpTime;
+    public static ArrayList<Course> CourseInfo = new ArrayList<>();
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -35,6 +37,8 @@ public class Global {
      * 접속 호스트 주소
      */
     //  public static String HOST_ADDRESS = (RealSetting ? HOST_ADDRESS_REAL : HOST_ADDRESS_DEV);
+
+    public static String HOST_ADDRES_SKIE = "10.50.21.62:8000/api/v1/getAllCourse?cc_id=1";
 
     /**
      * 접속 호스트 주소. 운영

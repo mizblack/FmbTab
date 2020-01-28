@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
-        DataInterface.getInstance().login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
                 hideProgress();
@@ -368,7 +368,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            drawer.closeDrawer(GravityCompat.END);
+          if(drawer != null)
+                  drawer.closeDrawer(GravityCompat.END);
             fmbDialog.dismiss();
 
             //   setLogout();
@@ -511,4 +512,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         ScoreBoard board = new ScoreBoard();
 
     }
+
+    private void getCourseInfo(){
+
+    }
+
 }

@@ -8,17 +8,22 @@ import java.util.ArrayList;
 
 public class Course implements Serializable {
 
-    @SerializedName("course_id")
+    @SerializedName("id")
     @Expose
-    public String CourseId;
+    public String id;
 
-    @SerializedName("course_name")
+    @SerializedName("cc_id")
     @Expose
-    public String CourseName;
+    public String cc_id;
 
-    @SerializedName("hole_list")
+    @SerializedName("part_id")
     @Expose
- //  public  ArrayList<Hole> holeList = new ArrayList<>();
+    public String part_id;
+
+    @SerializedName("courseName")
+    @Expose
+    public String courseName;
+
    public Hole[] arrHole = new Hole[9];
 
 }

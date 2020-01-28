@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
@@ -31,7 +33,9 @@ public class ScoreInputFragment extends BaseFragment {
     RecyclerView playersRecyclerView;
     ScoreInputAdapter mScoreInputAdapter;
     LinearLayoutManager mManager;
-    ArrayList<Player> playerList = new ArrayList<>();
+//    ArrayList<Player> playerList = new ArrayList<>();
+    ArrayList<GuestDatum> playerList = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,21 +44,25 @@ public class ScoreInputFragment extends BaseFragment {
         if (bundle != null) {
         }
 
+        playerList =   Global.teeUpTime.getTodayReserveList().get(0).getGuestData();
+
         TextView[] tvHit = new TextView[15];
         TextView[] tvPutt = new TextView[15];
+
+        createIntegerArrayList();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fr_score_input, container, false);
-//        playersRecyclerView = v.findViewById(R.id.player_score_list);
-//        playersRecyclerView.setHasFixedSize(true);
-//        mManager = new LinearLayoutManager(getActivity());
-//        playersRecyclerView.setLayoutManager(mManager);
-//        //= new ScoreFragment.ScoreInputAdapter(getActivity(), playerList);
-//        playersRecyclerView.setAdapter(mScoreInputAdapter);
-//        mScoreInputAdapter.notifyDataSetChanged();
+        View v = inflater.inflate(R.layout.view_score_input, container, false);
+        playersRecyclerView = v.findViewById(R.id.player_score_list);
+        playersRecyclerView.setHasFixedSize(true);
+        mManager = new LinearLayoutManager(getActivity());
+        playersRecyclerView.setLayoutManager(mManager);
+        mScoreInputAdapter =  new ScoreInputAdapter(getActivity(), playerList);
+        playersRecyclerView.setAdapter(mScoreInputAdapter);
+        mScoreInputAdapter.notifyDataSetChanged();
 
         return v;
     }
@@ -104,10 +112,11 @@ public class ScoreInputFragment extends BaseFragment {
     }
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-        ArrayList<Player> playerList;
+        ArrayList<GuestDatum> playerList;
         protected LinearLayout ll_item;
         FmbCustomDialog fmbDialog;
-        public ScoreInputAdapter(Context context, ArrayList<Player> playerList) {
+
+        public ScoreInputAdapter(Context context, ArrayList<GuestDatum> playerList) {
             this.playerList = playerList;
         }
 
@@ -125,19 +134,7 @@ public class ScoreInputFragment extends BaseFragment {
 //                tvPar[2] = view.findViewById(R.id.hole3);
 //                tvPar[3] = view.findViewById(R.id.hole4);
 //                tvPar[4] = view.findViewById(R.id.hole5);
-//                tvPar[5] = view.findViewById(R.id.hole6);
-//                tvPar[6] = view.findViewById(R.id.hole7);
-//                tvPar[7] = view.findViewById(R.id.hole8);
-//                tvPar[8] = view.findViewById(R.id.hole9);
-//                for(int i = 0 ;  NUM_OF_HOLES > i ; i++) {
-//                    tvPar[i].setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            GoNativeScreen(new ScoreInputFragment(), null);
-//
-//                        }
-//                    });
-//                }
+
 
 
             }

@@ -3,10 +3,12 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 import android.view.View;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -173,6 +175,36 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<Login> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getCourseInfo(final Context context, String cc_id, final ResponseCallback<Object> callback) {
+        try {
+            Call<Object> call = service.getCourseInfo();
+            call.enqueue(new Callback<Object>() {
+                @Override
+                public void onResponse(Call<Object> call, Response<Object> response) {
+                    Object data =  (ArrayList<Course>) response.body();
+                    //ArrayList<Course> courseList = data.
+                    // solveCommonError(context, callback, response, false);
+                    if(response == null){
+                        callback.onError(data);
+                        return;
+                    }else{
+
+                        callback.onSuccess(data);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Object> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
