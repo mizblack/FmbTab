@@ -1,19 +1,6 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppCompatNoTitle" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <!--맨위 statusbar도 제거할때 아래 아이템 활성화-->
-        <item name="windowActionBar">false</item>
-
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowFullscreen">true</item>
-
-    </style>
-
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -25,8 +12,36 @@
         <!--Full Screen-->
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowFullscreen">true</item>
-
     </style>
+
+
+    <!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+    <!--    <style name="AppCompatNoTitle" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--        <item name="windowNoTitle">true</item>-->
+    <!--        <item name="android:windowNoTitle">true</item>-->
+    <!--        &lt;!&ndash;맨위 statusbar도 제거할때 아래 아이템 활성화&ndash;&gt;-->
+    <!--        <item name="windowActionBar">false</item>-->
+
+    <!--        <item name="android:windowActionBarOverlay">true</item>-->
+    <!--        <item name="android:windowFullscreen">true</item>-->
+
+    <!--    </style>-->
+
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--        <item name="colorAccent">@color/colorAccent</item>-->
+    <!--        <item name="android:windowContentOverlay">@null</item>-->
+    <!--        &lt;!&ndash;        <item name="android:windowIsTranslucent">true</item>&ndash;&gt;-->
+
+    <!--        &lt;!&ndash;Full Screen&ndash;&gt;-->
+    <!--        <item name="android:windowActionBarOverlay">true</item>-->
+    <!--        <item name="android:windowFullscreen">true</item>-->
+
+    <!--    </style>-->
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
@@ -41,18 +56,20 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="AppCompatNoTitle.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <!--    <style name="AppCompatNoTitle.NoActionBar">-->
+    <!--        <item name="windowActionBar">false</item>-->
+    <!--        <item name="windowNoTitle">true</item>-->
+    <!--    </style>-->
 
     <style name="AppCompatNoTitle.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppCompatNoTitle.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="ItemText">
         <item name="android:textSize">12sp</item>
         <item name="background">@color/wmmsTextGrey</item>
     </style>
+
     <style name="MainMenuButton">
         <item name="android:gravity">center</item>
         <item name="android:layout_width">156dp</item>
