@@ -45,6 +45,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import retrofit2.Response;
+
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int CAMERA_REQUEST_CODE = 1;
@@ -112,27 +114,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
-        DataInterface.getInstance().login(id, pwd, new DataInterface.ResponseCallback<ResponseData<Login>>() {
-
+        DataInterface.getInstance().login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
-            public void onSuccess(ResponseData<Login> response) {
-                hideProgress();
-                if ("ok".equals(response.getData().getRetCode())) {
-                    Toast.makeText(context, "onSuccess, CaddyNo : " + response.getData().getCaddyNo(), Toast.LENGTH_LONG).show();
-                    hideProgress();
-                }
+            public void onSuccess(Login response) {
+               hideProgress();
+               //
+                Login a = (Login)response;
+
             }
 
             @Override
-            public void onError(ResponseData<Login> response) {
-                hideProgress();
+            public void onError(Login response) {
+
             }
 
             @Override
             public void onFailure(Throwable t) {
-                hideProgress();
+
             }
         });
+
+
     }
 
     @SuppressLint("CutPasteId")
@@ -207,7 +209,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 try {
                     login(getApplicationContext(), nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
                 } catch (NoSuchPaddingException

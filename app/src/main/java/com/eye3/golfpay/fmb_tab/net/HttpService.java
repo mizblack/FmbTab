@@ -40,7 +40,7 @@ public interface HttpService {
     Call<ResponseData<Device>> apiAcceptCheckDeviceMasterSearch(@FieldMap Map<String, Object> params);
 
     @POST("caddyLogin")
-    Call<ResponseData<Login>> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
+    Call<Login> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
 
 
 }
