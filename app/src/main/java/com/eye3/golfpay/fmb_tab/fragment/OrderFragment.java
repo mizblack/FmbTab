@@ -5,15 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.R;
 
+import java.util.Objects;
+
 public class OrderFragment extends BaseFragment {
 
-
+    private View tabsLinearLayout, applyTabLinearLayout, arrow;
+    private TextView orderOrApplyTextView;
     protected String TAG = getClass().getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,30 +36,43 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SetTitle("KT WMMS");
-//        SetDividerVisibility(false);
-     //   setDrawerLayoutEnable(true);
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-      //  mBtnTaokeoverTest.setOnClickListener();
-//        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                GoNativeScreenAdd(new FrDeviceSearch(), null);
-////                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            }
-//        });
+
+        tabsLinearLayout = Objects.requireNonNull(getView()).findViewById(R.id.tabsLinearLayout);
+        applyTabLinearLayout = Objects.requireNonNull(getView()).findViewById(R.id.applyTabLinearLayout);
+        orderOrApplyTextView = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyTextView);
+
+        tabsLinearLayout.setVisibility(View.VISIBLE);
+
+        orderOrApplyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (orderOrApplyTextView.getText().toString().equals("주문하기")) {
+                    tabsLinearLayout.setVisibility(View.GONE);
+                    applyTabLinearLayout.setVisibility(View.VISIBLE);
+                    orderOrApplyTextView.setText("적용하기");
+                } else if (orderOrApplyTextView.getText().toString().equals("적용하기")) {
+                    GoNativeScreenAdd(new ShadePaymentFragment(), null);
+                }
+            }
+        });
+
+        arrow = Objects.requireNonNull(getView()).findViewById(R.id.arrow);
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tabsLinearLayout.setVisibility(View.VISIBLE);
+                applyTabLinearLayout.setVisibility(View.GONE);
+                orderOrApplyTextView.setText("주문하기");
+            }
+        });
+
     }
-
-
 
 }
 

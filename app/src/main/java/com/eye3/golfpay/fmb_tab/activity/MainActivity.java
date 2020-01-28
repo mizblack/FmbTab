@@ -20,9 +20,11 @@ import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.NearestLongestFragment;
 import com.eye3.golfpay.fmb_tab.fragment.NoticeFragment;
 import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
+import com.eye3.golfpay.fmb_tab.fragment.RankingFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
@@ -122,6 +124,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 hideProgress();
 
                 if (response.getRetCode().equals("ok")) {
+                    GoNativeScreen(new ScoreFragment(), null);
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
                     caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
@@ -326,10 +329,35 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+        findViewById(R.id.scoreLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
         findViewById(R.id.scoreBoardLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new NearestLongestFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        findViewById(R.id.rankingLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+                GoNativeScreen(new RankingFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
