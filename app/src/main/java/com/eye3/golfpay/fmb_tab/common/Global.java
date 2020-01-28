@@ -3,10 +3,14 @@ package com.eye3.golfpay.fmb_tab.common;
 
 import android.os.Environment;
 
+import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
+
 import java.io.File;
 import java.util.ArrayList;
 
 public class Global {
+
+    public static TeeUpTime teeUpTime;
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -17,10 +21,10 @@ public class Global {
     public static String SavedPictureName = "";
     public static String SavedPicturePath = SavedDir + File.separator + SavedPictureName;
 
-  //  public static UserInfo userInfo = new UserInfo();
-  //  public static ArrayList<UploadPhoto> photoList = new ArrayList<>();
+    //  public static UserInfo userInfo = new UserInfo();
+    //  public static ArrayList<UploadPhoto> photoList = new ArrayList<>();
     public static String Token = "";
-  //  public static String[] searchItem = new String[7];
+    //  public static String[] searchItem = new String[7];
 
     /**
      * 운영용으로 컴파일 할시에 true 로 세팅해준다. 호스트 접속페이지 처리.
@@ -43,7 +47,7 @@ public class Global {
 
     public static String appToken;
 
-    public static String imageBaseDir = HOST_ADDRESS_DEV  + "/attachments";
+    public static String imageBaseDir = HOST_ADDRESS_DEV + "/attachments";
 
     public interface NotiAlarmChannelID {
         String CHANNEL_LOC = "macaron_loc";

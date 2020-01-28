@@ -15,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.NoticeFragment;
+import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
@@ -117,12 +120,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onSuccess(TeeUpTime response) {
                 hideProgress();
-                //
-                TeeUpTime teeUpTime = (TeeUpTime) response;
-                if (teeUpTime.getRetCode().equals("ok")) {
-                    Toast.makeText(context, "안녕하세요 " + teeUpTime.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
+
+                if (response.getRetCode().equals("ok")) {
+                    Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
                     caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
-                    caddieNameTextView.setText(teeUpTime.getCaddyInfo().getName() + " 캐디");
+                    caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
+                    Global.teeUpTime = response;
                 }
             }
 
@@ -144,10 +147,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onSuccess(Login response) {
                 hideProgress();
-                //
-                Login login = (Login) response;
-                if (login.getRetCode().equals("ok")) {
-                    getTodayReservesForCaddy(context, "" + login.getCaddyNo());
+
+                if (response.getRetCode().equals("ok")) {
+                    getTodayReservesForCaddy(context, "" + response.getCaddyNo());
                 }
 
             }
@@ -277,26 +279,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("likeYn", "Y");
-//                bundle.putString("arrowBack", "y");
                 GoNativeScreen(new CaddieFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //그늘집 주문하기
+
+        // 그늘집 주문하기
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(), null);
+                GoNativeScreen(new OrderFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //공지사항
+
+        // 공지사항
         findViewById(R.id.noticeLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CaddieFragment(), null);
+                GoNativeScreen(new NoticeFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -304,10 +305,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                //
+
             }
         });
+
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,14 +316,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //설정
 
-        //설정
+        // 설정
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoNativeScreen(new SettingsFragment(),null);
-//                drawer_layout.closeDrawer(GravityCompat.END);
                 settingsCustomDialog = new SettingsCustomDialog(MainActivity.this);
                 settingsCustomDialog.show();
             }
