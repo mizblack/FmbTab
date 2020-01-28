@@ -41,7 +41,7 @@
                         tools:ignore="UseCompoundDrawables">
 
                         <TextView
-                            android:id="@+id/caddieTextView"
+                            android:id="@+id/caddieNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"

@@ -26,7 +26,6 @@ import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
-import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Security;
@@ -46,8 +45,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import retrofit2.Response;
-
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int CAMERA_REQUEST_CODE = 1;
@@ -55,7 +52,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
     SettingsCustomDialog settingsCustomDialog;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView;
     ImageView markView, cancelView;
 
     @Override
@@ -116,6 +113,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
         showProgress("티업시간을 받아오는 중입니다....");
         DataInterface.getInstance().getTodayReservesForCaddy(MainActivity.this, caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(TeeUpTime response) {
                 hideProgress();
@@ -123,9 +121,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 TeeUpTime teeUpTime = (TeeUpTime) response;
                 if (teeUpTime.getRetCode().equals("ok")) {
                     Toast.makeText(context, "안녕하세요 " + teeUpTime.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
-
-                    // Todo 메뉴화면 상단 캐디이름 넣기
-                    // caddieTextView.setText(teeUpTime.getCaddyInfo().getName() + " 캐디");
+                    caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
+                    caddieNameTextView.setText(teeUpTime.getCaddyInfo().getName() + " 캐디");
                 }
             }
 
