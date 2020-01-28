@@ -52,5 +52,4 @@ public class Global {
         String CHANNEL_PUSH = "macaron_push";
     }
 
-
 }

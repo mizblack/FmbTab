@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
+import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,6 +30,7 @@ public class ScoreFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
+    static final int NUM_OF_HOLES  = 9 ;
     ArrayList<String[]> scores = new ArrayList<>();
     ScoreAdapter mScoreAdapter;
     LinearLayoutManager mManager;
@@ -258,7 +262,7 @@ public class ScoreFragment extends BaseFragment {
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
         ArrayList<String[]> scoresList;
         protected LinearLayout ll_item;
-
+        FmbCustomDialog  fmbDialog;
         public ScoreAdapter(Context context, ArrayList<String[]> scoresList) {
             this.scoresList = scoresList;
         }
@@ -281,8 +285,32 @@ public class ScoreFragment extends BaseFragment {
                 tvPar[6] = view.findViewById(R.id.hole7);
                 tvPar[7] = view.findViewById(R.id.hole8);
                 tvPar[8] = view.findViewById(R.id.hole9);
+                for(int i = 0 ;  NUM_OF_HOLES > i ; i++) {
+                    tvPar[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           GoNativeScreen(new ScoreInputFragment(), null);
+
+                        }
+                    });
+                }
+
 
             }
+
+            private View.OnClickListener leftListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fmbDialog.dismiss();
+                }
+            };
+
+            private View.OnClickListener rightListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   //
+                }
+            };
         }
 
         // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
@@ -295,6 +323,8 @@ public class ScoreFragment extends BaseFragment {
 
             return viewHolder;
         }
+
+
 
         @Override
         public void onBindViewHolder(@NonNull ScoreItemViewHolder scoreItemViewHolder, int i) {
@@ -323,6 +353,11 @@ public class ScoreFragment extends BaseFragment {
 
 
     }
+
+
+
+
+
 }
 
 

@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        });
 
         //GoHomeScreen();
-        //      GoNativeScreen(new ScoreFragment(), null);
+              GoNativeScreenAdd(new ScoreFragment(), null);
 //        GoNativeScreenAdd(new QRScanFragment(), null);
 //        GoNativeScreenAdd(new SettingsFragment(), null);
 //        GoNativeScreenAdd(new CourseFragment(), null);
@@ -120,6 +120,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                hideProgress();
                //
                 Login a = (Login)response;
+                GoNativeScreen(new ScoreFragment(), null);
 
             }
 
