@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import com.eye3.golfpay.fmb_tab.model.Device;
 import com.eye3.golfpay.fmb_tab.model.Token;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.util.Map;
 
@@ -42,5 +43,7 @@ public interface HttpService {
     @POST("caddyLogin")
     Call<Login> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
 
+    @POST("getTodayReservesForCaddy")
+    Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
 
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
 import java.util.HashMap;
@@ -124,7 +125,34 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
+    public void getTodayReservesForCaddy(final Context context, String caddy_id, final ResponseCallback<TeeUpTime> callback) {
+        try {
+            Call<TeeUpTime> call = service.getTodayReservesForCaddy(caddy_id);
+            call.enqueue(new Callback<TeeUpTime>() {
+                @Override
+                public void onResponse(Call<TeeUpTime> call, Response<TeeUpTime> response) {
+                    TeeUpTime teeUpTime =  response.body();
+                    // solveCommonError(context, callback, response, false);
+                    if(response == null){
+                        callback.onError(teeUpTime);
+                        return;
+                    }else{
 
+                        callback.onSuccess(teeUpTime);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TeeUpTime> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void login(final Context context, String id, String pwd, final ResponseCallback<Login> callback) {
         try {

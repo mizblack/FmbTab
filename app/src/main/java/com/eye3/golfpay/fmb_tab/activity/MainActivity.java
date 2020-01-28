@@ -24,6 +24,7 @@ import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
+import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
@@ -112,14 +113,45 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    private void getTodayReservesForCaddy(final Context context, String caddy_id) {
+        showProgress("티업시간을 받아오는 중입니다....");
+        DataInterface.getInstance().getTodayReservesForCaddy(MainActivity.this, caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+            @Override
+            public void onSuccess(TeeUpTime response) {
+                hideProgress();
+                //
+                TeeUpTime teeUpTime = (TeeUpTime) response;
+                if (teeUpTime.getRetCode().equals("ok")) {
+                    Toast.makeText(context, "안녕하세요 " + teeUpTime.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
+
+                    // Todo 메뉴화면 상단 캐디이름 넣기
+                    // caddieTextView.setText(teeUpTime.getCaddyInfo().getName() + " 캐디");
+                }
+            }
+
+            @Override
+            public void onError(TeeUpTime response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
         DataInterface.getInstance().login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
-               hideProgress();
-               //
-                Login a = (Login)response;
+                hideProgress();
+                //
+                Login login = (Login) response;
+                if (login.getRetCode().equals("ok")) {
+                    getTodayReservesForCaddy(context, "" + login.getCaddyNo());
+                }
 
             }
 
@@ -133,8 +165,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             }
         });
-
-
     }
 
     @SuppressLint("CutPasteId")
@@ -162,7 +192,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
-        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
+        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,7 +291,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(),null);
+                GoNativeScreen(new ShadePaymentFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -284,7 +314,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(),null);
+                GoNativeScreen(new CourseFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
