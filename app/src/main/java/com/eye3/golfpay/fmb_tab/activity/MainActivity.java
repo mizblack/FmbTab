@@ -15,17 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.NoticeFragment;
+import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
+import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
-import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Security;
@@ -45,8 +48,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import retrofit2.Response;
-
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int CAMERA_REQUEST_CODE = 1;
@@ -54,7 +55,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
     SettingsCustomDialog settingsCustomDialog;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView;
     ImageView markView, cancelView;
 
     @Override
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        });
 
         //GoHomeScreen();
-              GoNativeScreenAdd(new ScoreFragment(), null);
+        //      GoNativeScreen(new ScoreFragment(), null);
 //        GoNativeScreenAdd(new QRScanFragment(), null);
 //        GoNativeScreenAdd(new SettingsFragment(), null);
 //        GoNativeScreenAdd(new CourseFragment(), null);
@@ -112,15 +113,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    private void getTodayReservesForCaddy(final Context context, String caddy_id) {
+        showProgress("티업시간을 받아오는 중입니다....");
+        DataInterface.getInstance().getTodayReservesForCaddy(MainActivity.this, caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(TeeUpTime response) {
+                hideProgress();
+
+                if (response.getRetCode().equals("ok")) {
+                    Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
+                    caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
+                    caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
+                    Global.teeUpTime = response;
+                }
+            }
+
+            @Override
+            public void onError(TeeUpTime response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
         DataInterface.getInstance().login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
-               hideProgress();
-               //
-                Login a = (Login)response;
-                GoNativeScreen(new ScoreFragment(), null);
+                hideProgress();
+
+                if (response.getRetCode().equals("ok")) {
+                    getTodayReservesForCaddy(context, "" + response.getCaddyNo());
+                }
 
             }
 
@@ -134,8 +164,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             }
         });
-
-
     }
 
     @SuppressLint("CutPasteId")
@@ -163,7 +191,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
-        cancelView=  findViewById(R.id.loginNmenu).findViewById(R .id.cancelIcon);
+        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,26 +279,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("likeYn", "Y");
-//                bundle.putString("arrowBack", "y");
                 GoNativeScreen(new CaddieFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //그늘집 주문하기
+
+        // 그늘집 주문하기
         findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ShadePaymentFragment(),null);
+                GoNativeScreen(new OrderFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //공지사항
+
+        // 공지사항
         findViewById(R.id.noticeLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CaddieFragment(), null);
+                GoNativeScreen(new NoticeFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -278,31 +305,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
-                //
+
             }
         });
+
         findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(),null);
+                GoNativeScreen(new CourseFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
-        //설정
 
-        //설정
+        // 설정
         findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoNativeScreen(new SettingsFragment(),null);
-//                drawer_layout.closeDrawer(GravityCompat.END);
                 settingsCustomDialog = new SettingsCustomDialog(MainActivity.this);
                 settingsCustomDialog.show();
             }
         });
 
-        findViewById(R.id.scoreLinearLayout).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.scoreBoardLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
