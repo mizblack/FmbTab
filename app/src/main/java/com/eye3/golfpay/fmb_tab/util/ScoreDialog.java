@@ -48,7 +48,7 @@ public class ScoreDialog extends Dialog {
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.view_score_input);
+      //  setContentView(R.layout.view_score_input);
 
       //     mTitleView = findViewById(R.id.dlg_title);
      //       mContentView = findViewById(R.id.dlg_msg);
