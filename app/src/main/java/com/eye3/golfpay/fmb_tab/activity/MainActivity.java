@@ -123,6 +123,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onSuccess(TeeUpTime response) {
                 hideProgress();
+                systemUIHide();
 
                 if (response.getRetCode().equals("ok")) {
                     GoNativeScreen(new ScoreFragment(), null);
@@ -135,12 +136,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onError(TeeUpTime response) {
-
+                hideProgress();
+                systemUIHide();
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                hideProgress();
+                systemUIHide();
             }
         });
     }
@@ -151,6 +154,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onSuccess(Login response) {
                 hideProgress();
+                systemUIHide();
 
                 if (response.getRetCode().equals("ok")) {
                     getTodayReservesForCaddy(context, "" + response.getCaddyNo());
@@ -160,12 +164,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onError(Login response) {
-
+                hideProgress();
+                systemUIHide();
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                hideProgress();
+                systemUIHide();
             }
         });
     }
@@ -541,16 +547,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        systemUIHide();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        systemUIHide();
-    }
-    
 }
