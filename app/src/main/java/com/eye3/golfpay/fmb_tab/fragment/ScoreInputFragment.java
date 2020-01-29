@@ -20,7 +20,7 @@ import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
 import java.util.ArrayList;
-
+//사용안함.
 public class ScoreInputFragment extends BaseFragment {
 
 
@@ -55,7 +55,7 @@ public class ScoreInputFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.view_score_input, container, false);
+        View v = inflater.inflate(R.layout.fr_score_input, container, false);
         playersRecyclerView = v.findViewById(R.id.player_score_list);
         playersRecyclerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(getActivity());

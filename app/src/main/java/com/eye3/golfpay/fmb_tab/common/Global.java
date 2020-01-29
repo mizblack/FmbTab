@@ -4,6 +4,7 @@ package com.eye3.golfpay.fmb_tab.common;
 import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.io.File;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 public class Global {
 
     public static TeeUpTime teeUpTime;
-    public static ArrayList<Course> CourseInfo = new ArrayList<>();
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -59,5 +59,8 @@ public class Global {
         String CHANNEL_DRIVE = "macaron_drive";
         String CHANNEL_PUSH = "macaron_push";
     }
+
+    public static ArrayList<GuestDatum> guestList = new  ArrayList<GuestDatum>();
+    public static ArrayList<Course> courseInfoList = new  ArrayList<Course>();
 
 }

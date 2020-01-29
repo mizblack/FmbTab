@@ -2,18 +2,16 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +22,13 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
+import com.eye3.golfpay.fmb_tab.view.HoleInfoLinear;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -40,7 +41,6 @@ public class ScoreFragment extends BaseFragment {
     ScoreAdapter mScoreAdapter;
     LinearLayoutManager mManager;
     RecyclerView recycleScore;
-
     private View tabBar;
     private View courseLinearLayout;
     private View pinkNearestOrLinearLayout;
@@ -56,6 +56,8 @@ public class ScoreFragment extends BaseFragment {
     LinearLayout[] ScoreTab = new LinearLayout[4];
     ArrayList<GuestDatum> playerList = new ArrayList<>();
     ScoreDialog sDialog;
+    LinearLayout[] HoleInfoLinear = new HoleInfoLinear[NUM_OF_HOLES];
+    LinearLayout holderLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,89 +66,28 @@ public class ScoreFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
-        playerList = Global.teeUpTime.getTodayReserveList().get(0).getGuestData();
+        playerList = Global.guestList;
+        //  String tar =   playerList.get(0).courseScores.get(0).scoreSet[0].tar;
         getCourseInfo();
-        Course first_course = new Course();
-        Hole[] first_course_hole = new Hole[9];
-        for (int i = 0; first_course_hole.length > i; i++) {
-            Hole a_hole = new Hole(String.valueOf(i + 1), "4", "300");
-            first_course.arrHole[i] = a_hole;
-
-        }
-
-
-        first_course.courseName = "코스1";
-        first_course.id = "1";
-
-
-        String[] points = new String[11];
-        String[] points1 = new String[11];
-        String[] points2 = new String[11];
-        String[] points3 = new String[11];
-        String[] points4 = new String[11];
-        points[0] = "3rd";
-        points[1] = "홍길동";
-        points[2] = "4";
-        points[3] = "4";
-        points[4] = "4";
-        points[5] = "5";
-        points[6] = "3";
-        points[7] = "4";
-        points[8] = "4";
-        points[9] = "3";
-        points[10] = "4";
-        points1[0] = "2nd";
-        points1[1] = "김영광";
-        points1[2] = "4";
-        points1[3] = "4";
-        points1[4] = "3";
-        points1[5] = "5";
-        points1[6] = "3";
-        points1[7] = "4";
-        points1[8] = "3";
-        points1[9] = "4";
-        points1[10] = "4";
-        points2[0] = "1nd";
-        points2[1] = "김치욱";
-        points2[2] = "4";
-        points2[3] = "4";
-        points2[4] = "3";
-        points2[5] = "5";
-        points2[6] = "4";
-        points2[7] = "4";
-        points2[8] = "3";
-        points2[9] = "4";
-        points2[10] = "4";
-//        points3[0] = "5th";
-//        points3[1] = "한상예";
-//        points3[2] = "4";
-//        points3[3] = "4";
-//        points3[4] = "4";
-//        points3[5] = "5";
-//        points3[6] = "4";
-//        points3[7] = "4";
-//        points3[8] = "4";
-//        points3[9] = "4";
-//        points3[10] = "4";
-//        points4[0] = "3nd";
-//        points4[1] = "노근수";
-//        points4[2] = "4";
-//        points4[3] = "4";
-//        points4[4] = "4";
-//        points4[5] = "5";
-//        points4[6] = "4";
-//        points4[7] = "4";
-//        points4[8] = "4";
-//        points4[9] = "4";
-//        points4[10] = "4";
-        scores.add(points);
-        scores.add(points1);
-        scores.add(points2);
-//        scores.add(points3);
-//        scores.add(points4);
         TextView[] tvHoleInfo1 = new TextView[9];
         TextView[] tvHoleInfo2 = new TextView[9];
         TextView[] tvHoleInfo3 = new TextView[9];
+    }
+
+    private void createHoleInfoLinear(ArrayList<Course> courseInfoList) {
+        for (int i = 0;  courseInfoList.size() > i; i++) {
+            for (int k = 0; courseInfoList.get(i).holes.length > k; k++) {
+                Course a_course = courseInfoList.get(i);
+                Hole[] holes =  a_course.holes;
+                 Hole a_hole = (Hole) holes[k];
+                HoleInfoLinear[k] = new HoleInfoLinear(getActivity(), ((Hole) courseInfoList.get(i).holes[k]));
+                HoleInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                holderLayout.addView(HoleInfoLinear[k]);
+                //HoleInfoLinear[i].setBackgroundColor(Color.GREEN);
+                //   ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams., ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+        }
+
     }
 
     @Override
@@ -159,51 +100,52 @@ public class ScoreFragment extends BaseFragment {
         mScoreAdapter = new ScoreAdapter(getActivity(), scores);
         recycleScore.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
-        setCourseTab(v);
+        holderLayout = v.findViewById(R.id.scoreColumn).findViewById(R.id.holeInfoLinear);
         ((MainActivity) mParentActivity).showMainBottomBar();
+
         return v;
     }
 
-    private void setCourseTab(View v) {
-        for (int i = 0; ScoreTab.length > i; i++) {
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1)).setText("1");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1Meters)).setText("342");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2)).setText("2");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2par)).setText("3");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2Meters)).setText("342");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3)).setText("3");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3Meters)).setText("242");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4Meters)).setText("372");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5)).setText("5");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5par)).setText("3");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5Meters)).setText("545");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6)).setText("6");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6Meters)).setText("545");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7)).setText("7");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7Meters)).setText("456");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8)).setText("8");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8Meters)).setText("445");
-
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9)).setText("9");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9par)).setText("4");
-            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9Meters)).setText("477");
-
-        }
-    }
+//    private void setCourseTab(View v) {
+//        for (int i = 0; ScoreTab.length > i; i++) {
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1)).setText("1");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole1Meters)).setText("342");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2)).setText("2");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2par)).setText("3");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole2Meters)).setText("342");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3)).setText("3");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole3Meters)).setText("242");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole4Meters)).setText("372");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5)).setText("5");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5par)).setText("3");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole5Meters)).setText("545");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6)).setText("6");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole6Meters)).setText("545");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7)).setText("7");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole7Meters)).setText("456");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8)).setText("8");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole8Meters)).setText("445");
+//
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9)).setText("9");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9par)).setText("4");
+//            ((TextView) v.findViewById(R.id.course01Tab).findViewById(R.id.scoreColumn).findViewById(R.id.hole9Meters)).setText("477");
+//
+//        }
+//    }
 
     private void tabTitleOnClick(View view) {
         view.setOnClickListener(new View.OnClickListener() {
@@ -286,26 +228,6 @@ public class ScoreFragment extends BaseFragment {
         tabTitleOnClick(course03TextView);
 
         rightLinearLayoutOnClick();
-
-        //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-        //  mBtnTaokeoverTest.setOnClickListener();
-//        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                GoNativeScreenAdd(new FrDeviceSearch(), null);
-////                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            }
-//        });
-//        recycleScore.setHasFixedSize(true);
-//        mManager = new LinearLayoutManager(getActivity());
-//        recycleScore.setLayoutManager(mManager);
-//        //     mScoreAdapter = new ScoreAdapter(getActivity(), mTestItemList, mTitle.getText().toString().trim(),selectedDevice ,mManager);
-//        mScoreAdapter = new ScoreAdapter(getActivity(), scores);
-//        recycleScore.setAdapter(mScoreAdapter);
-//        mScoreAdapter.notifyDataSetChanged();
     }
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
@@ -342,23 +264,23 @@ public class ScoreFragment extends BaseFragment {
                             String title = "";
                             switch (v.getId()) {
                                 case R.id.hole1:
-                                    title = "Par" + "/" + "Course/Hole1" ;
+                                    title = "Par" + "/" + "Course/Hole1";
                                 case R.id.hole2:
-                                    title = "Par" + "/" + "Course/Hole2" ;
+                                    title = "Par" + "/" + "Course/Hole2";
                                 case R.id.hole3:
-                                    title = "Par" + "/" + "Course/Hole3" ;
+                                    title = "Par" + "/" + "Course/Hole3";
                                 case R.id.hole4:
-                                    title = "Par" + "/" + "Course/Hole4" ;
+                                    title = "Par" + "/" + "Course/Hole4";
                                 case R.id.hole5:
-                                    title = "Par" + "/" + "Course/Hole5" ;
+                                    title = "Par" + "/" + "Course/Hole5";
                                 case R.id.hole6:
-                                    title = "Par" + "/" + "Course/Hole6" ;
+                                    title = "Par" + "/" + "Course/Hole6";
                                 case R.id.hole7:
-                                    title = "Par" + "/" + "Course/Hole7" ;
+                                    title = "Par" + "/" + "Course/Hole7";
                                 case R.id.hole8:
-                                    title = "Par" + "/" + "Course/Hole8" ;
+                                    title = "Par" + "/" + "Course/Hole8";
                                 case R.id.hole9:
-                                    title = "Par" + "/" + "Course/Hole9" ;
+                                    title = "Par" + "/" + "Course/Hole9";
 
                             }
                             sDialog = new ScoreDialog(getActivity(), title, "", "취소", "확인", leftListener, rightListener, true);
@@ -389,7 +311,6 @@ public class ScoreFragment extends BaseFragment {
         // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
         @Override
         public ScoreItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            //  View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.score_row, viewGroup, false);
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.score_row, viewGroup, false);
             ScoreItemViewHolder viewHolder = new ScoreItemViewHolder(view);
             //  ll_item = view.findViewById(R.id.ll_schedule_item);
@@ -428,15 +349,19 @@ public class ScoreFragment extends BaseFragment {
 
     private void getCourseInfo() {
         String cc_id = "1";
-        DataInterface.getInstance().getCourseInfo(getActivity(), cc_id, new DataInterface.ResponseCallback<Object>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getCourseInfo(getActivity(), cc_id, new DataInterface.ResponseCallback<ResponseData<Course>>() {
             @Override
-            public void onSuccess(Object response) {
-                courseList = (ArrayList<Course>) response;
+            public void onSuccess(ResponseData<Course> response) {
 
+                if (response.getResultCode().equals("ok")) {
+                    courseList = (ArrayList<Course>) response.getList();
+                    Global.courseInfoList = (ArrayList<Course>) response.getList();
+                  //  createHoleInfoLinear(Global.courseInfoList);
+                }
             }
 
             @Override
-            public void onError(Object response) {
+            public void onError(ResponseData<Course> response) {
 
             }
 
@@ -445,6 +370,8 @@ public class ScoreFragment extends BaseFragment {
 
             }
         });
+
+
     }
 
 

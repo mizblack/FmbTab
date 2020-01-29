@@ -15,9 +15,9 @@ public class ResponseData<T> {
 	private String resultMessage = "";
 
 
-	@SerializedName("detailMessage")
-	@Expose
-	private String detailMessage = "";
+//	@SerializedName("detailMessage")
+//	@Expose
+//	private String detailMessage = "";
 
 
 	@SerializedName("data")
@@ -44,13 +44,13 @@ public class ResponseData<T> {
 		this.resultMessage = error;
 	}
 
-	public String getMessage() {
-		return detailMessage;
-	}
-
-	public void setMessage(String message) {
-		this.detailMessage = message;
-	}
+//	public String getMessage() {
+//		return detailMessage;
+//	}
+//
+//	public void setMessage(String message) {
+//		this.detailMessage = message;
+//	}
 
 	public T getData() {
 		return data;

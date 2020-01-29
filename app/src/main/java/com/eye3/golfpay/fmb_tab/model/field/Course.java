@@ -24,6 +24,46 @@ public class Course implements Serializable {
     @Expose
     public String courseName;
 
-   public Hole[] arrHole = new Hole[9];
+    @SerializedName("public_use")
+    @Expose
+    public String public_use;
+
+    @SerializedName("ctype")
+    @Expose
+    public String ctype;
+
+    @SerializedName("is_use")
+    @Expose
+    public String is_use;
+
+    @SerializedName("del_use")
+    @Expose
+    public String del_use;
+
+    @SerializedName("course_img")
+    @Expose
+    public String course_img;
+
+    @SerializedName("created_user")
+    @Expose
+    public String created_user;
+
+    @SerializedName("created_at")
+    @Expose
+    public String created_at;
+
+    @SerializedName("updated_user")
+    @Expose
+    public String updated_user;
+
+    @SerializedName("updated_at")
+    @Expose
+    public String updated_at;
+
+
+
+    @SerializedName("holes")
+    @Expose
+   public Hole[] holes = new Hole[9];
 
 }

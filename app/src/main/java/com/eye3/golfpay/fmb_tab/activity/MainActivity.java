@@ -27,10 +27,12 @@ import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.RankingFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Security;
@@ -45,6 +47,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -158,6 +161,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (response.getRetCode().equals("ok")) {
                     getTodayReservesForCaddy(context, "" + response.getCaddyNo());
+
                 }
 
             }
@@ -543,7 +547,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onResume();
         systemUIHide();
 
-        ScoreBoard board = new ScoreBoard();
 
     }
 

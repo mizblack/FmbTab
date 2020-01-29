@@ -2,9 +2,11 @@ package com.eye3.golfpay.fmb_tab.net;
 
 import com.eye3.golfpay.fmb_tab.model.Device;
 import com.eye3.golfpay.fmb_tab.model.Token;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -48,6 +50,6 @@ public interface HttpService {
     Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
 
     @GET("getAllCourse?cc_id=1")
-    Call<Object> getCourseInfo();
+    Call<ResponseData<Course>> getCourseInfo();
 
 }

@@ -12,7 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 
 
 public class ScoreDialog extends Dialog {
@@ -37,7 +41,7 @@ public class ScoreDialog extends Dialog {
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;
   //  private View.OnClickListener mSingleClickListener;
-
+    RecyclerView recycler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +63,6 @@ public class ScoreDialog extends Dialog {
         mLayoutButtons = findViewById(R.id.layoutButtons);
 
 
-        //   mClosButton = findViewById(R.id.btn_dlg_close);
-//        mClosButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
- //        제목과 내용을 생성자에서 셋팅한다.
-//             mTitleView.setText(mTitle);
-//
-//        if (mSpannedContent != null) {
-//            mContentView.setText(mSpannedContent);
-//        } else {
-//            mContentView.setText(mContent);
-//        }
 
 
         // 클릭 이벤트 셋팅
@@ -87,6 +76,14 @@ public class ScoreDialog extends Dialog {
             mRightButton.setOnClickListener(mRightClickListener);
             mRightButton.setText(mRightTitle);
         }
+
+//        recycler = findViewById(R.id.player_score_list);
+//        recycler.setHasFixedSize(true);
+//        mManager = new LinearLayoutManager();
+//        recycler.setLayoutManager(mManager);
+//        mScoreAdapter = new ScoreFragment.ScoreAdapter(getActivity(), scores);
+//        recycler.setAdapter(mScoreAdapter);
+//        mScoreAdapter.notifyDataSetChanged();
     }
 
     // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
@@ -199,6 +196,8 @@ public class ScoreDialog extends Dialog {
         this.mLeftTitle = leftBtnTitle;
         this.mRightTitle = rightBtnTitle;
     }
+
+
 
 }
 

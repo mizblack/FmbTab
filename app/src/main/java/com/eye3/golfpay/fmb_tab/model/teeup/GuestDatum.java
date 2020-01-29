@@ -1,13 +1,23 @@
 
 package com.eye3.golfpay.fmb_tab.model.teeup;
 
+import com.eye3.golfpay.fmb_tab.model.score.HoleScoreSet;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class GuestDatum implements Serializable {
+
+    @SerializedName("guest_id")
+    @Expose
+    private String id;
+
+    @SerializedName("guestName")
+    @Expose
+    private String guestName;
 
     @SerializedName("cart_bill")
     private Long cartBill;
@@ -19,14 +29,14 @@ public class GuestDatum implements Serializable {
     private Long finishPrice;
     @Expose
     private Long greenfee;
-    @Expose
-    private String guestName;
+
     @SerializedName("guest_type")
     private String guestType;
     @SerializedName("hole_add")
     private Long holeAdd;
-    @Expose
-    private String id;
+
+
+
     @SerializedName("paid_amount")
     private Long paidAmount;
     @SerializedName("pay_location")
@@ -45,6 +55,9 @@ public class GuestDatum implements Serializable {
     private Long totalPrice;
     @SerializedName("phoneNumber")
     private String phoneNumber;
+
+    @SerializedName("course")
+    public ArrayList<HoleScoreSet> courseScores = new ArrayList<>(); //코스 전체 점수
 
     public Long getCartBill() {
         return cartBill;
