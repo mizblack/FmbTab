@@ -64,10 +64,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
     SettingsCustomDialog settingsCustomDialog;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
     ImageView markView, cancelView;
     RecyclerView teeUpRecyclerView;
     TeeUpAdapter teeUpAdapter;
+    View selectTobDivider, selectBottomDivider, roundingLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -407,6 +408,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         //     getBind().contentLogin.menuViewInclude.
 
+        selectTobDivider = findViewById(R.id.selectTobDivider);
+        selectBottomDivider = findViewById(R.id.selectBottomDivider);
+        roundingLinearLayout = findViewById(R.id.roundingLinearLayout);
+
+        groupNameTextView = findViewById(R.id.groupNameTextView);
+        reservationPersonNameTextView = findViewById(R.id.reservationPersonNameTextView);
+        roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
+        inOutTextView00 = findViewById(R.id.inOutTextView00);
+        inOutTextView01 = findViewById(R.id.inOutTextView01);
 
     }
 
@@ -563,7 +573,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
 
         ArrayList<TodayReserveList> todayReserveList;
-        TextView teeUpTimeTextView, reservationPersonNameTextView;
+        TextView teeUpTimeTextView, reservationGuestNameTextView;
 
         TeeUpAdapter(Context context, ArrayList<TodayReserveList> todayReserveList) {
             this.todayReserveList = todayReserveList;
@@ -575,12 +585,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 super(view);
 
                 teeUpTimeTextView = view.findViewById(R.id.teeUpTimeTextView);
-                reservationPersonNameTextView = view.findViewById(R.id.reservationPersonNameTextView);
+                reservationGuestNameTextView = view.findViewById(R.id.reservationPersonNameTextView);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        int pos = getAdapterPosition() ;
+
+                        selectTobDivider.setVisibility(View.GONE);
+                        selectBottomDivider.setVisibility(View.GONE);
+                        teeUpRecyclerView.setVisibility(View.GONE);
+                        roundingLinearLayout.setVisibility(View.VISIBLE);
+
+                        int position = getAdapterPosition();
+
+                        groupNameTextView.setText(todayReserveList.get(position).getGroup());
+                        reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
+                        roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
+                        setInOutTextView(todayReserveList.get(position).getInoutCourse());
+
                     }
                 });
 
@@ -595,6 +617,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return new TeeUpTimeItemViewHolder(view);
         }
 
+        @Override
+        public void onBindViewHolder(@NonNull TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
+            teeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
+            reservationGuestNameTextView.setText(todayReserveList.get(position).getGuestName());
+        }
+
+        @Override
+        public int getItemCount() {
+            return todayReserveList.size();
+        }
+
         String timeMapper(String time) {
             String timeString;
             String amOrPm;
@@ -607,15 +640,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return timeString;
         }
 
-        @Override
-        public void onBindViewHolder(@NonNull TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
-            teeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
-            reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
+        String inOutMapper(String course) {
+            return course + "코스";
         }
 
-        @Override
-        public int getItemCount() {
-            return todayReserveList.size();
+        void setInOutTextView(String course) {
+            String courseTemp;
+            if (course.equals("IN")) {
+                courseTemp = "OUT";
+            } else {
+                courseTemp = "IN";
+            }
+            inOutTextView00.setText(inOutMapper(course));
+            inOutTextView01.setText(inOutMapper(courseTemp));
         }
 
     }
