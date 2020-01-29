@@ -40,7 +40,7 @@ public class HoleInfoLinear extends LinearLayout {
         tvHoleId = v.findViewById(R.id.hole_id);
         tvHoleId.setText(hole.id);
         tvPar = v.findViewById(R.id.hole_par);
-        tvPar.setText(hole.par);
+        tvPar.setText("Par" + hole.par);
         tvMeter = v.findViewById(R.id.hole_meter);
         tvMeter.setText(hole.hole_total_size);
         addView(v);

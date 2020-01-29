@@ -2,7 +2,6 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
@@ -28,7 +26,6 @@ import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.view.HoleInfoLinear;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -37,6 +34,7 @@ public class ScoreFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
     static final int NUM_OF_HOLES = 9;
+    static  int NUM_OF_COURSE = 9;
     ArrayList<String[]> scores = new ArrayList<>();
     ScoreAdapter mScoreAdapter;
     LinearLayoutManager mManager;
@@ -74,20 +72,20 @@ public class ScoreFragment extends BaseFragment {
         TextView[] tvHoleInfo3 = new TextView[9];
     }
 
-    private void createHoleInfoLinear(ArrayList<Course> courseInfoList) {
+    private void createCourseInfo(ArrayList<Course> courseInfoList){
         for (int i = 0;  courseInfoList.size() > i; i++) {
-            for (int k = 0; courseInfoList.get(i).holes.length > k; k++) {
-                Course a_course = courseInfoList.get(i);
-                Hole[] holes =  a_course.holes;
-                 Hole a_hole = (Hole) holes[k];
-                HoleInfoLinear[k] = new HoleInfoLinear(getActivity(), ((Hole) courseInfoList.get(i).holes[k]));
+            createHoleInfoLinear(courseInfoList.get(i).holes);
+        }
+    }
+    private void createHoleInfoLinear(Hole[] holes) {
+
+            for (int k = 0; holes.length > k; k++) {
+                HoleInfoLinear[k] = new HoleInfoLinear(getActivity(), holes[k]);
                 HoleInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 holderLayout.addView(HoleInfoLinear[k]);
                 //HoleInfoLinear[i].setBackgroundColor(Color.GREEN);
                 //   ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams., ViewGroup.LayoutParams.WRAP_CONTENT);
             }
-        }
-
     }
 
     @Override
@@ -356,7 +354,8 @@ public class ScoreFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
                     courseList = (ArrayList<Course>) response.getList();
                     Global.courseInfoList = (ArrayList<Course>) response.getList();
-                  //  createHoleInfoLinear(Global.courseInfoList);
+                    NUM_OF_COURSE = response.getList().size(); //코스수를 지정한다.
+                    createHoleInfoLinear(Global.courseInfoList.get(0).holes);
                 }
             }
 
