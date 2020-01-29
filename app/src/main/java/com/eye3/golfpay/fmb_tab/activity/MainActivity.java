@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
+import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
@@ -37,14 +40,18 @@ import com.eye3.golfpay.fmb_tab.util.Security;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -59,6 +66,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     SettingsCustomDialog settingsCustomDialog;
     TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView;
     ImageView markView, cancelView;
+    RecyclerView teeUpRecyclerView;
+    TeeUpAdapter teeUpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +140,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
+
+                    teeUpAdapter = new TeeUpAdapter(MainActivity.this, Global.teeUpTime.getTodayReserveList());
+                    teeUpRecyclerView = findViewById(R.id.teeUpRecyclerView);
+                    teeUpRecyclerView.setHasFixedSize(true);
+                    LinearLayoutManager manager = new LinearLayoutManager(MainActivity.this);
+                    teeUpRecyclerView.setLayoutManager(manager);
+                    teeUpRecyclerView.setAdapter(teeUpAdapter);
+                    teeUpAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -544,6 +561,94 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         systemUIHide();
 
         ScoreBoard board = new ScoreBoard();
+
+    }
+
+    private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
+        ArrayList<TodayReserveList> todayReserveList;
+
+        //        protected LinearLayout ll_item;
+//        FmbCustomDialog  fmbDialog;
+        public TeeUpAdapter(Context context, ArrayList<TodayReserveList> todayReserveList) {
+            this.todayReserveList = todayReserveList;
+        }
+
+        public class TeeUpTimeItemViewHolder extends RecyclerView.ViewHolder {
+//            protected TextView[] tvPar = new TextView[9];
+//            protected TextView tvRank, tvName;
+
+            public TeeUpTimeItemViewHolder(View view) {
+                super(view);
+//                tvRank = view.findViewById(R.id.rank);
+//                tvName = view.findViewById(R.id.name);
+//
+//                tvPar[0] = view.findViewById(R.id.hole1);
+//                tvPar[1] = view.findViewById(R.id.hole2);
+//                tvPar[2] = view.findViewById(R.id.hole3);
+//                tvPar[3] = view.findViewById(R.id.hole4);
+//                tvPar[4] = view.findViewById(R.id.hole5);
+//                tvPar[5] = view.findViewById(R.id.hole6);
+//                tvPar[6] = view.findViewById(R.id.hole7);
+//                tvPar[7] = view.findViewById(R.id.hole8);
+//                tvPar[8] = view.findViewById(R.id.hole9);
+//                for(int i = 0 ;  NUM_OF_HOLES > i ; i++) {
+//                    tvPar[i].setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            GoNativeScreen(new ScoreInputFragment(), null);
+//                        }
+//                    });
+//                }
+            }
+
+//            private View.OnClickListener leftListener = new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    fmbDialog.dismiss();
+//                }
+//            };
+
+//            private View.OnClickListener rightListener = new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    //
+//                }
+//            };
+        }
+
+        // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
+        @NonNull
+        @Override
+        public TeeUpTimeItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
+            return new TeeUpTimeItemViewHolder(view);
+        }
+
+
+        @Override
+        public void onBindViewHolder(@NonNull TeeUpTimeItemViewHolder scoreItemViewHolder, int i) {
+//            final int pos = i;
+//            for (int k = 0; scoresList.get(i).length > k; k++) {
+//                String[] list = scoresList.get(i);
+//                scoreItemViewHolder.tvRank.setText(list[0]);
+//                scoreItemViewHolder.tvName.setText(list[1]);
+//
+//                scoreItemViewHolder.tvPar[0].setText(list[2]);
+//                scoreItemViewHolder.tvPar[1].setText(list[3]);
+//                scoreItemViewHolder.tvPar[2].setText(list[4]);
+//                scoreItemViewHolder.tvPar[3].setText(list[5]);
+//                scoreItemViewHolder.tvPar[4].setText(list[6]);
+//                scoreItemViewHolder.tvPar[5].setText(list[7]);
+//                scoreItemViewHolder.tvPar[6].setText(list[8]);
+//                scoreItemViewHolder.tvPar[7].setText(list[9]);
+//                scoreItemViewHolder.tvPar[8].setText(list[10]);
+//            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return todayReserveList.size();
+        }
 
     }
 
