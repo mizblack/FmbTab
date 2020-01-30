@@ -28,9 +28,8 @@ import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.RankingFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
-import com.eye3.golfpay.fmb_tab.fragment.ShadePaymentFragment;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
-import com.eye3.golfpay.fmb_tab.model.score.ScoreBoard;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
@@ -52,6 +51,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -69,45 +69,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     RecyclerView teeUpRecyclerView;
     TeeUpAdapter teeUpAdapter;
     View selectTobDivider, selectBottomDivider, roundingLinearLayout;
+    Bundle caddieFragmentBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         systemUIHide();
-        //    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         init();
         startLocationService();
 
-        //홈타이틀 이벤트
-//        ((Button) findViewById(R.id.btnDrawerOpen)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventForTitleView(v);
-//            }
-//        });
-
-//        ((ImageButton) findViewById(R.id.btnTitleHome)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EventForTitleView(v);
-//            }
-//        });
-
-        //GoHomeScreen();
-        //      GoNativeScreen(new ScoreFragment(), null);
-//        GoNativeScreenAdd(new QRScanFragment(), null);
-//        GoNativeScreenAdd(new SettingsFragment(), null);
-//        GoNativeScreenAdd(new CourseFragment(), null);
-//        GoNativeScreenAdd(new ScoreInputFragment(), null);
-//        GoNativeScreenAdd(new NearestLongestFragment(), null);
-//        GoNativeScreenAdd(new OrderFragment(), null);
-//        GoNativeScreenAdd(new ShadePaymentFragment(), null);
-//        GoNativeScreenAdd(new ControlFragment(), null);
-//        GoNativeScreenAdd(new CaddieFragment(), null);
-//        GoNativeScreenAdd(new EditorFragment(), null);
-        //      GoNativeScreen(new NoticeFragment(), null);
 
     }
 
@@ -198,14 +170,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void init() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
-        //      String name = mRealm.where(UserInfo.class).findFirst().getuserName();
-        // ((TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name)).setText(Global.userInfo.userName);
-//        ((Button) navigationView.getHeaderView(0).findViewById(R.id.btn_logout)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showLogoutDialog(MainActivity.this, "정말로 로그아웃 하시겠습니까?");
-//            }
-//        });
+
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.openDrawer(GravityCompat.END);
 
@@ -261,7 +226,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 drawer_layout.openDrawer(GravityCompat.END);
             }
         });
-//**************************************************************************************************************
+
         // 메뉴뷰 이벤트처리
         findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,8 +256,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        //******************************************************************************************************
-
         findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -307,7 +270,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CaddieFragment(), null);
+                caddieFragmentBundle = new Bundle();
+                caddieFragmentBundle.putInt("selectedTeeUpIndex", Global.selectedTeeUpIndex);
+                GoNativeScreen(new CaddieFragment(), caddieFragmentBundle);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -403,11 +368,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-
-        //   getBind().contentLogin.loginViewInclude.start
-
-        //     getBind().contentLogin.menuViewInclude.
-
         selectTobDivider = findViewById(R.id.selectTobDivider);
         selectBottomDivider = findViewById(R.id.selectBottomDivider);
         roundingLinearLayout = findViewById(R.id.roundingLinearLayout);
@@ -456,30 +416,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
         findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
     }
-
-//    private void showLogoutDialog(final Context context, String msg) {
-//        fmbDialog = new FmbCustomDialog(context, null, msg, "확인", "취소", new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {   //확인버튼 이벤트
-//
-//                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-//                finish();
-//            }   //취소버튼 이벤트
-//        }, new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View view) {
-//                fmbDialog.dismiss();
-//            }
-//        });
-//
-//        try {
-//            if (fmbDialog != null)
-//                fmbDialog.show();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -608,11 +544,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         roundingLinearLayout.setVisibility(View.VISIBLE);
 
                         int position = getAdapterPosition();
+                        Global.selectedTeeUpIndex = position;
 
                         groupNameTextView.setText(todayReserveList.get(position).getGroup());
                         reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
                         roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
                         setInOutTextView(todayReserveList.get(position).getInoutCourse());
+
+//                        guestAdapter = new GuestAdapter(getActivity(), Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
+//                        guestRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.guestRecyclerView);
+//                        guestRecyclerView.setHasFixedSize(true);
+//                        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+//                        guestRecyclerView.setLayoutManager(manager);
+//                        guestRecyclerView.setAdapter(guestAdapter);
+//                        guestAdapter.notifyDataSetChanged();
 
                     }
                 });
