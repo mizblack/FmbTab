@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout drawer_layout;
     FmbCustomDialog fmbDialog;
     SettingsCustomDialog settingsCustomDialog;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, caddieNameTextView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01, showListTextView;
     ImageView markView, cancelView;
     RecyclerView teeUpRecyclerView;
     TeeUpAdapter teeUpAdapter;
@@ -417,6 +417,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
         inOutTextView00 = findViewById(R.id.inOutTextView00);
         inOutTextView01 = findViewById(R.id.inOutTextView01);
+
+        showListTextView = findViewById(R.id.showListTextView);
+        showListTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectTobDivider.setVisibility(View.VISIBLE);
+                selectBottomDivider.setVisibility(View.VISIBLE);
+                teeUpRecyclerView.setVisibility(View.VISIBLE);
+                roundingLinearLayout.setVisibility(View.GONE);
+            }
+        });
 
     }
 
