@@ -49,9 +49,8 @@
 
         <LinearLayout
             android:id="@+id/hole1LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -73,9 +72,8 @@
 
         <LinearLayout
             android:id="@+id/hole2LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -96,9 +94,8 @@
 
         <LinearLayout
             android:id="@+id/hole3LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -119,9 +116,8 @@
 
         <LinearLayout
             android:id="@+id/hole4LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -142,9 +138,8 @@
 
         <LinearLayout
             android:id="@+id/hole5LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -165,9 +160,8 @@
 
         <LinearLayout
             android:id="@+id/hole6LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -188,9 +182,8 @@
 
         <LinearLayout
             android:id="@+id/hole7LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -211,9 +204,8 @@
 
         <LinearLayout
             android:id="@+id/hole8LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -234,9 +226,8 @@
 
         <LinearLayout
             android:id="@+id/hole9LinearLayout"
-            android:layout_width="0dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -256,15 +247,19 @@
         </LinearLayout>
 
         <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
 
         <LinearLayout
             android:id="@+id/inOrOutLinearLayout00"
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -290,9 +285,8 @@
 
         <LinearLayout
             android:id="@+id/inOrOutLinearLayout01"
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -317,9 +311,8 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">
 

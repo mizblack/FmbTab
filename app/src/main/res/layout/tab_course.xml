@@ -15,10 +15,7 @@
 
         <include
             android:id="@+id/scoreColumn"
-            layout="@layout/score_column"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            layout="@layout/score_column" />
 
         <View
             android:layout_width="match_parent"
@@ -28,7 +25,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scoreRecylerView"
             android:layout_width="match_parent"
-            android:layout_height="400dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
