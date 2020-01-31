@@ -58,7 +58,11 @@ public class ScoreDialog extends Dialog  {
     int mTabIdx;
     int mHoleScoreLayoutIdx;
      ScoreInputFinishListener inputFinishListener ;
-
+     //여기 수정할것
+     TextView tvHoleId;
+     TextView tvPar;
+     TextView tvCourseName;
+     TextView tvIN_OUT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,10 @@ public class ScoreDialog extends Dialog  {
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);
         mLayoutButtons = findViewById(R.id.layoutButtons);
+
+        tvHoleId = findViewById(R.id.hole_id);
+        tvPar = findViewById(R.id.par_num);
+        tvCourseName = findViewById(R.id.course_name);
 
 
         // 클릭 이벤트 셋팅

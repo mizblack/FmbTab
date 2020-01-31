@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 systemUIHide();
 
                 if (response.getRetCode().equals("ok")) {
-                    GoNativeScreen(new ScoreFragment(), null);
+                //    GoNativeScreen(new ScoreFragment(), null);
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
                     caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
@@ -346,7 +346,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.rankingLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ScoreFragment(), null);
+              //  GoNativeScreen(new ScoreFragment(), null);
                 GoNativeScreen(new RankingFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
@@ -545,7 +545,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                         int position = getAdapterPosition();
                         Global.selectedTeeUpIndex = position;
-
+                        Global.reserveId = todayReserveList.get(position).getId();
                         groupNameTextView.setText(todayReserveList.get(position).getGroup());
                         reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
                         roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));

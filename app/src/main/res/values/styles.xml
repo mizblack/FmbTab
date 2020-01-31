@@ -124,6 +124,7 @@
         <item name="android:text">-</item>
         <item name="android:textColor">@color/lightGray</item>
         <item name="android:textSize">36dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="MainPuttTextView">
@@ -134,6 +135,7 @@
         <item name="android:text">-</item>
         <item name="android:textColor">@color/lightGray</item>
         <item name="android:textSize">18dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="MainTabTitleTextView">

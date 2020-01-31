@@ -53,7 +53,7 @@ public interface HttpService {
     @GET("getAllCourse?cc_id=1")
     Call<ResponseData<Course>> getCourseInfo();
 
-    @GET("getReserveScore?reserve_id=367")
-    Call<ResponseData<Player>> getReserveScore();
+    @GET("getReserveScore?")
+    Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") int reserveId);
 
 }
