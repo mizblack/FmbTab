@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 
 public class CourseFragment extends BaseFragment {
 

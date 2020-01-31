@@ -33,7 +33,7 @@ public class ScoreInputFragment extends BaseFragment {
     RecyclerView playersRecyclerView;
     ScoreInputAdapter mScoreInputAdapter;
     LinearLayoutManager mManager;
-//    ArrayList<Player> playerList = new ArrayList<>();
+//    ArrayList<Player> mPlayerList = new ArrayList<>();
     ArrayList<GuestDatum> playerList = new ArrayList<>();
 
     @Override

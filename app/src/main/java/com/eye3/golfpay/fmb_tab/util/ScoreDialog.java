@@ -3,31 +3,42 @@ package com.eye3.golfpay.fmb_tab.util;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spanned;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
+import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
+
+import java.util.ArrayList;
 
 
-public class ScoreDialog extends Dialog {
+public class ScoreDialog extends Dialog  {
 
 
-   //    private TextView mTitleView;
-   //    private TextView mContentView;
+    private TextView mTitleView;
+    //    private TextView mContentView;
     private Button mLeftButton;
     private Button mRightButton;
     private ImageButton mClosButton;
-//    private Button mSingleButton;
+    //    private Button mSingleButton;
     private LinearLayout mLayoutButtons;
     private String mTitle;
     private String mContent;
@@ -35,13 +46,19 @@ public class ScoreDialog extends Dialog {
     private String mLeftTitle;
     private String mRightTitle;
     private Spanned mSpannedContent;
-    // private boolean isThemePink = false;
     private ScoreDialog dialog = this;
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;
-  //  private View.OnClickListener mSingleClickListener;
+
     RecyclerView recycler;
+    ArrayList<Player> mPlayerList;
+    ScoreInputAdapter mScoreInputAdapter;
+    Context mContext;
+    int mTabIdx;
+    int mHoleScoreLayoutIdx;
+     ScoreInputFinishListener inputFinishListener ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,36 +71,55 @@ public class ScoreDialog extends Dialog {
 
         setContentView(R.layout.fr_score_input);
 
-      //     mTitleView = findViewById(R.id.dlg_title);
-     //       mContentView = findViewById(R.id.dlg_msg);
+        mTitleView = findViewById(R.id.dlg_title);
+        //       mContentView = findViewById(R.id.dlg_msg);
 
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);
-    //    mSingleButton = findViewById(R.id.btnSingle);
         mLayoutButtons = findViewById(R.id.layoutButtons);
-
-
 
 
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {
-            //       mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
 
             mLayoutButtons.setVisibility(View.VISIBLE);
-      //      mSingleButton.setVisibility(View.GONE);
             mLeftButton.setOnClickListener(mLeftClickListener);
             mLeftButton.setText(mLeftTitle);
             mRightButton.setOnClickListener(mRightClickListener);
             mRightButton.setText(mRightTitle);
+        }else{
+            mLayoutButtons.setVisibility(View.VISIBLE);
+            mLeftButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+            mLeftButton.setText(mLeftTitle);
+
+            mRightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    inputFinishListener.OnScoreInputFinished(mPlayerList);
+                    dismiss();
+                }
+            });
+            mRightButton.setText(mRightTitle);
+
         }
 
-//        recycler = findViewById(R.id.player_score_list);
-//        recycler.setHasFixedSize(true);
-//        mManager = new LinearLayoutManager();
-//        recycler.setLayoutManager(mManager);
-//        mScoreAdapter = new ScoreFragment.ScoreAdapter(getActivity(), scores);
-//        recycler.setAdapter(mScoreAdapter);
-//        mScoreAdapter.notifyDataSetChanged();
+        recycler = findViewById(R.id.player_score_list);
+        recycler.setHasFixedSize(true);
+        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+        recycler.setLayoutManager(mManager);
+        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList);
+        recycler.setAdapter(mScoreInputAdapter);
+        mScoreInputAdapter.notifyDataSetChanged();
+    }
+
+    public void setOnScoreInputFinishListener(ScoreInputFinishListener listener){
+        this.inputFinishListener = listener;
     }
 
     // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
@@ -98,9 +134,9 @@ public class ScoreDialog extends Dialog {
         }
 
         this.mContent = content;
-     //   this.mSingleClickListener = singleListener;
         this.mSingleTitle = btnTitle;
-        //   this.isThemePink = isThemePink;
+
+
     }
 
     // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
@@ -115,16 +151,16 @@ public class ScoreDialog extends Dialog {
         }
 
         this.mContent = content;
-    //    this.mSingleClickListener = singleListener;
+        //    this.mSingleClickListener = singleListener;
         this.mSingleTitle = btnTitle;
     }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, boolean isThemePink) {
+                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, int mTabIdx, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
-
+        this.mContext = context;
         if (title != null) {
             this.mTitle = title;
         } else {
@@ -136,7 +172,11 @@ public class ScoreDialog extends Dialog {
         this.mRightClickListener = rightListener;
         this.mLeftTitle = leftBtnTitle;
         this.mRightTitle = rightBtnTitle;
-        //    this.isThemePink = isThemePink;
+
+        this.mPlayerList = mPlayerList;
+        this.mTabIdx = mTabIdx;
+        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
+
     }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
@@ -175,7 +215,6 @@ public class ScoreDialog extends Dialog {
         this.mRightClickListener = rightListener;
         this.mLeftTitle = leftBtnTitle;
         this.mRightTitle = rightBtnTitle;
-        //  this.isThemePink = isThemePink;
     }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
@@ -195,6 +234,91 @@ public class ScoreDialog extends Dialog {
         this.mRightClickListener = rightListener;
         this.mLeftTitle = leftBtnTitle;
         this.mRightTitle = rightBtnTitle;
+    }
+
+
+
+
+    private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
+        ArrayList<Player> mPlayerList = new ArrayList<Player>();
+
+        public ScoreInputAdapter(Context context, ArrayList<Player> playerList) {
+
+            this.mPlayerList = playerList;
+        }
+
+        @NonNull
+        @Override
+        //recyclerview가 parent임
+        public ScoreInputAdapter.ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.score_input_row, parent, false);
+            ScoreInputAdapter.ScoreInputItemViewHolder viewHolder = new ScoreInputAdapter.ScoreInputItemViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, final int position) {
+            holder.playerName.setText(mPlayerList.get(position).name);
+            holder.etInputTar.setText((mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.tar);
+            holder.etInputTar.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(Util.isIntegerNumber(s.toString()))
+                       ( mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.tar = s.toString();
+                    else
+                        Toast.makeText(mContext , "올바른 숫자가아닙니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            holder.etInputPutt.setText((mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.putting);
+            holder.etInputPutt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(Util.isIntegerNumber(s.toString()) )
+                        ( mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.putting = s.toString();
+                    else
+                        Toast.makeText(mContext , "올바른 숫자가아닙니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mPlayerList.size();
+        }
+
+        public class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
+            TextView playerName;
+            EditText etInputTar;
+            EditText etInputPutt;
+
+            //onCreate의 view임(score_input_row)
+            public ScoreInputItemViewHolder(@NonNull View itemView) {
+                super(itemView);
+                playerName = itemView.findViewById(R.id.playerName);
+                etInputTar = itemView.findViewById(R.id.et_tar_input);
+                etInputPutt = itemView.findViewById(R.id.et_putt_input);
+            }
+        }
     }
 
 

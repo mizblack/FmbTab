@@ -4,6 +4,7 @@ import com.eye3.golfpay.fmb_tab.model.Device;
 import com.eye3.golfpay.fmb_tab.model.Token;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.util.List;
@@ -51,5 +52,8 @@ public interface HttpService {
 
     @GET("getAllCourse?cc_id=1")
     Call<ResponseData<Course>> getCourseInfo();
+
+    @GET("getReserveScore?reserve_id=367")
+    Call<ResponseData<Player>> getReserveScore();
 
 }

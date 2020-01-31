@@ -7,10 +7,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Course implements Serializable {
+    //*********************************************
+    @SerializedName("course_id")
+    @Expose
+    public String course_id ;
+    //********************************************
 
     @SerializedName("id")
     @Expose
-    public String id;
+    public String id = course_id;
 
     @SerializedName("cc_id")
     @Expose
@@ -60,10 +65,11 @@ public class Course implements Serializable {
     @Expose
     public String updated_at;
 
-
-
     @SerializedName("holes")
     @Expose
-   public Hole[] holes = new Hole[9];
+    public Hole[] holes = new Hole[9];
+
+//    @SerializedName("holes")
+//   public Hole[] holes = new Hole[9];
 
 }

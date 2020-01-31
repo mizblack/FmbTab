@@ -5,13 +5,9 @@ import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -200,6 +196,28 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                    // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getReserveScore(final Context context, String reserve_id, final ResponseCallback<ResponseData<Player>> callback) {
+        try {
+            Call<ResponseData<Player>> call = service.getReserveScore();
+            call.enqueue(new Callback<ResponseData<Player>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Player>> call, Response<ResponseData<Player>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Player>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    // callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });

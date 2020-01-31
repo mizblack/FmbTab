@@ -1,16 +1,22 @@
 package com.eye3.golfpay.fmb_tab.model.field;
 
+import com.eye3.golfpay.fmb_tab.model.score.Score;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class Hole  implements Serializable {
+    //**************************************
+//    @SerializedName("hole_id")
+//    @Expose
+//    public String hole_id ;
+    //**************************************
 
     @SerializedName("id")
     @Expose
-    public String id;
-
+    public String id ;
+                  //countryclub Id
     @SerializedName("cc_id")
     @Expose
     public String cc_id;
@@ -18,8 +24,6 @@ public class Hole  implements Serializable {
     @SerializedName("course_id")
     @Expose
     public String course_id;
-
-
 
     @SerializedName("hole_no")
     @Expose
@@ -101,6 +105,10 @@ public class Hole  implements Serializable {
     @SerializedName("updated_at")
     @Expose
     public String updated_at;
+//*************************************
+    @SerializedName("score")
+    @Expose
+    public Score playedScore ;
 
 //
 //    public Hole(String id, String par, String distance){

@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.io.File;
@@ -62,5 +63,15 @@ public class Global {
 
     public static ArrayList<GuestDatum> guestList = new  ArrayList<GuestDatum>();
     public static ArrayList<Course> courseInfoList = new  ArrayList<Course>();
+    public static ArrayList<Player> playerList = new ArrayList<>();
+
+    public interface Settting {
+        boolean wifi = true;
+
+        boolean gps = true;
+
+        boolean isPar = false;
+
+    }
 
 }
