@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -89,7 +90,7 @@ public class CaddieFragment extends BaseFragment {
                 }
             }
         });
-        ((MainActivity) mParentActivity).showMainBottomBar();
+        mParentActivity.showMainBottomBar();
         mPhoto = v.findViewById(R.id.caddieImageView);
         return v;
     }
@@ -126,7 +127,7 @@ public class CaddieFragment extends BaseFragment {
 
     private void sendTakePhotoIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -190,9 +191,9 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "TEST_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,      /* prefix */
                 ".jpg",         /* suffix */
@@ -223,8 +224,14 @@ public class CaddieFragment extends BaseFragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int position = getAdapterPosition();
-//                        memberDivider.
+//                        int position = getAdapterPosition();
+                        memberNameTextView.setTextColor(0xff000000);
+                        memberDivider.setBackgroundColor(0xff000000);
+
+                        // Todo 선택된 포지션을 제외한 모든 아이템을 아래의 색상으로 변경
+                        //  memberNameTextView.setTextColor(0xffcccccc);
+                        //  memberDivider.setBackgroundColor(0xffcccccc);
+
                     }
                 });
 

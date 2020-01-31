@@ -112,6 +112,17 @@ public class TodayReserveList implements Serializable {
     private String updatedAt;
     @SerializedName("updated_user")
     private int updatedUser;
+    @SerializedName("memo")
+    @Expose
+    private String memo;
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 
     public Object getAccessToken() {
         return accessToken;
