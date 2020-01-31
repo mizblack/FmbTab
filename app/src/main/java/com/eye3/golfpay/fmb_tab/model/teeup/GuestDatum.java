@@ -5,9 +5,23 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class GuestDatum implements Serializable {
+
+
+    @SerializedName("guest_id")
+    @Expose
+    private String guest_id ;
+
+
+    private String id = guest_id;
+
+
+    @SerializedName("guestName")
+    @Expose
+    private String guestName;
 
     @SerializedName("cart_bill")
     private Long cartBill;
@@ -19,14 +33,14 @@ public class GuestDatum implements Serializable {
     private Long finishPrice;
     @Expose
     private Long greenfee;
-    @Expose
-    private String guestName;
+
     @SerializedName("guest_type")
     private String guestType;
     @SerializedName("hole_add")
     private Long holeAdd;
-    @Expose
-    private String id;
+
+
+
     @SerializedName("paid_amount")
     private Long paidAmount;
     @SerializedName("pay_location")
@@ -45,6 +59,7 @@ public class GuestDatum implements Serializable {
     private Long totalPrice;
     @SerializedName("phoneNumber")
     private String phoneNumber;
+
 
     public Long getCartBill() {
         return cartBill;

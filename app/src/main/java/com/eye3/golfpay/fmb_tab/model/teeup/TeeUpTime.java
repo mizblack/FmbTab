@@ -46,9 +46,14 @@ public class TeeUpTime implements Serializable {
     public ArrayList<TodayReserveList> getTodayReserveList() {
         return todayReserveList;
     }
+    //**********************************************************
+    public ArrayList<GuestDatum> getGuests(int position) {
+        return todayReserveList.get(position).getGuestData();
+    }
 
     public void setTodayReserveList(ArrayList<TodayReserveList> todayReserveList) {
         this.todayReserveList = todayReserveList;
     }
+
 
 }

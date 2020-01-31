@@ -1,7 +1,6 @@
 package com.eye3.golfpay.fmb_tab.model.teeup;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.score.HoleScoreSet;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,19 +9,16 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
 
-    @SerializedName("name")
+    @SerializedName("guestName")
     @Expose
     public String name;
 
-    @SerializedName("rank")
+    @SerializedName("guest_id")
     @Expose
-    public String rank;
+    public String guest_id;
 
-    @SerializedName("total_rank")
+    @SerializedName("course")
     @Expose
-    public String totalRank;
-
-  //  public ArrayList<Course> playedCourseList = new ArrayList<>();  //플레이한 코스
-    public ArrayList<HoleScoreSet> courseScores = new ArrayList<>(); //코스 전체 점수
+    public ArrayList<Course> playingCourse = new ArrayList<Course>();
 
 }

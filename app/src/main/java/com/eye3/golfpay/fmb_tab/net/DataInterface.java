@@ -3,12 +3,11 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 import android.view.View;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,11 +85,11 @@ public class DataInterface extends BasicDataInterface {
             return;
         }
 
-        ResponseData data = (ResponseData)response.body();
+        ResponseData data = (ResponseData) response.body();
 
         if (response.isSuccessful()) {
             if (data != null) {
-                if (isCommonError && !data.getResultCode().equals("S000")) {
+                if (isCommonError && !data.getResultCode().equals("ok")) {
                     showDialog(context, null, data.getError());
                 }
                 callback.onSuccess(data);
@@ -98,7 +97,7 @@ public class DataInterface extends BasicDataInterface {
                 callback.onError(null);
             }
         } else {
-            if(isCommonError) {
+            if (isCommonError) {
                 if (data != null) {
                     showDialog(context, null, data.getError());
                 } else {
@@ -131,12 +130,12 @@ public class DataInterface extends BasicDataInterface {
             call.enqueue(new Callback<TeeUpTime>() {
                 @Override
                 public void onResponse(Call<TeeUpTime> call, Response<TeeUpTime> response) {
-                    TeeUpTime teeUpTime =  response.body();
+                    TeeUpTime teeUpTime = response.body();
                     // solveCommonError(context, callback, response, false);
-                    if(response == null){
+                    if (response == null) {
                         callback.onError(teeUpTime);
                         return;
-                    }else{
+                    } else {
 
                         callback.onSuccess(teeUpTime);
                     }
@@ -160,15 +159,15 @@ public class DataInterface extends BasicDataInterface {
             call.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
-                  Login login =  response.body();
-                   // solveCommonError(context, callback, response, false);
-                    if(response == null){
-                    callback.onError(login);
-                    return;
-                }else{
+                    Login login = response.body();
+                    // solveCommonError(context, callback, response, false);
+                    if (response == null) {
+                        callback.onError(login);
+                        return;
+                    } else {
 
-                    callback.onSuccess(login);
-                }
+                        callback.onSuccess(login);
+                    }
                 }
 
                 @Override
@@ -176,6 +175,50 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getCourseInfo(final Context context, String cc_id, final ResponseCallback<ResponseData<Course>> callback) {
+        try {
+            Call<ResponseData<Course>> call = service.getCourseInfo();
+            call.enqueue(new Callback<ResponseData<Course>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Course>> call, Response<ResponseData<Course>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Course>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                   // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getReserveScore(final Context context, String reserve_id, final ResponseCallback<ResponseData<Player>> callback) {
+        try {
+            Call<ResponseData<Player>> call = service.getReserveScore();
+            call.enqueue(new Callback<ResponseData<Player>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Player>> call, Response<ResponseData<Player>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Player>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
         } catch (Exception ex) {
@@ -211,7 +254,6 @@ public class DataInterface extends BasicDataInterface {
 //            }
 //        });
 //    }
-
 
 
 //

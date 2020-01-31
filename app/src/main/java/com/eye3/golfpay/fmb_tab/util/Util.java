@@ -1015,6 +1015,16 @@ public class Util {
         return result;
     }
 
+    public static boolean isIntegerNumber(String str) {
+        boolean result = false;
+        try {
+            Integer.parseInt(str);
+            result = true;
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
     /**
      * null체크
      *

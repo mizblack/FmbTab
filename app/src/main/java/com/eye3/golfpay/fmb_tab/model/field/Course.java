@@ -7,18 +7,69 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Course implements Serializable {
-
+    //*********************************************
     @SerializedName("course_id")
     @Expose
-    public String CourseId;
+    public String course_id ;
+    //********************************************
 
-    @SerializedName("course_name")
+    @SerializedName("id")
     @Expose
-    public String CourseName;
+    public String id = course_id;
 
-    @SerializedName("hole_list")
+    @SerializedName("cc_id")
     @Expose
- //  public  ArrayList<Hole> holeList = new ArrayList<>();
-   public Hole[] arrHole = new Hole[9];
+    public String cc_id;
+
+    @SerializedName("part_id")
+    @Expose
+    public String part_id;
+
+    @SerializedName("courseName")
+    @Expose
+    public String courseName;
+
+    @SerializedName("public_use")
+    @Expose
+    public String public_use;
+
+    @SerializedName("ctype")
+    @Expose
+    public String ctype;
+
+    @SerializedName("is_use")
+    @Expose
+    public String is_use;
+
+    @SerializedName("del_use")
+    @Expose
+    public String del_use;
+
+    @SerializedName("course_img")
+    @Expose
+    public String course_img;
+
+    @SerializedName("created_user")
+    @Expose
+    public String created_user;
+
+    @SerializedName("created_at")
+    @Expose
+    public String created_at;
+
+    @SerializedName("updated_user")
+    @Expose
+    public String updated_user;
+
+    @SerializedName("updated_at")
+    @Expose
+    public String updated_at;
+
+    @SerializedName("holes")
+    @Expose
+    public Hole[] holes = new Hole[9];
+
+//    @SerializedName("holes")
+//   public Hole[] holes = new Hole[9];
 
 }

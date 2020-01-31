@@ -1,12 +1,14 @@
 package com.eye3.golfpay.fmb_tab.model.score;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Score  implements Serializable {
+public class HoleScore  implements Serializable {
+
     //파점수 계산시 사용( -2 under par)
     @SerializedName("par")
     @Expose

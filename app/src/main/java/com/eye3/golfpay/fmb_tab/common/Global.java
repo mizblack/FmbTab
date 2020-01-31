@@ -3,6 +3,9 @@ package com.eye3.golfpay.fmb_tab.common;
 
 import android.os.Environment;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
 import java.io.File;
@@ -36,6 +39,8 @@ public class Global {
      */
     //  public static String HOST_ADDRESS = (RealSetting ? HOST_ADDRESS_REAL : HOST_ADDRESS_DEV);
 
+    public static String HOST_ADDRES_SKIE = "10.50.21.62:8000/api/v1/getAllCourse?cc_id=1";
+
     /**
      * 접속 호스트 주소. 운영
      */
@@ -57,6 +62,19 @@ public class Global {
         String CHANNEL_FLOATING = "macaron_floating";
         String CHANNEL_DRIVE = "macaron_drive";
         String CHANNEL_PUSH = "macaron_push";
+    }
+
+    public static ArrayList<GuestDatum> guestList = new  ArrayList<GuestDatum>();
+    public static ArrayList<Course> courseInfoList = new  ArrayList<Course>();
+    public static ArrayList<Player> playerList = new ArrayList<>();
+
+    public interface Settting {
+        boolean wifi = true;
+
+        boolean gps = true;
+
+        boolean isPar = false;
+
     }
 
 }
