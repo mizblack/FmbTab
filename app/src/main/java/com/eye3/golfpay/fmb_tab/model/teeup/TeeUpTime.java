@@ -15,10 +15,6 @@ public class TeeUpTime implements Serializable {
     private String retMsg;
     @SerializedName("caddy_info")
     private CaddyInfo caddy_info;
-//    "caddy_info": {
-//        "admins_id": 33,
-//                "name": "아이유1"
-//    },
 
     @SerializedName("today_reserve_list")
     private ArrayList<TodayReserveList> todayReserveList;

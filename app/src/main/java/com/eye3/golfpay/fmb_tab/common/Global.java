@@ -54,6 +54,8 @@ public class Global {
 
     public static String imageBaseDir = HOST_ADDRESS_DEV + "/attachments";
 
+    public static int selectedTeeUpIndex = 0;
+
     public interface NotiAlarmChannelID {
         String CHANNEL_LOC = "macaron_loc";
         String CHANNEL_FLOATING = "macaron_floating";

@@ -17,73 +17,11 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
 
-            <TextView
-                android:id="@+id/member00NameTextView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/guestRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:text="-"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/member00Divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black" />
-
-            <TextView
-                android:id="@+id/member01NameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:text="-"
-                android:textColor="@color/lightGray"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/member01Divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightGray" />
-
-            <TextView
-                android:id="@+id/member02NameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:text="-"
-                android:textColor="@color/lightGray"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/member02Divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightGray" />
-
-            <TextView
-                android:id="@+id/member03NameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:text="-"
-                android:textColor="@color/lightGray"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
-            <View
-                android:id="@+id/member03Divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightGray" />
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
 
         </LinearLayout>
 

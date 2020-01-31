@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,20 +17,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -45,6 +54,9 @@ public class CaddieFragment extends BaseFragment {
     private Uri photoUri;
     ImageView mPhoto;
     View v;
+    GuestAdapter guestAdapter;
+    RecyclerView guestRecyclerView;
+    private int position;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,8 @@ public class CaddieFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
+            position = bundle.getInt("selectedTeeUpIndex");
+
         }
     }
 
@@ -62,31 +76,15 @@ public class CaddieFragment extends BaseFragment {
         mImgClubPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(getActivity(),
+                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
                         Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) {
 
-                    // Should we show an explanation?
-//                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-//                            Manifest.permission.CAMERA)) {
-//
-//                        // Show an expanation to the user *asynchronously* -- don't block
-//                        // this thread waiting for the user's response! After the user
-//                        // sees the explanation, try again to request the permission.
-//
-//                    } else {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CAMERA},
+                            MY_PERMISSIONS_REQUEST_CAMERA);
 
-                        // No explanation needed, we can request the permission.
-
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.CAMERA},
-                                MY_PERMISSIONS_REQUEST_CAMERA);
-
-                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
-               //     }
-                }else{
+                } else {
                     sendTakePhotoIntent();
                 }
             }
@@ -97,27 +95,13 @@ public class CaddieFragment extends BaseFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    sendTakePhotoIntent();
-                } else {
-                    Toast.makeText(getActivity(), "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sendTakePhotoIntent();
+            } else {
+                Toast.makeText(getActivity(), "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -125,16 +109,19 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SetTitle("KT WMMS");
-//        SetDividerVisibility(false);
-        //   setDrawerLayoutEnable(true);
 
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        guestAdapter = new GuestAdapter(getActivity(), Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
+        guestRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.guestRecyclerView);
+        guestRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        guestRecyclerView.setLayoutManager(manager);
+        guestRecyclerView.setAdapter(guestAdapter);
+        guestAdapter.notifyDataSetChanged();
     }
 
     private void sendTakePhotoIntent() {
@@ -179,8 +166,8 @@ public class CaddieFragment extends BaseFragment {
             }
 
             ((ImageView) v.findViewById(R.id.caddieImageView)).setImageBitmap(rotate(bitmap, exifDegree));
-        }else if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-            ((MainActivity)  mParentActivity).changeDrawerViewToMenuView();
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
+            ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
 
         }
     }
@@ -215,7 +202,54 @@ public class CaddieFragment extends BaseFragment {
         return image;
     }
 
+    public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.GuestItemViewHolder> {
+
+        ArrayList<GuestDatum> guestList;
+        TextView memberNameTextView;
+        View memberDivider;
+
+        GuestAdapter(Context context, ArrayList<GuestDatum> todayReserveList) {
+            this.guestList = todayReserveList;
+        }
+
+        class GuestItemViewHolder extends RecyclerView.ViewHolder {
+
+            GuestItemViewHolder(View view) {
+                super(view);
+
+                memberNameTextView = view.findViewById(R.id.memberNameTextView);
+                memberDivider = view.findViewById(R.id.memberDivider);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = getAdapterPosition();
+//                        memberDivider.
+                    }
+                });
+
+            }
+
+        }
+
+        @NonNull
+        @Override
+        public GuestItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_guest, viewGroup, false);
+            return new GuestItemViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull GuestItemViewHolder scoreItemViewHolder, int position) {
+            memberNameTextView.setText(guestList.get(position).getGuestName());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return guestList.size();
+        }
+
+    }
 
 }
-
-
