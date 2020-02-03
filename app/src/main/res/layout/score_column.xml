@@ -4,7 +4,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="120dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -41,13 +41,125 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
-<!--        여기에 배열로 들어감.-->
+        <!--        여기에 배열로 들어감.-->
         <LinearLayout
             android:id="@+id/holderInfoLinear"
             android:layout_width="@dimen/score_linear_weight"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:id="@+id/inOrOutLinearLayout00"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inOrOutColumn00"
+                style="@style/MainColumnInOrOutTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/inOrOutTotal00"
+                style="@style/MainColumnParOrMetersTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/inOrOutTotalMeters00"
+                style="@style/MainColumnParOrMetersTextView"
+                android:paddingBottom="16dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:id="@+id/inOrOutLinearLayout01"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inOrOutColumn01"
+                style="@style/MainColumnInOrOutTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/inOrOutTotal01"
+                style="@style/MainColumnParOrMetersTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/inOrOutTotalMeters01"
+                style="@style/MainColumnParOrMetersTextView"
+                android:paddingBottom="16dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray" />
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="@color/ebonyBlack"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/totalColumn"
+                style="@style/MainColumnInOrOutTextView"
+                android:textColor="@color/white"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <TextView
+                android:id="@+id/total"
+                style="@style/MainColumnParOrMetersTextView" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" />
+
+            <TextView
+                android:id="@+id/totalMeters"
+                style="@style/MainColumnParOrMetersTextView"
+                android:paddingBottom="16dp" />
 
         </LinearLayout>
 
