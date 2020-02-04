@@ -56,4 +56,7 @@ public interface HttpService {
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") int reserveId);
 
+    @GET("setScore?")
+    Call<ResponseData<Player>> sendScore(@Query("reserve_id") int reserveId);
+
 }

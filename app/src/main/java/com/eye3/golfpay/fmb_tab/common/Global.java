@@ -68,13 +68,13 @@ public class Global {
     public static ArrayList<Course> courseInfoList = new  ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
 
-    public interface Settting {
-        boolean wifi = true;
 
-        boolean gps = true;
+        boolean wifi = false;
 
-        boolean isPar = false;
+        boolean gps = false;
 
-    }
+        boolean isTar = false;
+
+
 
 }

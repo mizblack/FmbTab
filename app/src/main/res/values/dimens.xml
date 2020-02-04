@@ -19,4 +19,5 @@
 
     <dimen name="score_linear_height">140dp</dimen>
     <dimen name="score_linear_weight">80dp</dimen>
+    <dimen name="course_tab_bar_width">120dp</dimen>
 </resources>

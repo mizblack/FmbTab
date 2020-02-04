@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.score.Score;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
@@ -34,7 +36,7 @@ public class TabCourseLinear extends LinearLayout {
     Context mContext;
     ScoreDialog sDialog;
     //course_id -1과 동일함
-    int mTabIdx ;
+    int mTabIdx;
     //클릭한 스코어 배경 바꿀때 필요한 idx 해당홀인덱스(hole_id -1)
     int mHoleScoreLayoutIdx;
 
@@ -63,7 +65,7 @@ public class TabCourseLinear extends LinearLayout {
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
 //        //1.
-          createHoleInfoLinear(context, course.holes);
+        createHoleInfoLinear(context, course.holes);
 //        //2.
         mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
         mPlayerList = playerList;
@@ -96,6 +98,7 @@ public class TabCourseLinear extends LinearLayout {
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
         ArrayList<Player> playerList = new ArrayList<Player>();
 
+
         public ScoreAdapter(Context context, ArrayList<Player> playerList) {
             this.playerList = playerList;
         }
@@ -104,6 +107,8 @@ public class TabCourseLinear extends LinearLayout {
         public class ScoreItemViewHolder extends RecyclerView.ViewHolder {
             protected TextView tvRank, tvName;
             protected LinearLayout[] holeScoreLayout = new LinearLayout[9];
+            protected LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
+            protected TextView wholeTotal;
 
             public ScoreItemViewHolder(View view) {
                 super(view);
@@ -119,6 +124,10 @@ public class TabCourseLinear extends LinearLayout {
                 holeScoreLayout[6] = view.findViewById(R.id.hole7LinearLayout);
                 holeScoreLayout[7] = view.findViewById(R.id.hole8LinearLayout);
                 holeScoreLayout[8] = view.findViewById(R.id.hole9LinearLayout);
+                courseTotal[0] = view.findViewById(R.id.ll_course0_total);
+
+
+                wholeTotal = view.findViewById(R.id.whole_totalColumn);
 
                 for (int i = 0; NUM_OF_HOLES > i; i++) {
                     holeScoreLayout[i].setOnClickListener(new View.OnClickListener() {
@@ -174,7 +183,7 @@ public class TabCourseLinear extends LinearLayout {
                                 default:
 
                             }
-                            sDialog = new ScoreDialog(mContext, title, "", "취소", "확인", null, null, mPlayerList, mTabIdx, mHoleScoreLayoutIdx  );
+                            sDialog = new ScoreDialog(mContext, title, "", "취소", "확인", null, null, mPlayerList, mTabIdx, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
@@ -189,7 +198,7 @@ public class TabCourseLinear extends LinearLayout {
                 @Override
                 public void onClick(View view) {
                     sDialog.dismiss();
-                  //  sDialog.
+                    //  sDialog.
                 }
             };
 
@@ -203,7 +212,7 @@ public class TabCourseLinear extends LinearLayout {
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
-                //    mPlayerList = playerList;
+                    //    mPlayerList = playerList;
                     notifyDataSetChanged();
                 }
             };
@@ -234,33 +243,39 @@ public class TabCourseLinear extends LinearLayout {
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.WHITE);
             }
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(course.holes[0].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes[0].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes[0].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(course.holes[1].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(AppDef.Par_Tar(course.holes[1].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_putt)).setText(course.holes[1].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(course.holes[2].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(AppDef.Par_Tar(course.holes[2].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_putt)).setText(course.holes[2].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(course.holes[3].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(AppDef.Par_Tar(course.holes[3].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_putt)).setText(course.holes[3].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(course.holes[4].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(AppDef.Par_Tar(course.holes[4].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_putt)).setText(course.holes[4].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(course.holes[5].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(AppDef.Par_Tar(course.holes[5].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_putt)).setText(course.holes[5].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(course.holes[6].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(AppDef.Par_Tar(course.holes[6].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_putt)).setText(course.holes[6].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(course.holes[7].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(AppDef.Par_Tar(course.holes[7].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_putt)).setText(course.holes[7].playedScore.putting);
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(course.holes[8].playedScore.tar);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(AppDef.Par_Tar(course.holes[8].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes[8].playedScore.putting);
 
+            //코스토탈
+            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
+
+//            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
+//            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
         }
 
         @Override
@@ -269,33 +284,49 @@ public class TabCourseLinear extends LinearLayout {
         }
     }
 
-    public int getTotalTarForHole(Hole[] holes) {
-        int total = 0;
-        for (int i = 0; holes.length > 0; i++) {
-            if ("-".equals(holes[i].playedScore.tar))
-                total = total + Integer.valueOf(holes[i].playedScore.tar);
+
+
+    private String Par_Tar_Total(Course course, boolean istar) {
+        int total_score = 0;
+        if (istar) {
+            for (int i = 0; course.holes.length > i; i++) {
+                if (Util.isIntegerNumber(course.holes[i].playedScore.tar))
+                    total_score = total_score + Integer.valueOf(course.holes[i].playedScore.tar);
+            }
+        } else {
+            for (int i = 0; course.holes.length > i; i++) {
+                if (Util.isIntegerNumber(course.holes[i].playedScore.par))
+                    total_score = total_score + Integer.valueOf(course.holes[i].playedScore.par);
+            }
         }
-        return total;
-
+        //다시 스트링으로 변환해 리턴
+        return String.valueOf(total_score);
     }
 
-    public int getTotalPuttingForHole(Hole[] holes) {
-        int total = 0;
-        for (int i = 0; holes.length > 0; i++) {
-            if ("-".equals(holes[i].playedScore.putting))
-                total = total + Integer.valueOf(holes[i].playedScore.putting);
+    private String Putt_Total(Course course) {
+        int total_score = 0;
+
+        for (int i = 0; course.holes.length > i; i++) {
+            if (Util.isIntegerNumber(course.holes[i].playedScore.par))
+                total_score = total_score + Integer.valueOf(course.holes[i].playedScore.putting);
         }
-        return total;
 
+        //다시 스트링으로 변환해 리턴
+        return String.valueOf(total_score);
     }
 
-    public int convertTarIntoPar(int tar, int parNumForHole) {
-        return tar - parNumForHole;
-    }
 
-    public int convertParIntoTar(int par, int parNumForHole) {
-        return par + parNumForHole;
-    }
+//    public int convertTarIntoPar(int tar, int parNumForHole) {
+//        return tar - parNumForHole;
+//    }
+//
+//    public int convertTarIntoParForString(int tar, int parNumForHole) {
+//        return tar - parNumForHole;
+//    }
+//
+//    public int convertParIntoTar(int par, int parNumForHole) {
+//        return par + parNumForHole;
+//    }
 
     public int getTotalDistance(Hole[] holes) {
         int totalDistance = 0;
@@ -310,8 +341,6 @@ public class TabCourseLinear extends LinearLayout {
         }
         return totalDistance;
     }
-
-
 
 
 }

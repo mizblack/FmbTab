@@ -23,8 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 
 import java.util.ArrayList;
@@ -267,7 +270,8 @@ public class ScoreDialog extends Dialog  {
         @Override
         public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, final int position) {
             holder.playerName.setText(mPlayerList.get(position).name);
-            holder.etInputTar.setText((mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.tar);
+            Course course =  mPlayerList.get(position).playingCourse.get(mTabIdx);
+            holder.etInputTar.setText(AppDef.Par_Tar(course.holes[mHoleScoreLayoutIdx].playedScore , AppDef.isTar));
             holder.etInputTar.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -281,10 +285,12 @@ public class ScoreDialog extends Dialog  {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    if(s == null || s.equals("") )
+                        return;
                     if(Util.isIntegerNumber(s.toString()))
-                       ( mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.tar = s.toString();
-                    else
-                        Toast.makeText(mContext , "올바른 숫자가아닙니다.", Toast.LENGTH_SHORT).show();
+                       ( mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.par = s.toString();
+//                    else
+//                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
             });
             holder.etInputPutt.setText((mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.putting);
@@ -301,10 +307,13 @@ public class ScoreDialog extends Dialog  {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(Util.isIntegerNumber(s.toString()) )
+                   if(s == null || s.equals(""))
+                       return;
+                    if(Util.isIntegerNumber(s.toString())  )
                         ( mPlayerList.get(position).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx]).playedScore.putting = s.toString();
-                    else
-                        Toast.makeText(mContext , "올바른 숫자가아닙니다.", Toast.LENGTH_SHORT).show();
+                       //   mPlayerList.get(position).getGreenfee();
+//                    else
+//                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -328,6 +337,8 @@ public class ScoreDialog extends Dialog  {
             }
         }
     }
+
+   // private void sendPlayersScores()
 
 
 
