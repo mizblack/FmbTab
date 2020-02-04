@@ -1,43 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal">
-
+<!--        여기에 탭바가 동적으로 생성됩-->
         <LinearLayout
             android:id="@+id/courseLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/course01Text"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="16dp"
-                android:text="코스1 (전반)" />
-
-            <TextView
-                android:id="@+id/course02Text"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="40dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="코스2" />
-
-            <TextView
-                android:id="@+id/course03Text"
-                style="@style/MainTabTitleTextView"
-                android:layout_marginStart="40dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="코스3" />
-
-        </LinearLayout>
+            android:visibility="visible"/>
 
         <LinearLayout
             android:id="@+id/pinkNearestOrLinearLayout"
@@ -48,7 +25,6 @@
             android:orientation="horizontal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:visibility="gone"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -95,8 +71,7 @@
             android:id="@+id/nearestLongestLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/nearest"

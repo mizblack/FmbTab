@@ -5,16 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import androidx.annotation.Nullable;
-
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 
 
 public class SettingsFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
+    Switch mWifiSwitch;
+    Switch mGPSSwitch;
+    Switch mTarParSwitch;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +33,10 @@ public class SettingsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.settings_custom_dlg, container, false);
+         View v = inflater.inflate(R.layout.settings_custom_dlg, container, false);
+        mTarParSwitch = v.findViewById(R.id.puttSwitch);
+
+         return v;
     }
 
     @Override
@@ -42,18 +51,14 @@ public class SettingsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-      //  mBtnTaokeoverTest.setOnClickListener();
-//        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                GoNativeScreenAdd(new FrDeviceSearch(), null);
-////                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            }
-//        });
+        mTarParSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                 if(isChecked){
+                     AppDef.isTar = true;
+                 }
+            }
+        });
     }
 
 

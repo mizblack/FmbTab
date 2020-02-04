@@ -44,7 +44,7 @@
         <!--        여기에 배열로 들어감.-->
         <LinearLayout
             android:id="@+id/holderInfoLinear"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/score_linear_weight"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">

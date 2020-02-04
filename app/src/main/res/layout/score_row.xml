@@ -246,24 +246,24 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight="1" />-->
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
-
+<!--          코스토탈 첫 컬럼-->
         <LinearLayout
-            android:id="@+id/inOrOutLinearLayout00"
+            android:id="@+id/ll_course0_total"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/inOrOutColumn00"
+                android:id="@+id/course0_total_tar"
                 style="@style/MainHoleTextView" />
 
             <View
@@ -273,7 +273,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/inOrOutTotal00"
+                android:id="@+id/course0_toatal_putt"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>
@@ -317,7 +317,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/totalColumn"
+                android:id="@+id/whole_totalColumn"
                 style="@style/MainHoleTextView"
 
                 android:textColor="@color/white" />
@@ -329,7 +329,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/total_put"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>
