@@ -245,6 +245,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 changeDrawerViewToMenuView();
                 //  drawer_layout.closeDrawer(GravityCompat.END);
+
+                closeKeyboard(findViewById(R.id.nameEditText));
+                closeKeyboard(findViewById(R.id.phoneNumberEditText));
+
             }
         });
 
@@ -386,6 +390,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 selectBottomDivider.setVisibility(View.VISIBLE);
                 teeUpRecyclerView.setVisibility(View.VISIBLE);
                 roundingLinearLayout.setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.login_view_include).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeKeyboard(findViewById(R.id.nameEditText));
+                closeKeyboard(findViewById(R.id.phoneNumberEditText));
+            }
+        });
+
+        findViewById(R.id.content_main_inc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeKeyboard(findViewById(R.id.nameEditText));
+                closeKeyboard(findViewById(R.id.phoneNumberEditText));
             }
         });
 
