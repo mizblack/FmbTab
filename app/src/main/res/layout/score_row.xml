@@ -246,11 +246,6 @@
 
         </LinearLayout>
 
-<!--        <View-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1" />-->
-
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -258,7 +253,7 @@
 <!--          코스토탈 첫 컬럼-->
         <LinearLayout
             android:id="@+id/ll_course0_total"
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -285,7 +280,7 @@
 
         <LinearLayout
             android:id="@+id/inOrOutLinearLayout01"
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -311,7 +306,7 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">
