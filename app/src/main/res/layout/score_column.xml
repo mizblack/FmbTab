@@ -4,7 +4,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="90dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -41,12 +41,12 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
+
         <!--        여기에 배열로 들어감.-->
         <LinearLayout
             android:id="@+id/holderInfoLinear"
-            android:layout_width="@dimen/score_linear_weight"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
         </LinearLayout>
@@ -58,7 +58,7 @@
 
         <LinearLayout
             android:id="@+id/inOrOutLinearLayout00"
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -94,7 +94,7 @@
 
         <LinearLayout
             android:id="@+id/inOrOutLinearLayout01"
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -130,7 +130,7 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">

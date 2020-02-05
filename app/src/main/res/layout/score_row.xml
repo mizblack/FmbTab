@@ -246,11 +246,6 @@
 
         </LinearLayout>
 
-<!--        <View-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1" />-->
-
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -258,7 +253,7 @@
 <!--          코스토탈 첫 컬럼-->
         <LinearLayout
             android:id="@+id/ll_course0_total"
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -284,13 +279,13 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:id="@+id/ll_course1_total"
-            android:layout_width="80dp"
+            android:id="@+id/inOrOutLinearLayout01"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/course1_total_tar"
+                android:id="@+id/inOrOutColumn01"
                 style="@style/MainHoleTextView" />
 
             <View
@@ -300,7 +295,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/course1_total_putt"
+                android:id="@+id/inOrOutTotal01"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>
@@ -311,7 +306,7 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:layout_width="80dp"
+            android:layout_width="82dp"
             android:layout_height="match_parent"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">
@@ -329,7 +324,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/whole_total_put"
+                android:id="@+id/total_put"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>

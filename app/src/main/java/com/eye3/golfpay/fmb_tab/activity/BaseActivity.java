@@ -2,10 +2,12 @@ package com.eye3.golfpay.fmb_tab.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -22,6 +24,8 @@ import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
 import com.eye3.golfpay.fmb_tab.fragment.BaseFragment;
 import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
+
+import java.util.Objects;
 
 
 public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
@@ -48,11 +52,11 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
     }
 
-    public void showMainBottomBar(){
+    public void showMainBottomBar() {
         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
     }
 
-    public void hideMainBottomBar(){
+    public void hideMainBottomBar() {
         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.GONE);
 
     }
@@ -61,7 +65,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-     //   systemUIHide();
+        //   systemUIHide();
     }
 
     protected void setBind(@LayoutRes int layId) {
@@ -289,11 +293,11 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
     //   }
     public void hideDrawer() {
-        ( (MainActivity) this).HideMenuMap();
+        ((MainActivity) this).HideMenuMap();
     }
 
     public void openDrawer() {
-        ( (MainActivity) this).OpenMenuMap();
+        ((MainActivity) this).OpenMenuMap();
     }
 
     public void showProgress(String msg) {
@@ -360,6 +364,10 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-
+    public void closeKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        systemUIHide();
+    }
 
 }
