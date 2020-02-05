@@ -4,7 +4,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="90dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -41,6 +41,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
+
         <!--        여기에 배열로 들어감.-->
         <LinearLayout
             android:id="@+id/holderInfoLinear"

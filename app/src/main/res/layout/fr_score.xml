@@ -10,44 +10,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:padding="50dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="50dp">
 
             <include
                 android:id="@+id/tab_bar"
                 layout="@layout/tab_bar" />
+
             <FrameLayout
                 android:id="@+id/tabHolder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1" />
-
-<!--            <include-->
-<!--                android:id="@+id/course01Tab"-->
-<!--                layout="@layout/tab_course"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_weight="1" />-->
-
-<!--            <include-->
-<!--                android:id="@+id/course02Tab"-->
-<!--                layout="@layout/tab_course"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:visibility="gone" />-->
-
-<!--            <include-->
-<!--                android:id="@+id/course03Tab"-->
-<!--                layout="@layout/tab_course"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:visibility="gone" />-->
 
         </LinearLayout>
 
