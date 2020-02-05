@@ -36,21 +36,21 @@ public class TabCourseLinear extends LinearLayout {
     Context mContext;
     ScoreDialog sDialog;
     //course_id -1과 동일함
-    int mTabIdx;
+  //  int mTabIdx;
     //클릭한 스코어 배경 바꿀때 필요한 idx 해당홀인덱스(hole_id -1)
     int mHoleScoreLayoutIdx;
 
-
     ArrayList<Player> mPlayerList = new ArrayList<Player>();
+    Course mCourse ; //해당탭의 코스정보(홀정보 포함)
 
     public TabCourseLinear(Context context) {
         super(context);
 
     }
 
-    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course course, int tab_idx) {
+    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course course) {
         super(context);
-        init(context, playerList, course, tab_idx);
+        init(context, playerList, course);
 
     }
 
@@ -58,8 +58,9 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(Context context, ArrayList<Player> playerList, Course course, int tabIdx) {
-        mTabIdx = tabIdx;
+    public void init(Context context, ArrayList<Player> playerList, Course course) {
+
+     //   mTabIdx = tabIdx;
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.tab_course, this, false);
@@ -69,6 +70,7 @@ public class TabCourseLinear extends LinearLayout {
 //        //2.
         mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
         mPlayerList = playerList;
+        mCourse = course;
         initRecyclerView(playerList);
         addView(v);
 
@@ -80,7 +82,7 @@ public class TabCourseLinear extends LinearLayout {
         mScoreRecylerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
         mScoreRecylerView.setLayoutManager(mManager);
-        mScoreAdapter = new ScoreAdapter(mContext, playerList);
+        mScoreAdapter = new ScoreAdapter(mContext, playerList, mCourse);
         mScoreRecylerView.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
     }
@@ -97,10 +99,12 @@ public class TabCourseLinear extends LinearLayout {
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
         ArrayList<Player> playerList = new ArrayList<Player>();
+        Course mCurrentCourse;
 
-
-        public ScoreAdapter(Context context, ArrayList<Player> playerList) {
+        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
             this.playerList = playerList;
+            this.mCurrentCourse = mCourse;
+
         }
 
 
@@ -129,11 +133,12 @@ public class TabCourseLinear extends LinearLayout {
 
                 wholeTotal = view.findViewById(R.id.whole_totalColumn);
 
-                for (int i = 0; NUM_OF_HOLES > i; i++) {
+                for ( int i = 0; NUM_OF_HOLES > i; i++) {
                     holeScoreLayout[i].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String title = "";
+                            Hole mSelectedHole = null;
                             switch (v.getId()) {
                                 case R.id.hole1LinearLayout:
                                     title = "Par" + "/" + "Course/Hole1";
@@ -183,7 +188,7 @@ public class TabCourseLinear extends LinearLayout {
                                 default:
 
                             }
-                            sDialog = new ScoreDialog(mContext, title, "", "취소", "확인", null, null, mPlayerList, mTabIdx, mHoleScoreLayoutIdx);
+                            sDialog = new ScoreDialog(mContext, title, "", "취소", "확인", null, null, mPlayerList, mCourse, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
@@ -231,7 +236,7 @@ public class TabCourseLinear extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;                            //course tab index
-            Course course = playerList.get(i).playingCourse.get(mTabIdx);
+            Course course = mCurrentCourse;
 
             scoreItemViewHolder.tvRank.setText("lst");
             scoreItemViewHolder.tvName.setText(playerList.get(i).name);
@@ -274,8 +279,12 @@ public class TabCourseLinear extends LinearLayout {
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
 
-//            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
-//            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
+//            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
+//            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(course));
+            //동적생성시 3개이상도 할수있게할것
+
+            //전체토탈
+
         }
 
         @Override

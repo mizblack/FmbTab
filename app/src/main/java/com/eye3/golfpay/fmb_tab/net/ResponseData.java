@@ -32,6 +32,11 @@ public class ResponseData<T> {
 		return resultCode;
 	}
 
+	public String getResultMessage() {
+		return resultMessage;
+	}
+
+
 	public void setResultCode(String resultCode) {
 		this.resultCode = resultCode;
 	}

@@ -13,7 +13,7 @@ public class Player implements Serializable {
     @Expose
     public String name;
 
-    @SerializedName("guest_id")
+    @SerializedName("id")
     @Expose
     public String guest_id;
 

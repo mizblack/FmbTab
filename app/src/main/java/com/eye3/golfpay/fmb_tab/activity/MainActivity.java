@@ -401,7 +401,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            drawer.closeDrawer(GravityCompat.END);
+            if(drawer != null)
+                 drawer.closeDrawer(GravityCompat.END);
             fmbDialog.dismiss();
 
             //   setLogout();
@@ -545,7 +546,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                         int position = getAdapterPosition();
                         Global.selectedTeeUpIndex = position;
-                        Global.reserveId = todayReserveList.get(position).getId();
+                        Global.reserveId = String.valueOf(todayReserveList.get(position).getId());
                         groupNameTextView.setText(todayReserveList.get(position).getGroup());
                         reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
                         roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));

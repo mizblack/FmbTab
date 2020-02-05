@@ -43,6 +43,7 @@ public class ScoreFragment extends BaseFragment {
     TabCourseLinear[] mTabCourseArr;
     FrameLayout mTabHolder;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +59,7 @@ public class ScoreFragment extends BaseFragment {
         }
 
         for (int i = 0; NUM_OF_COURSE > i; i++) {
-            int tab_idx = i;
-            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, mCourseList.get(i), i);
+            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, mCourseList.get(i));
             mTabCourseArr[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTabHolder.addView(mTabCourseArr[i]);
         }
@@ -126,9 +126,6 @@ public class ScoreFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SetTitle("KT WMMS");
-//        SetDividerVisibility(false);
-        //   setDrawerLayoutEnable(true);
 
     }
 

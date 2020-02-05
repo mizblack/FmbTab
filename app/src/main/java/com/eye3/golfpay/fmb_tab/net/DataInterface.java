@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
@@ -101,7 +102,7 @@ public class DataInterface extends BasicDataInterface {
                 if (data != null) {
                     showDialog(context, null, data.getError());
                 } else {
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, null, "네트웍상태를 확인해주세요. " + "http code: " + response.code());
                 }
             } else {
                 callback.onError(null);
@@ -204,7 +205,7 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void getReserveScore(final Context context, int reserve_id, final ResponseCallback<ResponseData<Player>> callback) {
+    public void getReserveScore(final Context context, String reserve_id, final ResponseCallback<ResponseData<Player>> callback) {
         try {
             Call<ResponseData<Player>> call = service.getReserveScore(reserve_id);
             call.enqueue(new Callback<ResponseData<Player>>() {
@@ -225,6 +226,29 @@ public class DataInterface extends BasicDataInterface {
             ex.printStackTrace();
         }
     }
+
+    public void setScore(final Context context, ReserveScore reserveScore, final ResponseCallback<ResponseData<Object>> callback) {
+        try {
+            Call<Object> call = service.sendScore(reserveScore);
+            call.enqueue(new Callback<Object>() {
+                @Override
+                public void onResponse(Call<Object> call, Response<Object> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<Object> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 //    public void sendConfirm(final Context context, HashMap<String, Object> params, final DataInterface.ResponseCallback callback){
 //        Call<Map<String, String>> call = service.sendConfirm(params);

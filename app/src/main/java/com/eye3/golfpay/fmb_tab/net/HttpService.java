@@ -4,6 +4,7 @@ import com.eye3.golfpay.fmb_tab.model.Device;
 import com.eye3.golfpay.fmb_tab.model.Token;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -54,9 +56,9 @@ public interface HttpService {
     Call<ResponseData<Course>> getCourseInfo();
 
     @GET("getReserveScore?")
-    Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") int reserveId);
+    Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId);
 
-    @GET("setScore?")
-    Call<ResponseData<Player>> sendScore(@Query("reserve_id") int reserveId);
+    @POST("setReserveScore")
+    Call<Object> sendScore(@Body ReserveScore reserveScore);
 
 }

@@ -284,13 +284,13 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:id="@+id/inOrOutLinearLayout01"
+            android:id="@+id/ll_course1_total"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/inOrOutColumn01"
+                android:id="@+id/course1_total_tar"
                 style="@style/MainHoleTextView" />
 
             <View
@@ -300,7 +300,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/inOrOutTotal01"
+                android:id="@+id/course1_total_putt"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>
@@ -329,7 +329,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
-                android:id="@+id/total_put"
+                android:id="@+id/whole_total_put"
                 style="@style/MainPuttTextView" />
 
         </LinearLayout>
