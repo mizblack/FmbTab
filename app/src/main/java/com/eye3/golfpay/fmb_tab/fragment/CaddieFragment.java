@@ -120,6 +120,7 @@ public class CaddieFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         createGuestList(Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
+        setDataTeamMemo();
     }
 
     private void guestListOnClick(CaddieViewGuestItem caddieViewGuestItem, int position) {
@@ -150,12 +151,22 @@ public class CaddieFragment extends BaseFragment {
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
                 memberNameTextView.setText(guestList.get(i).getGuestName());
 
+                EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
+                carNumberEditText.setText(guestList.get(i).getCarNumber());
+
+                EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
+                phoneNumberEditText.setText(guestList.get(i).getPhoneNumber());
+
                 View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
                 signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
 
-
             }
         }
+    }
+
+    private void setDataTeamMemo() {
+        TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
+        teamMemoContentTextView.setText(Global.teeUpTime.getTodayReserveList().get(position).getMemo());
     }
 
     private void sendTakePhotoIntent() {

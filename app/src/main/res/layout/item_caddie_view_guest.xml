@@ -121,7 +121,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/contentTextView"
+                android:id="@+id/guestMemoContentTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -130,7 +130,7 @@
                 tools:ignore="HardcodedText,SpUsage" />
 
             <TextView
-                android:id="@+id/timeTextView"
+                android:id="@+id/guestMemoTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
