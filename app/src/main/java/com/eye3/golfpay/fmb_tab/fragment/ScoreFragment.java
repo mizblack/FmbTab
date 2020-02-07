@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +35,6 @@ public class ScoreFragment extends BaseFragment {
     private LinearLayout pinkNearestOrLinearLayout;
     private View rightLinearLayout;
     private TextView rightButtonTextView;
-
     ArrayList<Player> mPlayerList = new ArrayList<>();
     ArrayList<Course> mCourseList = new ArrayList<>();
     //코스탭바
@@ -64,6 +64,7 @@ public class ScoreFragment extends BaseFragment {
             mTabCourseArr[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTabHolder.addView(mTabCourseArr[i]);
         }
+        CourseTabBar[0].performClick(); //초기 첫코스가 전시될수있도록
     }
 
     private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
@@ -79,7 +80,7 @@ public class ScoreFragment extends BaseFragment {
         mTabHolder = v.findViewById(R.id.tabHolder);
         tabBar = v.findViewById(R.id.tab_bar);
         courseLinearLayout = v.findViewById(R.id.courseLinearLayout);
-        ((MainActivity) mParentActivity).showMainBottomBar();
+        mParentActivity.showMainBottomBar();
 
         return v;
     }
@@ -146,7 +147,7 @@ public class ScoreFragment extends BaseFragment {
         rightButtonTextView.setText("Ranking");
 
         rightLinearLayoutOnClick();
-        mParentActivity.hideMainBottomBar();
+
     }
 
 
@@ -165,6 +166,8 @@ public class ScoreFragment extends BaseFragment {
                     createTabBar(CourseTabBar, mCourseList);
                     mTabCourseArr = new TabCourseLinear[NUM_OF_COURSE];
                     createCourseTab(mPlayerList, mCourseList);
+                }else if(response.getResultCode().equals("fail")){
+                    Toast.makeText(getActivity(), response.getResultMessage() , Toast.LENGTH_SHORT).show();
                 }
             }
 

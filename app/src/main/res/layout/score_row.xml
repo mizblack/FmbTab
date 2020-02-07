@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/ll_score_row"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/white"
@@ -48,7 +49,7 @@
             android:background="@color/lightGray" />
 
         <LinearLayout
-            android:id="@+id/hole1LinearLayout"
+            android:id="@+id/hole1_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -71,7 +72,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole2LinearLayout"
+            android:id="@+id/hole2_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -93,7 +94,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole3LinearLayout"
+            android:id="@+id/hole3_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -115,7 +116,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole4LinearLayout"
+            android:id="@+id/hole4_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -137,7 +138,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole5LinearLayout"
+            android:id="@+id/hole5_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -159,7 +160,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole6LinearLayout"
+            android:id="@+id/hole6_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -181,7 +182,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole7LinearLayout"
+            android:id="@+id/hole7_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -203,7 +204,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole8LinearLayout"
+            android:id="@+id/hole8_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -225,7 +226,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/hole9LinearLayout"
+            android:id="@+id/hole9_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical">

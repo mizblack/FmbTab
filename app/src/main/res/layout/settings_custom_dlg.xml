@@ -6,16 +6,9 @@
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/translucentBlack"
         android:gravity="center"
         android:orientation="vertical">
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="600dp"-->
-        <!--            android:layout_height="400dp"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:orientation="vertical"-->
-        <!--            android:padding="36dp">-->
+<!--        android:background="@color/translucentBlack"-->
         <LinearLayout
             android:layout_width="600dp"
             android:layout_height="300dp"
@@ -50,8 +43,8 @@
 
                     <ImageView
                         android:id="@+id/closeImageView"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/menu_close"
                         tools:ignore="ContentDescription" />
 
@@ -97,40 +90,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:gravity="center"-->
-            <!--                tools:ignore="UseCompoundDrawables,UselessParent">-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="wifi"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:textSize="26dp" />-->
-
-            <!--                <View-->
-            <!--                    android:layout_width="0dp"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:layout_weight="1" />-->
-
-            <!--                <Switch-->
-            <!--                    android:id="@+id/wifiSwitch"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:switchMinWidth="70dp"-->
-            <!--                    android:thumb="@drawable/switch_thumb"-->
-            <!--                    android:track="@drawable/switch_track_selector" />-->
-
-            <!--            </LinearLayout>-->
-
-            <!--            <View-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="0dp"-->
-            <!--                android:layout_weight="1" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"

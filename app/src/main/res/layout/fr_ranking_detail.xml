@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_main_column"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+            <!--        1.-->
+            <LinearLayout
+                android:id="@+id/rankPlayerLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/RankColumnTextView"
+                    android:layout_width="80dp"
+                    android:text="Rank" />
+
+                <TextView
+                    style="@style/RankColumnTextView"
+                    android:layout_width="100dp"
+                    android:text="Player" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightGray" />
+            <!--2. hidden-->
+            <LinearLayout
+                android:id="@+id/rankingLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/RankColumnTextView"
+                    android:layout_width="100dp"
+                    android:background="@color/ebonyBlack"
+                    android:text="Score"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black" />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGray" />
+
+                <TextView
+                    style="@style/RankColumnTextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:text="Group" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detailLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="visible">
+                <!--3.Score-->
+                <TextView
+                    style="@style/RankColumnTextView"
+                    android:layout_width="100dp"
+                    android:background="@color/ebonyBlack"
+                    android:text="Score"
+                    android:textColor="@color/white" />
+                //여기에 각코스단위로 동적 생성해서 수평으로 나열
+
+                <LinearLayout
+                    android:id="@+id/ll_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal" />
+
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="1" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="2" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="3" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="4" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="5" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="6" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="7" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="8" />-->
+
+                <!--            <TextView-->
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:text="9" />-->
+
+                <!--            <View-->
+                <!--                android:layout_width="1dp"-->
+                <!--                android:layout_height="match_parent"-->
+                <!--                android:background="@color/lightGray" />-->
+
+                <!--            <TextView--> 코스명
+                <!--                style="@style/RankColumnHoleTextView"-->
+                <!--                android:layout_width="16dp"-->
+                <!--                android:text="Out" />-->
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

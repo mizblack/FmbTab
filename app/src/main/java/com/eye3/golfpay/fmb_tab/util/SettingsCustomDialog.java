@@ -3,29 +3,39 @@ package com.eye3.golfpay.fmb_tab.util;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.BaseActivity;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 
 
 public class SettingsCustomDialog extends Dialog {
 
-
-    private View close;
-
-//    private Spanned mSpannedContent;
-
-//    private SettingsCustomDialog dialog = this;
-
-    private View.OnClickListener closeClickListener;
-//    private View.OnClickListener mRightClickListener;
-//    private View.OnClickListener mSingleClickListener;
-
+    protected String TAG = getClass().getSimpleName();
+    Switch mWifiSwitch;
+    Switch mGPSSwitch;
+    Switch mTarParSwitch;
+    ImageView closeButtonView;
+     Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        View decorView = getWindow().getDecorView();
+        final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
         // 다이얼로그 외부 화면 흐리게 표현
         WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
         lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
@@ -33,164 +43,42 @@ public class SettingsCustomDialog extends Dialog {
         getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.settings_custom_dlg);
+        closeButtonView = findViewById(R.id.closeImageView);
+        closeButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        mTarParSwitch = findViewById(R.id.puttSwitch);
+        if(AppDef.isTar){
+            mTarParSwitch.setChecked(true);
+        }else{
+            mTarParSwitch.setChecked(false);
+        }
+        mTarParSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    AppDef.isTar = true;
+                    Toast.makeText(mContext, "타수식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+                    ((BaseActivity)mContext).GoNativeScreen(new ScoreFragment(), null);
+                }else {
+                    AppDef.isTar = false;
+                    Toast.makeText(mContext, "Par식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+                    ((BaseActivity)mContext).GoNativeScreen(new ScoreFragment(), null);
+                }
+            }
 
-//        mTitleView = findViewById(R.id.dlg_title);
-//        mContentView = findViewById(R.id.dlg_msg);
-//        mLeftButton = findViewById(R.id.btnLeft);
-//        mRightButton = findViewById(R.id.btnRight);
-//        mSingleButton = findViewById(R.id.btnSingle);
-//        mLayoutButtons = findViewById(R.id.layoutButtons);
-        //   mClosButton = findViewById(R.id.btn_dlg_close);
-//        mClosButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-        // 제목과 내용을 생성자에서 셋팅한다.
-//        mTitleView.setText(mTitle);
+        });
 
-//        if (mSpannedContent != null) {
-//            mContentView.setText(mSpannedContent);
-//        } else {
-//            mContentView.setText(mContent);
-//        }
-//
-//        if (isThemePink) {
-//            mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
-//            mSingleButton.setBackgroundResource(R.drawable.background_popup_pink_button);
-//        }
-
-        // 클릭 이벤트 셋팅
-//        if (mLeftClickListener != null && mRightClickListener != null) {
-        //       mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
-
-//            mLayoutButtons.setVisibility(View.VISIBLE);
-//            mSingleButton.setVisibility(View.GONE);
-//            mLeftButton.setOnClickListener(mLeftClickListener);
-//            mLeftButton.setText(mLeftTitle);
-//            mRightButton.setOnClickListener(mRightClickListener);
-//            mRightButton.setText(mRightTitle);
-//        } else if (mSingleClickListener != null) {
-//            mLayoutButtons.setVisibility(View.GONE);
-//            mSingleButton.setVisibility(View.VISIBLE);
-//            mSingleButton.setOnClickListener(mSingleClickListener);
-//            mSingleButton.setText(mSingleTitle);
-//        }
     }
 
     public SettingsCustomDialog(Context context) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.mContext = context;
     }
 
-    // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
-//    public SettingsCustomDialog(Context context, String title, String content, String btnTitle, View.OnClickListener singleListener, boolean isThemePink) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mContent = content;
-//        this.mSingleClickListener = singleListener;
-//        this.mSingleTitle = btnTitle;
-//           this.isThemePink = isThemePink;
-//    }
 
-//    // 클릭버튼이 하나일때 생성자 함수로 클릭이벤트를 받는다.
-//    public SettingsCustomDialog(Context context, String title, String content, String btnTitle,
-//                                View.OnClickListener singleListener) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mContent = content;
-//        this.mSingleClickListener = singleListener;
-//        this.mSingleTitle = btnTitle;
-//    }
-
-//    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-//    public SettingsCustomDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
-//                                View.OnClickListener leftListener,
-//                                View.OnClickListener rightListener, boolean isThemePink) {
-//        super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mContent = content;
-//        this.mLeftClickListener = leftListener;
-//        this.mRightClickListener = rightListener;
-//        this.mLeftTitle = leftBtnTitle;
-//        this.mRightTitle = rightBtnTitle;
-//    //    this.isThemePink = isThemePink;
-//    }
-
-//    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-//    public SettingsCustomDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
-//                                View.OnClickListener leftListener,
-//                                View.OnClickListener rightListener) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mContent = content;
-//        this.mLeftClickListener = leftListener;
-//        this.mRightClickListener = rightListener;
-//        this.mLeftTitle = leftBtnTitle;
-//        this.mRightTitle = rightBtnTitle;
-//    }
-
-//    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-//    public SettingsCustomDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
-//                                View.OnClickListener leftListener,
-//                                View.OnClickListener rightListener, boolean isThemePink) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mSpannedContent = content;
-//        this.mLeftClickListener = leftListener;
-//        this.mRightClickListener = rightListener;
-//        this.mLeftTitle = leftBtnTitle;
-//        this.mRightTitle = rightBtnTitle;
-//      //  this.isThemePink = isThemePink;
-//    }
-
-//    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-//    public SettingsCustomDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
-//                                View.OnClickListener leftListener,
-//                                View.OnClickListener rightListener) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        if (title != null) {
-//            this.mTitle = title;
-//        } else {
-//            this.mTitle = context.getResources().getString(R.string.app_name);
-//        }
-//
-//        this.mSpannedContent = content;
-//        this.mLeftClickListener = leftListener;
-//        this.mRightClickListener = rightListener;
-//        this.mLeftTitle = leftBtnTitle;
-//        this.mRightTitle = rightBtnTitle;
-//    }
 
 }
