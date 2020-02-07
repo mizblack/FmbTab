@@ -41,6 +41,7 @@ public class ScoreFragment extends BaseFragment {
     TextView[] CourseTabBar;
     //코스스코어보드]
     TabCourseLinear[] mTabCourseArr;
+    int mTabCourseSelectedIdx = 0;
     FrameLayout mTabHolder;
 
 
@@ -59,7 +60,7 @@ public class ScoreFragment extends BaseFragment {
         }
 
         for (int i = 0; NUM_OF_COURSE > i; i++) {
-            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, mCourseList.get(i));
+            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, Integer.valueOf(mCourseList.get(i).id));
             mTabCourseArr[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTabHolder.addView(mTabCourseArr[i]);
         }
@@ -104,7 +105,9 @@ public class ScoreFragment extends BaseFragment {
             tvCourseBarArr[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mTabCourseSelectedIdx = idx;
                     selectCourse(idx);
+
                 }
             });
             courseLinearLayout.addView(tvCourseBarArr[i]);
@@ -143,6 +146,7 @@ public class ScoreFragment extends BaseFragment {
         rightButtonTextView.setText("Ranking");
 
         rightLinearLayoutOnClick();
+        mParentActivity.hideMainBottomBar();
     }
 
 
@@ -166,12 +170,13 @@ public class ScoreFragment extends BaseFragment {
 
             @Override
             public void onError(ResponseData<Player> response) {
-
+                hideProgress();
+                response.getError();
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                   hideProgress();
             }
         });
 

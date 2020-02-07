@@ -70,11 +70,8 @@ public class FmbCustomDialog extends Dialog {
         } else {
             mContentView.setText(mContent);
         }
-//
-//        if (isThemePink) {
-//            mTitleView.setTextColor(getContext().getResources().getColor(R.color.txtPink));
-//            mSingleButton.setBackgroundResource(R.drawable.background_popup_pink_button);
-//        }
+
+
 
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {

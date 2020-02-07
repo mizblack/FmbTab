@@ -1015,14 +1015,29 @@ public class Util {
         return result;
     }
 
-    public static boolean isIntegerNumber(String str) {
+
+
+    public static boolean isIntegerNumber(String str)  {
         boolean result = false;
         try {
             Integer.parseInt(str);
             result = true;
         } catch (Exception e) {
+            return false;
         }
         return result;
+    }
+
+    public static boolean isInteger(String s)  {
+        try {
+            Integer.parseInt(s);
+        } catch(NumberFormatException e) {
+            return false;
+        } catch(NullPointerException e) {
+            return false;
+        }
+        // only got here if we didn't return false
+        return true;
     }
 
     /**

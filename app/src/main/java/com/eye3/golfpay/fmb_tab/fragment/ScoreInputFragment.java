@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
-import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class ScoreInputFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fr_score_input, container, false);
+        View v = inflater.inflate(R.layout.score_dlg, container, false);
         playersRecyclerView = v.findViewById(R.id.player_score_list);
         playersRecyclerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(getActivity());

@@ -12,6 +12,7 @@
 <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,6 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".service.CartLocationService"
+            android:enabled="true" >
+
+<!--            <intent-filter >-->
+<!--                <action android:name="pe.sbk.OnTop"/>-->
+<!--            </intent-filter>-->
+        </service>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.eye3.golfpay.fmb_tab"

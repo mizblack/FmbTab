@@ -83,15 +83,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    @SuppressLint("ObsoleteSdkInt")
+ //   @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
         } else {
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
+              //  startService(new Intent(getApplicationContext(), CartLocationService.class));
             } else {
                 startService(new Intent(getApplicationContext(), CartLocationService.class));
             }
@@ -108,7 +110,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 systemUIHide();
 
                 if (response.getRetCode().equals("ok")) {
-                //    GoNativeScreen(new ScoreFragment(), null);
+                    //    GoNativeScreen(new ScoreFragment(), null);
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
                     caddieNameTextView = findViewById(R.id.menu_view_include).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
@@ -350,7 +352,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.rankingLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  GoNativeScreen(new ScoreFragment(), null);
+                //  GoNativeScreen(new ScoreFragment(), null);
                 GoNativeScreen(new RankingFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
@@ -421,11 +423,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(drawer != null)
-                 drawer.closeDrawer(GravityCompat.END);
+            if (drawer != null)
+                drawer.closeDrawer(GravityCompat.END);
             fmbDialog.dismiss();
-
-            //   setLogout();
+            setLogout();
         }
     };
 

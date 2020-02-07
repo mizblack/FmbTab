@@ -59,6 +59,6 @@ public interface HttpService {
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId);
 
     @POST("setReserveScore")
-    Call<Object> sendScore(@Body ReserveScore reserveScore);
+    Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);
 
 }

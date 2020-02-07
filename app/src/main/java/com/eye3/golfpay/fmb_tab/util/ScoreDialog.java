@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -14,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.score.Score;
-import com.eye3.golfpay.fmb_tab.model.score.ScoreSend;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
@@ -63,15 +62,15 @@ public class ScoreDialog extends Dialog {
     Course mCurrentCourse;
     ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
-    //
-  //  int mTabIdx;
-    int mHoleScoreLayoutIdx; //
+
+    int mHoleScoreLayoutIdx;
     ScoreInputFinishListener inputFinishListener;
     //여기 수정할것
     TextView tvHoleId;
     TextView tvPar;
     TextView tvCourseName;
     TextView tvIN_OUT;
+    //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
 
     @Override
@@ -84,7 +83,7 @@ public class ScoreDialog extends Dialog {
         lpWindow.dimAmount = 0.8f;
         getWindow().setAttributes(lpWindow);
 
-        setContentView(R.layout.fr_score_input);
+        setContentView(R.layout.score_dlg);
 
         mTitleView = findViewById(R.id.dlg_title);
         //       mContentView = findViewById(R.id.dlg_msg);
@@ -94,9 +93,11 @@ public class ScoreDialog extends Dialog {
         mLayoutButtons = findViewById(R.id.layoutButtons);
 
         tvHoleId = findViewById(R.id.hole_id);
+        tvHoleId.setText("Hole-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].id);
         tvPar = findViewById(R.id.par_num);
+        tvPar.setText("Par-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].par);
         tvCourseName = findViewById(R.id.course_name);
-
+        tvCourseName.setText("Course(" + mCurrentCourse.courseName + ")");
 
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {
@@ -137,9 +138,11 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList.size());
+        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, mHoleScoreLayoutIdx);
+
         mReserveScore.setReserve_id(Global.reserveId);
         mReserveScore.setHole_id(String.valueOf(mHoleScoreLayoutIdx + 1));
+
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
@@ -150,9 +153,10 @@ public class ScoreDialog extends Dialog {
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse , int mHoleScoreLayoutIdx) {
+                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
         this.mContext = context;
+
         if (title != null) {
             this.mTitle = title;
         } else {
@@ -167,47 +171,8 @@ public class ScoreDialog extends Dialog {
 
         this.mPlayerList = mPlayerList;
         this.mCurrentCourse = currentCourse;
-     //   this.mTabIdx = mTabIdx;
-    //    this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
+        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
 
-    }
-
-    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-    public ScoreDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
-                       View.OnClickListener leftListener,
-                       View.OnClickListener rightListener) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-
-        if (title != null) {
-            this.mTitle = title;
-        } else {
-            this.mTitle = context.getResources().getString(R.string.app_name);
-        }
-
-        this.mContent = content;
-        this.mLeftClickListener = leftListener;
-        this.mRightClickListener = rightListener;
-        this.mLeftTitle = leftBtnTitle;
-        this.mRightTitle = rightBtnTitle;
-    }
-
-    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-    public ScoreDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
-                       View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, boolean isThemePink) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-
-        if (title != null) {
-            this.mTitle = title;
-        } else {
-            this.mTitle = context.getResources().getString(R.string.app_name);
-        }
-
-        this.mSpannedContent = content;
-        this.mLeftClickListener = leftListener;
-        this.mRightClickListener = rightListener;
-        this.mLeftTitle = leftBtnTitle;
-        this.mRightTitle = rightBtnTitle;
     }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
@@ -231,13 +196,15 @@ public class ScoreDialog extends Dialog {
 
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-        ArrayList<Player> mPlayerList = new ArrayList<Player>();
+        ArrayList<Player> mPlayerList ;
         Course mCurrentCourse;
 
         public ScoreInputAdapter(Context context, ArrayList<Player> playerList, Course currentCourse) {
 
             this.mPlayerList = playerList;
             this.mCurrentCourse = currentCourse;
+
+
         }
 
         @NonNull
@@ -250,15 +217,28 @@ public class ScoreDialog extends Dialog {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
+            final int playerIdx = position;
+            //*******
+            Course a_course = mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1));
             holder.playerName.setText(mPlayerList.get(position).name);
-            holder.etInputTar.setText(AppDef.Par_Tar(mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar));
+
+            holder.etInputTar.setText(AppDef.Par_Tar(a_course.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar));
+            holder.etInputTar.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    String s = ((EditText) v).getText().toString();
+                    //    if ("-".equals(s)) {
+                    ((EditText) v).setText("");
+                    //     }
+                    return false;
+                }
+            });
             holder.etInputTar.addTextChangedListener(new TextWatcher() {
+
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                          if("-".equals(s.toString())) {
-                              s = "";
-                          }
+
                 }
 
                 @Override
@@ -268,37 +248,49 @@ public class ScoreDialog extends Dialog {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (s == null || s.equals(""))
-                        return;
-                    if (Util.isIntegerNumber(s.toString())) {
-                        Hole seletedHole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
-                        //임시데이터 mReserveScore에 저장
-                        mReserveScore.setHole_id(seletedHole.id);
-                         //비교 잘해야함
-                        mReserveScore.guest_score_list.get(position).guest_id = mPlayerList.get(position).guest_id;
-                        if(AppDef.isTar) {
 
-                            setTar(seletedHole.playedScore, s.toString());
-                            setPar(seletedHole.playedScore, String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(seletedHole.par)));
+                    if (!TextUtils.isEmpty(s) && TextUtils.isDigitsOnly(s)) {
+                        //현재 선택되어진 홀
+                        Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
 
-                            setTar(mReserveScore.guest_score_list.get(position), s.toString());
-                            setPar(mReserveScore.guest_score_list.get(position), String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(seletedHole.par)));
+                        if (AppDef.isTar) {
 
-                        }else{  //AppDaf.istat == false (파로 넣을때)
-                            setPar(seletedHole.playedScore, s.toString());
-                            setTar(seletedHole.playedScore, String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(seletedHole.par)));
+                            setTar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
+                            setPar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
 
-                            setPar(mReserveScore.guest_score_list.get(position), s.toString());
-                            setTar(mReserveScore.guest_score_list.get(position), String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(seletedHole.par)));
+
+                            setTar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
+                            setPar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
+
+                        } else {  //AppDaf.istar == false (파로 넣을때)
+                            setPar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
+                            setTar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
+
+                            setPar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
+                            setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
+
                         }
 
+                        mReserveScore.guest_score_list.get(playerIdx).guest_id = mPlayerList.get(playerIdx).guest_id;
 
                     }
 //                    else
 //                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
             });
-            holder.etInputPutt.setText(( mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
+           // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
+            holder.etInputPutt.setText( a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
+
+            holder.etInputPutt.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    String s = ((EditText) v).getText().toString();
+                    //    if ("-".equals(s)) {
+                    ((EditText) v).setText("");
+                    //    }
+                    return false;
+                }
+            });
             holder.etInputPutt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -314,9 +306,9 @@ public class ScoreDialog extends Dialog {
                 public void afterTextChanged(Editable s) {
                     if (s == null || s.equals(""))
                         return;
-                    if (Util.isIntegerNumber(s.toString())) {
-                        mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting = s.toString();
-                        mReserveScore.guest_score_list.get(position).putting = s.toString();
+                    if (Util.isInteger(s.toString())) {
+                        mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore.putting = s.toString();
+                        mReserveScore.guest_score_list.get(playerIdx).putting = s.toString();
                     }
 
 
@@ -327,12 +319,25 @@ public class ScoreDialog extends Dialog {
         }
 
         private void setTar(Score score, String scoreStr) {
+//            if (s == null || s.toString() == null)
+//                return;
             score.tar = scoreStr;
         }
 
         private void setPar(Score score, String scoreStr) {
-            score.par = scoreStr;
+            if (scoreStr == null)
+                return;
+            else
+                score.par = scoreStr;
         }
+
+        private void setPutting(Score score, String scoreStr) {
+            if (scoreStr == null)
+                return;
+            else
+                score.putting = scoreStr;
+        }
+
 
 
         @Override
@@ -356,12 +361,13 @@ public class ScoreDialog extends Dialog {
     }
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
-        int a= 0;
+        int a = 0;
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    mReserveScore = null; //다음 입력을 위해 clear한다.
                     dismiss();
                 } else if ("fail".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();

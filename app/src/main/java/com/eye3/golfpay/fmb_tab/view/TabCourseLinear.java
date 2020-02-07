@@ -29,28 +29,29 @@ import java.util.ArrayList;
 public class TabCourseLinear extends LinearLayout {
     static final int NUM_OF_HOLES = 9;
 
-    LinearLayout mScoreColumnLinear, mHolderLinear;
-    HoleInfoLinear mHoleInfoLinear;
+   // LinearLayout mScoreColumnLinear, mHolderLinear;
+  //  HoleInfoLinear mHoleInfoLinear
+    //최상단 홀정보를 보여주기위한 홀더
+    LinearLayout mHolderLinear;
     RecyclerView mScoreRecylerView;
     ScoreAdapter mScoreAdapter;
     Context mContext;
     ScoreDialog sDialog;
-    //course_id -1과 동일함
-  //  int mTabIdx;
     //클릭한 스코어 배경 바꿀때 필요한 idx 해당홀인덱스(hole_id -1)
     int mHoleScoreLayoutIdx;
 
     ArrayList<Player> mPlayerList = new ArrayList<Player>();
-    Course mCourse ; //해당탭의 코스정보(홀정보 포함)
+    //course_id -1과 동일함
+    int mCourseId ;
 
     public TabCourseLinear(Context context) {
         super(context);
 
     }
 
-    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course course) {
+    public TabCourseLinear(Context context, ArrayList<Player> playerList, int courseId) {
         super(context);
-        init(context, playerList, course);
+        init(context, playerList,  courseId);
 
     }
 
@@ -58,19 +59,17 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(Context context, ArrayList<Player> playerList, Course course) {
+    public void init(Context context, ArrayList<Player> playerList,  int mCourseId) {
 
      //   mTabIdx = tabIdx;
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
-//        //1.
-        createHoleInfoLinear(context, course.holes);
-//        //2.
+        createHoleInfoLinear(context, playerList.get(0).playingCourse.get(mCourseId-1));
         mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
         mPlayerList = playerList;
-        mCourse = course;
+        this.mCourseId = mCourseId;
         initRecyclerView(playerList);
         addView(v);
 
@@ -82,29 +81,46 @@ public class TabCourseLinear extends LinearLayout {
         mScoreRecylerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
         mScoreRecylerView.setLayoutManager(mManager);
-        mScoreAdapter = new ScoreAdapter(mContext, playerList, mCourse);
+        mScoreAdapter = new ScoreAdapter(mContext, playerList,playerList.get(0).playingCourse.get(mCourseId -1),mCourseId);
         mScoreRecylerView.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
     }
 
-    private void createHoleInfoLinear(Context context, Hole[] holes) {
+    private void createHoleInfoLinear(Context context, Course course) {
+        Hole[] holes = course.holes;
 
+        int totalPar = 0;
+        int totalMeter = 0;
         for (int k = 0; holes.length > k; k++) {
             HoleInfoLinear a_holeInfoLinear = new HoleInfoLinear(context, holes[k]);
             a_holeInfoLinear.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(a_holeInfoLinear);
+            totalPar = totalPar + Integer.valueOf(holes[k].par);
+            totalMeter = totalMeter + Integer.valueOf(holes[k].hole_total_size);
         }
+        Hole totalHole = new Hole();
+        totalHole.par = String.valueOf(totalPar);
+        totalHole.hole_total_size = String.valueOf(totalMeter);
+        HoleInfoLinear a_holeInfoTotalLinear = new HoleInfoLinear(context, totalHole);
+        TextView tvCourseName = a_holeInfoTotalLinear.findViewById(R.id.course_name);
+        TextView tvCoursId = a_holeInfoTotalLinear.findViewById(R.id.hole_id);
+        tvCoursId.setVisibility(View.GONE);
+        tvCourseName.setVisibility(View.VISIBLE);
+
+        tvCourseName.setText(course.courseName);
+        mHolderLinear.addView(a_holeInfoTotalLinear);
+
     }
 
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
-        ArrayList<Player> playerList = new ArrayList<Player>();
+        ArrayList<Player> playerList ;
         Course mCurrentCourse;
-
-        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
+        int   mCourseId ;
+        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse , int mCourseId) {
             this.playerList = playerList;
-            this.mCurrentCourse = mCourse;
-
+            this.mCourseId = mCourseId;
+            mCurrentCourse = mCourse;
         }
 
 
@@ -188,7 +204,7 @@ public class TabCourseLinear extends LinearLayout {
                                 default:
 
                             }
-                            sDialog = new ScoreDialog(mContext, title, "", "취소", "확인", null, null, mPlayerList, mCourse, mHoleScoreLayoutIdx);
+                            sDialog = new ScoreDialog(mContext, "타이틀", "", "취소", "확인", null, null, mPlayerList, mCurrentCourse, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
@@ -217,7 +233,7 @@ public class TabCourseLinear extends LinearLayout {
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
-                    //    mPlayerList = playerList;
+                        mPlayerList = playerList;
                     notifyDataSetChanged();
                 }
             };
@@ -236,7 +252,8 @@ public class TabCourseLinear extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;                            //course tab index
-            Course course = mCurrentCourse;
+            Course course = mPlayerList.get(i).playingCourse.get(mCourseId-1);
+
 
             scoreItemViewHolder.tvRank.setText("lst");
             scoreItemViewHolder.tvName.setText(playerList.get(i).name);

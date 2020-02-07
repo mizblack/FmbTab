@@ -1,5 +1,7 @@
 package com.eye3.golfpay.fmb_tab.model.score;
 
+import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
@@ -28,9 +30,14 @@ public class ReserveScore implements Serializable {
     @Expose
     public ArrayList<ScoreSend> guest_score_list = new ArrayList<>();
 
-    public ReserveScore(int size) {
-        for (int i = 0; size > i; i++)
-            guest_score_list.add(new ScoreSend());
+    public ReserveScore(ArrayList<Player> playerList, Course playingCourse, int mHoleScoreLayoutIdx) {
+        for (int i = 0; playerList.size() > i; i++) {
+            Hole aHole = playerList.get(i).playingCourse.get(Integer.valueOf(playingCourse.id) -1).holes[mHoleScoreLayoutIdx];
+
+            guest_score_list.add(new ScoreSend(playerList.get(i).guest_id, aHole.playedScore.par,
+                    aHole.playedScore.putting,  aHole.playedScore.tar));
+
+        }
     }
 
     public void setReserve_id(String reserve_id) {

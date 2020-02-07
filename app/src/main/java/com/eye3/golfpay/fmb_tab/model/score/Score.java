@@ -10,15 +10,21 @@ public class Score  implements Serializable {
     //파점수 계산시 사용( -2 under par)
     @SerializedName("par")
     @Expose
-    public String par;
+    public String par = "-";
 
     @SerializedName("putting")
     @Expose
-    public String putting;
+    public String putting = "-";
 
     //putting + hit
     @SerializedName("tar")
     @Expose
-    public String tar;
+    public String tar = "-";
+
+    public Score(String par, String putting, String tar){
+        this.par = par;
+        this.putting = putting ;
+        this.tar = tar;
+    }
 
 }

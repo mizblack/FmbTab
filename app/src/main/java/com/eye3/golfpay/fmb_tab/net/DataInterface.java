@@ -218,7 +218,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Player>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    // callback.onFailure(t);
+                     callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
@@ -229,20 +229,21 @@ public class DataInterface extends BasicDataInterface {
 
     public void setScore(final Context context, ReserveScore reserveScore, final ResponseCallback<ResponseData<Object>> callback) {
         try {
-            Call<Object> call = service.sendScore(reserveScore);
-            call.enqueue(new Callback<Object>() {
+            Call<ResponseData<Object>> call = service.sendScore(reserveScore);
+            call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
-                public void onResponse(Call<Object> call, Response<Object> response) {
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
                     solveCommonError(context, callback, response, false);
                 }
 
                 @Override
-                public void onFailure(Call<Object> call, Throwable t) {
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     // callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
+
             });
         } catch (Exception ex) {
             ex.printStackTrace();

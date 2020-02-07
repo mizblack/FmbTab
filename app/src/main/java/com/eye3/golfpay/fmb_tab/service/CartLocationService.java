@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.service;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.Service;
@@ -51,11 +52,8 @@ public class CartLocationService extends Service {
     private static final float LOCATION_DISTANCE = 0.0f;
     private static final int NOTIFICATION_ID = 1;
 
-  //  public static ImageView mViewChangeBtn;
-
     private WindowManager.LayoutParams params;
     private WindowManager mManager;
-  //  private GestureDetectorCompat gestureDetector;
 
     private static final int ALWAYS_ON_TOP_SERVICE_ID = 1;
 
@@ -78,8 +76,8 @@ public class CartLocationService extends Service {
         return notificationBuilder.build();
     }
 
-    @SuppressLint("MissingPermission")
- //   @RequiresApi(api = Build.VERSION_CODES.N)
+    //   @SuppressLint("MissingPermission")
+    //   @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
@@ -87,12 +85,22 @@ public class CartLocationService extends Service {
 
         initializeLocationManager();
 
-//        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom);
-//        remoteViews.setTextViewText(R.id.serviceNotiTitle, getString(R.string.app_name));
-//        remoteViews.setTextViewText(R.id.serviceNotiMessage, getString(R.string.txt_noti_cont));
+        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_custom);
+        remoteViews.setTextViewText(R.id.serviceNotiTitle, getString(R.string.app_name));
+        remoteViews.setTextViewText(R.id.serviceNotiMessage, getString(R.string.txt_noti_cont));
         startForeground(NOTIFICATION_ID, createNotification(this, null));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                return;
+            }
             mLocationManager.registerGnssStatusCallback(new GnssStatus.Callback() {
                 @Override
                 public void onStarted() {
@@ -142,6 +150,16 @@ public class CartLocationService extends Service {
                             break;
                         case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                             try {
+                                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    // TODO: Consider calling
+                                    //    Activity#requestPermissions
+                                    // here to request the missing permissions, and then overriding
+                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                    //                                          int[] grantResults)
+                                    // to handle the case where the user grants the permission. See the documentation
+                                    // for Activity#requestPermissions for more details.
+                                    return;
+                                }
                                 GpsStatus status = mLocationManager.getGpsStatus(null);
                                 Iterable sats = status.getSatellites();
                                 Iterator satI = sats.iterator();
