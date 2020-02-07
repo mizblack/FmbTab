@@ -59,7 +59,8 @@ public class GuestDatum implements Serializable {
     private Long totalPrice;
     @SerializedName("phoneNumber")
     private String phoneNumber;
-
+    @SerializedName("carNumber")
+    private String carNumber;
 
     public Long getCartBill() {
         return cartBill;
@@ -203,5 +204,13 @@ public class GuestDatum implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getCarNumber() {
+        return carNumber;
+    }
+
+    public void setCarNumber(String carNumber) {
+        this.carNumber = carNumber;
     }
 }

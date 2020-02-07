@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,9 +57,9 @@ public class CaddieFragment extends BaseFragment {
     private Uri photoUri;
     ImageView mPhoto;
     View v;
-    GuestAdapter guestAdapter;
     RecyclerView guestRecyclerView;
     private int position;
+    LinearLayout memberLinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,25 +75,26 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
-        mImgClubPic = v.findViewById(R.id.club_pic);
-        mImgClubPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
-                        Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.CAMERA},
-                            MY_PERMISSIONS_REQUEST_CAMERA);
-
-                } else {
-                    sendTakePhotoIntent();
-                }
-            }
-        });
+        memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
+//        mImgClubPic = v.findViewById(R.id.club_pic);
+//        mImgClubPic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+//                        Manifest.permission.CAMERA)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//
+//                    ActivityCompat.requestPermissions(getActivity(),
+//                            new String[]{Manifest.permission.CAMERA},
+//                            MY_PERMISSIONS_REQUEST_CAMERA);
+//
+//                } else {
+//                    sendTakePhotoIntent();
+//                }
+//            }
+//        });
         mParentActivity.showMainBottomBar();
-        mPhoto = v.findViewById(R.id.caddieImageView);
+//        mPhoto = v.findViewById(R.id.caddieImageView);
         return v;
     }
 
@@ -116,13 +119,54 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        guestAdapter = new GuestAdapter(getActivity(), Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
-        guestRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.guestRecyclerView);
-        guestRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        guestRecyclerView.setLayoutManager(manager);
-        guestRecyclerView.setAdapter(guestAdapter);
-        guestAdapter.notifyDataSetChanged();
+        createGuestList(Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
+        setDataTeamMemo();
+    }
+
+    private void guestListOnClick(CaddieViewGuestItem caddieViewGuestItem, int position) {
+        caddieViewGuestItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void signatureRelativeLayoutOnClick(View signatureRelativeLayout, int position) {
+        signatureRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void createGuestList(ArrayList<GuestDatum> guestList) {
+        if (guestList != null && guestList.size() != 0) {
+            for (int i = 0; i < guestList.size(); i++) {
+                final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
+                memberLinearLayout.addView(caddieViewGuestItem);
+                guestListOnClick(caddieViewGuestItem, i);
+
+                TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
+                memberNameTextView.setText(guestList.get(i).getGuestName());
+
+                EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
+                carNumberEditText.setText(guestList.get(i).getCarNumber());
+
+                EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
+                phoneNumberEditText.setText(guestList.get(i).getPhoneNumber());
+
+                View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
+                signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
+
+            }
+        }
+    }
+
+    private void setDataTeamMemo() {
+        TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
+        teamMemoContentTextView.setText(Global.teeUpTime.getTodayReserveList().get(position).getMemo());
     }
 
     private void sendTakePhotoIntent() {
@@ -166,7 +210,7 @@ public class CaddieFragment extends BaseFragment {
                 exifDegree = 0;
             }
 
-            ((ImageView) v.findViewById(R.id.caddieImageView)).setImageBitmap(rotate(bitmap, exifDegree));
+//            ((ImageView) v.findViewById(R.id.caddieImageView)).setImageBitmap(rotate(bitmap, exifDegree));
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
             ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
 
@@ -203,60 +247,60 @@ public class CaddieFragment extends BaseFragment {
         return image;
     }
 
-    public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.GuestItemViewHolder> {
-
-        ArrayList<GuestDatum> guestList;
-        TextView memberNameTextView;
-        View memberDivider;
-
-        GuestAdapter(Context context, ArrayList<GuestDatum> todayReserveList) {
-            this.guestList = todayReserveList;
-        }
-
-        class GuestItemViewHolder extends RecyclerView.ViewHolder {
-
-            GuestItemViewHolder(View view) {
-                super(view);
-
-                memberNameTextView = view.findViewById(R.id.memberNameTextView);
-                memberDivider = view.findViewById(R.id.memberDivider);
-
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        int position = getAdapterPosition();
-                        memberNameTextView.setTextColor(0xff000000);
-                        memberDivider.setBackgroundColor(0xff000000);
-
-                        // Todo 선택된 포지션을 제외한 모든 아이템을 아래의 색상으로 변경
-                        //  memberNameTextView.setTextColor(0xffcccccc);
-                        //  memberDivider.setBackgroundColor(0xffcccccc);
-
-                    }
-                });
-
-            }
-
-        }
-
-        @NonNull
-        @Override
-        public GuestItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_guest, viewGroup, false);
-            return new GuestItemViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull GuestItemViewHolder scoreItemViewHolder, int position) {
-            memberNameTextView.setText(guestList.get(position).getGuestName());
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return guestList.size();
-        }
-
-    }
+//    public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.GuestItemViewHolder> {
+//
+//        ArrayList<GuestDatum> guestList;
+//        TextView memberNameTextView;
+//        View memberDivider;
+//
+//        GuestAdapter(Context context, ArrayList<GuestDatum> todayReserveList) {
+//            this.guestList = todayReserveList;
+//        }
+//
+//        class GuestItemViewHolder extends RecyclerView.ViewHolder {
+//
+//            GuestItemViewHolder(View view) {
+//                super(view);
+//
+//                memberNameTextView = view.findViewById(R.id.memberNameTextView);
+//                memberDivider = view.findViewById(R.id.memberDivider);
+//
+//                itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+////                        int position = getAdapterPosition();
+//                        memberNameTextView.setTextColor(0xff000000);
+//                        memberDivider.setBackgroundColor(0xff000000);
+//
+//                        // Todo 선택된 포지션을 제외한 모든 아이템을 아래의 색상으로 변경
+//                        //  memberNameTextView.setTextColor(0xffcccccc);
+//                        //  memberDivider.setBackgroundColor(0xffcccccc);
+//
+//                    }
+//                });
+//
+//            }
+//
+//        }
+//
+//        @NonNull
+//        @Override
+//        public GuestItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+//            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_guest, viewGroup, false);
+//            return new GuestItemViewHolder(view);
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull GuestItemViewHolder scoreItemViewHolder, int position) {
+//            memberNameTextView.setText(guestList.get(position).getGuestName());
+//
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return guestList.size();
+//        }
+//
+//    }
 
 }

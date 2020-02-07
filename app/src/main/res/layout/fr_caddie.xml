@@ -10,60 +10,47 @@
         android:orientation="horizontal"
         tools:ignore="DisableBaselineAlignment">
 
-        <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/guestRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lightGray" />
-
-        <LinearLayout
+        <HorizontalScrollView
+            android:id="@+id/memberHorizontalScrollView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="16dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/memberLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:ignore="Orientation" />
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"
             android:orientation="vertical"
-            android:padding="40dp"
-            tools:ignore="UselessLeaf">
+            android:padding="36dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="차량번호"
-                    android:textColor="@color/lightGray"
-                    android:textSize="16dp" />
-
-                <EditText
-                    android:id="@+id/carNumberEditText"
+                    android:id="@+id/memberNameTextView"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="차량번호"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    tools:ignore="TextFields" />
+                    android:text="팀메모"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText,SpUsage" />
 
                 <ImageView
                     android:id="@+id/carNumberImageView"
@@ -74,332 +61,64 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="전화번호"
-                    android:textColor="@color/lightGray"
-                    android:textSize="16dp" />
-
-                <EditText
-                    android:id="@+id/phoneNumberEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:hint="전화번호"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    tools:ignore="TextFields" />
-
-                <ImageView
-                    android:id="@+id/phoneNumberImageView"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/caddie_memo"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
-            <View
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="클럽확인 및 정보수집 동의"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="20dp"
-            tools:ignore="UselessLeaf">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="팀메모"
-                    android:textColor="@color/lightGray"
-                    android:textSize="16dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/teamMemoImageView"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/caddie_memo"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
-            <ScrollView
-                android:id="@+id/teamMemoScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:scrollbars="none">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1">
 
                 <LinearLayout
-                    android:id="@+id/teamMemoLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-            </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="개인메모"
-                    android:textColor="@color/lightGray"
-                    android:textSize="16dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/personalImageView"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/caddie_memo"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
-
-            <ScrollView
-                android:id="@+id/personalMemoScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/personalMemoLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/guest00MemoLinearLayout"
+                    <TextView
+                        android:id="@+id/teamMemoContentTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
-                    <LinearLayout
-                        android:id="@+id/guest01MemoLinearLayout"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/teamMemoTimeTextView"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:id="@+id/guest02MemoLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:id="@+id/guest03MemoLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        tools:ignore="SpUsage" />
 
                 </LinearLayout>
 
             </ScrollView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights" />
-
-            <RelativeLayout
-                android:id="@+id/signatureRelativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                tools:ignore="NestedWeights">
-
-                <ImageView
-                    android:id="@+id/member00SignatureView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="ContentDescription" />
-
-                <ImageView
-                    android:id="@+id/member01SignatureView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    tools:ignore="ContentDescription" />
-
-                <ImageView
-                    android:id="@+id/member02SignatureView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    tools:ignore="ContentDescription" />
-
-                <ImageView
-                    android:id="@+id/member03SignatureView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    tools:ignore="ContentDescription" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="16dp"
-                        android:gravity="center_vertical"
-                        android:text="서명"
-                        android:textColor="@color/lightGray"
-                        android:textSize="24dp" />
-
-                    <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/caddie_memo"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="400dp"
-            android:layout_height="match_parent"
-            android:background="@color/zumthor"
-            android:orientation="vertical"
-            android:padding="36dp">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/caddieImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="ContentDescription" />
-
-                <LinearLayout
-                    android:id="@+id/club_pic"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/pattensBlue01"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/photo_view"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/camera"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-            </FrameLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/saveTextView"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:background="@color/irisBlue"
+                android:background="@color/white"
                 android:gravity="center"
                 android:text="저장하기"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage" />
 
             <TextView
                 android:id="@+id/cancelTextView"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/white"
+                android:background="@drawable/shape_white_edge"
                 android:gravity="center"
                 android:text="취소"
-                android:textColor="@color/irisBlue"
+                android:textColor="@color/white"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage" />
 
         </LinearLayout>
 
