@@ -38,9 +38,6 @@
                         android:layout_height="1dp"
                         android:background="@color/lightGray" />
 
-                    <include
-                        android:id="@+id/column"
-                        layout="@layout/ranking_column" />
 
                     <View
                         android:layout_width="match_parent"
