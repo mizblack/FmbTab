@@ -82,6 +82,10 @@ public class TabCourseLinear extends LinearLayout {
         mScoreAdapter.notifyDataSetChanged();
     }
 
+    /*
+     *  최상단 홀정보 보여주는 뷰생성
+     *
+     */
     private void createHoleInfoLinear(Context context, Course course) {
         Hole[] holes = course.holes;
 
@@ -238,7 +242,10 @@ public class TabCourseLinear extends LinearLayout {
             return viewHolder;
         }
 
-
+        /*
+         * holeScoreLayout[] :홀스코어뷰
+         * course.holes[].playedScore: 홀별스코어 점수데이터
+         */
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;                            //course tab index

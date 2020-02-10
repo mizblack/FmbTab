@@ -69,7 +69,5 @@ public class Course implements Serializable {
     @Expose
     public Hole[] holes = new Hole[9];
 
-//    @SerializedName("holes")
-//   public Hole[] holes = new Hole[9];
 
 }

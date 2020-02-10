@@ -45,9 +45,13 @@
                         android:background="@color/lightGray" />
 
                     <!--리사이클러뷰로 교체해야합니다 -->
-                    <include
-                        android:id="@+id/row00"
-                        layout="@layout/ranking_row" />
+<!--                    <include-->
+<!--                        android:id="@+id/row00"-->
+<!--                        layout="@layout/ranking_row" />-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/player_recycler"
+                       android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
