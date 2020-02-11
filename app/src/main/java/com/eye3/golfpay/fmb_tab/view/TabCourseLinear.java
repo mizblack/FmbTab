@@ -28,9 +28,6 @@ import java.util.ArrayList;
 
 public class TabCourseLinear extends LinearLayout {
     static final int NUM_OF_HOLES = 9;
-
-   // LinearLayout mScoreColumnLinear, mHolderLinear;
-  //  HoleInfoLinear mHoleInfoLinear
     //최상단 홀정보를 보여주기위한 홀더
     LinearLayout mHolderLinear;
     RecyclerView mScoreRecylerView;
@@ -42,7 +39,7 @@ public class TabCourseLinear extends LinearLayout {
 
     ArrayList<Player> mPlayerList = new ArrayList<Player>();
     //course_id -1과 동일함
-    int mCourseId ;
+    int mCourseId;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -51,7 +48,7 @@ public class TabCourseLinear extends LinearLayout {
 
     public TabCourseLinear(Context context, ArrayList<Player> playerList, int courseId) {
         super(context);
-        init(context, playerList,  courseId);
+        init(context, playerList, courseId);
 
     }
 
@@ -59,14 +56,13 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(Context context, ArrayList<Player> playerList,  int mCourseId) {
+    public void init(Context context, ArrayList<Player> playerList, int mCourseId) {
 
-     //   mTabIdx = tabIdx;
         mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
-        createHoleInfoLinear(context, playerList.get(0).playingCourse.get(mCourseId-1));
+        createHoleInfoLinear(context, playerList.get(0).playingCourse.get(mCourseId - 1));
         mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
         mPlayerList = playerList;
         this.mCourseId = mCourseId;
@@ -81,7 +77,7 @@ public class TabCourseLinear extends LinearLayout {
         mScoreRecylerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
         mScoreRecylerView.setLayoutManager(mManager);
-        mScoreAdapter = new ScoreAdapter(mContext, playerList,playerList.get(0).playingCourse.get(mCourseId -1),mCourseId);
+        mScoreAdapter = new ScoreAdapter(mContext, playerList, playerList.get(0).playingCourse.get(mCourseId - 1), mCourseId);
         mScoreRecylerView.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
     }
@@ -114,10 +110,11 @@ public class TabCourseLinear extends LinearLayout {
 
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
-        ArrayList<Player> playerList ;
+        ArrayList<Player> playerList;
         Course mCurrentCourse;
-        int   mCourseId ;
-        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse , int mCourseId) {
+        int mCourseId;
+
+        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse, int mCourseId) {
             this.playerList = playerList;
             this.mCourseId = mCourseId;
             mCurrentCourse = mCourse;
@@ -129,75 +126,68 @@ public class TabCourseLinear extends LinearLayout {
             protected LinearLayout[] holeScoreLayout = new LinearLayout[9];
             protected LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
             protected TextView wholeTotal;
+            protected LinearLayout ll_score_row;
 
             public ScoreItemViewHolder(View view) {
                 super(view);
+                ll_score_row = view.findViewById(R.id.ll_score_row);
                 tvRank = view.findViewById(R.id.rank);
                 tvName = view.findViewById(R.id.name);
 
-                holeScoreLayout[0] = view.findViewById(R.id.hole1LinearLayout);
-                holeScoreLayout[1] = view.findViewById(R.id.hole2LinearLayout);
-                holeScoreLayout[2] = view.findViewById(R.id.hole3LinearLayout);
-                holeScoreLayout[3] = view.findViewById(R.id.hole4LinearLayout);
-                holeScoreLayout[4] = view.findViewById(R.id.hole5LinearLayout);
-                holeScoreLayout[5] = view.findViewById(R.id.hole6LinearLayout);
-                holeScoreLayout[6] = view.findViewById(R.id.hole7LinearLayout);
-                holeScoreLayout[7] = view.findViewById(R.id.hole8LinearLayout);
-                holeScoreLayout[8] = view.findViewById(R.id.hole9LinearLayout);
+                holeScoreLayout[0] = view.findViewById(R.id.hole1_ll);
+                holeScoreLayout[1] = view.findViewById(R.id.hole2_ll);
+                holeScoreLayout[2] = view.findViewById(R.id.hole3_ll);
+                holeScoreLayout[3] = view.findViewById(R.id.hole4_ll);
+                holeScoreLayout[4] = view.findViewById(R.id.hole5_ll);
+                holeScoreLayout[5] = view.findViewById(R.id.hole6_ll);
+                holeScoreLayout[6] = view.findViewById(R.id.hole7_ll);
+                holeScoreLayout[7] = view.findViewById(R.id.hole8_ll);
+                holeScoreLayout[8] = view.findViewById(R.id.hole9_ll);
                 courseTotal[0] = view.findViewById(R.id.ll_course0_total);
 
 
                 wholeTotal = view.findViewById(R.id.whole_totalColumn);
 
-                for ( int i = 0; NUM_OF_HOLES > i; i++) {
+                for (int i = 0; NUM_OF_HOLES > i; i++) {
                     holeScoreLayout[i].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             String title = "";
                             Hole mSelectedHole = null;
                             switch (v.getId()) {
-                                case R.id.hole1LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole1";
+                                case R.id.hole1_ll:
                                     mHoleScoreLayoutIdx = 0;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole2LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole2";
+                                case R.id.hole2_ll:
                                     mHoleScoreLayoutIdx = 1;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole3LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole3";
+                                case R.id.hole3_ll:
                                     mHoleScoreLayoutIdx = 2;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole4LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole4";
+                                case R.id.hole4_ll:
                                     mHoleScoreLayoutIdx = 3;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole5LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole5";
+                                case R.id.hole5_ll:
                                     mHoleScoreLayoutIdx = 4;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole6LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole6";
+                                case R.id.hole6_ll:
                                     mHoleScoreLayoutIdx = 5;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole7LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole7";
+                                case R.id.hole7_ll:
                                     mHoleScoreLayoutIdx = 6;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole8LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole8";
+                                case R.id.hole8_ll:
                                     mHoleScoreLayoutIdx = 7;
                                     notifyDataSetChanged();
                                     break;
-                                case R.id.hole9LinearLayout:
-                                    title = "Par" + "/" + "Course/Hole9";
+                                case R.id.hole9_ll:
                                     mHoleScoreLayoutIdx = 8;
                                     notifyDataSetChanged();
                                     break;
@@ -233,7 +223,7 @@ public class TabCourseLinear extends LinearLayout {
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
-                        mPlayerList = playerList;
+                    mPlayerList = playerList;
                     notifyDataSetChanged();
                 }
             };
@@ -252,8 +242,17 @@ public class TabCourseLinear extends LinearLayout {
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;                            //course tab index
-            Course course = mPlayerList.get(i).playingCourse.get(mCourseId-1);
+            Course course = mPlayerList.get(i).playingCourse.get(mCourseId - 1);
+            if (i % 2 == 0) {
+                scoreItemViewHolder.ll_score_row.setBackgroundColor(Color.parseColor("#EBEFF1"));
+                for (int k = 0; scoreItemViewHolder.holeScoreLayout.length > k; k++)
 
+                    scoreItemViewHolder.holeScoreLayout[k].setBackgroundColor(Color.parseColor("#EBEFF1"));
+            } else {
+//                scoreItemViewHolder.ll_score_row.setBackgroundColor(Color.parseColor("#F5F7F8"));
+//                for (int k = 0; scoreItemViewHolder.holeScoreLayout.length > k; k++)
+//                    scoreItemViewHolder.holeScoreLayout[k].setBackgroundColor(Color.parseColor("#F5F7F8"));
+            }
 
             scoreItemViewHolder.tvRank.setText("lst");
             scoreItemViewHolder.tvName.setText(playerList.get(i).name);
@@ -264,6 +263,7 @@ public class TabCourseLinear extends LinearLayout {
                 else
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.WHITE);
             }
+
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes[0].playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes[0].playedScore.putting);
@@ -309,7 +309,6 @@ public class TabCourseLinear extends LinearLayout {
             return playerList.size();
         }
     }
-
 
 
     private String Par_Tar_Total(Course course, boolean istar) {

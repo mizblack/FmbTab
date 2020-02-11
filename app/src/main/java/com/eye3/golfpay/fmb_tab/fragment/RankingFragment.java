@@ -111,19 +111,6 @@ public class RankingFragment extends BaseFragment {
         viewRankingTextOnClick();
         viewDetailTextOnClick();
         rightLinearLayoutOnClick();
-
-        //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-        //  mBtnTaokeoverTest.setOnClickListener();
-//        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                GoNativeScreenAdd(new FrDeviceSearch(), null);
-////                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            }
-//        });
     }
 
 

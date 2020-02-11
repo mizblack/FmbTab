@@ -37,7 +37,6 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected DrawerLayout drawer;
     private boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
-    // protected Realm mRealm;
 
     public void setOnKeyBackPressedListener(BaseFragment listener) {
         mOnKeyBackPressedListener = listener;
@@ -48,9 +47,10 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         backPressCloseHandler = new BackPressCloseHandler(this);
-
-
+        systemUIHide();
     }
+
+
 
     public void showMainBottomBar() {
         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
@@ -65,8 +65,11 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //   systemUIHide();
+           systemUIHide();
+
     }
+
+
 
     protected void setBind(@LayoutRes int layId) {
         if (mVd == null) {
@@ -360,8 +363,24 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                |View.SYSTEM_UI_FLAG_LOW_PROFILE;
         decorView.setSystemUiVisibility(uiOptions);
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    // TODO: The system bars are visible. Make any desired
+                    // adjustments to your UI, such as showing the action bar or
+                    // other navigational controls.
+                    systemUIHide();
+                } else {
+                    // TODO: The system bars are NOT visible. Make any desired
+                    // adjustments to your UI, such as hiding the action bar or
+                    // other navigational controls.
+                }
+            }
+        });
     }
 
     public void closeKeyboard(View view) {

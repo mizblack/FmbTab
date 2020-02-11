@@ -92,7 +92,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
-              //  startService(new Intent(getApplicationContext(), CartLocationService.class));
             } else {
                 startService(new Intent(getApplicationContext(), CartLocationService.class));
             }
@@ -430,6 +429,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     };
 
     private void setLogout() {
+
+        stopService((new Intent(getApplicationContext(), CartLocationService.class)));
         finish();
     }
 
