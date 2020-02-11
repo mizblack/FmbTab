@@ -1,8 +1,6 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,23 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.util.EditorDialog;
+import com.eye3.golfpay.fmb_tab.util.SignatureDialog;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.io.File;
@@ -50,16 +45,13 @@ import static android.app.Activity.RESULT_OK;
 public class CaddieFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
-    LinearLayout mImgClubPic;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
     private Uri photoUri;
-    ImageView mPhoto;
     View v;
-    RecyclerView guestRecyclerView;
     private int position;
-    LinearLayout memberLinearLayout;
+    private LinearLayout memberLinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,25 +68,7 @@ public class CaddieFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
-//        mImgClubPic = v.findViewById(R.id.club_pic);
-//        mImgClubPic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
-//                        Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//
-//                    ActivityCompat.requestPermissions(getActivity(),
-//                            new String[]{Manifest.permission.CAMERA},
-//                            MY_PERMISSIONS_REQUEST_CAMERA);
-//
-//                } else {
-//                    sendTakePhotoIntent();
-//                }
-//            }
-//        });
         mParentActivity.showMainBottomBar();
-//        mPhoto = v.findViewById(R.id.caddieImageView);
         return v;
     }
 
@@ -109,7 +83,6 @@ public class CaddieFragment extends BaseFragment {
         }
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,11 +96,30 @@ public class CaddieFragment extends BaseFragment {
         setDataTeamMemo();
     }
 
-    private void guestListOnClick(CaddieViewGuestItem caddieViewGuestItem, int position) {
+    private void closeKeyboard() {
+        for (int i = 0; i < Global.caddieViewGuestItemArrayList.size(); i++) {
+            CaddieViewGuestItem caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(i);
+            closeKeyboard(caddieViewGuestItem.findViewById(R.id.carNumberEditText));
+            closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
+        }
+    }
+
+    private void guestListOnClick(final CaddieViewGuestItem caddieViewGuestItem, int position) {
         caddieViewGuestItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                closeKeyboard();
+            }
+        });
+    }
 
+    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout, int i) {
+        guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditorDialog editorDialog = new EditorDialog(getContext());
+                editorDialog.show();
+                systemUIHide();
             }
         });
     }
@@ -136,7 +128,9 @@ public class CaddieFragment extends BaseFragment {
         signatureRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SignatureDialog signatureDialog = new SignatureDialog(getContext());
+                signatureDialog.show();
+                systemUIHide();
             }
         });
     }
@@ -146,6 +140,7 @@ public class CaddieFragment extends BaseFragment {
             for (int i = 0; i < guestList.size(); i++) {
                 final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
                 memberLinearLayout.addView(caddieViewGuestItem);
+                Global.caddieViewGuestItemArrayList.add(caddieViewGuestItem);
                 guestListOnClick(caddieViewGuestItem, i);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
@@ -156,6 +151,9 @@ public class CaddieFragment extends BaseFragment {
 
                 EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
                 phoneNumberEditText.setText(guestList.get(i).getPhoneNumber());
+
+                View guestMemoLinearLayout = caddieViewGuestItem.findViewById(R.id.guestMemoLinearLayout);
+                guestMemoLinearLayoutOnClick(guestMemoLinearLayout, i);
 
                 View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
                 signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
