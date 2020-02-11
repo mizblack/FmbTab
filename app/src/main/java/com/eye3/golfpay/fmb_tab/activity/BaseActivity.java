@@ -51,7 +51,6 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     }
 
 
-
     public void showMainBottomBar() {
         findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
     }
@@ -65,10 +64,9 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-           systemUIHide();
+        systemUIHide();
 
     }
-
 
 
     protected void setBind(@LayoutRes int layId) {
@@ -364,7 +362,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                |View.SYSTEM_UI_FLAG_LOW_PROFILE;
+                | View.SYSTEM_UI_FLAG_LOW_PROFILE;
         decorView.setSystemUiVisibility(uiOptions);
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override

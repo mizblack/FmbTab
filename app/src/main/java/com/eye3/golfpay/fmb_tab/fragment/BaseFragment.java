@@ -241,7 +241,6 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 //        } else {
         mParentActivity.GoNativeBackStack();
 //        }
-
     }
 
     void systemUIHide() {
@@ -251,8 +250,24 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LOW_PROFILE;
         decorView.setSystemUiVisibility(uiOptions);
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    // TODO: The system bars are visible. Make any desired
+                    // adjustments to your UI, such as showing the action bar or
+                    // other navigational controls.
+                    systemUIHide();
+                } else {
+                    // TODO: The system bars are NOT visible. Make any desired
+                    // adjustments to your UI, such as hiding the action bar or
+                    // other navigational controls.
+                }
+            }
+        });
     }
 
     void closeKeyboard(View view) {
