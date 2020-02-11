@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +37,8 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 
 import java.util.ArrayList;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class ScoreDialog extends Dialog {
@@ -362,7 +365,7 @@ public class ScoreDialog extends Dialog {
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
         int a = 0;
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {
@@ -385,6 +388,24 @@ public class ScoreDialog extends Dialog {
 
             }
         });
+    }
+
+    ArrayList<Integer> incrementsLoop(int a, int b, int increments) {
+        Log.d(TAG, "incrementsLoop(" + a + ", " + b + ", " + increments + ")");
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        for (int i = a; i <= b; ) {
+            integerArrayList.add(i);
+            i = i + increments;
+        }
+        return integerArrayList;
+    }
+
+    void createIntegerArrayList() {
+        ArrayList<Integer>  parScoreIntegerArrayList =  incrementsLoop(3 * (-1), 8, 1);
+        ArrayList<Integer>   strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
+        ArrayList<Integer>   puttIntegerArrayList = incrementsLoop(0, 10, 1);
+        ArrayList<Integer>   nearestIntegerArrayList = incrementsLoop(0, 20, 1);
+        ArrayList<Integer>  longestIntegerArrayList = incrementsLoop(100, 300, 10);
     }
 
 
