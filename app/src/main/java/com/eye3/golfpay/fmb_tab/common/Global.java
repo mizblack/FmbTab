@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Global {
 
     public static TeeUpTime teeUpTime;
-
+    public static ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
     public static String SavedDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FMB_TAB";
@@ -67,17 +67,16 @@ public class Global {
         String CHANNEL_PUSH = "macaron_push";
     }
 
-    public static ArrayList<GuestDatum> guestList = new  ArrayList<GuestDatum>();
-    public static ArrayList<Course> courseInfoList = new  ArrayList<Course>();
+    public static ArrayList<GuestDatum> guestList = new ArrayList<GuestDatum>();
+    public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
 
 
-        boolean wifi = false;
+    boolean wifi = false;
 
-        boolean gps = false;
+    boolean gps = false;
 
-        boolean isTar = false;
-
+    boolean isTar = false;
 
 
 }
