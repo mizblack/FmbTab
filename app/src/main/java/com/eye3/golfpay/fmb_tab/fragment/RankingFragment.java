@@ -253,9 +253,9 @@ public class RankingFragment extends BaseFragment {
                         mHoleScoreView[i][j] = new TextView(getActivity());
                         mHoleScoreView[i][j].setTextAppearance(R.style.RankColumnHoleTextView);
                         mHoleScoreView[i][j].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.ranking_linear_width), ViewGroup.LayoutParams.MATCH_PARENT));
-                      //  container.addView( mHoleScoreView[i][j]);
+                        container.addView( mHoleScoreView[i][j]);
                     }
-                    skipCourseScore(mHoleScoreView[i], container);
+                   // skipCourseScore(mHoleScoreView[i], container);
 
                 }
                 tvRank = view.findViewById(R.id.tv_rank);
