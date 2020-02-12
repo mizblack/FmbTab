@@ -1,20 +1,43 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.databinding.FrRankingBinding;
+import com.eye3.golfpay.fmb_tab.databinding.RankingRowBinding;
+import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
+import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
+//우선순위가 차후로 연기됨 키오스크가 되면 구현될것임.
 public class RankingFragment extends BaseFragment {
 
 
@@ -31,6 +54,17 @@ public class RankingFragment extends BaseFragment {
     private TextView rightButtonTextView;
     private ImageView rightButtonIcon;
 
+    static int NUM_OF_COURSE;
+    static int NUM_OF_HOLE = 10;
+    RecyclerView mRankingRecyclerView;
+    RankingAdapter mRankingAdapter;
+    FrRankingBinding binding;
+    ArrayList<Course> mCourseList = new ArrayList<>();
+    TextView[][] mHoleScoreView;
+    //   TextView[][] CourseViewList = new TextView[][];
+    ArrayList<Player> mPlayerList;
+    LinearLayout mLinearHoleScoreContainer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +72,19 @@ public class RankingFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+
+        getReserveScore();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fr_ranking, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fr_ranking, container, false);
+        View view = binding.getRoot();
+        mRankingRecyclerView = view.findViewById(R.id.player_ranking_recycler);
+
+        mParentActivity.showMainBottomBar();
+        return view;
     }
 
     private void rightLinearLayoutOnClick() {
@@ -111,6 +153,181 @@ public class RankingFragment extends BaseFragment {
         viewRankingTextOnClick();
         viewDetailTextOnClick();
         rightLinearLayoutOnClick();
+    }
+
+    private void initRecyclerView(RecyclerView recyclerView, ArrayList<Player> playerList) {
+        LinearLayoutManager mManager;
+
+        mRankingRecyclerView.setHasFixedSize(true);
+        mManager = new LinearLayoutManager(mContext);
+        mRankingRecyclerView.setLayoutManager(mManager);
+        mRankingAdapter = new RankingAdapter(mContext, playerList, playerList.get(0).playingCourse);
+        mRankingRecyclerView.setAdapter(mRankingAdapter);
+        mRankingAdapter.notifyDataSetChanged();
+    }
+
+    private class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingItemViewHolder> {
+        Context context;
+        ArrayList<Player> playerList;
+        ArrayList<Course> playingCourse;
+
+        public RankingAdapter(Context context, ArrayList<Player> playerList, ArrayList<Course> playingCourse) {
+            this.context = context;
+            this.playerList = playerList;
+            this.playingCourse = playingCourse;
+        }
+
+
+        @NonNull
+        @Override
+        public RankingItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.ranking_row, parent, false);
+            RankingItemViewHolder viewHolder = new RankingItemViewHolder(view);
+            return viewHolder;
+
+        }
+
+
+        /*
+         *  holeScoreView: 각홀의점수를 담는 뷰어레리
+         * holes: 각홀의 점수데이터 어레이
+         */
+        @Override
+        public void onBindViewHolder(@NonNull RankingItemViewHolder holder, int position) {
+            if (position % 2 == 0) {
+                holder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
+            } else {
+                holder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
+
+            }
+            holder.tvRank.setText(playerList.get(position).Ranking);
+            holder.tvName.setText(playerList.get(position).name);
+            //동적 코스뷰 생성
+            for (int i = 0; mHoleScoreView.length > i; i++) {
+                Hole[] holes = playerList.get(position).playingCourse.get(i).holes;
+                for (int j = 0; mHoleScoreView[i].length - 2 > j; j++) {
+                    mHoleScoreView[i][j].setGravity(Gravity.CENTER);
+                    mHoleScoreView[i][j].setText(holes[j].playedScore.tar);
+
+                }
+                // 스코어 마지막뷰에 총합을 넣는다
+                mHoleScoreView[i][mHoleScoreView[i].length - 1].setText(playerList.get(position).totalTar);
+                mHoleScoreView[i][mHoleScoreView[i].length - 1].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.setVisibility(View.GONE);
+                        notifyDataSetChanged();
+                    }
+                });
+
+            }
+            holder.tvTarTotalScore.setText(playerList.get(position).totalTar);
+            holder.tvTarTotalScore.setTextColor(Color.WHITE);
+            holder.tvParTotalScore.setText(displayTotalParScore(playerList.get(position).totalPar, holder.tvParTotalScore));
+            holder.tvParTotalScore.setVisibility(View.VISIBLE);
+
+
+        }
+
+        private String displayTotalParScore(String parTotalScore, TextView tv) {
+            int parScoreInt = Integer.valueOf(parTotalScore);
+            if (parScoreInt >= 0) {
+                tv.setTextColor(Color.RED);
+            } else
+                tv.setTextColor(Color.CYAN);
+            return "(" + parTotalScore + ")";
+        }
+
+        public class RankingItemViewHolder extends RecyclerView.ViewHolder {
+            protected TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore;
+            LinearLayout container; //스코어을 넣는 레이아웃
+
+            public RankingItemViewHolder(View view) {
+                super(view);
+
+                container = view.findViewById(R.id.linear_hole_score_container);
+
+                for (int i = 0; mHoleScoreView.length > i; i++) {
+
+                    for (int j = 0; mHoleScoreView[i].length > j; j++) {
+                        mHoleScoreView[i][j] = new TextView(getActivity());
+                        mHoleScoreView[i][j].setTextAppearance(R.style.RankColumnHoleTextView);
+                        mHoleScoreView[i][j].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.ranking_linear_width), ViewGroup.LayoutParams.MATCH_PARENT));
+                        container.addView( mHoleScoreView[i][j]);
+                    }
+                   // skipCourseScore(mHoleScoreView[i], container);
+
+                }
+                tvRank = view.findViewById(R.id.tv_rank);
+                tvName = view.findViewById(R.id.tv_player_name);
+                tvTarTotalScore = view.findViewById(R.id.tv_total_tar_score); //점수 보여주는곳 api에서 내려줌
+                tvParTotalScore = view.findViewById(R.id.tv_total_par_score);
+            }
+
+
+        }
+       //여기할것
+        private void skipCourseScore(TextView[] tvScores, LinearLayout container){
+            LinearLayout ll = null;
+            ll = new LinearLayout(getActivity());
+            ll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            ll.setOrientation(LinearLayout.HORIZONTAL);
+
+            for(int i = 0; tvScores.length > i ; i++){
+                ll.addView(tvScores[i]);
+            }
+            if (tvScores[NUM_OF_HOLE - 1].getVisibility() != View.GONE) {
+                container.addView(ll);
+            }
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return playerList.size();
+        }
+    }
+
+    private void getReserveScore() {
+        showProgress("스코어 정보를 가져오는 중입니다.");
+        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, new DataInterface.ResponseCallback<ResponseData<Player>>() {
+            @Override
+            public void onSuccess(ResponseData<Player> response) {
+                hideProgress();
+                if (response.getResultCode().equals("ok")) {
+                    mPlayerList = (ArrayList<Player>) response.getList();
+                    mCourseList = getCourse(mPlayerList);
+                    NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum을 요청할것
+                    mHoleScoreView = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
+                    initRecyclerView(mRankingRecyclerView, mPlayerList);
+//                    CourseTabBar = new TextView[NUM_OF_COURSE];
+//                    createTabBar(CourseTabBar, mCourseList);
+//                    mTabCourseArr = new TabCourseLinear[NUM_OF_COURSE];
+//                    createCourseTab(mPlayerList, mCourseList);
+                } else if (response.getResultCode().equals("fail")) {
+                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<Player> response) {
+                hideProgress();
+                response.getError();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+
+    }
+
+
+    private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
+        //첫번째 플레이어 코스가 전체코스임.
+        return playerList.get(0).playingCourse;
+
     }
 
 

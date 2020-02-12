@@ -4,17 +4,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.databinding.FrRestaurantOrderBinding;
+import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
+import com.eye3.golfpay.fmb_tab.model.teeup.Player;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
+
+import java.util.ArrayList;
 
 
 public class ShadePaymentFragment extends BaseFragment {
 
 
     protected String TAG = getClass().getSimpleName();
+    FrRestaurantOrderBinding binding;
+    ArrayList<TextView> TabList = new ArrayList<TextView>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,11 +36,19 @@ public class ShadePaymentFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fr_shade_payment, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fr_restaurant_order, container, false);
+        View view = binding.getRoot();
+
+
+
+        return view;
+
     }
 
     @Override

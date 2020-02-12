@@ -148,6 +148,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (response.getRetCode().equals("ok")) {
                     getTodayReservesForCaddy(context, "" + response.getCaddyNo());
+                    Global.CaddyNo = String.valueOf(response.getCaddyNo());
                 }
 
             }
@@ -612,6 +613,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                         int position = getAdapterPosition();
                         Global.selectedTeeUpIndex = position;
+                        Global.selectedReservation = todayReserveList.get(position);
                         Global.reserveId = String.valueOf(todayReserveList.get(position).getId());
                         groupNameTextView.setText(todayReserveList.get(position).getGroup());
                         reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());

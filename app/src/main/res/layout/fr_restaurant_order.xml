@@ -32,30 +32,10 @@
                 tools:ignore="UselessParent">
 
                 <LinearLayout
+                    android:id="@+id/tab_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <!--                    <HorizontalScrollView-->
-                    <!--                        android:id="@+id/tabTitlesScrollView"-->
-                    <!--                        android:layout_width="450dp"-->
-                    <!--                        android:layout_height="50dp"-->
-                    <!--                        android:scrollbars="none"-->
-                    <!--                        android:visibility="gone">-->
-
-                    <!--                        <LinearLayout-->
-                    <!--                            android:id="@+id/tabTitlesLinearLayout"-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="match_parent"-->
-                    <!--                            android:orientation="horizontal"-->
-                    <!--                            tools:ignore="UselessLeaf" />-->
-
-                    <!--                    </HorizontalScrollView>-->
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tabTitlesRecyclerView"
-                        android:layout_width="450dp"
-                        android:layout_height="50dp" />
 
                     <TextView
                         android:id="@+id/categoryTextView"

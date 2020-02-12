@@ -4,8 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class RestaurantMenu implements Serializable {
+public class Restaurant implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -15,12 +16,8 @@ public class RestaurantMenu implements Serializable {
     @Expose
     String name;
 
-    @SerializedName("price")
+    @SerializedName("category")
     @Expose
-    String price;
-
-    @SerializedName("image")
-    @Expose
-    String image;
+    ArrayList<Category> categoryList = new ArrayList<Category>();
 
 }

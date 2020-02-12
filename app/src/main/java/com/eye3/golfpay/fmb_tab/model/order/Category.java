@@ -1,43 +1,25 @@
-
 package com.eye3.golfpay.fmb_tab.model.order;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 public class Category implements Serializable {
 
+
     @SerializedName("category_id")
-    private int mCategoryId;
+    @Expose
+    String catergory_id;
+
     @SerializedName("category_name")
-    private String mCategoryName;
+    @Expose
+    String catergory_name;
+
     @SerializedName("menu")
-    private ArrayList<RestaurantMenu> mMenu;
+    @Expose
+    ArrayList<RestaurantMenu> Menus = new ArrayList<>();
 
-    public int getCategoryId() {
-        return mCategoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        mCategoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return mCategoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        mCategoryName = categoryName;
-    }
-
-    public ArrayList<RestaurantMenu> getMenu() {
-        return mMenu;
-    }
-
-    public void setMenu(ArrayList<RestaurantMenu> menu) {
-        mMenu = menu;
-    }
 
 }

@@ -17,6 +17,31 @@ public class Player implements Serializable {
     @Expose
     public String guest_id;
 
+    @SerializedName("totalPar")
+    @Expose
+    public String totalPar;
+
+    @SerializedName("totalTar")
+    @Expose
+    public String totalTar;
+
+    @SerializedName("totalRankingTar")
+    @Expose
+    public String totalRankingTar;
+
+    @SerializedName("totalRankingPutting")
+    @Expose
+    public String totalRankingPutting;
+
+    @SerializedName("lastHoleNo")
+    @Expose
+    public String lastHoleNo;
+
+    @SerializedName("Ranking")
+    @Expose
+    public String Ranking;
+
+
     @SerializedName("course")
     @Expose
     public ArrayList<Course> playingCourse = new ArrayList<Course>();

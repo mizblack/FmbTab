@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -226,6 +227,30 @@ public class DataInterface extends BasicDataInterface {
             ex.printStackTrace();
         }
     }
+
+    public void getRestaurantMenu(final Context context, String caddyId, String reserve_no, final ResponseCallback<ResponseData<Restaurant>> callback) {
+        try{
+            Call<ResponseData<Restaurant>> call = service.getRestaurantMenu(caddyId, reserve_no);
+            call.enqueue(new Callback<ResponseData<Restaurant>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Restaurant>> call, Response<ResponseData<Restaurant>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Restaurant>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        }catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 
     public void setScore(final Context context, ReserveScore reserveScore, final ResponseCallback<ResponseData<Object>> callback) {
         try {

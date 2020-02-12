@@ -30,6 +30,8 @@ public class TabCourseLinear extends LinearLayout {
     static final int NUM_OF_HOLES = 9;
     //최상단 홀정보를 보여주기위한 홀더
     LinearLayout mHolderLinear;
+    //홀정보레이아웃 어레이
+    HoleInfoLinear[] holeInfoLinear = new  HoleInfoLinear[10] ;
     RecyclerView mScoreRecylerView;
     ScoreAdapter mScoreAdapter;
     Context mContext;
@@ -82,29 +84,34 @@ public class TabCourseLinear extends LinearLayout {
         mScoreAdapter.notifyDataSetChanged();
     }
 
+    /*
+     *  최상단 홀정보 보여주는 뷰생성
+     *
+     */
     private void createHoleInfoLinear(Context context, Course course) {
         Hole[] holes = course.holes;
 
         int totalPar = 0;
         int totalMeter = 0;
         for (int k = 0; holes.length > k; k++) {
-            HoleInfoLinear a_holeInfoLinear = new HoleInfoLinear(context, holes[k]);
-            a_holeInfoLinear.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            mHolderLinear.addView(a_holeInfoLinear);
+            holeInfoLinear[k] = new HoleInfoLinear(context, holes[k]);
+            holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            mHolderLinear.addView(holeInfoLinear[k]);
             totalPar = totalPar + Integer.valueOf(holes[k].par);
             totalMeter = totalMeter + Integer.valueOf(holes[k].hole_total_size);
         }
+        //홀인포 전체를 나타내는 마지막 셀정보 입력
         Hole totalHole = new Hole();
         totalHole.par = String.valueOf(totalPar);
         totalHole.hole_total_size = String.valueOf(totalMeter);
-        HoleInfoLinear a_holeInfoTotalLinear = new HoleInfoLinear(context, totalHole);
-        TextView tvCourseName = a_holeInfoTotalLinear.findViewById(R.id.course_name);
-        TextView tvCoursId = a_holeInfoTotalLinear.findViewById(R.id.hole_id);
+        holeInfoLinear[holeInfoLinear.length -1] = new HoleInfoLinear(context, totalHole);
+        TextView tvCourseName =  holeInfoLinear[holeInfoLinear.length -1].findViewById(R.id.course_name);
+        TextView tvCoursId =  holeInfoLinear[holeInfoLinear.length -1].findViewById(R.id.hole_id);
         tvCoursId.setVisibility(View.GONE);
         tvCourseName.setVisibility(View.VISIBLE);
 
         tvCourseName.setText(course.courseName);
-        mHolderLinear.addView(a_holeInfoTotalLinear);
+        mHolderLinear.addView(holeInfoLinear[holeInfoLinear.length -1]);
 
     }
 
@@ -238,30 +245,39 @@ public class TabCourseLinear extends LinearLayout {
             return viewHolder;
         }
 
-
+        /*
+         * holeScoreLayout[] :홀스코어뷰
+         * course.holes[].playedScore: 홀별스코어 점수데이터
+         */
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
             final int pos = i;                            //course tab index
             Course course = mPlayerList.get(i).playingCourse.get(mCourseId - 1);
             if (i % 2 == 0) {
-                scoreItemViewHolder.ll_score_row.setBackgroundColor(Color.parseColor("#EBEFF1"));
-                for (int k = 0; scoreItemViewHolder.holeScoreLayout.length > k; k++)
-
-                    scoreItemViewHolder.holeScoreLayout[k].setBackgroundColor(Color.parseColor("#EBEFF1"));
-            } else {
-//                scoreItemViewHolder.ll_score_row.setBackgroundColor(Color.parseColor("#F5F7F8"));
+                scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
 //                for (int k = 0; scoreItemViewHolder.holeScoreLayout.length > k; k++)
-//                    scoreItemViewHolder.holeScoreLayout[k].setBackgroundColor(Color.parseColor("#F5F7F8"));
-            }
+//
+//                    scoreItemViewHolder.holeScoreLayout[k].setBackgroundColor(Color.parseColor("#EBEFF1"));
+            } else {
+               scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
 
-            scoreItemViewHolder.tvRank.setText("lst");
+            }
+            if(playerList.get(i).Ranking.equals("1")) {
+                scoreItemViewHolder.tvRank.setTextColor(Color.CYAN);
+                scoreItemViewHolder.tvName.setTextColor(Color.CYAN);
+            }
+            scoreItemViewHolder.tvRank.setText(playerList.get(i).Ranking);
             scoreItemViewHolder.tvName.setText(playerList.get(i).name);
 
             for (int j = 0; scoreItemViewHolder.holeScoreLayout.length > j; j++) {
-                if (j == mHoleScoreLayoutIdx)
+                if (j == mHoleScoreLayoutIdx) {
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.GRAY);
-                else
+                    holeInfoLinear[j].setBackgroundColor(Color.BLUE);
+                }
+                else {
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.WHITE);
+                    holeInfoLinear[j].setBackgroundColor(Color.WHITE);
+                }
             }
 
 
