@@ -241,7 +241,6 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 //        } else {
         mParentActivity.GoNativeBackStack();
 //        }
-    }
 
     void systemUIHide() {
         View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
@@ -269,6 +268,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
             }
         });
     }
+
 
     void closeKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);

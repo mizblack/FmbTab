@@ -8,6 +8,7 @@
         android:layout_height="70dp"
         android:background="@color/white"
         android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/rankPlayerLinearLayout"
             android:layout_width="wrap_content"
@@ -51,30 +52,30 @@
                 android:background="@color/black" />
 
 
-<!--            <TextView-->
-<!--                style="@style/RankColumnTextView"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:background="@color/ebonyBlack"-->
-<!--                android:text="Par"-->
-<!--                android:textColor="@color/white" />-->
+            <!--            <TextView-->
+            <!--                style="@style/RankColumnTextView"-->
+            <!--                android:layout_width="100dp"-->
+            <!--                android:background="@color/ebonyBlack"-->
+            <!--                android:text="Par"-->
+            <!--                android:textColor="@color/white" />-->
 
-<!--            <TextView-->
-<!--                style="@style/RankColumnTextView"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:paddingStart="10dp"-->
-<!--                android:text="Hole"-->
-<!--                tools:ignore="RtlSymmetry" />-->
+            <!--            <TextView-->
+            <!--                style="@style/RankColumnTextView"-->
+            <!--                android:layout_width="100dp"-->
+            <!--                android:paddingStart="10dp"-->
+            <!--                android:text="Hole"-->
+            <!--                tools:ignore="RtlSymmetry" />-->
 
-<!--            <View-->
-<!--                android:layout_width="1dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="@color/lightGray" />-->
+            <!--            <View-->
+            <!--                android:layout_width="1dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:background="@color/lightGray" />-->
 
-<!--            <TextView-->
-<!--                style="@style/RankColumnTextView"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Group" />-->
+            <!--            <TextView-->
+            <!--                style="@style/RankColumnTextView"-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:text="Group" />-->
 
             <View
                 android:layout_width="1dp"
@@ -103,92 +104,103 @@
                 android:text="Score"
                 android:textColor="@color/white" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="1" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="2" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="3" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="1" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="4" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="2" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="5" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="3" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="6" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="4" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="7" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="5" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="8" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="6" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="9" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="7" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightGray" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="8" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:layout_width="16dp"
-                android:text="Out" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="9" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/lightGray" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightGray" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="10" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:layout_width="16dp"
+                        android:text="Out" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="11" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightGray" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="12" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="10" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="13" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="11" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="14" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="12" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="15" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="13" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="16" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="14" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="17" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="15" />
 
-            <TextView
-                style="@style/RankColumnHoleTextView"
-                android:text="18" />
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="16" />
+
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="17" />
+
+                    <TextView
+                        style="@style/RankColumnHoleTextView"
+                        android:text="18" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <View
                 android:layout_width="1dp"

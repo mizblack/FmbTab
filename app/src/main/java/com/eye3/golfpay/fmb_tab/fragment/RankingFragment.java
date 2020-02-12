@@ -82,6 +82,8 @@ public class RankingFragment extends BaseFragment {
                 inflater, R.layout.fr_ranking, container, false);
         View view = binding.getRoot();
         mRankingRecyclerView = view.findViewById(R.id.player_ranking_recycler);
+
+        mParentActivity.showMainBottomBar();
         return view;
     }
 
@@ -203,17 +205,27 @@ public class RankingFragment extends BaseFragment {
             //동적 코스뷰 생성
             for (int i = 0; mHoleScoreView.length > i; i++) {
                 Hole[] holes = playerList.get(position).playingCourse.get(i).holes;
-                for (int j = 0; mHoleScoreView[i].length - 1 > j; j++) {
-                    mHoleScoreView[i][j].setGravity(Gravity.CENTER );
+                for (int j = 0; mHoleScoreView[i].length - 2 > j; j++) {
+                    mHoleScoreView[i][j].setGravity(Gravity.CENTER);
                     mHoleScoreView[i][j].setText(holes[j].playedScore.tar);
 
                 }
+                // 스코어 마지막뷰에 총합을 넣는다
+                mHoleScoreView[i][mHoleScoreView[i].length - 1].setText(playerList.get(position).totalTar);
+                mHoleScoreView[i][mHoleScoreView[i].length - 1].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.setVisibility(View.GONE);
+                        notifyDataSetChanged();
+                    }
+                });
 
             }
             holder.tvTarTotalScore.setText(playerList.get(position).totalTar);
             holder.tvTarTotalScore.setTextColor(Color.WHITE);
             holder.tvParTotalScore.setText(displayTotalParScore(playerList.get(position).totalPar, holder.tvParTotalScore));
             holder.tvParTotalScore.setVisibility(View.VISIBLE);
+
 
         }
 
@@ -223,7 +235,7 @@ public class RankingFragment extends BaseFragment {
                 tv.setTextColor(Color.RED);
             } else
                 tv.setTextColor(Color.CYAN);
-            return " (" + parTotalScore + ")";
+            return "(" + parTotalScore + ")";
         }
 
         public class RankingItemViewHolder extends RecyclerView.ViewHolder {
@@ -234,15 +246,16 @@ public class RankingFragment extends BaseFragment {
                 super(view);
 
                 container = view.findViewById(R.id.linear_hole_score_container);
+
                 for (int i = 0; mHoleScoreView.length > i; i++) {
+
                     for (int j = 0; mHoleScoreView[i].length > j; j++) {
                         mHoleScoreView[i][j] = new TextView(getActivity());
                         mHoleScoreView[i][j].setTextAppearance(R.style.RankColumnHoleTextView);
                         mHoleScoreView[i][j].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.ranking_linear_width), ViewGroup.LayoutParams.MATCH_PARENT));
-
-
-                        container.addView(mHoleScoreView[i][j]);
+                      //  container.addView( mHoleScoreView[i][j]);
                     }
+                    skipCourseScore(mHoleScoreView[i], container);
 
                 }
                 tvRank = view.findViewById(R.id.tv_rank);
@@ -252,6 +265,20 @@ public class RankingFragment extends BaseFragment {
             }
 
 
+        }
+       //여기할것
+        private void skipCourseScore(TextView[] tvScores, LinearLayout container){
+            LinearLayout ll = null;
+            ll = new LinearLayout(getActivity());
+            ll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            ll.setOrientation(LinearLayout.HORIZONTAL);
+
+            for(int i = 0; tvScores.length > i ; i++){
+                ll.addView(tvScores[i]);
+            }
+            if (tvScores[NUM_OF_HOLE - 1].getVisibility() != View.GONE) {
+                container.addView(ll);
+            }
         }
 
 

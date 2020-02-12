@@ -8,6 +8,7 @@ import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,9 +58,9 @@ public class Global {
 
     public static int selectedTeeUpIndex = 0;
     public static String reserveId = "0";
-    //로그인시 받는 캐디번호
-    public static String CaddyNo ;
+    public static String CaddyNo;
     public static TodayReserveList selectedReservation ;
+
     public interface NotiAlarmChannelID {
         String CHANNEL_LOC = "macaron_loc";
         String CHANNEL_FLOATING = "macaron_floating";
