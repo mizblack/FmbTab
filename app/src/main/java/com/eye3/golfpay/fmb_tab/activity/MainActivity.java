@@ -412,6 +412,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+        disableMenu();
     }
 
 
@@ -544,6 +545,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     void enableMenu() {
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
         findViewById(R.id.gpsLinearLayout).setEnabled(true);
         findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
         findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
@@ -571,6 +574,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        scoreLinearLayout
 //        controlLinearLayout
 //        closeLinearLayout
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+
         findViewById(R.id.gpsLinearLayout).setEnabled(false);
         findViewById(R.id.scoreBoardLinearLayout).setEnabled(false);
         findViewById(R.id.nearestLongestLinearLayout).setEnabled(false);
