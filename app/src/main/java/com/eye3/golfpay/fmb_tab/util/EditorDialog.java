@@ -7,13 +7,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class EditorDialog extends Dialog {
+
+    private String guestId;
+    private String memoContent;
+    private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +52,59 @@ public class EditorDialog extends Dialog {
                 dismiss();
             }
         });
+
+        setTextMemoTitle();
+        setTextMemoContent();
+
     }
 
-    public EditorDialog(Context context) {
+    public EditorDialog(Context context, String memoContent) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.memoContent = memoContent;
+    }
 
+    public EditorDialog(Context context, String guestId, String memoContent) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.guestId = guestId;
+        this.memoContent = memoContent;
+    }
+
+    private void setTextMemoTitle() {
+        TextView memoTitleTextView = findViewById(R.id.memoTitleTextView);
+        if (guestId == null) {
+            memoTitleTextView.setText("팀메모");
+        } else {
+            memoTitleTextView.setText("개인메모");
+        }
+    }
+
+    private void setTextTeamMemoContent() {
+        EditText memoEditText = findViewById(R.id.memoEditText);
+        memoEditText.setText(memoContent);
+    }
+
+    private int traversalByGuestId() {
+        int index = 0;
+        for (int i = 0; i < guestArrayList.size(); i++) {
+            if (guestId.equals(guestArrayList.get(i).getId())) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    private void setTextGuestMemoContent() {
+        View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(traversalByGuestId());
+        TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
+        guestMemoContentTextView.setText(memoContent);
+    }
+
+    private void setTextMemoContent() {
+        if (guestId == null) {
+            setTextTeamMemoContent();
+        } else {
+            setTextGuestMemoContent();
+        }
     }
 
     private void showSoftKeyboard(View view) {
@@ -60,7 +115,7 @@ public class EditorDialog extends Dialog {
         }
     }
 
-    public void systemUIHide() {
+    private void systemUIHide() {
         View decorView = Objects.requireNonNull(getWindow()).getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -78,30 +133,20 @@ public class EditorDialog extends Dialog {
                     // adjustments to your UI, such as showing the action bar or
                     // other navigational controls.
                     systemUIHide();
-                } else {
-                    // TODO: The system bars are NOT visible. Make any desired
-                    // adjustments to your UI, such as hiding the action bar or
-                    // other navigational controls.
                 }
+//                } else {
+                // TODO: The system bars are NOT visible. Make any desired
+                // adjustments to your UI, such as hiding the action bar or
+                // other navigational controls.
+//                }
             }
         });
     }
 
-    public void closeKeyboard(View view) {
+    private void closeKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         systemUIHide();
     }
-
-//    void getKeyBoard() {
-////        context.memoEditText.post(new Runnable() {
-////            @Override
-////            public void run() {
-//                memoEditText.setFocusableInTouchMode(true);
-//                memoEditText.requestFocus();
-//                showSoftKeyboard(((MainActivity) mContext).mBinding.editorView.memoEditText);
-////            }
-////        });
-//    }
 
 }
