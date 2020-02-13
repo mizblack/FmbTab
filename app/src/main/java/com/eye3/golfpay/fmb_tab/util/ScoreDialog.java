@@ -76,6 +76,8 @@ public class ScoreDialog extends Dialog {
     //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
 
+    View cancelLinearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,14 @@ public class ScoreDialog extends Dialog {
         getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.score_dlg);
+
+        cancelLinearLayout = findViewById(R.id.cancelLinearLayout);
+        cancelLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
         mTitleView = findViewById(R.id.dlg_title);
         //       mContentView = findViewById(R.id.dlg_msg);
@@ -199,7 +209,7 @@ public class ScoreDialog extends Dialog {
 
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-        ArrayList<Player> mPlayerList ;
+        ArrayList<Player> mPlayerList;
         Course mCurrentCourse;
 
         public ScoreInputAdapter(Context context, ArrayList<Player> playerList, Course currentCourse) {
@@ -281,8 +291,8 @@ public class ScoreDialog extends Dialog {
 //                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
             });
-           // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
-            holder.etInputPutt.setText( a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
+            // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
+            holder.etInputPutt.setText(a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
 
             holder.etInputPutt.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -340,7 +350,6 @@ public class ScoreDialog extends Dialog {
             else
                 score.putting = scoreStr;
         }
-
 
 
         @Override
@@ -401,11 +410,11 @@ public class ScoreDialog extends Dialog {
     }
 
     void createIntegerArrayList() {
-        ArrayList<Integer>  parScoreIntegerArrayList =  incrementsLoop(3 * (-1), 8, 1);
-        ArrayList<Integer>   strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
-        ArrayList<Integer>   puttIntegerArrayList = incrementsLoop(0, 10, 1);
-        ArrayList<Integer>   nearestIntegerArrayList = incrementsLoop(0, 20, 1);
-        ArrayList<Integer>  longestIntegerArrayList = incrementsLoop(100, 300, 10);
+        ArrayList<Integer> parScoreIntegerArrayList = incrementsLoop(3 * (-1), 8, 1);
+        ArrayList<Integer> strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
+        ArrayList<Integer> puttIntegerArrayList = incrementsLoop(0, 10, 1);
+        ArrayList<Integer> nearestIntegerArrayList = incrementsLoop(0, 20, 1);
+        ArrayList<Integer> longestIntegerArrayList = incrementsLoop(100, 300, 10);
     }
 
 

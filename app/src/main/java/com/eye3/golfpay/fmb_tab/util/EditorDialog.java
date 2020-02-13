@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 
 import java.util.Objects;
 
@@ -28,6 +29,20 @@ public class EditorDialog extends Dialog {
 
         EditText memoEditText = findViewById(R.id.memoEditText);
         showSoftKeyboard(memoEditText);
+
+        findViewById(R.id.saveTextView  ).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
+        findViewById(R.id.cancelTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
     }
 
     public EditorDialog(Context context) {
