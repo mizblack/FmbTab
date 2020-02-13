@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
@@ -39,7 +40,7 @@ public class ScoreFragment extends BaseFragment {
     ArrayList<Course> mCourseList = new ArrayList<>();
     //코스탭바
     TextView[] CourseTabBar;
-    //코스스코어보드]
+    //코스스코어보드
     TabCourseLinear[] mTabCourseArr;
     int mTabCourseSelectedIdx = 0;
     FrameLayout mTabHolder;
@@ -69,10 +70,29 @@ public class ScoreFragment extends BaseFragment {
 
     private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
+        //예약에서 inout을 확인하고 코스순서를 다시 재정렬함
+        if(AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())){
+            if(! AppDef.CType.OUT.equals(playerList.get(0).playingCourse.get(0).ctype) ){
+                swapList(  playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1),    playerList.get(0).playingCourse);
+            }else{
+                ;
+            }
+        }else if(AppDef.CType.IN.equals(Global.selectedReservation.getInoutCourse())){
+            if(! AppDef.CType.IN.equals(playerList.get(0).playingCourse.get(0).ctype) ){
+                swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse );
+            }else{
+                ;
+            }
+        }
         return playerList.get(0).playingCourse;
 
     }
 
+    private void swapList(Course first, Course second, ArrayList<Course> courses){
+
+        courses.add(0, second);
+        courses.remove(2);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,7 +173,7 @@ public class ScoreFragment extends BaseFragment {
 
     private void getReserveScore() {
         showProgress("스코어 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
@@ -166,6 +186,7 @@ public class ScoreFragment extends BaseFragment {
                     createTabBar(CourseTabBar, mCourseList);
                     mTabCourseArr = new TabCourseLinear[NUM_OF_COURSE];
                     createCourseTab(mPlayerList, mCourseList);
+
                 }else if(response.getResultCode().equals("fail")){
                     Toast.makeText(getActivity(), response.getResultMessage() , Toast.LENGTH_SHORT).show();
                 }

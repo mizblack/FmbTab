@@ -65,8 +65,11 @@ public class ScoreDialog extends Dialog {
     Course mCurrentCourse;
     ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
-
+    /*hole_no와 동일 zero base
+    *hole_id= mCurrentCourse.holes[mHoleScoreLayoutIdx ].id
+    */
     int mHoleScoreLayoutIdx;
+
     ScoreInputFinishListener inputFinishListener;
     //여기 수정할것
     TextView tvHoleId;
@@ -151,10 +154,10 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, mHoleScoreLayoutIdx);
+        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId , mCurrentCourse.holes[mHoleScoreLayoutIdx ].id, mHoleScoreLayoutIdx);
 
-        mReserveScore.setReserve_id(Global.reserveId);
-        mReserveScore.setHole_id(String.valueOf(mHoleScoreLayoutIdx + 1));
+//        mReserveScore.setReserve_id(Global.reserveId);
+//        mReserveScore.setHole_id(String.valueOf(mCurrentCourse.holes[mHoleScoreLayoutIdx +1].id));
 
     }
 
@@ -262,7 +265,7 @@ public class ScoreDialog extends Dialog {
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if (!TextUtils.isEmpty(s) && TextUtils.isDigitsOnly(s)) {
+                    if (!TextUtils.isEmpty(s) && Util.isInteger(s.toString().trim())) {
                         //현재 선택되어진 홀
                         Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
 
