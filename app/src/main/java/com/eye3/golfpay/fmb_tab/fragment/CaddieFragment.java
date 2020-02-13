@@ -65,6 +65,12 @@ public class CaddieFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        closeKeyboard();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
