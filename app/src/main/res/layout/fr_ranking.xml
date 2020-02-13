@@ -18,12 +18,6 @@
             android:layout_height="2dp"
             android:background="@color/lightGray" />
 
-        <include
-            android:id="@+id/rannking_column"
-            layout="@layout/ranking_column"
-            android:layout_width="match_parent"
-            android:layout_height="70dp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,11 +36,15 @@
                     android:layout_height="2dp"
                     android:background="@color/lightGray" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/player_ranking_recycler"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/player_ranking_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </HorizontalScrollView>
             </LinearLayout>
 
         </LinearLayout>

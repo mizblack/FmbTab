@@ -206,9 +206,9 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void getReserveScore(final Context context, String reserve_id, final ResponseCallback<ResponseData<Player>> callback) {
+    public void getReserveScore(final Context context, String reserve_id, String type, final ResponseCallback<ResponseData<Player>> callback) {
         try {
-            Call<ResponseData<Player>> call = service.getReserveScore(reserve_id);
+            Call<ResponseData<Player>> call = service.getReserveScore(reserve_id, type);
             call.enqueue(new Callback<ResponseData<Player>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Player>> call, Response<ResponseData<Player>> response) {

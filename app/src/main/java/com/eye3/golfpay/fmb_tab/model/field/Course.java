@@ -15,7 +15,7 @@ public class Course implements Serializable {
 
     @SerializedName("id")
     @Expose
-    public String id = course_id;
+    public String id ;
 
     @SerializedName("cc_id")
     @Expose
@@ -68,6 +68,14 @@ public class Course implements Serializable {
     @SerializedName("holes")
     @Expose
     public Hole[] holes = new Hole[9];
+
+//    public Course(Course copyCourse){
+//        this.course_id = copyCourse.course_id;
+//        this.id = copyCourse.id;
+//        this.cc_id =
+//                this.part_id =
+//    }
+//
 
 
 }

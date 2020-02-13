@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,18 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.databinding.FrRankingBinding;
-import com.eye3.golfpay.fmb_tab.databinding.RankingRowBinding;
-import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
-import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
+import com.eye3.golfpay.fmb_tab.view.HoleInfoLinear;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -61,9 +56,11 @@ public class RankingFragment extends BaseFragment {
     FrRankingBinding binding;
     ArrayList<Course> mCourseList = new ArrayList<>();
     TextView[][] mHoleScoreView;
-    //   TextView[][] CourseViewList = new TextView[][];
     ArrayList<Player> mPlayerList;
-    LinearLayout mLinearHoleScoreContainer;
+    LinearLayout mLinearHoleNoContainer  = null;
+    //홀정보레이아웃 어레이
+    TextView[][] holeInfoLinear  ;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,9 +79,38 @@ public class RankingFragment extends BaseFragment {
                 inflater, R.layout.fr_ranking, container, false);
         View view = binding.getRoot();
         mRankingRecyclerView = view.findViewById(R.id.player_ranking_recycler);
-
+        mLinearHoleNoContainer = view.findViewById(R.id.hole_no_container) ;
         mParentActivity.showMainBottomBar();
+
+        getReserveScore();
         return view;
+    }
+
+    /*
+     *  최상단 홀정보 보여주는 뷰생성
+     *
+     */
+    private void createHoleInfoLinear() {
+
+        for(int j = 0; holeInfoLinear.length > j; j++) {
+            for (int k = 0;  holeInfoLinear[j].length-1 > k; k++) {
+                holeInfoLinear[j][k] = new TextView(mContext);
+                holeInfoLinear[j][k].setText(mCourseList.get(j).holes[k].id);
+                holeInfoLinear[j][k].setLayoutParams(new ViewGroup.LayoutParams(60, ViewGroup.LayoutParams.MATCH_PARENT));
+                holeInfoLinear[j][k].setTextAppearance(R.style.RankColumnHoleTextView);
+            //    mLinearHoleNoContainer = new LinearLayout(mContext);
+             //   mLinearHoleNoContainer.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                mLinearHoleNoContainer.addView(holeInfoLinear[j][k]);
+
+            }
+            holeInfoLinear[j][holeInfoLinear[j].length-1] = new TextView(mContext);
+           //넓이 계산할것
+            holeInfoLinear[j][holeInfoLinear[j].length-1].setLayoutParams(new ViewGroup.LayoutParams(80, ViewGroup.LayoutParams.MATCH_PARENT));
+            holeInfoLinear[j][holeInfoLinear[j].length-1].setTextAppearance(R.style.RankColumnHoleTextView);
+            holeInfoLinear[j][holeInfoLinear[j].length-1].setText(mCourseList.get(j).courseName);
+            mLinearHoleNoContainer.addView( holeInfoLinear[j][holeInfoLinear[j].length-1]);
+        }
+
     }
 
     private void rightLinearLayoutOnClick() {
@@ -141,7 +167,9 @@ public class RankingFragment extends BaseFragment {
         rightButtonIcon = tabBar.findViewById(R.id.rightButtonIcon);
         nearestLongestLinearLayout = tabBar.findViewById(R.id.nearestLongestLinearLayout);
 
-        viewRankingViewDetailLinearLayout.setVisibility(View.VISIBLE);
+
+
+    viewRankingViewDetailLinearLayout.setVisibility(View.VISIBLE);
         nearestLongestLinearLayout.setVisibility(View.VISIBLE);
         rightButtonTextView.setText("Score");
         rightButtonIcon.setBackgroundResource(R.drawable.score_down);
@@ -156,9 +184,9 @@ public class RankingFragment extends BaseFragment {
     }
 
     private void initRecyclerView(RecyclerView recyclerView, ArrayList<Player> playerList) {
-        LinearLayoutManager mManager;
+        LinearLayoutManager mManager ;
 
-        mRankingRecyclerView.setHasFixedSize(true);
+       // mRankingRecyclerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
         mRankingRecyclerView.setLayoutManager(mManager);
         mRankingAdapter = new RankingAdapter(mContext, playerList, playerList.get(0).playingCourse);
@@ -166,11 +194,14 @@ public class RankingFragment extends BaseFragment {
         mRankingAdapter.notifyDataSetChanged();
     }
 
-    private class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingItemViewHolder> {
+    private class RankingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private final int TYPE_HEADER = 0;
+        private final int TYPE_ITEM = 1;
+
         Context context;
         ArrayList<Player> playerList;
         ArrayList<Course> playingCourse;
-
+        LinearLayout container;
         public RankingAdapter(Context context, ArrayList<Player> playerList, ArrayList<Course> playingCourse) {
             this.context = context;
             this.playerList = playerList;
@@ -180,53 +211,66 @@ public class RankingFragment extends BaseFragment {
 
         @NonNull
         @Override
-        public RankingItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.ranking_row, parent, false);
-            RankingItemViewHolder viewHolder = new RankingItemViewHolder(view);
-            return viewHolder;
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view;
+            RecyclerView.ViewHolder viewHolder ;
+
+            if (viewType == TYPE_HEADER) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ranking_column, parent, false);
+                viewHolder = new HeaderViewHolder(view);
+                mLinearHoleNoContainer = view.findViewById(R.id.hole_no_container) ;
+                createHoleInfoLinear();
+            }  else {
+                 view = LayoutInflater.from(mContext).inflate(R.layout.ranking_row, parent, false);
+                 viewHolder = new RankingItemViewHolder(view);
+            }
+
+
+            return  viewHolder;
 
         }
 
 
         /*
-         *  holeScoreView: 각홀의점수를 담는 뷰어레리
+         *  holeScoreView: 각홀의점수를 담는 뷰어레이
          * holes: 각홀의 점수데이터 어레이
          */
         @Override
-        public void onBindViewHolder(@NonNull RankingItemViewHolder holder, int position) {
-            if (position % 2 == 0) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
-            } else {
-                holder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position ) {
+            RankingItemViewHolder holder1 = null;
+            if (holder instanceof HeaderViewHolder) {
+                HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+            }else {
+                position = position -1;
+                // Item을 하나, 하나 보여주는(bind 되는) 함수입니다.
+                holder1 = (RankingItemViewHolder) holder;
 
-            }
-            holder.tvRank.setText(playerList.get(position).Ranking);
-            holder.tvName.setText(playerList.get(position).name);
-            //동적 코스뷰 생성
-            for (int i = 0; mHoleScoreView.length > i; i++) {
-                Hole[] holes = playerList.get(position).playingCourse.get(i).holes;
-                for (int j = 0; mHoleScoreView[i].length - 2 > j; j++) {
-                    mHoleScoreView[i][j].setGravity(Gravity.CENTER);
-                    mHoleScoreView[i][j].setText(holes[j].playedScore.tar);
+                if (position % 2 == 0) {
+                    holder1.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
+                } else {
+                    holder1.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
 
                 }
-                // 스코어 마지막뷰에 총합을 넣는다
-                mHoleScoreView[i][mHoleScoreView[i].length - 1].setText(playerList.get(position).totalTar);
-                mHoleScoreView[i][mHoleScoreView[i].length - 1].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        v.setVisibility(View.GONE);
-                        notifyDataSetChanged();
+                holder1.tvRank.setText(playerList.get(position).Ranking);
+                holder1.tvName.setText(playerList.get(position).name);
+                //동적 코스뷰 생성
+                for (int i = 0; mHoleScoreView.length > i; i++) {
+                    Hole[] holes = playerList.get(position).playingCourse.get(i).holes;
+                    for (int j = 0; mHoleScoreView[i].length - 2 > j; j++) {
+                        mHoleScoreView[i][j].setGravity(Gravity.CENTER);
+                        mHoleScoreView[i][j].setText(holes[j].playedScore.tar);
+
                     }
-                });
+                    // 스코어 마지막뷰에 총합을 넣는다
+                    mHoleScoreView[i][mHoleScoreView[i].length - 1].setText(playerList.get(position).totalTar);
+
+                }
+                holder1.tvTarTotalScore.setText(playerList.get(position).totalTar);
+                holder1.tvTarTotalScore.setTextColor(Color.WHITE);
+                holder1.tvParTotalScore.setText(displayTotalParScore(playerList.get(position).totalPar, holder1.tvParTotalScore));
+                holder1.tvParTotalScore.setVisibility(View.VISIBLE);
 
             }
-            holder.tvTarTotalScore.setText(playerList.get(position).totalTar);
-            holder.tvTarTotalScore.setTextColor(Color.WHITE);
-            holder.tvParTotalScore.setText(displayTotalParScore(playerList.get(position).totalPar, holder.tvParTotalScore));
-            holder.tvParTotalScore.setVisibility(View.VISIBLE);
-
-
         }
 
         private String displayTotalParScore(String parTotalScore, TextView tv) {
@@ -240,7 +284,6 @@ public class RankingFragment extends BaseFragment {
 
         public class RankingItemViewHolder extends RecyclerView.ViewHolder {
             protected TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore;
-            LinearLayout container; //스코어을 넣는 레이아웃
 
             public RankingItemViewHolder(View view) {
                 super(view);
@@ -255,7 +298,6 @@ public class RankingFragment extends BaseFragment {
                         mHoleScoreView[i][j].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.ranking_linear_width), ViewGroup.LayoutParams.MATCH_PARENT));
                         container.addView( mHoleScoreView[i][j]);
                     }
-                   // skipCourseScore(mHoleScoreView[i], container);
 
                 }
                 tvRank = view.findViewById(R.id.tv_rank);
@@ -266,31 +308,31 @@ public class RankingFragment extends BaseFragment {
 
 
         }
-       //여기할것
-        private void skipCourseScore(TextView[] tvScores, LinearLayout container){
-            LinearLayout ll = null;
-            ll = new LinearLayout(getActivity());
-            ll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            ll.setOrientation(LinearLayout.HORIZONTAL);
 
-            for(int i = 0; tvScores.length > i ; i++){
-                ll.addView(tvScores[i]);
-            }
-            if (tvScores[NUM_OF_HOLE - 1].getVisibility() != View.GONE) {
-                container.addView(ll);
+        class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+            HeaderViewHolder(View headerView) {
+                super(headerView);
             }
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0)
+                return TYPE_HEADER;
+            else
+                return TYPE_ITEM;
+        }
 
         @Override
         public int getItemCount() {
-            return playerList.size();
+            return playerList.size() +1;
         }
     }
 
     private void getReserveScore() {
-        showProgress("스코어 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        showProgress("랭킹 정보를 가져오는 중입니다.");
+        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group" ,new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
@@ -298,12 +340,14 @@ public class RankingFragment extends BaseFragment {
                     mPlayerList = (ArrayList<Player>) response.getList();
                     mCourseList = getCourse(mPlayerList);
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum을 요청할것
+                    holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
                     mHoleScoreView = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
+
                     initRecyclerView(mRankingRecyclerView, mPlayerList);
-//                    CourseTabBar = new TextView[NUM_OF_COURSE];
-//                    createTabBar(CourseTabBar, mCourseList);
-//                    mTabCourseArr = new TabCourseLinear[NUM_OF_COURSE];
-//                    createCourseTab(mPlayerList, mCourseList);
+                    //createHoleInfoLinear();
+
+
+
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }

@@ -59,7 +59,7 @@ public interface HttpService {
     Call<ResponseData<Course>> getCourseInfo();
 
     @GET("getReserveScore?")
-    Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId);
+    Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type );
 
     @POST("setReserveScore")
     Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);
