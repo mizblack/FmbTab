@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
- //   @SuppressLint("ObsoleteSdkInt")
+    //   @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -391,6 +391,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 selectBottomDivider.setVisibility(View.VISIBLE);
                 teeUpRecyclerView.setVisibility(View.VISIBLE);
                 roundingLinearLayout.setVisibility(View.GONE);
+
+                disableMenu();
             }
         });
 
@@ -410,7 +412,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+        disableMenu();
     }
+
 
     private View.OnClickListener leftListener = new View.OnClickListener() {
         @Override
@@ -540,6 +544,52 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         systemUIHide();
     }
 
+    void enableMenu() {
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+        findViewById(R.id.gpsLinearLayout).setEnabled(true);
+        findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
+        findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
+        findViewById(R.id.rankingLinearLayout).setEnabled(true);
+        findViewById(R.id.caddieLinearLayout).setEnabled(true);
+        findViewById(R.id.orderLinearLayout).setEnabled(true);
+        findViewById(R.id.paymentLinearLayout).setEnabled(true);
+
+        findViewById(R.id.settingsLinearLayout).setEnabled(true);
+        findViewById(R.id.scoreLinearLayout).setEnabled(true);
+        findViewById(R.id.controlLinearLayout).setEnabled(true);
+        findViewById(R.id.closeLinearLayout).setEnabled(true);
+    }
+
+    void disableMenu() {
+//        gpsLinearLayout
+//        scoreBoardLinearLayout
+//        nearestLongestLinearLayout
+//        rankingLinearLayout
+//        caddieLinearLayout
+//        orderLinearLayout
+//        paymentLinearLayout
+
+//        settingsLinearLayout
+//        scoreLinearLayout
+//        controlLinearLayout
+//        closeLinearLayout
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+
+        findViewById(R.id.gpsLinearLayout).setEnabled(false);
+        findViewById(R.id.scoreBoardLinearLayout).setEnabled(false);
+        findViewById(R.id.nearestLongestLinearLayout).setEnabled(false);
+        findViewById(R.id.rankingLinearLayout).setEnabled(false);
+        findViewById(R.id.caddieLinearLayout).setEnabled(false);
+        findViewById(R.id.orderLinearLayout).setEnabled(false);
+        findViewById(R.id.paymentLinearLayout).setEnabled(false);
+
+        findViewById(R.id.settingsLinearLayout).setEnabled(false);
+        findViewById(R.id.scoreLinearLayout).setEnabled(false);
+        findViewById(R.id.controlLinearLayout).setEnabled(false);
+        findViewById(R.id.closeLinearLayout).setEnabled(false);
+    }
+
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
 
         ArrayList<TodayReserveList> todayReserveList;
@@ -575,14 +625,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
                         setInOutTextView(todayReserveList.get(position).getInoutCourse());
 
-//                        guestAdapter = new GuestAdapter(getActivity(), Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
-//                        guestRecyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.guestRecyclerView);
-//                        guestRecyclerView.setHasFixedSize(true);
-//                        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-//                        guestRecyclerView.setLayoutManager(manager);
-//                        guestRecyclerView.setAdapter(guestAdapter);
-//                        guestAdapter.notifyDataSetChanged();
-
+                        enableMenu();
                     }
                 });
 
