@@ -544,6 +544,81 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         systemUIHide();
     }
 
+
+    void setEnableColor() {
+        TextView gpsTextView00 = findViewById(R.id.gpsTextView00);
+        TextView gpsTextView01 = findViewById(R.id.gpsTextView01);
+        gpsTextView00.setTextColor(0xff7e8181);
+        gpsTextView01.setTextColor(0xff7e8181);
+
+        TextView scoreBoardTextView00 = findViewById(R.id.scoreBoardTextView00);
+        TextView scoreBoardTextView01 = findViewById(R.id.scoreBoardTextView01);
+        scoreBoardTextView00.setTextColor(0xff7e8181);
+        scoreBoardTextView01.setTextColor(0xff7e8181);
+
+        TextView nearestLongestTextView00 = findViewById(R.id.nearestLongestTextView00);
+        TextView nearestLongestTextView01 = findViewById(R.id.nearestLongestTextView01);
+        nearestLongestTextView00.setTextColor(0xff7e8181);
+        nearestLongestTextView01.setTextColor(0xff7e8181);
+
+        TextView rankingTextView00 = findViewById(R.id.rankingTextView00);
+        TextView rankingTextView01 = findViewById(R.id.rankingTextView01);
+        rankingTextView00.setTextColor(0xff7e8181);
+        rankingTextView01.setTextColor(0xff7e8181);
+
+        TextView caddieTextView00 = findViewById(R.id.caddieTextView00);
+        TextView caddieTextView01 = findViewById(R.id.caddieTextView01);
+        caddieTextView00.setTextColor(0xff7e8181);
+        caddieTextView01.setTextColor(0xff7e8181);
+
+        TextView orderTextView00 = findViewById(R.id.orderTextView00);
+        TextView orderTextView01 = findViewById(R.id.orderTextView01);
+        orderTextView00.setTextColor(0xff7e8181);
+        orderTextView01.setTextColor(0xff7e8181);
+
+        TextView paymentTextView00 = findViewById(R.id.paymentTextView00);
+        TextView paymentTextView01 = findViewById(R.id.paymentTextView01);
+        paymentTextView00.setTextColor(0xff7e8181);
+        paymentTextView01.setTextColor(0xff7e8181);
+    }
+
+    void setDisableColor() {
+        TextView gpsTextView00 = findViewById(R.id.gpsTextView00);
+        TextView gpsTextView01 = findViewById(R.id.gpsTextView01);
+        gpsTextView00.setTextColor(0x88999999);
+        gpsTextView01.setTextColor(0x88999999);
+
+        TextView scoreBoardTextView00 = findViewById(R.id.scoreBoardTextView00);
+        TextView scoreBoardTextView01 = findViewById(R.id.scoreBoardTextView01);
+        scoreBoardTextView00.setTextColor(0x88999999);
+        scoreBoardTextView01.setTextColor(0x88999999);
+
+        TextView nearestLongestTextView00 = findViewById(R.id.nearestLongestTextView00);
+        TextView nearestLongestTextView01 = findViewById(R.id.nearestLongestTextView01);
+        nearestLongestTextView00.setTextColor(0x88999999);
+        nearestLongestTextView01.setTextColor(0x88999999);
+
+        TextView rankingTextView00 = findViewById(R.id.rankingTextView00);
+        TextView rankingTextView01 = findViewById(R.id.rankingTextView01);
+        rankingTextView00.setTextColor(0x88999999);
+        rankingTextView01.setTextColor(0x88999999);
+
+        TextView caddieTextView00 = findViewById(R.id.caddieTextView00);
+        TextView caddieTextView01 = findViewById(R.id.caddieTextView01);
+        caddieTextView00.setTextColor(0x88999999);
+        caddieTextView01.setTextColor(0x88999999);
+
+        TextView orderTextView00 = findViewById(R.id.orderTextView00);
+        TextView orderTextView01 = findViewById(R.id.orderTextView01);
+        orderTextView00.setTextColor(0x88999999);
+        orderTextView01.setTextColor(0x88999999);
+
+        TextView paymentTextView00 = findViewById(R.id.paymentTextView00);
+        TextView paymentTextView01 = findViewById(R.id.paymentTextView01);
+        paymentTextView00.setTextColor(0x88999999);
+        paymentTextView01.setTextColor(0x88999999);
+    }
+
     void enableMenu() {
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
@@ -559,21 +634,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.scoreLinearLayout).setEnabled(true);
         findViewById(R.id.controlLinearLayout).setEnabled(true);
         findViewById(R.id.closeLinearLayout).setEnabled(true);
+
+        setEnableColor();
     }
 
     void disableMenu() {
-//        gpsLinearLayout
-//        scoreBoardLinearLayout
-//        nearestLongestLinearLayout
-//        rankingLinearLayout
-//        caddieLinearLayout
-//        orderLinearLayout
-//        paymentLinearLayout
-
-//        settingsLinearLayout
-//        scoreLinearLayout
-//        controlLinearLayout
-//        closeLinearLayout
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
         findViewById(R.id.gpsLinearLayout).setEnabled(false);
@@ -588,6 +653,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.scoreLinearLayout).setEnabled(false);
         findViewById(R.id.controlLinearLayout).setEnabled(false);
         findViewById(R.id.closeLinearLayout).setEnabled(false);
+
+        setDisableColor();
     }
 
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
