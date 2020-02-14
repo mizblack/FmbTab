@@ -52,11 +52,14 @@
             android:id="@+id/hole1_ll"
             android:layout_width="82dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+
+            >
 
             <TextView
                 android:id="@+id/hole1_hit"
                 style="@style/MainHoleTextView"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content" />
 
             <View
@@ -79,7 +82,9 @@
 
             <TextView
                 android:id="@+id/hole2_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -101,7 +106,9 @@
 
             <TextView
                 android:id="@+id/hole3_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -123,7 +130,9 @@
 
             <TextView
                 android:id="@+id/hole4_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -145,7 +154,9 @@
 
             <TextView
                 android:id="@+id/hole5_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -167,7 +178,9 @@
 
             <TextView
                 android:id="@+id/hole6_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -189,7 +202,9 @@
 
             <TextView
                 android:id="@+id/hole7_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -211,7 +226,9 @@
 
             <TextView
                 android:id="@+id/hole8_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -233,7 +250,9 @@
 
             <TextView
                 android:id="@+id/hole9_hit"
-                style="@style/MainHoleTextView" />
+                style="@style/MainHoleTextView"
+                android:textColor="@color/black"
+                />
 
             <View
                 android:layout_width="match_parent"

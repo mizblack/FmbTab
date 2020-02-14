@@ -39,7 +39,7 @@
                 android:background="@color/lightGray" />
             <!--2. hidden-->
             <LinearLayout
-                android:id="@+id/rankingLinearLayout"
+                android:id="@+id/rankingNormalLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

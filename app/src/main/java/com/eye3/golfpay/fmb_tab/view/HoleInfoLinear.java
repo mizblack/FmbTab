@@ -18,11 +18,6 @@ public class HoleInfoLinear extends LinearLayout {
     TextView tvPar;
     TextView tvMeter;
 
-//    public HoleInfoLinear(Context context) {
-//        super(context);
-//        init(context);
-//    }
-
     public HoleInfoLinear(Context context, Hole hole) {
         super(context);
         init(context, hole);

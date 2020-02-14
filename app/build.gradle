@@ -23,11 +23,12 @@ android {
 }
 ext {
     supportVersion = "28.0.3"
-    dispatcher_version="4.6.0"
+    dispatcher_version = "4.6.0"
 }
 dependencies {
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     implementation "org.permissionsdispatcher:permissionsdispatcher:${dispatcher_version}"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${dispatcher_version}"
 
     implementation "com.android.support:appcompat-v7:${supportVersion}"
