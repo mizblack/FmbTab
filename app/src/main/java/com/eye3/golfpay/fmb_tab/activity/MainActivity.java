@@ -50,7 +50,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -348,7 +347,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        findViewById(R.id.rankingLinearLayout).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.rankingNormalLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  GoNativeScreen(new ScoreFragment(), null);
@@ -550,7 +549,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.gpsLinearLayout).setEnabled(true);
         findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
         findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
-        findViewById(R.id.rankingLinearLayout).setEnabled(true);
+        findViewById(R.id.rankingNormalLinearLayout).setEnabled(true);
         findViewById(R.id.caddieLinearLayout).setEnabled(true);
         findViewById(R.id.orderLinearLayout).setEnabled(true);
         findViewById(R.id.paymentLinearLayout).setEnabled(true);
@@ -579,7 +578,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.gpsLinearLayout).setEnabled(false);
         findViewById(R.id.scoreBoardLinearLayout).setEnabled(false);
         findViewById(R.id.nearestLongestLinearLayout).setEnabled(false);
-        findViewById(R.id.rankingLinearLayout).setEnabled(false);
+        findViewById(R.id.rankingNormalLinearLayout).setEnabled(false);
         findViewById(R.id.caddieLinearLayout).setEnabled(false);
         findViewById(R.id.orderLinearLayout).setEnabled(false);
         findViewById(R.id.paymentLinearLayout).setEnabled(false);

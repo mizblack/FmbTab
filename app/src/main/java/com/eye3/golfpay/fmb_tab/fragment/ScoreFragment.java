@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
@@ -42,7 +40,7 @@ public class ScoreFragment extends BaseFragment {
     TextView[] CourseTabBar;
     //코스스코어보드
     TabCourseLinear[] mTabCourseArr;
-    int mTabCourseSelectedIdx = 0;
+    int mTabIdx = 0;
     FrameLayout mTabHolder;
 
 
@@ -61,7 +59,7 @@ public class ScoreFragment extends BaseFragment {
         }
 
         for (int i = 0; NUM_OF_COURSE > i; i++) {
-            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, Integer.valueOf(mCourseList.get(i).id));
+            mTabCourseArr[i] = new TabCourseLinear(getActivity(), mPlayerList, i);
             mTabCourseArr[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTabHolder.addView(mTabCourseArr[i]);
         }
@@ -87,7 +85,9 @@ public class ScoreFragment extends BaseFragment {
         return playerList.get(0).playingCourse;
 
     }
-
+    /*
+    * 자유 컨트리클럽을 위한 inout코스 변경
+     */
     private void swapList(Course first, Course second, ArrayList<Course> courses){
 
         courses.add(0, second);
@@ -126,7 +126,7 @@ public class ScoreFragment extends BaseFragment {
             tvCourseBarArr[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mTabCourseSelectedIdx = idx;
+                    mTabIdx = idx;
                     selectCourse(idx);
 
                 }

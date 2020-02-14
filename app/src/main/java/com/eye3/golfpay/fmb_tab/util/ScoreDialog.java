@@ -44,17 +44,11 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class ScoreDialog extends Dialog {
 
 
-    private TextView mTitleView;
     private Button mLeftButton;
     private Button mRightButton;
-    private ImageButton mClosButton;
     private LinearLayout mLayoutButtons;
-    private String mTitle;
-    private String mContent;
-    private String mSingleTitle;
     private String mLeftTitle;
     private String mRightTitle;
-    private Spanned mSpannedContent;
     private ScoreDialog dialog = this;
 
     private View.OnClickListener mLeftClickListener;
@@ -65,20 +59,17 @@ public class ScoreDialog extends Dialog {
     Course mCurrentCourse;
     ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
-    /*hole_no와 동일 zero base
-    *hole_id= mCurrentCourse.holes[mHoleScoreLayoutIdx ].id
-    */
+    //선정된 코스텝 인덱스
+    int mTabIdx;
+    //hole_no와 동일 zero base
     int mHoleScoreLayoutIdx;
 
-    ScoreInputFinishListener inputFinishListener;
-    //여기 수정할것
     TextView tvHoleId;
     TextView tvPar;
     TextView tvCourseName;
-    TextView tvIN_OUT;
     //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
-
+    ScoreInputFinishListener inputFinishListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,15 +82,12 @@ public class ScoreDialog extends Dialog {
 
         setContentView(R.layout.score_dlg);
 
-        mTitleView = findViewById(R.id.dlg_title);
-        //       mContentView = findViewById(R.id.dlg_msg);
-
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);
         mLayoutButtons = findViewById(R.id.layoutButtons);
 
         tvHoleId = findViewById(R.id.hole_id);
-        tvHoleId.setText("Hole-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].id);
+        tvHoleId.setText("Hole ID-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].id);
         tvPar = findViewById(R.id.par_num);
         tvPar.setText("Par-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].par);
         tvCourseName = findViewById(R.id.course_name);
@@ -144,10 +132,7 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId , mCurrentCourse.holes[mHoleScoreLayoutIdx ].id, mHoleScoreLayoutIdx);
-
-//        mReserveScore.setReserve_id(Global.reserveId);
-//        mReserveScore.setHole_id(String.valueOf(mCurrentCourse.holes[mHoleScoreLayoutIdx +1].id));
+        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId, mCurrentCourse.holes[mHoleScoreLayoutIdx].id, mTabIdx, mHoleScoreLayoutIdx);
 
     }
 
@@ -159,17 +144,11 @@ public class ScoreDialog extends Dialog {
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse, int mHoleScoreLayoutIdx) {
+                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse, int tabIdx, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
         this.mContext = context;
-
-        if (title != null) {
-            this.mTitle = title;
-        } else {
-            this.mTitle = context.getResources().getString(R.string.app_name);
-        }
-
-        this.mContent = content;
+        this.mTabIdx = tabIdx;
+        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
         this.mLeftClickListener = leftListener;
         this.mRightClickListener = rightListener;
         this.mLeftTitle = leftBtnTitle;
@@ -187,13 +166,6 @@ public class ScoreDialog extends Dialog {
                        View.OnClickListener rightListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
 
-        if (title != null) {
-            this.mTitle = title;
-        } else {
-            this.mTitle = context.getResources().getString(R.string.app_name);
-        }
-
-        this.mSpannedContent = content;
         this.mLeftClickListener = leftListener;
         this.mRightClickListener = rightListener;
         this.mLeftTitle = leftBtnTitle;
@@ -202,7 +174,7 @@ public class ScoreDialog extends Dialog {
 
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-        ArrayList<Player> mPlayerList ;
+        ArrayList<Player> mPlayerList;
         Course mCurrentCourse;
 
         public ScoreInputAdapter(Context context, ArrayList<Player> playerList, Course currentCourse) {
@@ -226,9 +198,8 @@ public class ScoreDialog extends Dialog {
         public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
             final int playerIdx = position;
             //*******
-            Course a_course = mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1));
+            Course a_course = mPlayerList.get(playerIdx).playingCourse.get(mTabIdx);
             holder.playerName.setText(mPlayerList.get(position).name);
-
             holder.etInputTar.setText(AppDef.Par_Tar(a_course.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar));
             holder.etInputTar.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -261,16 +232,17 @@ public class ScoreDialog extends Dialog {
 
                         if (AppDef.isTar) {
 
-                            setTar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
-                            setPar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
+                            setTar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
+
+                            setPar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
 
 
                             setTar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
                             setPar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
 
                         } else {  //AppDaf.istar == false (파로 넣을때)
-                            setPar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
-                            setTar(mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
+                            setPar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
+                            setTar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
 
                             setPar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
                             setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
@@ -284,8 +256,8 @@ public class ScoreDialog extends Dialog {
 //                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
                 }
             });
-           // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
-            holder.etInputPutt.setText( a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
+            // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
+            holder.etInputPutt.setText(a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
 
             holder.etInputPutt.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -313,7 +285,7 @@ public class ScoreDialog extends Dialog {
                     if (s == null || s.equals(""))
                         return;
                     if (Util.isInteger(s.toString())) {
-                        mPlayerList.get(playerIdx).playingCourse.get((Integer.valueOf(mCurrentCourse.id) - 1)).holes[mHoleScoreLayoutIdx].playedScore.putting = s.toString();
+                        mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore.putting = s.toString();
                         mReserveScore.guest_score_list.get(playerIdx).putting = s.toString();
                     }
 
@@ -343,7 +315,6 @@ public class ScoreDialog extends Dialog {
             else
                 score.putting = scoreStr;
         }
-
 
 
         @Override
@@ -404,11 +375,11 @@ public class ScoreDialog extends Dialog {
     }
 
     void createIntegerArrayList() {
-        ArrayList<Integer>  parScoreIntegerArrayList =  incrementsLoop(3 * (-1), 8, 1);
-        ArrayList<Integer>   strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
-        ArrayList<Integer>   puttIntegerArrayList = incrementsLoop(0, 10, 1);
-        ArrayList<Integer>   nearestIntegerArrayList = incrementsLoop(0, 20, 1);
-        ArrayList<Integer>  longestIntegerArrayList = incrementsLoop(100, 300, 10);
+        ArrayList<Integer> parScoreIntegerArrayList = incrementsLoop(3 * (-1), 8, 1);
+        ArrayList<Integer> strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
+        ArrayList<Integer> puttIntegerArrayList = incrementsLoop(0, 10, 1);
+        ArrayList<Integer> nearestIntegerArrayList = incrementsLoop(0, 20, 1);
+        ArrayList<Integer> longestIntegerArrayList = incrementsLoop(100, 300, 10);
     }
 
 

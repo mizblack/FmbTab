@@ -33,15 +33,16 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
-
+        <!--***********************************************************************************-->
         <LinearLayout
-            android:id="@+id/rankingLinearLayout"
+            android:id="@+id/rankingNormalLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
+                android:id="@+id/normal_score"
                 style="@style/RankRowTextView"
                 android:layout_width="100dp"
                 android:background="@color/ebonyBlack"
@@ -54,17 +55,25 @@
                 android:background="@color/black" />
 
             <TextView
+                android:id="@+id/normal_par"
                 style="@style/RankRowTextView"
                 android:layout_width="100dp"
                 android:background="@color/ebonyBlack"
                 android:text="-"
                 android:textStyle="bold" />
 
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightGray" />
+
             <TextView
+                android:id="@+id/normal_playing_hole"
                 style="@style/RankRowTextView"
                 android:layout_width="100dp"
-                android:paddingStart="10dp"
-                tools:ignore="RtlSymmetry" />
+                android:text="-"
+                android:textStyle="bold" />
+
 
             <View
                 android:layout_width="1dp"
@@ -72,9 +81,9 @@
                 android:background="@color/lightGray" />
 
             <TextView
+                android:id="@+id/normal_group"
                 style="@style/RankRowTextView"
-                android:layout_width="0dp"
-                android:layout_weight="1" />
+                android:layout_width="300dp" />
 
             <View
                 android:layout_width="1dp"
@@ -82,39 +91,43 @@
                 android:background="@color/lightGray" />
 
             <TextView
+                android:id="@+id/normal_course_name"
                 style="@style/RankRowTextView"
                 android:layout_width="0dp"
                 android:layout_weight="1.5" />
 
-        </LinearLayout>
 
+        </LinearLayout>
+        <!--************************************************************-->
         <LinearLayout
             android:id="@+id/detailLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@color/ebonyBlack"
-                android:gravity="center"
+
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_total_tar_score"
                     style="@style/RankColumnTextView"
+                    android:gravity="center_vertical|end"
                     android:layout_width="50dp"
                     android:text="-" />
 
                 <TextView
                     android:id="@+id/tv_total_par_score"
                     style="@style/RankColumnTextView"
+                    android:gravity="center_vertical|start"
                     android:layout_width="50dp"
                     android:text="-"
-                    android:textSize="16dp"
-                    android:visibility="gone" />
+                    android:textSize="16dp" />
+
 
             </LinearLayout>
             <!--             컨테이너 레이아웃-->

@@ -32,9 +32,9 @@ public class ReserveScore implements Serializable {
     @Expose
     public ArrayList<ScoreSend> guest_score_list = new ArrayList<>();
 
-    public ReserveScore(ArrayList<Player> playerList, Course playingCourse, String reserve_id, String hole_id, int mHoleScoreLayoutIdx) {
+    public ReserveScore(ArrayList<Player> playerList, Course playingCourse, String reserve_id, String hole_id, int tabIdx, int mHoleScoreLayoutIdx) {
         for (int i = 0; playerList.size() > i; i++) {
-            Hole aHole = playerList.get(i).playingCourse.get(Integer.valueOf(playingCourse.id) -1).holes[mHoleScoreLayoutIdx +1];
+            Hole aHole = playerList.get(i).playingCourse.get(tabIdx).holes[mHoleScoreLayoutIdx ];
 
             guest_score_list.add(new ScoreSend(playerList.get(i).guest_id, aHole.playedScore.par,
                     aHole.playedScore.putting,  aHole.playedScore.tar));
