@@ -28,6 +28,8 @@ import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.RankingFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
+import com.eye3.golfpay.fmb_tab.model.guest.Guest;
+import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -50,7 +52,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    //   @SuppressLint("ObsoleteSdkInt")
+    @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -163,6 +164,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onFailure(Throwable t) {
                 hideProgress();
                 systemUIHide();
+            }
+        });
+    }
+
+    private void getReserveGuestList(int reserveId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
+            @Override
+            public void onSuccess(ReserveGuestList response) {
+                if (response.getRetMsg().equals("성공")) {
+                    Global.guestArrayList = (ArrayList<Guest>) response.getList();
+//                    caddieFragmentBundle = new Bundle();
+//                    caddieFragmentBundle.putSerializable("reserveGuestList", Global.reserveGuestList);
+//                    GoNativeScreen(new CaddieFragment(), caddieFragmentBundle);
+                    GoNativeScreen(new CaddieFragment(), null);
+                }
+            }
+
+            @Override
+            public void onError(ReserveGuestList response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }
@@ -272,12 +298,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
 
         // 캐디수첩
+        // Todo List 를 넘겨야함
         findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                caddieFragmentBundle = new Bundle();
-                caddieFragmentBundle.putInt("selectedTeeUpIndex", Global.selectedTeeUpIndex);
-                GoNativeScreen(new CaddieFragment(), caddieFragmentBundle);
+                getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -748,4 +773,3 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 }
-

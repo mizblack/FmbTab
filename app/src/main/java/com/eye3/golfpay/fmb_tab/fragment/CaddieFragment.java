@@ -26,7 +26,7 @@ import androidx.core.content.FileProvider;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.util.EditorDialog;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialog;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
@@ -50,7 +50,8 @@ public class CaddieFragment extends BaseFragment {
     private String imageFilePath;
     private Uri photoUri;
     View v;
-    private int position;
+    private ArrayList<Guest> guestArrayList = Global.guestArrayList;
+    private ArrayList<Guest> guestArrayListTemp = Global.guestArrayList;
     private LinearLayout memberLinearLayout;
 
     @Override
@@ -59,7 +60,6 @@ public class CaddieFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            position = bundle.getInt("selectedTeeUpIndex");
 
         }
     }
@@ -98,7 +98,7 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createGuestList(Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
+        createGuestList();
         setDataTeamMemo();
         teamMemoOnClick();
     }
@@ -124,7 +124,7 @@ public class CaddieFragment extends BaseFragment {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String guestId = Global.teeUpTime.getTodayReserveList().get(position).getGuestData().get(i).getId();
+                String guestId = guestArrayList.get(i).getId();
                 View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(i);
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
                 EditorDialog editorDialog = new EditorDialog(getContext(), guestId, guestMemoContentTextView.getText().toString());
@@ -145,29 +145,28 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    private void createGuestList(ArrayList<GuestDatum> guestList) {
-        if (guestList != null && guestList.size() != 0) {
-            for (int i = 0; i < guestList.size(); i++) {
+    private void createGuestList() {
+        if (guestArrayList != null && guestArrayList.size() != 0) {
+            for (int i = 0; i < guestArrayList.size(); i++) {
                 final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
                 memberLinearLayout.addView(caddieViewGuestItem);
                 Global.caddieViewGuestItemArrayList.add(caddieViewGuestItem);
                 guestListOnClick(caddieViewGuestItem, i);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
-                memberNameTextView.setText(guestList.get(i).getGuestName());
+                memberNameTextView.setText(guestArrayList.get(i).getGuestName());
 
                 EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
-                carNumberEditText.setText(guestList.get(i).getCarNumber());
+                carNumberEditText.setText(guestArrayList.get(i).getCarNumber());
 
                 EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
-                phoneNumberEditText.setText(guestList.get(i).getPhoneNumber());
+                phoneNumberEditText.setText(guestArrayList.get(i).getPhoneNumber());
 
                 View guestMemoLinearLayout = caddieViewGuestItem.findViewById(R.id.guestMemoLinearLayout);
                 guestMemoLinearLayoutOnClick(guestMemoLinearLayout, i);
 
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-//                Todo 메모 setText
-//                guestMemoContentTextView.setText(guestList.get(i).);
+                guestMemoContentTextView.setText(guestArrayList.get(i).getMemo());
 
                 View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
                 signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
@@ -178,7 +177,7 @@ public class CaddieFragment extends BaseFragment {
 
     private void setDataTeamMemo() {
         TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
-        teamMemoContentTextView.setText(Global.teeUpTime.getTodayReserveList().get(position).getMemo());
+        teamMemoContentTextView.setText(guestArrayList.get(0).getTeamMemo());
     }
 
     private void teamMemoOnClick() {
@@ -271,61 +270,5 @@ public class CaddieFragment extends BaseFragment {
         imageFilePath = image.getAbsolutePath();
         return image;
     }
-
-//    public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.GuestItemViewHolder> {
-//
-//        ArrayList<GuestDatum> guestList;
-//        TextView memberNameTextView;
-//        View memberDivider;
-//
-//        GuestAdapter(Context context, ArrayList<GuestDatum> todayReserveList) {
-//            this.guestList = todayReserveList;
-//        }
-//
-//        class GuestItemViewHolder extends RecyclerView.ViewHolder {
-//
-//            GuestItemViewHolder(View view) {
-//                super(view);
-//
-//                memberNameTextView = view.findViewById(R.id.memberNameTextView);
-//                memberDivider = view.findViewById(R.id.memberDivider);
-//
-//                itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-////                        int position = getAdapterPosition();
-//                        memberNameTextView.setTextColor(0xff000000);
-//                        memberDivider.setBackgroundColor(0xff000000);
-//
-//                        // Todo 선택된 포지션을 제외한 모든 아이템을 아래의 색상으로 변경
-//                        //  memberNameTextView.setTextColor(0xffcccccc);
-//                        //  memberDivider.setBackgroundColor(0xffcccccc);
-//
-//                    }
-//                });
-//
-//            }
-//
-//        }
-//
-//        @NonNull
-//        @Override
-//        public GuestItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_guest, viewGroup, false);
-//            return new GuestItemViewHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull GuestItemViewHolder scoreItemViewHolder, int position) {
-//            memberNameTextView.setText(guestList.get(position).getGuestName());
-//
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return guestList.size();
-//        }
-//
-//    }
 
 }

@@ -1584,7 +1584,7 @@ public class Util {
 //
 //        try {
 //            // 위도,경도를 이용하여 현재 위치의 주소를 가져온다.
-//            List<Address> addresses;
+//            Guest<Address> addresses;
 //            addresses = geoCoder.getFromLocation(latPoint, lngPoint, 1);
 //            for (Address addr : addresses) {
 //                int index = addr.getMaxAddressLineIndex();
