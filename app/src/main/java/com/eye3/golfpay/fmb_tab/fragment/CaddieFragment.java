@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +33,10 @@ import com.eye3.golfpay.fmb_tab.util.EditorDialog;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialog;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -269,6 +274,43 @@ public class CaddieFragment extends BaseFragment {
         );
         imageFilePath = image.getAbsolutePath();
         return image;
+    }
+
+    private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
+        //create a file to write bitmap data
+        File f = new File(context.getCacheDir(), filename);
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Convert bitmap to byte array
+        //  Bitmap bitmap = bitmap;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
+        byte[] bitmapData = bos.toByteArray();
+
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+            fos.write(bitmapData);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static File getAlbumStorageDir(Context context, String albumName) {
+        // Get the directory for the app's private pictures directory.
+        File file = new File(context.getExternalFilesDir(
+                Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+            Log.e("FileUtil", "Directory not created");
+        }
+        return file;
     }
 
 }
