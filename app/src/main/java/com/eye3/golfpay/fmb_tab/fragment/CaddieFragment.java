@@ -65,6 +65,12 @@ public class CaddieFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        closeKeyboard();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
@@ -94,6 +100,7 @@ public class CaddieFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         createGuestList(Global.teeUpTime.getTodayReserveList().get(position).getGuestData());
         setDataTeamMemo();
+        teamMemoOnClick();
     }
 
     private void closeKeyboard() {
@@ -113,11 +120,14 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout, int i) {
+    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout, final int i) {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditorDialog editorDialog = new EditorDialog(getContext());
+                String guestId = Global.teeUpTime.getTodayReserveList().get(position).getGuestData().get(i).getId();
+                View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(i);
+                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
+                EditorDialog editorDialog = new EditorDialog(getContext(), guestId, guestMemoContentTextView.getText().toString());
                 editorDialog.show();
                 systemUIHide();
             }
@@ -155,6 +165,10 @@ public class CaddieFragment extends BaseFragment {
                 View guestMemoLinearLayout = caddieViewGuestItem.findViewById(R.id.guestMemoLinearLayout);
                 guestMemoLinearLayoutOnClick(guestMemoLinearLayout, i);
 
+                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
+//                Todo 메모 setText
+//                guestMemoContentTextView.setText(guestList.get(i).);
+
                 View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
                 signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
 
@@ -165,6 +179,19 @@ public class CaddieFragment extends BaseFragment {
     private void setDataTeamMemo() {
         TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
         teamMemoContentTextView.setText(Global.teeUpTime.getTodayReserveList().get(position).getMemo());
+    }
+
+    private void teamMemoOnClick() {
+        View teamMemoLinearLayout = v.findViewById(R.id.teamMemoLinearLayout);
+        final TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
+        teamMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditorDialog editorDialog = new EditorDialog(getContext(), teamMemoContentTextView.getText().toString());
+                editorDialog.show();
+                systemUIHide();
+            }
+        });
     }
 
     private void sendTakePhotoIntent() {

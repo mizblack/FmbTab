@@ -34,13 +34,16 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected String TAG = getClass().getSimpleName();
     private ProgressDialog pd; // 프로그레스바 선언
     protected BackPressCloseHandler backPressCloseHandler;
-    protected DrawerLayout drawer;
+    public DrawerLayout drawer;
     private boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
 
     public void setOnKeyBackPressedListener(BaseFragment listener) {
         mOnKeyBackPressedListener = listener;
 
+    }
+    public DrawerLayout getDrawer(){
+        return drawer;
     }
 
     @Override
@@ -133,7 +136,26 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
+
     }
+
+    public void GoNavigationDrawer(BaseFragment fragment, Bundle bundle) {
+        if (fragment == null) {
+            return;
+        }
+
+        mBaseFragment = fragment;
+        if (bundle != null) {
+            mBaseFragment.setArguments(bundle);
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+        transaction.replace(R.id.nav_view, mBaseFragment).commitAllowingStateLoss();
+
+    }
+
+
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle) {
         if (fragment == null) {

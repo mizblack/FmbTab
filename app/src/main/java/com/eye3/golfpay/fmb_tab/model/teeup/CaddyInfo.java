@@ -10,6 +10,9 @@ public class CaddyInfo implements Serializable {
     @SerializedName("name")
     private String name;
 
+    @SerializedName("cart_no")
+    private String cart_no;
+
     public String getAdmins_id() {
         return admins_id;
     }
@@ -25,4 +28,11 @@ public class CaddyInfo implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getCart_no() {
+        return cart_no;
+    }
+
+
+
 }

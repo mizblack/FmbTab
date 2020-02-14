@@ -70,6 +70,9 @@ public class ScoreDialog extends Dialog {
     //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
     ScoreInputFinishListener inputFinishListener;
+
+    View cancelLinearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,17 @@ public class ScoreDialog extends Dialog {
         getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.score_dlg);
+
+        cancelLinearLayout = findViewById(R.id.cancelLinearLayout);
+        cancelLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
+//        mTitleView = findViewById(R.id.dlg_title);
+        //       mContentView = findViewById(R.id.dlg_msg);
 
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);

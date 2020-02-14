@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.util;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.eye3.golfpay.fmb_tab.R;
@@ -22,6 +23,21 @@ public class SignatureDialog extends Dialog {
         Objects.requireNonNull(getWindow()).setAttributes(lpWindow);
 
         setContentView(R.layout.signature_dlg);
+
+        findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
+        findViewById(R.id.cancelTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
     }
 
     public SignatureDialog(Context context) {
