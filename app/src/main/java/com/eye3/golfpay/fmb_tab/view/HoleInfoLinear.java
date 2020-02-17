@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 
 public class HoleInfoLinear extends LinearLayout {
@@ -38,7 +40,12 @@ public class HoleInfoLinear extends LinearLayout {
         tvPar = v.findViewById(R.id.hole_par);
         tvPar.setText("Par" + hole.par);
         tvMeter = v.findViewById(R.id.hole_meter);
-        tvMeter.setText(hole.hole_total_size);
+        //여기서 변환식 사용할것
+        if(Global.isYard){
+            tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(hole.hole_total_size))));
+        }else
+            tvMeter.setText(hole.hole_total_size);
+
         addView(v);
     }
 

@@ -7,13 +7,21 @@
         android:layout_height="90dp"
         android:background="@color/white"
         android:orientation="horizontal">
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:orientation="vertical"
+            >
         <TextView
             style="@style/MainRankOrHoleOrPuttOrMeterTextView"
             android:layout_width="70dp"
-            android:paddingTop="16dp"
+            android:paddingTop="10dp"
             android:text="Rank" />
-
+        <Spinner
+            android:id="@+id/spinn_distance"
+            android:layout_width="70dp"
+            android:layout_height="30dp" />
+    </LinearLayout>
         <LinearLayout
             android:layout_width="120dp"
             android:layout_height="match_parent"
@@ -23,7 +31,8 @@
 
                 style="@style/MainRankOrHoleOrPuttOrMeterTextView"
                 android:paddingTop="16dp"
-                android:text="Hole" />
+                android:text="Hole"
+                />
 
             <View
                 android:layout_width="match_parent"

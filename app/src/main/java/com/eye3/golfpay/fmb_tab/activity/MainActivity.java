@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
@@ -49,7 +50,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     SettingsCustomDialog settingsCustomDialog;
     TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
     ImageView markView, cancelView;
-
+    LinearLayout ll_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,17 +118,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.openDrawer(GravityCompat.END);
 
-        startTextView = findViewById(R.id.loginNmenu).findViewById(R.id.startTextView);
-        nameEditText = findViewById(R.id.loginNmenu).findViewById(R.id.nameEditText);
-        phoneNumberEditText = findViewById(R.id.loginNmenu).findViewById(R.id.phoneNumberEditText);
+        startTextView = findViewById(R.id.startTextView);
+        nameEditText = findViewById(R.id.nameEditText);
+        phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
+        ll_login = findViewById(R.id.login_view_include);
         startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
-        cancelView = findViewById(R.id.loginNmenu).findViewById(R.id.cancelIcon);
+
+        cancelView = findViewById(R.id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,14 +227,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        //  disableMenu();
     }
 
 
     //**************************************************
     public void changeDrawerViewToMenuView() {
-        //   findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
-        //  findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
+
+        ll_login.setVisibility(View.GONE);
         GoNavigationDrawer(new ViewMenuFragment(), null);
     }
 
@@ -264,20 +265,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.takeover_test) {
-            // Handle the camera action
-            //  GoNativeScreenAdd(new FrDeviceSearch(), null);
-        } else if (id == R.id.nav_device_search) {
-            //           GoNativeScreenAdd(new FrDeviceSearch(), null);
-//            Intent intent = new Intent(this, MarkerMapActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
-        } else if (id == R.id.failover_inspection) {
-            ;
-        } else if (id == R.id.manual) {
-
-        }
+//        if (id == R.id.takeover_test) {
+//            // Handle the camera action
+//            //  GoNativeScreenAdd(new FrDeviceSearch(), null);
+//        } else if (id == R.id.nav_device_search) {
+//            //           GoNativeScreenAdd(new FrDeviceSearch(), null);
+////            Intent intent = new Intent(this, MarkerMapActivity.class);
+////            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////            startActivity(intent);
+//        } else if (id == R.id.failover_inspection) {
+//            ;
+//        } else if (id == R.id.manual) {
+//
+//        }
 
         drawer_layout.closeDrawer(GravityCompat.END);
         return true;

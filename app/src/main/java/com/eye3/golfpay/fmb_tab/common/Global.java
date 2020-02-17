@@ -77,11 +77,13 @@ public class Global {
     public static ArrayList<Player> playerList = new ArrayList<>();
 
 
-    boolean wifi = false;
+    public static boolean wifi = false;
 
-    boolean gps = false;
+    public static boolean gps = false;
 
-    boolean isTar = false;
+    public static boolean isTar = false;
+
+    public static  boolean isYard = false;
 
 
 }

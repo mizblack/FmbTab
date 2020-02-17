@@ -24,9 +24,16 @@ public class AppDef {
          return score.par;
    }
 
+
    public interface CType{
       String OUT = "OUT";
       String IN = "IN";
+   }
+
+   public static int MeterToYard(int meter){
+      double yard = meter * 1.0936;
+
+      return (int) yard;
    }
 
 
