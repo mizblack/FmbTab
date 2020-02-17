@@ -18,7 +18,7 @@
         android:layout_gravity="end">
 
         <include
-            android:id="@+id/loginNmenu"
+            android:id="@+id/login_menu"
             layout="@layout/drawer_login" />
 
     </com.google.android.material.navigation.NavigationView>

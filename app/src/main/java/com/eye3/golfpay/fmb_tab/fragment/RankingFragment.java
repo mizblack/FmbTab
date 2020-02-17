@@ -289,6 +289,9 @@ public class RankingFragment extends BaseFragment {
                 }
                 holder1.tvRank.setText(playerList.get(position).Ranking);
                 holder1.tvName.setText(playerList.get(position).name);
+                if(position == 15){
+                          ;
+                }
                 //동적 코스점수뷰 생성
                 int idx = 0;
                 for (int i = 0; mHoleScoreView.length > i; i++) {
@@ -386,7 +389,7 @@ public class RankingFragment extends BaseFragment {
 
     private void getReserveScore() {
         showProgress("랭킹 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();

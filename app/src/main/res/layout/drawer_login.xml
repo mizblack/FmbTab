@@ -3,15 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id ="@+id/fl_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <include-->
-<!--            android:id="@+id/menu_view_include"-->
-<!--            layout="@layout/view_menu"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:visibility="gone" />-->
 
         <LinearLayout
             android:id="@+id/login_view_include"

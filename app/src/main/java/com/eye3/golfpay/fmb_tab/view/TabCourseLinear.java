@@ -26,6 +26,8 @@ import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
@@ -268,6 +270,7 @@ public class TabCourseLinear extends LinearLayout {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
                     mPlayerList = playerList;
+
                     notifyDataSetChanged();
                 }
             };
@@ -425,6 +428,43 @@ public class TabCourseLinear extends LinearLayout {
         }
 
     }
+
+//    private  void refreshScore() {
+//      //  showProgress("스코어 정보를 가져오는 중입니다.");
+//        DataInterface.getInstance().getReserveScore(mContext, Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+//            @Override
+//            public void onSuccess(ResponseData<Player> response) {
+//             //   hideProgress();
+//                if (response.getResultCode().equals("ok")) {
+//                    mPlayerList = (ArrayList<Player>) response.getList();
+//                    //      mCourseList = getCourse(mPlayerList);
+//                    Global.playerList = mPlayerList;
+//                    //       NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum을 요청할것
+//                    //         CourseTabBar = new TextView[NUM_OF_COURSE];
+//                    //        createTabBar(CourseTabBar, mCourseList);
+//                    mTabCourseArr = new TabCourseLinear[NUM_OF_COURSE];
+//                    createCourseTab(mPlayerList, mCourseList);
+//
+//                }else if(response.getResultCode().equals("fail")){
+//                    Toast.makeText(mContext, response.getResultMessage() , Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(ResponseData<Player> response) {
+//             //  hideProgress();
+//                response.getError();
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//
+//                //hideProgress();
+//            }
+//        });
+//
+//
+//    }
 
 
     private String Par_Tar_Total(Course course, boolean istar) {
