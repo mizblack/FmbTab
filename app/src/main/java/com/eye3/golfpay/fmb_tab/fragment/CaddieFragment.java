@@ -276,32 +276,32 @@ public class CaddieFragment extends BaseFragment {
         return image;
     }
 
-    private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
-        //create a file to write bitmap data
-        File f = new File(context.getCacheDir(), filename);
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Convert bitmap to byte array
-        //  Bitmap bitmap = bitmap;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
-        byte[] bitmapData = bos.toByteArray();
-
-        //write the bytes in file
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(f);
-            fos.write(bitmapData);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
+//        //create a file to write bitmap data
+//        File f = new File(context.getCacheDir(), filename);
+//        try {
+//            f.createNewFile();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //Convert bitmap to byte array
+//        //  Bitmap bitmap = bitmap;
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
+//        byte[] bitmapData = bos.toByteArray();
+//
+//        //write the bytes in file
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(f);
+//            fos.write(bitmapData);
+//            fos.flush();
+//            fos.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static File getAlbumStorageDir(Context context, String albumName) {
         // Get the directory for the app's private pictures directory.
