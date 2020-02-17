@@ -118,10 +118,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer_layout.openDrawer(GravityCompat.END);
 
-        startTextView = findViewById(R.id.login_menu).findViewById(R.id.startTextView);
-        nameEditText = findViewById(R.id.login_menu).findViewById(R.id.nameEditText);
-        phoneNumberEditText = findViewById(R.id.login_menu).findViewById(R.id.phoneNumberEditText);
-        ll_login = findViewById(R.id.login_menu).findViewById(R.id.login_view_include);
+        startTextView = findViewById(R.id.startTextView);
+        nameEditText = findViewById(R.id.nameEditText);
+        phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
+        ll_login = findViewById(R.id.login_view_include);
         startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        cancelView = findViewById(R.id.login_menu).findViewById(R.id.cancelIcon);
+        cancelView = findViewById(R.id.cancelIcon);
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
