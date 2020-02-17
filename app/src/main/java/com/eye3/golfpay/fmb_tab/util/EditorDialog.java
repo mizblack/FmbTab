@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -20,7 +21,24 @@ public class EditorDialog extends Dialog {
 
     private String guestId;
     private String memoContent;
+    private EditText memoEditText;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
+    private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
+
+    private void setTeamMemoData() {
+        Global.guestArrayList.get(0).setTeamMemo(memoEditText.getText().toString());
+    }
+
+    private void setGuestData() {
+        Global.guestArrayList.get(traversalByGuestId()).setMemo(memoEditText.getText().toString());
+    }
+
+    private void setData() {
+        setTeamMemoData();
+        if (guestId != null) {
+            setGuestData();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +52,13 @@ public class EditorDialog extends Dialog {
 
         setContentView(R.layout.editor_dlg);
 
-        final EditText memoEditText = findViewById(R.id.memoEditText);
+        memoEditText = findViewById(R.id.memoEditText);
         showSoftKeyboard(memoEditText);
 
         findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setData();
                 closeKeyboard(memoEditText);
                 dismiss();
             }
@@ -63,10 +82,11 @@ public class EditorDialog extends Dialog {
         this.memoContent = memoContent;
     }
 
-    public EditorDialog(Context context, String guestId, String memoContent) {
+    public EditorDialog(Context context, String guestId, String memoContent, ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.guestId = guestId;
         this.memoContent = memoContent;
+        this.caddieViewGuestItemArrayList = caddieViewGuestItemArrayList;
     }
 
     private void setTextMemoTitle() {
@@ -79,7 +99,6 @@ public class EditorDialog extends Dialog {
     }
 
     private void setTextTeamMemoContent() {
-        EditText memoEditText = findViewById(R.id.memoEditText);
         memoEditText.setText(memoContent);
     }
 
@@ -94,9 +113,8 @@ public class EditorDialog extends Dialog {
     }
 
     private void setTextGuestMemoContent() {
-        View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(traversalByGuestId());
+        View caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
         TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-        EditText memoEditText = findViewById(R.id.memoEditText);
         memoEditText.setText(guestMemoContentTextView.getText());
     }
 

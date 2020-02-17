@@ -33,10 +33,7 @@ import com.eye3.golfpay.fmb_tab.util.EditorDialog;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialog;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,8 +53,8 @@ public class CaddieFragment extends BaseFragment {
     private Uri photoUri;
     View v;
     private ArrayList<Guest> guestArrayList = Global.guestArrayList;
-    private ArrayList<Guest> guestArrayListTemp = Global.guestArrayList;
     private LinearLayout memberLinearLayout;
+    private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,9 +66,32 @@ public class CaddieFragment extends BaseFragment {
         }
     }
 
+    private void setGuestData() {
+        guestArrayList = Global.guestArrayList;
+        if (caddieViewGuestItemArrayList != null && caddieViewGuestItemArrayList.size() != 0) {
+            for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
+                View caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
+
+                TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
+                memberNameTextView.setText(guestArrayList.get(i).getGuestName());
+
+                EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
+                carNumberEditText.setText(guestArrayList.get(i).getCarNumber());
+
+                EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
+                phoneNumberEditText.setText(guestArrayList.get(i).getPhoneNumber());
+
+                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
+                guestMemoContentTextView.setText(guestArrayList.get(i).getMemo());
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        setDataTeamMemo();
+        setGuestData();
         closeKeyboard();
     }
 
@@ -109,8 +129,8 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void closeKeyboard() {
-        for (int i = 0; i < Global.caddieViewGuestItemArrayList.size(); i++) {
-            CaddieViewGuestItem caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(i);
+        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
+            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
             closeKeyboard(caddieViewGuestItem.findViewById(R.id.carNumberEditText));
             closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
         }
@@ -125,14 +145,15 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout, final int i) {
+    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout,
+                                              final int i) {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String guestId = guestArrayList.get(i).getId();
-                View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(i);
+                View caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-                EditorDialog editorDialog = new EditorDialog(getContext(), guestId, guestMemoContentTextView.getText().toString());
+                EditorDialog editorDialog = new EditorDialog(getContext(), guestId, guestMemoContentTextView.getText().toString(), caddieViewGuestItemArrayList);
                 editorDialog.show();
                 systemUIHide();
             }
@@ -155,7 +176,7 @@ public class CaddieFragment extends BaseFragment {
             for (int i = 0; i < guestArrayList.size(); i++) {
                 final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
                 memberLinearLayout.addView(caddieViewGuestItem);
-                Global.caddieViewGuestItemArrayList.add(caddieViewGuestItem);
+                caddieViewGuestItemArrayList.add(caddieViewGuestItem);
                 guestListOnClick(caddieViewGuestItem, i);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);

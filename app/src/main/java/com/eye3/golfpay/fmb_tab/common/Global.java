@@ -19,7 +19,6 @@ import java.util.List;
 public class Global {
 
     public static TeeUpTime teeUpTime;
-    public static ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
     public static ArrayList<Guest> guestArrayList;
 
     public static String DEV_SERVER_IP = "";
