@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="spinn_array">
+        <item>distance</item>
+        <item>meter</item>
+        <item>yard</item>
+    </string-array>
+</resources>

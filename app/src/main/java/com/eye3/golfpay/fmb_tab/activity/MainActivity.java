@@ -266,20 +266,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.takeover_test) {
-            // Handle the camera action
-            //  GoNativeScreenAdd(new FrDeviceSearch(), null);
-        } else if (id == R.id.nav_device_search) {
-            //           GoNativeScreenAdd(new FrDeviceSearch(), null);
-//            Intent intent = new Intent(this, MarkerMapActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            startActivity(intent);
-        } else if (id == R.id.failover_inspection) {
-            ;
-        } else if (id == R.id.manual) {
-
-        }
+//        if (id == R.id.takeover_test) {
+//            // Handle the camera action
+//            //  GoNativeScreenAdd(new FrDeviceSearch(), null);
+//        } else if (id == R.id.nav_device_search) {
+//            //           GoNativeScreenAdd(new FrDeviceSearch(), null);
+////            Intent intent = new Intent(this, MarkerMapActivity.class);
+////            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////            startActivity(intent);
+//        } else if (id == R.id.failover_inspection) {
+//            ;
+//        } else if (id == R.id.manual) {
+//
+//        }
 
         drawer_layout.closeDrawer(GravityCompat.END);
         return true;
