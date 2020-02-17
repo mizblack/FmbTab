@@ -96,7 +96,8 @@ public class EditorDialog extends Dialog {
     private void setTextGuestMemoContent() {
         View caddieViewGuestItem = Global.caddieViewGuestItemArrayList.get(traversalByGuestId());
         TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-        guestMemoContentTextView.setText(memoContent);
+        EditText memoEditText = findViewById(R.id.memoEditText);
+        memoEditText.setText(guestMemoContentTextView.getText());
     }
 
     private void setTextMemoContent() {

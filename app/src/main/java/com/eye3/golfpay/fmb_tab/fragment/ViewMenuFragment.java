@@ -322,6 +322,8 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
+        disableMenu();
+        setDisableColor();
 
     }
 
