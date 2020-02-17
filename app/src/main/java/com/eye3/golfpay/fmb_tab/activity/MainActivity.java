@@ -36,6 +36,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -62,7 +63,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-    //   @SuppressLint("ObsoleteSdkInt")
+    @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -79,7 +80,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-
     private void login(final Context context, String id, String pwd) {
         showProgress("로그인 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
-                   changeDrawerViewToMenuView();
+                    changeDrawerViewToMenuView();
                 }
 
             }
@@ -203,8 +203,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-
-
         groupNameTextView = findViewById(R.id.groupNameTextView);
         reservationPersonNameTextView = findViewById(R.id.reservationPersonNameTextView);
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
@@ -227,14 +225,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-      //  disableMenu();
+        //  disableMenu();
     }
 
 
-   //**************************************************
+    //**************************************************
     public void changeDrawerViewToMenuView() {
-     //   findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
-      //  findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
+        //   findViewById(R.id.loginNmenu).findViewById(R.id.login_view_include).setVisibility(View.INVISIBLE);
+        //  findViewById(R.id.loginNmenu).findViewById(R.id.menu_view_include).setVisibility(View.VISIBLE);
         GoNavigationDrawer(new ViewMenuFragment(), null);
     }
 
@@ -339,4 +337,3 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 }
-

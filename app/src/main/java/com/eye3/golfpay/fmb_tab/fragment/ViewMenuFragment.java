@@ -1,6 +1,5 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.model.guest.Guest;
+import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
@@ -32,19 +32,61 @@ import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ViewMenuFragment extends BaseFragment {
-    RecyclerView teeUpRecyclerView;
-    TeeUpAdapter teeUpAdapter;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, caddieNameTextView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01, showListTextView, tvCartNo;
-    ImageView markView, cancelView;
-    View selectTobDivider, selectBottomDivider, roundingLinearLayout;
-    DrawerLayout drawer_layout;
-    FmbCustomDialog fmbDialog;
-    SettingsCustomDialog settingsCustomDialog;
+    private RecyclerView teeUpRecyclerView;
+    private TeeUpAdapter teeUpAdapter;
+    private TextView caddieNameTextView;
+    private TextView groupNameTextView;
+    private TextView reservationPersonNameTextView;
+    private TextView roundingTeeUpTimeTextView;
+    private TextView inOutTextView00;
+    private TextView inOutTextView01;
+    private TextView tvCartNo;
+    private View selectTobDivider, selectBottomDivider, roundingLinearLayout;
+    private DrawerLayout drawer_layout;
+    private FmbCustomDialog fmbDialog;
+    private SettingsCustomDialog settingsCustomDialog;
+    private TextView gpsTextView00;
+    private TextView gpsTextView01;
+    private View courseDivider;
+
+    private TextView scoreBoardTextView00;
+    private TextView scoreBoardTextView01;
+    private View scoreBoardDivider;
+
+    private TextView nearestLongestTextView00;
+    private TextView nearestLongestTextView01;
+    private View nearestLongestDivider;
+
+    private TextView rankingTextView00;
+    private TextView rankingTextView01;
+    private View rankingDivider;
+
+    private TextView caddieTextView00;
+    private TextView caddieTextView01;
+    private View caddieDivider;
+
+    private TextView orderTextView00;
+    private TextView orderTextView01;
+    private View orderDivider;
+
+    private TextView paymentTextView00;
+    private TextView paymentTextView01;
+    private View paymentDivider;
+
+    private TextView topdressingTextView00;
+    private TextView topdressingTextView01;
+    private View topdressingDivider;
+
+    private TextView galleryTextView00;
+    private TextView galleryTextView01;
+    private View galleryDivider;
+
 
     public ViewMenuFragment() {
         // Required empty public constructor
@@ -58,28 +100,62 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fr_view_menu, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return view;
+        return inflater.inflate(R.layout.fr_view_menu, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
-
     }
 
+    @SuppressLint("CutPasteId")
     private void init() {
+        gpsTextView00 = Objects.requireNonNull(getView()).findViewById(R.id.gpsTextView00);
+        gpsTextView01 = getView().findViewById(R.id.gpsTextView01);
+        courseDivider = getView().findViewById(R.id.courseDivider);
+
+        scoreBoardTextView00 = getView().findViewById(R.id.scoreBoardTextView00);
+        scoreBoardTextView01 = getView().findViewById(R.id.scoreBoardTextView01);
+        scoreBoardDivider = getView().findViewById(R.id.scoreBoardDivider);
+
+        nearestLongestTextView00 = getView().findViewById(R.id.nearestLongestTextView00);
+        nearestLongestTextView01 = getView().findViewById(R.id.nearestLongestTextView01);
+        nearestLongestDivider = getView().findViewById(R.id.nearestLongestDivider);
+
+        rankingTextView00 = getView().findViewById(R.id.rankingTextView00);
+        rankingTextView01 = getView().findViewById(R.id.rankingTextView01);
+        rankingDivider = getView().findViewById(R.id.rankingDivider);
+
+        caddieTextView00 = getView().findViewById(R.id.caddieTextView00);
+        caddieTextView01 = getView().findViewById(R.id.caddieTextView01);
+        caddieDivider = getView().findViewById(R.id.caddieDivider);
+
+        orderTextView00 = getView().findViewById(R.id.orderTextView00);
+        orderTextView01 = getView().findViewById(R.id.orderTextView01);
+        orderDivider = getView().findViewById(R.id.orderDivider);
+
+        paymentTextView00 = getView().findViewById(R.id.paymentTextView00);
+        paymentTextView01 = getView().findViewById(R.id.paymentTextView01);
+        paymentDivider = getView().findViewById(R.id.paymentDivider);
+
+        topdressingTextView00 = getView().findViewById(R.id.topdressingTextView00);
+        topdressingTextView01 = getView().findViewById(R.id.topdressingTextView01);
+        topdressingDivider = getView().findViewById(R.id.topdressingDivider);
+
+        galleryTextView00 = getView().findViewById(R.id.galleryTextView00);
+        galleryTextView01 = getView().findViewById(R.id.galleryTextView01);
+        galleryDivider = getView().findViewById(R.id.galleryDivider);
+
         drawer_layout = (mParentActivity).findViewById(R.id.drawer_layout);
-        selectTobDivider = getView().findViewById(R.id.selectTobDivider);
+        selectTobDivider = Objects.requireNonNull(getView()).findViewById(R.id.selectTobDivider);
         selectBottomDivider = getView().findViewById(R.id.selectBottomDivider);
 
         tvCartNo = getView().findViewById(R.id.cart_no);
         teeUpRecyclerView = getView().findViewById(R.id.teeUpRecyclerView);
-        showListTextView = getView().findViewById(R.id.showListTextView);
+        TextView showListTextView = getView().findViewById(R.id.showListTextView);
         showListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +165,7 @@ public class ViewMenuFragment extends BaseFragment {
                 roundingLinearLayout.setVisibility(View.GONE);
 
                 disableMenu();
+                setDisableColor();
             }
         });
         groupNameTextView = getView().findViewById(R.id.groupNameTextView);
@@ -97,7 +174,7 @@ public class ViewMenuFragment extends BaseFragment {
         inOutTextView00 = getView().findViewById(R.id.inOutTextView00);
         inOutTextView01 = getView().findViewById(R.id.inOutTextView01);
         roundingLinearLayout = getView().findViewById(R.id.roundingLinearLayout);
-        controlTxtView = getActivity().findViewById(R.id.main_bottom_bar).findViewById(R.id.controlTextView);
+        TextView controlTxtView = Objects.requireNonNull(getActivity()).findViewById(R.id.main_bottom_bar).findViewById(R.id.controlTextView);
 
         selectBottomDivider.setVisibility(View.VISIBLE);
         teeUpRecyclerView.setVisibility(View.VISIBLE);
@@ -112,7 +189,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        markView = getActivity().findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
+        ImageView markView = getActivity().findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
         markView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,9 +211,7 @@ public class ViewMenuFragment extends BaseFragment {
         getView().findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle caddieFragmentBundle = new Bundle();
-                caddieFragmentBundle.putInt("selectedTeeUpIndex", Global.selectedTeeUpIndex);
-                GoNativeScreen(new CaddieFragment(), caddieFragmentBundle);
+                getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
@@ -243,6 +318,7 @@ public class ViewMenuFragment extends BaseFragment {
                 roundingLinearLayout.setVisibility(View.GONE);
 
                 disableMenu();
+                setDisableColor();
             }
         });
 
@@ -268,7 +344,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void setLogout() {
 
-        getActivity().stopService((new Intent(getActivity(), CartLocationService.class)));
+        Objects.requireNonNull(getActivity()).stopService((new Intent(getActivity(), CartLocationService.class)));
         getActivity().finish();
     }
 
@@ -286,11 +362,11 @@ public class ViewMenuFragment extends BaseFragment {
                     //    GoNativeScreen(new ScoreFragment(), null);
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
-                    caddieNameTextView = getView().findViewById(R.id.caddieNameTextView);
+                    caddieNameTextView = Objects.requireNonNull(getView()).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
 
-                    teeUpAdapter = new TeeUpAdapter(getActivity(), Global.teeUpTime.getTodayReserveList());
+                    teeUpAdapter = new TeeUpAdapter(Global.teeUpTime.getTodayReserveList());
                     teeUpRecyclerView = getView().findViewById(R.id.teeUpRecyclerView);
                     teeUpRecyclerView.setHasFixedSize(true);
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -315,11 +391,109 @@ public class ViewMenuFragment extends BaseFragment {
         });
     }
 
-    public void disableMenu() {
-        if ((mParentActivity).getDrawerLayout() != null)
-            (mParentActivity).getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+    private void setEnableColor() {
+        gpsTextView00.setTextColor(0xff7e8181);
+        gpsTextView01.setTextColor(0xff7e8181);
+        courseDivider.setBackgroundColor(0xff7e8181);
 
-        getView().findViewById(R.id.gpsLinearLayout).setEnabled(false);
+        scoreBoardTextView00.setTextColor(0xff7e8181);
+        scoreBoardTextView01.setTextColor(0xff7e8181);
+        scoreBoardDivider.setBackgroundColor(0xff7e8181);
+
+        nearestLongestTextView00.setTextColor(0xff7e8181);
+        nearestLongestTextView01.setTextColor(0xff7e8181);
+        nearestLongestDivider.setBackgroundColor(0xff7e8181);
+
+        rankingTextView00.setTextColor(0xff7e8181);
+        rankingTextView01.setTextColor(0xff7e8181);
+        rankingDivider.setBackgroundColor(0xff7e8181);
+
+        caddieTextView00.setTextColor(0xff7e8181);
+        caddieTextView01.setTextColor(0xff7e8181);
+        caddieDivider.setBackgroundColor(0xff7e8181);
+
+        orderTextView00.setTextColor(0xff7e8181);
+        orderTextView01.setTextColor(0xff7e8181);
+        orderDivider.setBackgroundColor(0xff7e8181);
+
+        paymentTextView00.setTextColor(0xff7e8181);
+        paymentTextView01.setTextColor(0xff7e8181);
+        paymentDivider.setBackgroundColor(0xff7e8181);
+
+        topdressingTextView00.setTextColor(0xff7e8181);
+        topdressingTextView01.setTextColor(0xff7e8181);
+        topdressingDivider.setBackgroundColor(0xff7e8181);
+
+        galleryTextView00.setTextColor(0xff7e8181);
+        galleryTextView01.setTextColor(0xff7e8181);
+        galleryDivider.setBackgroundColor(0xff7e8181);
+    }
+
+    private void enableMenu() {
+        if (mParentActivity.getDrawer() != null) {
+            mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
+        Objects.requireNonNull(getView()).findViewById(R.id.gpsLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.rankingNormalLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.caddieLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.orderLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.paymentLinearLayout).setEnabled(true);
+
+        getView().findViewById(R.id.settingsLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.scoreLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.controlLinearLayout).setEnabled(true);
+        getView().findViewById(R.id.closeLinearLayout).setEnabled(true);
+
+        setEnableColor();
+    }
+
+    private void setDisableColor() {
+        gpsTextView00.setTextColor(0x88999999);
+        gpsTextView01.setTextColor(0x88999999);
+        courseDivider.setBackgroundColor(0x88999999);
+
+        scoreBoardTextView00.setTextColor(0x88999999);
+        scoreBoardTextView01.setTextColor(0x88999999);
+        scoreBoardDivider.setBackgroundColor(0x88999999);
+
+        nearestLongestTextView00.setTextColor(0x88999999);
+        nearestLongestTextView01.setTextColor(0x88999999);
+        nearestLongestDivider.setBackgroundColor(0x88999999);
+
+        rankingTextView00.setTextColor(0x88999999);
+        rankingTextView01.setTextColor(0x88999999);
+        rankingDivider.setBackgroundColor(0x88999999);
+
+        caddieTextView00.setTextColor(0x88999999);
+        caddieTextView01.setTextColor(0x88999999);
+        caddieDivider.setBackgroundColor(0x88999999);
+
+        orderTextView00.setTextColor(0x88999999);
+        orderTextView01.setTextColor(0x88999999);
+        orderDivider.setBackgroundColor(0x88999999);
+
+        paymentTextView00.setTextColor(0x88999999);
+        paymentTextView01.setTextColor(0x88999999);
+        paymentDivider.setBackgroundColor(0x88999999);
+
+        topdressingTextView00.setTextColor(0x88999999);
+        topdressingTextView01.setTextColor(0x88999999);
+        topdressingDivider.setBackgroundColor(0x88999999);
+
+        galleryTextView00.setTextColor(0x88999999);
+        galleryTextView01.setTextColor(0x88999999);
+        galleryDivider.setBackgroundColor(0x88999999);
+    }
+
+    private void disableMenu() {
+        if ((mParentActivity).getDrawerLayout() != null) {
+            (mParentActivity).getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        }
+
+        Objects.requireNonNull(getView()).findViewById(R.id.gpsLinearLayout).setEnabled(false);
         getView().findViewById(R.id.scoreBoardLinearLayout).setEnabled(false);
         getView().findViewById(R.id.nearestLongestLinearLayout).setEnabled(false);
         getView().findViewById(R.id.rankingNormalLinearLayout).setEnabled(false);
@@ -335,50 +509,12 @@ public class ViewMenuFragment extends BaseFragment {
         setDisableColor();
     }
 
-    void setDisableColor() {
-        TextView gpsTextView00 = getView().findViewById(R.id.gpsTextView00);
-        TextView gpsTextView01 = getView().findViewById(R.id.gpsTextView01);
-        gpsTextView00.setTextColor(0x88999999);
-        gpsTextView01.setTextColor(0x88999999);
-
-        TextView scoreBoardTextView00 = getView().findViewById(R.id.scoreBoardTextView00);
-        TextView scoreBoardTextView01 = getView().findViewById(R.id.scoreBoardTextView01);
-        scoreBoardTextView00.setTextColor(0x88999999);
-        scoreBoardTextView01.setTextColor(0x88999999);
-
-        TextView nearestLongestTextView00 = getView().findViewById(R.id.nearestLongestTextView00);
-        TextView nearestLongestTextView01 = getView().findViewById(R.id.nearestLongestTextView01);
-        nearestLongestTextView00.setTextColor(0x88999999);
-        nearestLongestTextView01.setTextColor(0x88999999);
-
-        TextView rankingTextView00 = getView().findViewById(R.id.rankingTextView00);
-        TextView rankingTextView01 = getView().findViewById(R.id.rankingTextView01);
-        rankingTextView00.setTextColor(0x88999999);
-        rankingTextView01.setTextColor(0x88999999);
-
-        TextView caddieTextView00 = getView().findViewById(R.id.caddieTextView00);
-        TextView caddieTextView01 = getView().findViewById(R.id.caddieTextView01);
-        caddieTextView00.setTextColor(0x88999999);
-        caddieTextView01.setTextColor(0x88999999);
-
-        TextView orderTextView00 = getView().findViewById(R.id.orderTextView00);
-        TextView orderTextView01 = getView().findViewById(R.id.orderTextView01);
-        orderTextView00.setTextColor(0x88999999);
-        orderTextView01.setTextColor(0x88999999);
-
-        TextView paymentTextView00 = getView().findViewById(R.id.paymentTextView00);
-        TextView paymentTextView01 = getView().findViewById(R.id.paymentTextView01);
-        paymentTextView00.setTextColor(0x88999999);
-        paymentTextView01.setTextColor(0x88999999);
-    }
-
-
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
 
         ArrayList<TodayReserveList> todayReserveList;
         TextView teeUpTimeTextView, reservationGuestNameTextView;
 
-        TeeUpAdapter(Context context, ArrayList<TodayReserveList> todayReserveList) {
+        TeeUpAdapter(ArrayList<TodayReserveList> todayReserveList) {
             this.todayReserveList = todayReserveList;
         }
 
@@ -415,102 +551,6 @@ public class ViewMenuFragment extends BaseFragment {
             }
 
         }
-
-        private void enableMenu() {
-            if (((MainActivity) mParentActivity).getDrawer() != null)
-                ((MainActivity) mParentActivity).getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
-            getView().findViewById(R.id.gpsLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.rankingNormalLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.caddieLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.orderLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.paymentLinearLayout).setEnabled(true);
-
-            getView().findViewById(R.id.settingsLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.scoreLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.controlLinearLayout).setEnabled(true);
-            getView().findViewById(R.id.closeLinearLayout).setEnabled(true);
-
-            setEnableColor();
-        }
-
-
-        void setEnableColor() {
-            TextView gpsTextView00 = getView().findViewById(R.id.gpsTextView00);
-            TextView gpsTextView01 = getView().findViewById(R.id.gpsTextView01);
-            gpsTextView00.setTextColor(0xff7e8181);
-            gpsTextView01.setTextColor(0xff7e8181);
-
-            TextView scoreBoardTextView00 = getView().findViewById(R.id.scoreBoardTextView00);
-            TextView scoreBoardTextView01 = getView().findViewById(R.id.scoreBoardTextView01);
-            scoreBoardTextView00.setTextColor(0xff7e8181);
-            scoreBoardTextView01.setTextColor(0xff7e8181);
-
-            TextView nearestLongestTextView00 = getView().findViewById(R.id.nearestLongestTextView00);
-            TextView nearestLongestTextView01 = getView().findViewById(R.id.nearestLongestTextView01);
-            nearestLongestTextView00.setTextColor(0xff7e8181);
-            nearestLongestTextView01.setTextColor(0xff7e8181);
-
-            TextView rankingTextView00 = getView().findViewById(R.id.rankingTextView00);
-            TextView rankingTextView01 = getView().findViewById(R.id.rankingTextView01);
-            rankingTextView00.setTextColor(0xff7e8181);
-            rankingTextView01.setTextColor(0xff7e8181);
-
-            TextView caddieTextView00 = getView().findViewById(R.id.caddieTextView00);
-            TextView caddieTextView01 = getView().findViewById(R.id.caddieTextView01);
-            caddieTextView00.setTextColor(0xff7e8181);
-            caddieTextView01.setTextColor(0xff7e8181);
-
-            TextView orderTextView00 = getView().findViewById(R.id.orderTextView00);
-            TextView orderTextView01 = getView().findViewById(R.id.orderTextView01);
-            orderTextView00.setTextColor(0xff7e8181);
-            orderTextView01.setTextColor(0xff7e8181);
-
-            TextView paymentTextView00 = getView().findViewById(R.id.paymentTextView00);
-            TextView paymentTextView01 = getView().findViewById(R.id.paymentTextView01);
-            paymentTextView00.setTextColor(0xff7e8181);
-            paymentTextView01.setTextColor(0xff7e8181);
-        }
-
-        void setDisableColor() {
-            TextView gpsTextView00 = getView().findViewById(R.id.gpsTextView00);
-            TextView gpsTextView01 = getView().findViewById(R.id.gpsTextView01);
-            gpsTextView00.setTextColor(0x88999999);
-            gpsTextView01.setTextColor(0x88999999);
-
-            TextView scoreBoardTextView00 = getView().findViewById(R.id.scoreBoardTextView00);
-            TextView scoreBoardTextView01 = getView().findViewById(R.id.scoreBoardTextView01);
-            scoreBoardTextView00.setTextColor(0x88999999);
-            scoreBoardTextView01.setTextColor(0x88999999);
-
-            TextView nearestLongestTextView00 = getView().findViewById(R.id.nearestLongestTextView00);
-            TextView nearestLongestTextView01 = getView().findViewById(R.id.nearestLongestTextView01);
-            nearestLongestTextView00.setTextColor(0x88999999);
-            nearestLongestTextView01.setTextColor(0x88999999);
-
-            TextView rankingTextView00 = getView().findViewById(R.id.rankingTextView00);
-            TextView rankingTextView01 = getView().findViewById(R.id.rankingTextView01);
-            rankingTextView00.setTextColor(0x88999999);
-            rankingTextView01.setTextColor(0x88999999);
-
-            TextView caddieTextView00 = getView().findViewById(R.id.caddieTextView00);
-            TextView caddieTextView01 = getView().findViewById(R.id.caddieTextView01);
-            caddieTextView00.setTextColor(0x88999999);
-            caddieTextView01.setTextColor(0x88999999);
-
-            TextView orderTextView00 = getView().findViewById(R.id.orderTextView00);
-            TextView orderTextView01 = getView().findViewById(R.id.orderTextView01);
-            orderTextView00.setTextColor(0x88999999);
-            orderTextView01.setTextColor(0x88999999);
-
-            TextView paymentTextView00 = getView().findViewById(R.id.paymentTextView00);
-            TextView paymentTextView01 = getView().findViewById(R.id.paymentTextView01);
-            paymentTextView00.setTextColor(0x88999999);
-            paymentTextView01.setTextColor(0x88999999);
-        }
-
 
         @NonNull
         @Override
@@ -559,5 +599,26 @@ public class ViewMenuFragment extends BaseFragment {
 
     }
 
+    private void getReserveGuestList(int reserveId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
+            @Override
+            public void onSuccess(ReserveGuestList response) {
+                if (response.getRetMsg().equals("성공")) {
+                    Global.guestArrayList = (ArrayList<Guest>) response.getList();
+                    GoNativeScreen(new CaddieFragment(), null);
+                }
+            }
+
+            @Override
+            public void onError(ReserveGuestList response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
 
 }
