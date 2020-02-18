@@ -15,28 +15,24 @@ import androidx.fragment.app.DialogFragment;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
-import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class EditorDialogFragment extends DialogFragment implements View.OnClickListener {
+public class EditorDialogFragment extends DialogFragment {
 
     private String guestId;
     private String memoContent;
     private EditText memoEditText;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
-    private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
     private View view;
 
-    public EditorDialogFragment(String memoContent) {
-        this.memoContent = memoContent;
+    public void setGuestId(String guestId) {
+        this.guestId = guestId;
     }
 
-    public EditorDialogFragment(String guestId, String memoContent, ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList) {
-        this.guestId = guestId;
+    public void setMemoContent(String memoContent) {
         this.memoContent = memoContent;
-        this.caddieViewGuestItemArrayList = caddieViewGuestItemArrayList;
     }
 
     private int traversalByGuestId() {
@@ -50,16 +46,18 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void setTeamMemoData() {
-        Global.guestArrayList.get(0).setTeamMemo(memoEditText.getText().toString());
+        Global.guestArrayList.get(0).setTeamMemo(memoContent);
     }
 
     private void setGuestData() {
-        Global.guestArrayList.get(traversalByGuestId()).setMemo(memoEditText.getText().toString());
+        Global.guestArrayList.get(traversalByGuestId()).setMemo(memoContent);
     }
 
     private void setData() {
-        setTeamMemoData();
-        if (guestId != null) {
+        memoContent = memoEditText.getText().toString();
+        if (guestId == null) {
+            setTeamMemoData();
+        } else {
             setGuestData();
         }
     }
@@ -73,23 +71,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
-    private void setTextTeamMemoContent() {
-        memoEditText.setText(memoContent);
-    }
-
-
-    private void setTextGuestMemoContent() {
-        View caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
-        TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-        memoEditText.setText(guestMemoContentTextView.getText());
-    }
-
     private void setTextMemoContent() {
-        if (guestId == null) {
-            setTextTeamMemoContent();
-        } else {
-            setTextGuestMemoContent();
-        }
+        memoEditText.setText(memoContent);
     }
 
     private void showSoftKeyboard(View view) {
@@ -133,6 +116,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onResume() {
+        setTextMemoContent();
         super.onResume();
     }
 
@@ -147,6 +131,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             @Override
             public void onClick(View view) {
                 setData();
+                memoEditText.setText("");
                 closeKeyboard(memoEditText);
                 dismiss();
             }
@@ -155,6 +140,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         view.findViewById(R.id.cancelTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                memoEditText.setText("");
                 closeKeyboard(memoEditText);
                 dismiss();
             }
@@ -163,12 +149,6 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         setTextMemoTitle();
         setTextMemoContent();
 
-
         return view;
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }

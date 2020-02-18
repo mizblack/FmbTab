@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
-import com.eye3.golfpay.fmb_tab.util.SignatureDialog;
+import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.util.ArrayList;
@@ -32,15 +34,13 @@ public class CaddieFragment extends BaseFragment {
     private ArrayList<Guest> guestArrayList = Global.guestArrayList;
     private LinearLayout memberLinearLayout;
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
+    private EditorDialogFragment teamMemoEditorDialogFragment = new EditorDialogFragment();
+    private EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
+    private SignatureDialogFragment signatureDialogFragment = new SignatureDialogFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//
-//        }
     }
 
     private void setGuestData() {
@@ -50,16 +50,16 @@ public class CaddieFragment extends BaseFragment {
                 View caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
-                memberNameTextView.setText(guestArrayList.get(i).getGuestName());
+                memberNameTextView.setText(Global.guestArrayList.get(i).getGuestName());
 
                 EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
-                carNumberEditText.setText(guestArrayList.get(i).getCarNumber());
+                carNumberEditText.setText(Global.guestArrayList.get(i).getCarNumber());
 
                 EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
-                phoneNumberEditText.setText(guestArrayList.get(i).getPhoneNumber());
+                phoneNumberEditText.setText(Global.guestArrayList.get(i).getPhoneNumber());
 
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-                guestMemoContentTextView.setText(guestArrayList.get(i).getMemo());
+                guestMemoContentTextView.setText(Global.guestArrayList.get(i).getMemo());
             }
         }
     }
@@ -77,6 +77,9 @@ public class CaddieFragment extends BaseFragment {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
         mParentActivity.showMainBottomBar();
+        setDataTeamMemo();
+        setGuestData();
+        closeKeyboard();
         return v;
     }
 
@@ -94,7 +97,6 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -103,6 +105,24 @@ public class CaddieFragment extends BaseFragment {
         createGuestList();
         setDataTeamMemo();
         teamMemoOnClick();
+    }
+
+    private void showDialogFragment(DialogFragment dialogFragment) {
+        FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+        dialogFragment.show(transaction, "dialogFragment");
+        assert dialogFragment.getFragmentManager() != null;
+        dialogFragment.getFragmentManager().executePendingTransactions();
+        systemUIHide();
+    }
+
+    private void memoEditorDialogFragmentOnDismissListener(EditorDialogFragment editorDialogFragment) {
+        editorDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                setDataTeamMemo();
+                setGuestData();
+            }
+        });
     }
 
     private void closeKeyboard() {
@@ -122,28 +142,25 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout,
-                                              final int i) {
+    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout, final int i) {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String guestId = guestArrayList.get(i).getId();
-                View caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
-                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-                EditorDialogFragment editorDialogFragment = new EditorDialogFragment(guestId, guestMemoContentTextView.getText().toString(), caddieViewGuestItemArrayList);
-                FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-                editorDialogFragment.show(transaction, "dialogFragment");
+                guestMemoEditorDialogFragment.setGuestId(guestArrayList.get(i).getId());
+                guestMemoEditorDialogFragment.setMemoContent(Global.guestArrayList.get(i).getMemo());
+                showDialogFragment(guestMemoEditorDialogFragment);
+                memoEditorDialogFragmentOnDismissListener(guestMemoEditorDialogFragment);
                 systemUIHide();
             }
         });
     }
 
-    private void signatureRelativeLayoutOnClick(View signatureRelativeLayout, int position) {
+    private void signatureRelativeLayoutOnClick(View signatureRelativeLayout, final int position) {
         signatureRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SignatureDialog signatureDialog = new SignatureDialog(getContext());
-                signatureDialog.show();
+                signatureDialogFragment.setGuestId(guestArrayList.get(position).getId());
+                showDialogFragment(signatureDialogFragment);
                 systemUIHide();
             }
         });
@@ -181,7 +198,7 @@ public class CaddieFragment extends BaseFragment {
 
     private void setDataTeamMemo() {
         TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
-        teamMemoContentTextView.setText(guestArrayList.get(0).getTeamMemo());
+        teamMemoContentTextView.setText(Global.guestArrayList.get(0).getTeamMemo());
     }
 
     private void teamMemoOnClick() {
@@ -190,9 +207,9 @@ public class CaddieFragment extends BaseFragment {
         teamMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditorDialogFragment editorDialogFragment = new EditorDialogFragment(teamMemoContentTextView.getText().toString());
-                FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-                editorDialogFragment.show(transaction, "dialogFragment");
+                teamMemoEditorDialogFragment.setMemoContent(teamMemoContentTextView.getText().toString());
+                showDialogFragment(teamMemoEditorDialogFragment);
+                memoEditorDialogFragmentOnDismissListener(teamMemoEditorDialogFragment);
                 systemUIHide();
             }
         });
