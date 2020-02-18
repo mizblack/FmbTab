@@ -21,7 +21,6 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.view.Event;
 import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 import java.util.ArrayList;
 
