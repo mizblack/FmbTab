@@ -86,8 +86,8 @@ public class OrderFragment extends BaseFragment {
 
     private void getRestaurantMenu() {
         showProgress("식당 메뉴 정보를 가져오는 중입니다.");
-      //  DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
-           DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getRestaurantMenu(getActivity(), "29", "95147541", new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+        DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+
             @Override
             public void onSuccess(ResponseData<Restaurant> response) {
                 hideProgress();

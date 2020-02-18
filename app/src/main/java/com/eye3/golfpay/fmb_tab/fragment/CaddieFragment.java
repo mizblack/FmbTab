@@ -73,6 +73,7 @@ public class CaddieFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         closeKeyboard();
+
     }
 
     @Override

@@ -69,7 +69,7 @@ public class ScoreDialog extends Dialog {
     TextView tvCourseName;
     //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
-    ScoreInputFinishListener inputFinishListener;
+    ScoreInputFinishListener inputFinishListener ;
 
     View cancelLinearLayout;
 
@@ -129,9 +129,9 @@ public class ScoreDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
 
-                    inputFinishListener.OnScoreInputFinished(mPlayerList);
+                  //  inputFinishListener.OnScoreInputFinished(mPlayerList);
                     sendPlayersScores(mContext, mReserveScore);
-                    // dismiss();
+
                 }
             });
             mRightButton.setText(mRightTitle);
@@ -155,6 +155,8 @@ public class ScoreDialog extends Dialog {
     }
 
 
+
+
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
@@ -175,7 +177,7 @@ public class ScoreDialog extends Dialog {
     }
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-    public ScoreDialog(Context context, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
+    public ScoreDialog(Context context, String 타이틀, String s, String 취소, String 확인, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
                        View.OnClickListener rightListener) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -352,13 +354,14 @@ public class ScoreDialog extends Dialog {
     }
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
-        int a = 0;
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+
+        DataInterface.getInstance().setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                     mReserveScore = null; //다음 입력을 위해 clear한다.
+                    inputFinishListener.OnScoreInputFinished(mPlayerList);
                     dismiss();
                 } else if ("fail".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
