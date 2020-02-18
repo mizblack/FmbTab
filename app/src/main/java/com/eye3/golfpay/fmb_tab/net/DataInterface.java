@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
+import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
@@ -276,6 +278,27 @@ public class DataInterface extends BasicDataInterface {
                     t.printStackTrace();
                     callback.onFailure(t);
                 }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setReserveGuestInfo(GuestInfo guestInfo, final ResponseCallback<GuestInfoResponse> callback) {
+        try {
+            Call<GuestInfoResponse> call = service.setReserveGuestInfo(guestInfo);
+            call.enqueue(new Callback<GuestInfoResponse>() {
+                @Override
+                public void onResponse(Call<GuestInfoResponse> call, Response<GuestInfoResponse> response) {
+                    GuestInfoResponse guestInfoResponse = response.body();
+                    callback.onSuccess(guestInfoResponse);
+                }
+
+                @Override
+                public void onFailure(Call<GuestInfoResponse> call, Throwable t) {
+
+                }
+
             });
         } catch (Exception ex) {
             ex.printStackTrace();

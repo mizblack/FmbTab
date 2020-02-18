@@ -13,11 +13,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,10 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
+import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
+import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
@@ -44,6 +51,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -89,6 +100,44 @@ public class CaddieFragment extends BaseFragment {
         }
     }
 
+    private void setReserveGuestInfo(GuestInfo guestInfo) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(guestInfo, new DataInterface.ResponseCallback<GuestInfoResponse>() {
+            @Override
+            public void onSuccess(GuestInfoResponse response) {
+                if (response.getRetMsg().equals("성공")) {
+//                    Global.guestArrayList = (ArrayList<Guest>) response.getList();
+//
+                    hideProgress();
+                }
+            }
+
+            @Override
+            public void onError(GuestInfoResponse response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+    }
+
+    private void setReserveGuestInfo() {
+//        showProgress("서버로 데이터를 전송중입니다....");
+        for (int i = 0; i < Global.guestArrayList.size(); i++) {
+            Guest guest = Global.guestArrayList.get(i);
+            GuestInfo guestInfo = new GuestInfo(guest.getId()
+                    , guest.getCarNumber()
+                    , guest.getPhoneNumber()
+                    , guest.getMemo()
+                    , guest.getTeamMemo()
+                    , guest.getSignImage()
+                    , guest.getClubImage());
+            setReserveGuestInfo(guestInfo);
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -119,6 +168,14 @@ public class CaddieFragment extends BaseFragment {
         createGuestList();
         setDataTeamMemo();
         teamMemoOnClick();
+
+        v.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setReserveGuestInfo();
+            }
+        });
+
     }
 
     private void showDialogFragment(DialogFragment dialogFragment) {
@@ -135,6 +192,23 @@ public class CaddieFragment extends BaseFragment {
             public void onDismiss(DialogInterface dialogInterface) {
                 setDataTeamMemo();
                 setGuestData();
+            }
+        });
+    }
+
+    private void setImageSignatureImageView() {
+        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
+            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
+            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
+            signatureImageView.setImageURI(Global.guestArrayList.get(i).getSignUrl());
+        }
+    }
+
+    private void signatureDialogFragmentOnDismissListener(SignatureDialogFragment signatureDialogFragment) {
+        signatureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                setImageSignatureImageView();
             }
         });
     }
@@ -160,7 +234,7 @@ public class CaddieFragment extends BaseFragment {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                guestMemoEditorDialogFragment.setGuestId(guestArrayList.get(i).getId());
+                guestMemoEditorDialogFragment.setGuestId(Global.guestArrayList.get(i).getId());
                 guestMemoEditorDialogFragment.setMemoContent(Global.guestArrayList.get(i).getMemo());
                 showDialogFragment(guestMemoEditorDialogFragment);
                 memoEditorDialogFragmentOnDismissListener(guestMemoEditorDialogFragment);
@@ -175,6 +249,7 @@ public class CaddieFragment extends BaseFragment {
             public void onClick(View view) {
                 signatureDialogFragment.setGuestId(guestArrayList.get(position).getId());
                 showDialogFragment(signatureDialogFragment);
+                signatureDialogFragmentOnDismissListener(signatureDialogFragment);
                 systemUIHide();
             }
         });
@@ -183,6 +258,7 @@ public class CaddieFragment extends BaseFragment {
     private void createGuestList() {
         if (guestArrayList != null && guestArrayList.size() != 0) {
             for (int i = 0; i < guestArrayList.size(); i++) {
+                final int finalI = i;
                 final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
                 memberLinearLayout.addView(caddieViewGuestItem);
                 caddieViewGuestItemArrayList.add(caddieViewGuestItem);
@@ -191,11 +267,40 @@ public class CaddieFragment extends BaseFragment {
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
                 memberNameTextView.setText(guestArrayList.get(i).getGuestName());
 
-                EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
+                final EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
                 carNumberEditText.setText(guestArrayList.get(i).getCarNumber());
+                carNumberEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
-                EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Global.guestArrayList.get(finalI).setCarNumber(s.toString());
+                        Toast.makeText(getContext(), Global.guestArrayList.get(finalI).getCarNumber(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                final EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
                 phoneNumberEditText.setText(guestArrayList.get(i).getPhoneNumber());
+                phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { //입력하기 전
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Global.guestArrayList.get(finalI).setCarNumber(phoneNumberEditText.getText().toString());
+                    }
+                });
 
                 View guestMemoLinearLayout = caddieViewGuestItem.findViewById(R.id.guestMemoLinearLayout);
                 guestMemoLinearLayoutOnClick(guestMemoLinearLayout, i);
@@ -263,7 +368,8 @@ public class CaddieFragment extends BaseFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sendTakePhotoIntent();

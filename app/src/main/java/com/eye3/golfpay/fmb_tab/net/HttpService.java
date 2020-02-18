@@ -1,7 +1,9 @@
 package com.eye3.golfpay.fmb_tab.net;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
+import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
@@ -39,5 +41,8 @@ public interface HttpService {
 
     @POST("getReserveList")
     Call<ReserveGuestList> getReserveGuestList(@Query("reserve_id") int reserveId);
+
+    @POST("setReserveGuestInfo")
+    Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
 
 }

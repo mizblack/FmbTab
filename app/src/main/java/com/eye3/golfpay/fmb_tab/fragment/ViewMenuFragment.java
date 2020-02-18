@@ -212,7 +212,6 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
-                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -602,23 +601,26 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void getReserveGuestList(int reserveId) {
+        showProgress("플레이어의 정보를 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
             @Override
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestArrayList = (ArrayList<Guest>) response.getList();
                     GoNativeScreen(new CaddieFragment(), null);
+                    drawer_layout.closeDrawer(GravityCompat.END);
+                    hideProgress();
                 }
             }
 
             @Override
             public void onError(ReserveGuestList response) {
-
+                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                hideProgress();
             }
         });
     }

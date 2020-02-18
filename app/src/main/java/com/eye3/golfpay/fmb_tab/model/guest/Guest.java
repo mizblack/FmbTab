@@ -1,6 +1,8 @@
 
 package com.eye3.golfpay.fmb_tab.model.guest;
 
+import android.net.Uri;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -59,7 +61,7 @@ public class Guest implements Serializable {
     @SerializedName("sign_image")
     private String signImage;
     @SerializedName("sign_url")
-    private String signUrl;
+    private Uri signUrl;
     @SerializedName("team_memo")
     private String teamMemo;
     @SerializedName("total_price")
@@ -257,11 +259,11 @@ public class Guest implements Serializable {
         this.signImage = signImage;
     }
 
-    public String getSignUrl() {
+    public Uri getSignUrl() {
         return signUrl;
     }
 
-    public void setSignUrl(String signUrl) {
+    public void setSignUrl(Uri signUrl) {
         this.signUrl = signUrl;
     }
 
