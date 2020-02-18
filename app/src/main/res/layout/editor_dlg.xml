@@ -4,8 +4,8 @@
 
     <LinearLayout
         android:id="@+id/rootView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/translucentBlack"
         android:orientation="vertical">
 
@@ -13,7 +13,6 @@
             android:layout_width="900dp"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
             android:background="@color/white"
             android:baselineAligned="false"
             android:orientation="horizontal"

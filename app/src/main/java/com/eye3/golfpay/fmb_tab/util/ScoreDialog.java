@@ -353,7 +353,7 @@ public class ScoreDialog extends Dialog {
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
         int a = 0;
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {

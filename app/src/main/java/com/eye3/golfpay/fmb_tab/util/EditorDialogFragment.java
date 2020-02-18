@@ -1,13 +1,16 @@
 package com.eye3.golfpay.fmb_tab.util;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
@@ -17,13 +20,34 @@ import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class EditorDialog extends Dialog {
+public class EditorDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private String guestId;
     private String memoContent;
     private EditText memoEditText;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
+    private View view;
+
+    public EditorDialogFragment(String memoContent) {
+        this.memoContent = memoContent;
+    }
+
+    public EditorDialogFragment(String guestId, String memoContent, ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList) {
+        this.guestId = guestId;
+        this.memoContent = memoContent;
+        this.caddieViewGuestItemArrayList = caddieViewGuestItemArrayList;
+    }
+
+    private int traversalByGuestId() {
+        int index = 0;
+        for (int i = 0; i < guestArrayList.size(); i++) {
+            if (guestId.equals(guestArrayList.get(i).getId())) {
+                index = i;
+            }
+        }
+        return index;
+    }
 
     private void setTeamMemoData() {
         Global.guestArrayList.get(0).setTeamMemo(memoEditText.getText().toString());
@@ -40,57 +64,8 @@ public class EditorDialog extends Dialog {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // 다이얼로그 외부 화면 흐리게 표현
-        WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-        lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        lpWindow.dimAmount = 0.8f;
-        Objects.requireNonNull(getWindow()).setAttributes(lpWindow);
-
-        setContentView(R.layout.editor_dlg);
-
-        memoEditText = findViewById(R.id.memoEditText);
-        showSoftKeyboard(memoEditText);
-
-        findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setData();
-                closeKeyboard(memoEditText);
-                dismiss();
-            }
-        });
-
-        findViewById(R.id.cancelTextView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyboard(memoEditText);
-                dismiss();
-            }
-        });
-
-        setTextMemoTitle();
-        setTextMemoContent();
-
-    }
-
-    public EditorDialog(Context context, String memoContent) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        this.memoContent = memoContent;
-    }
-
-    public EditorDialog(Context context, String guestId, String memoContent, ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        this.guestId = guestId;
-        this.memoContent = memoContent;
-        this.caddieViewGuestItemArrayList = caddieViewGuestItemArrayList;
-    }
-
     private void setTextMemoTitle() {
-        TextView memoTitleTextView = findViewById(R.id.memoTitleTextView);
+        TextView memoTitleTextView = view.findViewById(R.id.memoTitleTextView);
         if (guestId == null) {
             memoTitleTextView.setText("팀메모");
         } else {
@@ -102,15 +77,6 @@ public class EditorDialog extends Dialog {
         memoEditText.setText(memoContent);
     }
 
-    private int traversalByGuestId() {
-        int index = 0;
-        for (int i = 0; i < guestArrayList.size(); i++) {
-            if (guestId.equals(guestArrayList.get(i).getId())) {
-                index = i;
-            }
-        }
-        return index;
-    }
 
     private void setTextGuestMemoContent() {
         View caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
@@ -128,14 +94,14 @@ public class EditorDialog extends Dialog {
 
     private void showSoftKeyboard(View view) {
         if (view.requestFocus()) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
             assert inputMethodManager != null;
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 
     private void systemUIHide() {
-        View decorView = Objects.requireNonNull(getWindow()).getDecorView();
+        View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -148,24 +114,61 @@ public class EditorDialog extends Dialog {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
                 if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    // TODO: The system bars are visible. Make any desired
-                    // adjustments to your UI, such as showing the action bar or
-                    // other navigational controls.
                     systemUIHide();
                 }
-//                } else {
-                // TODO: The system bars are NOT visible. Make any desired
-                // adjustments to your UI, such as hiding the action bar or
-                // other navigational controls.
-//                }
             }
         });
     }
 
     private void closeKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         systemUIHide();
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.editor_dlg, container, false);
+
+        memoEditText = view.findViewById(R.id.memoEditText);
+        showSoftKeyboard(memoEditText);
+
+        view.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setData();
+                closeKeyboard(memoEditText);
+                dismiss();
+            }
+        });
+
+        view.findViewById(R.id.cancelTextView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeKeyboard(memoEditText);
+                dismiss();
+            }
+        });
+
+        setTextMemoTitle();
+        setTextMemoContent();
+
+
+        return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
 }
