@@ -1,7 +1,6 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -81,7 +80,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private void login(final Context context, String id, String pwd) {
+    private void login(String id, String pwd) {
         showProgress("로그인 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
@@ -178,7 +177,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onClick(View v) {
 
                 try {
-                    login(getApplicationContext(), nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
+                    login(nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
                 } catch (NoSuchPaddingException
                         | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException
