@@ -46,7 +46,9 @@ public class EditorDialogFragment extends DialogFragment {
     }
 
     private void setTeamMemoData() {
-        Global.guestArrayList.get(0).setTeamMemo(memoContent);
+        for (int i = 0; i < Global.guestArrayList.size(); i++) {
+            Global.guestArrayList.get(i).setTeamMemo(memoContent);
+        }
     }
 
     private void setGuestData() {
@@ -83,32 +85,6 @@ public class EditorDialogFragment extends DialogFragment {
         }
     }
 
-    private void systemUIHide() {
-        View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
-        final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LOW_PROFILE;
-        decorView.setSystemUiVisibility(uiOptions);
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    systemUIHide();
-                }
-            }
-        });
-    }
-
-    private void closeKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        systemUIHide();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +108,6 @@ public class EditorDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 setData();
                 memoEditText.setText("");
-                closeKeyboard(memoEditText);
                 dismiss();
             }
         });
@@ -141,7 +116,6 @@ public class EditorDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 memoEditText.setText("");
-                closeKeyboard(memoEditText);
                 dismiss();
             }
         });

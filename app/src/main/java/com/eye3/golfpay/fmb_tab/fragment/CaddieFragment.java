@@ -104,10 +104,10 @@ public class CaddieFragment extends BaseFragment {
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(guestInfo, new DataInterface.ResponseCallback<GuestInfoResponse>() {
             @Override
             public void onSuccess(GuestInfoResponse response) {
-                if (response.getRetMsg().equals("성공")) {
-//                    Global.guestArrayList = (ArrayList<Guest>) response.getList();
-//
-                    hideProgress();
+                if (response.getRetCode().equals("ok")) {
+                    Toast.makeText(getContext(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -124,7 +124,7 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void setReserveGuestInfo() {
-//        showProgress("서버로 데이터를 전송중입니다....");
+        showProgress("서버로 데이터를 전송중입니다....");
         for (int i = 0; i < Global.guestArrayList.size(); i++) {
             Guest guest = Global.guestArrayList.get(i);
             GuestInfo guestInfo = new GuestInfo(guest.getId()
@@ -135,6 +135,9 @@ public class CaddieFragment extends BaseFragment {
                     , guest.getSignImage()
                     , guest.getClubImage());
             setReserveGuestInfo(guestInfo);
+            if (i == Global.guestArrayList.size() - 1) {
+                hideProgress();
+            }
         }
     }
 
@@ -200,7 +203,7 @@ public class CaddieFragment extends BaseFragment {
         for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
             CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
             ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
-            signatureImageView.setImageURI(Global.guestArrayList.get(i).getSignUrl());
+            signatureImageView.setImageURI(Uri.parse(Global.guestArrayList.get(i).getSignUrl()));
         }
     }
 
@@ -281,7 +284,6 @@ public class CaddieFragment extends BaseFragment {
                     @Override
                     public void afterTextChanged(Editable s) {
                         Global.guestArrayList.get(finalI).setCarNumber(s.toString());
-                        Toast.makeText(getContext(), Global.guestArrayList.get(finalI).getCarNumber(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -298,7 +300,7 @@ public class CaddieFragment extends BaseFragment {
 
                     @Override
                     public void afterTextChanged(Editable s) {
-                        Global.guestArrayList.get(finalI).setCarNumber(phoneNumberEditText.getText().toString());
+                        Global.guestArrayList.get(finalI).setPhoneNumber(s.toString());
                     }
                 });
 

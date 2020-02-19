@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 public class CaddyInfo implements Serializable {
     @SerializedName("admins_id")
     private String admins_id;
@@ -32,7 +33,6 @@ public class CaddyInfo implements Serializable {
     public String getCart_no() {
         return cart_no;
     }
-
 
 
 }
