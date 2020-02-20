@@ -22,6 +22,7 @@ public class Global {
     public static TeeUpTime teeUpTime;
     public static ArrayList<Guest> guestArrayList;
     public static ArrayList<Bitmap> signatureBitmapArrayList;
+    public static ArrayList<Bitmap> clubBitmapArrayList;
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -56,7 +57,9 @@ public class Global {
     /**
      * 접속 호스트 주소. 개발계
      */
-    public static final String HOST_ADDRESS_DEV = "http://10.50.21.62:8000/api/v1/";
+    public static final String HOST_BASE_ADDRESS_DEV = "http://10.50.21.62:8000/";
+
+    public static final String HOST_ADDRESS_DEV = HOST_BASE_ADDRESS_DEV + "api/v1/";
 
     public static String appToken;
 
