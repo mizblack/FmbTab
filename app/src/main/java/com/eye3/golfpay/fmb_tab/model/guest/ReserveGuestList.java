@@ -5,23 +5,23 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class ReserveGuestList implements Serializable {
 
     @Expose
-    private List<Guest> list;
+    private ArrayList<Guest> list;
     @SerializedName("ret_code")
     private String retCode;
     @SerializedName("ret_msg")
     private String retMsg;
 
-    public List<Guest> getList() {
+    public ArrayList<Guest> getList() {
         return list;
     }
 
-    public void setList(List<Guest> list) {
+    public void setList(ArrayList<Guest> list) {
         this.list = list;
     }
 

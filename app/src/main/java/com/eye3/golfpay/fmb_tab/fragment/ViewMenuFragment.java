@@ -212,7 +212,6 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
-                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -362,7 +361,7 @@ public class ViewMenuFragment extends BaseFragment {
 
                 if (response.getRetCode().equals("ok")) {
                     //    GoNativeScreen(new ScoreFragment(), null);
-                    Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView = Objects.requireNonNull(getView()).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
@@ -602,23 +601,28 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void getReserveGuestList(int reserveId) {
+        showProgress("플레이어의 정보를 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
             @Override
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
-                    Global.guestArrayList = (ArrayList<Guest>) response.getList();
+                    Global.guestArrayList = response.getList();
                     GoNativeScreen(new CaddieFragment(), null);
+                    drawer_layout.closeDrawer(GravityCompat.END);
+                    hideProgress();
                 }
             }
 
             @Override
             public void onError(ReserveGuestList response) {
-
+                Toast.makeText(getContext(), "정보를 받아오는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                hideProgress();
             }
         });
     }

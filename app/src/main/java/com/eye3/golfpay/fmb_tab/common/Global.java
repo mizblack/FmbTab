@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.common;
 
 
+import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
@@ -20,6 +21,7 @@ public class Global {
 
     public static TeeUpTime teeUpTime;
     public static ArrayList<Guest> guestArrayList;
+    public static ArrayList<Bitmap> signatureBitmapArrayList;
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -82,7 +84,7 @@ public class Global {
 
     public static boolean isTar = false;
 
-    public static  boolean isYard = false;
+    public static boolean isYard = false;
 
 
 }
