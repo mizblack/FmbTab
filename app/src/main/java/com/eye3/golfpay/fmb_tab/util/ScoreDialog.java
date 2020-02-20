@@ -2,25 +2,21 @@ package com.eye3.golfpay.fmb_tab.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,10 +31,9 @@ import com.eye3.golfpay.fmb_tab.model.score.Score;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.view.ScoreInserter;
 
 import java.util.ArrayList;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class ScoreDialog extends Dialog {
@@ -69,7 +64,7 @@ public class ScoreDialog extends Dialog {
     TextView tvCourseName;
     //서버로 스코어등록을 하기위한 객체
     ReserveScore mReserveScore;
-    ScoreInputFinishListener inputFinishListener ;
+    ScoreInputFinishListener inputFinishListener;
 
     View cancelLinearLayout;
 
@@ -129,7 +124,7 @@ public class ScoreDialog extends Dialog {
                 @Override
                 public void onClick(View v) {
 
-                  //  inputFinishListener.OnScoreInputFinished(mPlayerList);
+                    //  inputFinishListener.OnScoreInputFinished(mPlayerList);
                     sendPlayersScores(mContext, mReserveScore);
 
                 }
@@ -153,8 +148,6 @@ public class ScoreDialog extends Dialog {
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
         this.inputFinishListener = listener;
     }
-
-
 
 
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
@@ -211,125 +204,89 @@ public class ScoreDialog extends Dialog {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
             final int playerIdx = position;
             //*******
-            Course a_course = mPlayerList.get(playerIdx).playingCourse.get(mTabIdx);
             holder.playerName.setText(mPlayerList.get(position).name);
-            holder.etInputTar.setText(AppDef.Par_Tar(a_course.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar));
-            holder.etInputTar.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    String s = ((EditText) v).getText().toString();
-                    //    if ("-".equals(s)) {
-                    ((EditText) v).setText("");
-                    //     }
-                    return false;
-                }
-            });
-            holder.etInputTar.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                    if (!TextUtils.isEmpty(s) && Util.isInteger(s.toString().trim())) {
-                        //현재 선택되어진 홀
-                        Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
-
-                        if (AppDef.isTar) {
-
-                            setTar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
-
-                            setPar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
-
-
-                            setTar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
-                            setPar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) - Integer.valueOf(selected_hole.par)));
-
-                        } else {  //AppDaf.istar == false (파로 넣을때)
-                            setPar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, s.toString());
-                            setTar(mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore, String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
-
-                            setPar(mReserveScore.guest_score_list.get(playerIdx), s.toString());
-                            setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(s.toString()) + Integer.valueOf(selected_hole.par)));
+            final Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
+            if (Global.isTar) {
+               final TextView[] viewArr = holder.inserter.mStrokeScoreTextViewArr;
+                for(int i=0; viewArr.length > i ;i++) {
+                    viewArr[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mReserveScore.guest_score_list.get(playerIdx).tar = ((TextView) v).getText().toString().trim();
+                            ScoreInserter.setAllBackGroundResourceBack(viewArr, R.drawable.score_inserter_bg);
+                            v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                            //타수 파수 둘다 넣어줌
+                            setTar(mReserveScore.guest_score_list.get(playerIdx), ((TextView) v).getText().toString().trim());
+                            setPar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf( Integer.valueOf(((TextView) v).getText().toString().trim()) - Integer.valueOf(selected_hole.par)));
 
                         }
+                    });
+                }
+                int selectedIdx = holder.inserter.mSelectedStrokeScoreTvIdx;
+           //     TextView selectedTv = holder.inserter.mSelectedStrokeInserterTv;
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar), selectedIdx);
 
-                        mReserveScore.guest_score_list.get(playerIdx).guest_id = mPlayerList.get(playerIdx).guest_id;
+            } else {
+               final TextView[] viewArr = holder.inserter.mParScoreTextViewArr;
+                for(int i=0; viewArr.length > i ;i++) {
+                    viewArr[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                          //  mReserveScore.guest_score_list.get(playerIdx).par = ((TextView) v).getText().toString().trim();
+                            ScoreInserter.setAllBackGroundResourceBack(viewArr, R.drawable.score_inserter_bg);
+                            v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                            setPar(mReserveScore.guest_score_list.get(playerIdx), ((TextView) v).getText().toString().trim());
+                            setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf( Integer.valueOf(((TextView)v).getText().toString().trim()) + Integer.valueOf(selected_hole.par)));
+                        }
 
+                    });
+                }
+                int selectedIdx = holder.inserter.mSelectedParScoreTvIdx;
+           //     TextView selectedTv = holder.inserter.mSelectedParInserterTv;
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar), selectedIdx);
+
+            }
+
+            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr, mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
+            for(int i=0; holder.inserterPutt.mPuttScoreTextViewArr.length > i ;i++) {
+                holder.inserterPutt.mPuttScoreTextViewArr[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mReserveScore.guest_score_list.get(playerIdx).putting = ((TextView) v).getText().toString().trim();
+                        ScoreInserter.setAllBackGroundResourceBack(holder.inserterPutt.mPuttScoreTextViewArr, R.drawable.score_inserter_bg);
+                        v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                     }
-//                    else
-//                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            // holder.etInputPutt.setText((mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting));
-            holder.etInputPutt.setText(a_course.holes[mHoleScoreLayoutIdx].playedScore.putting);
+                });
+            }
 
-            holder.etInputPutt.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    String s = ((EditText) v).getText().toString();
-                    //    if ("-".equals(s)) {
-                    ((EditText) v).setText("");
-                    //    }
-                    return false;
-                }
-            });
-            holder.etInputPutt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s == null || s.equals(""))
-                        return;
-                    if (Util.isInteger(s.toString())) {
-                        mPlayerList.get(playerIdx).playingCourse.get(mTabIdx).holes[mHoleScoreLayoutIdx].playedScore.putting = s.toString();
-                        mReserveScore.guest_score_list.get(playerIdx).putting = s.toString();
-                    }
-
-
-//                    else
-//                        Toast.makeText(mContext , "올바른 숫자가 아닙니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
+            mReserveScore.guest_score_list.get(playerIdx).putting = holder.inserterPutt.mSelectedPuttInserterTv.getText().toString().trim();
         }
 
         private void setTar(Score score, String scoreStr) {
-//            if (s == null || s.toString() == null)
-//                return;
+            if (scoreStr == null ||! Util.isIntegerNumber(scoreStr)) {
+                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             score.tar = scoreStr;
         }
 
         private void setPar(Score score, String scoreStr) {
-            if (scoreStr == null)
+            if (scoreStr == null || ! Util.isIntegerNumber(scoreStr)) {
+                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
                 return;
-            else
-                score.par = scoreStr;
+            }
+            score.par = scoreStr;
         }
 
         private void setPutting(Score score, String scoreStr) {
-            if (scoreStr == null)
+            if (scoreStr == null ||! Util.isIntegerNumber(scoreStr)) {
+                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
                 return;
-            else
-                score.putting = scoreStr;
+            }
+            score.putting = scoreStr;
         }
 
 
@@ -340,15 +297,25 @@ public class ScoreDialog extends Dialog {
 
         public class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
             TextView playerName;
-            EditText etInputTar;
-            EditText etInputPutt;
+            ScoreInserter inserter;
+            ScoreInserter inserterPutt;
 
             //onCreate의 view임(score_input_row)
-            public ScoreInputItemViewHolder(@NonNull View itemView) {
+            public ScoreInputItemViewHolder(@NonNull final View itemView) {
                 super(itemView);
                 playerName = itemView.findViewById(R.id.playerName);
-                etInputTar = itemView.findViewById(R.id.et_tar_input);
-                etInputPutt = itemView.findViewById(R.id.et_putt_input);
+                if (Global.isTar) {
+                    inserter = itemView.findViewById(R.id.inserter);
+                    inserter.init(mContext, AppDef.ScoreType.Tar);
+
+                } else { //if Par
+                    inserter = itemView.findViewById(R.id.inserter);
+                    inserter.init(mContext, AppDef.ScoreType.Par);
+
+                }
+
+                inserterPutt = itemView.findViewById(R.id.inserter_putt);
+                inserterPutt.init(mContext, AppDef.ScoreType.Putt);
             }
         }
     }
@@ -378,25 +345,9 @@ public class ScoreDialog extends Dialog {
             public void onFailure(Throwable t) {
 
             }
+
         });
-    }
 
-    ArrayList<Integer> incrementsLoop(int a, int b, int increments) {
-        Log.d(TAG, "incrementsLoop(" + a + ", " + b + ", " + increments + ")");
-        ArrayList<Integer> integerArrayList = new ArrayList<>();
-        for (int i = a; i <= b; ) {
-            integerArrayList.add(i);
-            i = i + increments;
-        }
-        return integerArrayList;
-    }
-
-    void createIntegerArrayList() {
-        ArrayList<Integer> parScoreIntegerArrayList = incrementsLoop(3 * (-1), 8, 1);
-        ArrayList<Integer> strokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
-        ArrayList<Integer> puttIntegerArrayList = incrementsLoop(0, 10, 1);
-        ArrayList<Integer> nearestIntegerArrayList = incrementsLoop(0, 20, 1);
-        ArrayList<Integer> longestIntegerArrayList = incrementsLoop(100, 300, 10);
     }
 
 

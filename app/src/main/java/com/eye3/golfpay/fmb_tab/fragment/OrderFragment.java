@@ -26,6 +26,7 @@ public class OrderFragment extends BaseFragment {
     protected String TAG = getClass().getSimpleName();
     FrRestaurantOrderBinding binding;
     ArrayList<TextView> TabList = new ArrayList<TextView>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class OrderFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
-        getRestaurantMenu();
+      //  getRestaurantMenu();
 
     }
 
@@ -84,34 +85,35 @@ public class OrderFragment extends BaseFragment {
     }
 
 
-    private void getRestaurantMenu() {
-        showProgress("식당 메뉴 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
-
-            @Override
-            public void onSuccess(ResponseData<Restaurant> response) {
-                hideProgress();
-                if (response.getResultCode().equals("ok")) {
-                               response.getData();
-                }else if(response.getResultCode().equals("fail")){
-                    Toast.makeText(getActivity(), response.getResultMessage() , Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(ResponseData<Restaurant> response) {
-                hideProgress();
-                response.getError();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideProgress();
-            }
-        });
-
-
-    }
+//    private void getRestaurantMenu() {
+//        showProgress("식당 메뉴 정보를 가져오는 중입니다.");
+//        DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+//
+//            //  DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+//           DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getRestaurantMenu(getActivity(), "29","95147541",new DataInterface.ResponseCallback<ResponseData<Restaurant>>(){
+//                @Override
+//                public void onSuccess (ResponseData< Restaurant > response) {
+//                hideProgress();
+//                if (response.getResultCode().equals("ok")) {
+//                    response.getData();
+//                } else if (response.getResultCode().equals("fail")) {
+//                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//                @Override
+//                public void onError (ResponseData < Restaurant > response) {
+//                hideProgress();
+//                response.getError();
+//            }
+//
+//                @Override
+//                public void onFailure (Throwable t){
+//                hideProgress();
+//            }
+//            });
+//
+//        }}
 
 }
 

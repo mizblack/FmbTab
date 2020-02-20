@@ -23,4 +23,7 @@
 
     <dimen name="ranking_linear_width">60dp</dimen>
 
+    <dimen name="score_inserter_width">50dp</dimen>
+    <dimen name="scorer_inserter_height">100dp</dimen>
+
 </resources>

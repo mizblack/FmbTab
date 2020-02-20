@@ -1,81 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/translucentBlack"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/rootView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:background="@color/translucentBlack"
-        android:orientation="vertical">
+        android:layout_width="900dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:padding="20dp">
 
         <LinearLayout
-            android:layout_width="900dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:padding="20dp">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/memoTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-메모"
+                android:textColor="@color/irisBlue"
+                android:textSize="20dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <EditText
+                android:id="@+id/memoEditText"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:autofillHints=""
+                android:background="@null"
+                android:gravity="start"
+                android:hint="메모를 입력하세요."
+                tools:ignore="HardcodedText,TextFields" />
 
-                <TextView
-                    android:id="@+id/memoTitleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-메모"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="20dp" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/memoEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:gravity="start"
-                    android:hint="메모를 입력하세요."
-                    tools:ignore="TextFields" />
+        <LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/saveTextView"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/irisBlue"
+                android:gravity="center"
+                android:text="저장하기"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage" />
 
-            <LinearLayout
-                android:layout_width="220dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/saveTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="@color/irisBlue"
-                    android:gravity="center"
-                    android:text="저장하기"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cancelTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/shape_gray_edge"
-                    android:gravity="center"
-                    android:text="취소"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/cancelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_gray_edge"
+                android:gravity="center"
+                android:text="취소"
+                android:textColor="@color/irisBlue"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,SpUsage" />
         </LinearLayout>
 
     </LinearLayout>
 
-</layout>
+</LinearLayout>
