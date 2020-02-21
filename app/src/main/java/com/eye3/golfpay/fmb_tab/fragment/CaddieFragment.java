@@ -44,6 +44,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.util.ClubImageDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
@@ -52,6 +53,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -71,11 +75,75 @@ public class CaddieFragment extends BaseFragment {
     private LinearLayout memberLinearLayout;
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
     private ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<>();
+    private ArrayList<Bitmap> clubBitmapArrayList = new ArrayList<>();
     private String guestId = "";
+    private Thread getShadeMenuBitmapThread;
+    private Thread getSignImageBitmapThread;
+    private Bitmap clubImageBitmap;
+    private Bitmap signImageBitmap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void getClubImageBitmap(final String imageUrl) {
+        getShadeMenuBitmapThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    signImageBitmap = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        getShadeMenuBitmapThread.start();
+    }
+
+    private void setSignImageBitmap(View caddieViewGuestItem, Bitmap signImageBitmap) {
+        try {
+            getShadeMenuBitmapThread.join();
+            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
+            signatureImageView.setImageBitmap(signImageBitmap);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getSignImageBitmap(final String imageUrl) {
+        getSignImageBitmapThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    clubImageBitmap = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        getSignImageBitmapThread.start();
+    }
+
+    private void setclubImageBitmap(View caddieViewGuestItem, Bitmap clubImageBitmap) {
+        try {
+            getSignImageBitmapThread.join();
+            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+            clubImageView.setImageBitmap(clubImageBitmap);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setGuestData() {
@@ -96,6 +164,19 @@ public class CaddieFragment extends BaseFragment {
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
                 guestMemoContentTextView.setText(Global.guestArrayList.get(i).getMemo());
 
+                if (guestArrayList.get(i).getSignUrl() != null) {
+                    getSignImageBitmap(guestArrayList.get(i).getSignUrl());
+                    if (signImageBitmap != null) {
+                        setSignImageBitmap(caddieViewGuestItem, signImageBitmap);
+                    }
+                }
+
+                if (guestArrayList.get(i).getClubUrl() != null) {
+                    getClubImageBitmap(guestArrayList.get(i).getClubUrl());
+                    if (clubImageBitmap != null) {
+                        setclubImageBitmap(caddieViewGuestItem, clubImageBitmap);
+                    }
+                }
 
             }
         }
@@ -300,16 +381,25 @@ public class CaddieFragment extends BaseFragment {
         }
     }
 
-    private void imageViewOnClick(View imageView, final int i) {
-        imageView.setOnClickListener(new View.OnClickListener() {
+    private void clubImageViewOnClick(final ImageView clubImageView, final int i) {
+        clubImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 guestId = guestArrayList.get(i).getId();
-                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.CAMERA},
-                            0);
+                if (clubImageView.getDrawable() == null) {
+                    if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.CAMERA},
+                                0);
+                    } else {
+                        sendTakePhotoIntent();
+                    }
                 } else {
-                    sendTakePhotoIntent();
+                ClubImageDialogFragment clubImageDialogFragment = new ClubImageDialogFragment();
+                clubImageDialogFragment.setGuestId(guestId);
+                clubImageDialogFragment.setClubBitmapArrayList(clubBitmapArrayList);
+                assert getFragmentManager() != null;
+                clubImageDialogFragment.show(getFragmentManager(), TAG);
+                systemUIHide();
                 }
             }
         });
@@ -323,6 +413,7 @@ public class CaddieFragment extends BaseFragment {
                 memberLinearLayout.addView(caddieViewGuestItem);
                 caddieViewGuestItemArrayList.add(caddieViewGuestItem);
                 signatureBitmapArrayList.add(null);
+                clubBitmapArrayList.add(null);
                 guestListOnClick(caddieViewGuestItem);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
@@ -371,8 +462,8 @@ public class CaddieFragment extends BaseFragment {
                 View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
                 signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
 
-                ImageView caddieImageView = caddieViewGuestItem.findViewById(R.id.caddieImageView);
-                imageViewOnClick(caddieImageView, i);
+                ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+                clubImageViewOnClick(clubImageView, i);
             }
         }
     }
@@ -453,8 +544,11 @@ public class CaddieFragment extends BaseFragment {
             }
 
             CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
-            ImageView caddieImageView = caddieViewGuestItem.findViewById(R.id.caddieImageView);
-            caddieImageView.setImageBitmap(rotate(bitmap, exifDegree));
+            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+
+            Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
+            clubBitmapArrayList.set(traversalByGuestId(), clubImageBitmap);
+            clubImageView.setImageBitmap(clubImageBitmap);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
             ((MainActivity) mParentActivity).changeDrawerViewToMenuView();

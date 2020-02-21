@@ -214,7 +214,7 @@
         android:background="@color/black" />
 
     <ImageView
-        android:id="@+id/caddieImageView"
+        android:id="@+id/clubImageView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="32dp"
