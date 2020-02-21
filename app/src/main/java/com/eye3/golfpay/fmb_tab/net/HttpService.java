@@ -29,7 +29,7 @@ public interface HttpService {
     Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
 
     @GET("getAllCourse")
-    Call<ResponseData<Course>> getCourseInfo( @Query("cc_id") String ccId);
+    Call<ResponseData<Course>> getCourseInfo(@Query("cc_id") String ccId);
 
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
@@ -47,6 +47,5 @@ public interface HttpService {
     Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
 
     @POST("orderShade")
-    Call<ResponseData<Object>> sendShdaeOrder(@Body ShadeOrder shadeOrder);
-
+    Call<ResponseData<Object>> sendShadeOrder(@Body ShadeOrder shadeOrder);
 }

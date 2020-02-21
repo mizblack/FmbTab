@@ -308,7 +308,7 @@ public class DataInterface extends BasicDataInterface {
 
     public void sendShadeOrders(final Context context, ShadeOrder shadeOrder, final ResponseCallback<ResponseData<Object>> callback) {
         try {
-            Call<ResponseData<Object>> call = service.sendShdaeOrder(shadeOrder);
+            Call<ResponseData<Object>> call = service.sendShadeOrder(shadeOrder);
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
