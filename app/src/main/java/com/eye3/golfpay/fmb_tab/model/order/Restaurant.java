@@ -10,14 +10,14 @@ public class Restaurant implements Serializable {
 
     @SerializedName("id")
     @Expose
-    String id;
+    public String id;
 
     @SerializedName("name")
     @Expose
-    String name;
+    public String name;
 
     @SerializedName("category")
     @Expose
-    ArrayList<Category> categoryList = new ArrayList<Category>();
+   public  ArrayList<Category> categoryList = new ArrayList<Category>();
 
 }

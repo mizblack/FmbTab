@@ -75,7 +75,7 @@ public class BasicDataInterface {
                                     // Request customization: add request headers
                                     Request.Builder requestBuilder = original.newBuilder();
                                     if (Global.Token != null) {  //토큰 설정
-                                        requestBuilder.addHeader("Authorization", Global.Token);
+                                        requestBuilder.addHeader("Authorization", "abc");
                                      //   requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=" + "utf-8");
 
                                      }

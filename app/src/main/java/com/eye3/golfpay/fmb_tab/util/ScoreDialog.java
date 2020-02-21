@@ -209,7 +209,7 @@ public class ScoreDialog extends Dialog {
             //*******
             holder.playerName.setText(mPlayerList.get(position).name);
             final Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
-            if (Global.isTar) {
+            if (AppDef.isTar) {
                final TextView[] viewArr = holder.inserter.mStrokeScoreTextViewArr;
                 for(int i=0; viewArr.length > i ;i++) {
                     viewArr[i].setOnClickListener(new View.OnClickListener() {
@@ -304,7 +304,7 @@ public class ScoreDialog extends Dialog {
             public ScoreInputItemViewHolder(@NonNull final View itemView) {
                 super(itemView);
                 playerName = itemView.findViewById(R.id.playerName);
-                if (Global.isTar) {
+                if (AppDef.isTar) {
                     inserter = itemView.findViewById(R.id.inserter);
                     inserter.init(mContext, AppDef.ScoreType.Tar);
 

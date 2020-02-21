@@ -9,6 +9,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
+import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -174,7 +175,7 @@ public class DataInterface extends BasicDataInterface {
 
     public void getCourseInfo(final Context context, String cc_id, final ResponseCallback<ResponseData<Course>> callback) {
         try {
-            Call<ResponseData<Course>> call = service.getCourseInfo();
+            Call<ResponseData<Course>> call = service.getCourseInfo(cc_id);
             call.enqueue(new Callback<ResponseData<Course>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Course>> call, Response<ResponseData<Course>> response) {
@@ -304,5 +305,30 @@ public class DataInterface extends BasicDataInterface {
             ex.printStackTrace();
         }
     }
+
+    public void sendShadeOrders(final Context context, ShadeOrder shadeOrder, final ResponseCallback<ResponseData<Object>> callback) {
+        try {
+            Call<ResponseData<Object>> call = service.sendShdaeOrder(shadeOrder);
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    // callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 
 }

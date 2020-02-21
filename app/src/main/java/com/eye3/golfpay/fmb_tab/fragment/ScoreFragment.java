@@ -122,8 +122,10 @@ public class ScoreFragment extends BaseFragment  {
     private void createTabBar(final TextView[] tvCourseBarArr, ArrayList<Course> mCourseList) {
         for (int i = 0; mCourseList.size() > i; i++) {
             final int idx = i;
-            tvCourseBarArr[i] = new TextView(getActivity(), null, R.style.MainTabTitleTextView);
+        //    tvCourseBarArr[i] = new TextView(getActivity(), null, R.style.MainTabTitleTextView);
+            tvCourseBarArr[i] = new TextView(getActivity());
             tvCourseBarArr[i].setLayoutParams(new ViewGroup.LayoutParams(150, ViewGroup.LayoutParams.MATCH_PARENT));
+            tvCourseBarArr[i].setTextAppearance(R.style.MainTabTitleTextView);
             tvCourseBarArr[i].setText(mCourseList.get(i).courseName);
             tvCourseBarArr[i].setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -69,8 +69,14 @@ public class RankingFragment extends BaseFragment  {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+        String type = "null";
+        if(Global.selectedReservation.getGroup() == null){
+             type = "null";
+        }else{
+            type = "group";
+        }
+        getReserveScore(type);
 
-        getReserveScore();
     }
 
     @Override
@@ -319,7 +325,8 @@ public class RankingFragment extends BaseFragment  {
                     holder1.tvPlayingHole.setText(playerList.get(position).lastHoleNo);
                     holder1.tvGroupName.setText(Global.selectedReservation.getGroup());
                     holder1.tvGroupName.setVisibility(View.VISIBLE);
-                    holder1.tvCourseName.setText(playerList.get(position).playingCourse.get(i).courseName); //현재치고잇는 코스명을 알아야됨
+                //    holder1.tvCourseName.setText(playerList.get(position).playingCourse.get(i).courseName); //현재치고잇는 코스명을 알아야됨
+                    holder1.tvCourseName.setText("IN");
                     holder1.tvCourseName.setVisibility(View.VISIBLE);
                 }
 
@@ -390,7 +397,7 @@ public class RankingFragment extends BaseFragment  {
         }
     }
 
-    private void getReserveScore() {
+    private void getReserveScore(String type) {
         showProgress("랭킹 정보를 가져오는 중입니다.");
         DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override

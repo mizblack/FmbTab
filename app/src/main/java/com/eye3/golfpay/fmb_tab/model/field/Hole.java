@@ -105,6 +105,16 @@ public class Hole  implements Serializable {
     @SerializedName("updated_at")
     @Expose
     public String updated_at;
+
+    @SerializedName("img_1_file_url")
+    @Expose
+    public String img_1_file_url;
+
+    @SerializedName("img_2_file_url")
+    @Expose
+    public String img_2_file_url;
+
+
 //*************************************
     @SerializedName("score")
     @Expose

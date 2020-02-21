@@ -82,8 +82,6 @@ public class Global {
 
     public static boolean gps = false;
 
-    public static boolean isTar = false;
-
     public static boolean isYard = false;
 
 

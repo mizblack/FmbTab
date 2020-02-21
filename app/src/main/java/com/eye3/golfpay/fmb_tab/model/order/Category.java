@@ -11,15 +11,15 @@ public class Category implements Serializable {
 
     @SerializedName("category_id")
     @Expose
-    String catergory_id;
+    public String catergory_id;
 
     @SerializedName("category_name")
     @Expose
-    String catergory_name;
+    public String catergory_name;
 
     @SerializedName("menu")
     @Expose
-    ArrayList<RestaurantMenu> Menus = new ArrayList<>();
+    public ArrayList<RestaurantMenu> Menus = new ArrayList<>();
 
 
 }

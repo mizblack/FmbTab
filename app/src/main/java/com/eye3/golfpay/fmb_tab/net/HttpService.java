@@ -6,6 +6,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
+import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -27,8 +28,8 @@ public interface HttpService {
     @POST("getTodayReservesForCaddy")
     Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
 
-    @GET("getAllCourse?cc_id=1")
-    Call<ResponseData<Course>> getCourseInfo();
+    @GET("getAllCourse")
+    Call<ResponseData<Course>> getCourseInfo( @Query("cc_id") String ccId);
 
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
@@ -44,5 +45,8 @@ public interface HttpService {
 
     @POST("setReserveGuestInfo")
     Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
+
+    @POST("orderShade")
+    Call<ResponseData<Object>> sendShdaeOrder(@Body ShadeOrder shadeOrder);
 
 }

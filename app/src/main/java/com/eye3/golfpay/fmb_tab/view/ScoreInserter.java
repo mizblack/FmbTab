@@ -90,7 +90,7 @@ public class ScoreInserter extends HorizontalScrollView {
     }
 
     void createIntegerArrayList() {
-        mParScoreIntegerArrayList = incrementsLoop(2 * (-1), 10, 1);
+        mParScoreIntegerArrayList = incrementsLoop(3 * (-1), 10, 1);
         mStrokesScoreIntegerArrayList = incrementsLoop(1, 10, 1);
         mPuttIntegerArrayList = incrementsLoop(0, 10, 1);
         mNearestIntegerArrayList = incrementsLoop(0, 20, 1);
@@ -224,7 +224,7 @@ public class ScoreInserter extends HorizontalScrollView {
 
     private void createScoreInserter(String scoreType) {
    //     LinearLayout aContainer = new LinearLayout(mContext);
-        switch (scoreType.toString()) {
+        switch (scoreType) {
             case AppDef.ScoreType.Par:
                 mParScoreTextViewArr = new TextView[ mParScoreIntegerArrayList.size()];
                 for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
