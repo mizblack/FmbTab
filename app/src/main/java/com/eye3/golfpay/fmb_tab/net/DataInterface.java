@@ -15,6 +15,10 @@ import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 
+import java.io.File;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -285,9 +289,30 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void setReserveGuestInfo(GuestInfo guestInfo, final ResponseCallback<GuestInfoResponse> callback) {
+//    public void setReserveGuestInfo(GuestInfo guestInfo, final ResponseCallback<GuestInfoResponse> callback) {
+//        try {
+//            Call<GuestInfoResponse> call = service.setReserveGuestInfo(guestInfo);
+//            call.enqueue(new Callback<GuestInfoResponse>() {
+//                @Override
+//                public void onResponse(Call<GuestInfoResponse> call, Response<GuestInfoResponse> response) {
+//                    GuestInfoResponse guestInfoResponse = response.body();
+//                    callback.onSuccess(guestInfoResponse);
+//                }
+//
+//                @Override
+//                public void onFailure(Call<GuestInfoResponse> call, Throwable t) {
+//
+//                }
+//
+//            });
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
+        public void setReserveGuestInfo(RequestBody reserveGuestId, RequestBody carNo, RequestBody hp, RequestBody guestMemo, RequestBody   teamMemo, MultipartBody.Part  signImage,  MultipartBody.Part   clubImage,      final ResponseCallback<GuestInfoResponse> callback) {
         try {
-            Call<GuestInfoResponse> call = service.setReserveGuestInfo(guestInfo);
+            Call<GuestInfoResponse> call = service.setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo,teamMemo, signImage, clubImage );
             call.enqueue(new Callback<GuestInfoResponse>() {
                 @Override
                 public void onResponse(Call<GuestInfoResponse> call, Response<GuestInfoResponse> response) {

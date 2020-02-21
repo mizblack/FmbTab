@@ -11,11 +11,15 @@ import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface HttpService {
@@ -29,7 +33,7 @@ public interface HttpService {
     Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
 
     @GET("getAllCourse")
-    Call<ResponseData<Course>> getCourseInfo( @Query("cc_id") String ccId);
+    Call<ResponseData<Course>> getCourseInfo(@Query("cc_id") String ccId);
 
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
@@ -43,10 +47,20 @@ public interface HttpService {
     @POST("getReserveList")
     Call<ReserveGuestList> getReserveGuestList(@Query("reserve_id") int reserveId);
 
-    @POST("setReserveGuestInfo")
-    Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
+//    @POST("setReserveGuestInfo")
+//    Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
 
     @POST("orderShade")
     Call<ResponseData<Object>> sendShdaeOrder(@Body ShadeOrder shadeOrder);
+
+    @Multipart
+    @POST("setReserveGuestInfo")
+    Call<GuestInfoResponse> setReserveGuestInfo(@Part("reserve_guest_id") RequestBody reserveGuestId,
+                                                 @Part("car_no") RequestBody carNo,
+                                                 @Part("hp") RequestBody hp,
+                                                 @Part("guest_memo")  RequestBody guestMemo,
+                                                 @Part("team_memo")  RequestBody teamMemo,
+                                                 @Part MultipartBody.Part signImage,
+                                                 @Part MultipartBody.Part clubImage);
 
 }
