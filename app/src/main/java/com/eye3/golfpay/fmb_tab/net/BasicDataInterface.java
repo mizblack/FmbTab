@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import com.eye3.golfpay.fmb_tab.common.Global;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -61,6 +62,8 @@ public class BasicDataInterface {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient okClient = new OkHttpClient.Builder()
+                .connectTimeout(60,TimeUnit.SECONDS)
+                .readTimeout(60,TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .addNetworkInterceptor(
                         new Interceptor() {
@@ -72,7 +75,7 @@ public class BasicDataInterface {
                                     // Request customization: add request headers
                                     Request.Builder requestBuilder = original.newBuilder();
                                     if (Global.Token != null) {  //토큰 설정
-                                        requestBuilder.addHeader("Authorization", Global.Token);
+                                        requestBuilder.addHeader("Authorization", "abc");
                                      //   requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=" + "utf-8");
 
                                      }

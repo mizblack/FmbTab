@@ -9,18 +9,18 @@ public class RestaurantMenu implements Serializable {
 
     @SerializedName("id")
     @Expose
-    String id;
+    public String id;
 
     @SerializedName("name")
     @Expose
-    String name;
+    public String name;
 
     @SerializedName("price")
     @Expose
-    String price;
+    public String price;
 
     @SerializedName("image")
     @Expose
-    String image;
+    public String image;
 
 }

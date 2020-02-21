@@ -82,7 +82,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void login(String id, String pwd) {
         showProgress("로그인 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
+
+        DataInterface.getInstance().login(MainActivity.this, id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
                 hideProgress();

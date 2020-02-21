@@ -36,5 +36,13 @@ public class AppDef {
       return (int) yard;
    }
 
+   public interface ScoreType{
+      String Par = "par";
+      String Tar = "tar";
+      String Putt = "putt";
+   }
+
+
+
 
 }

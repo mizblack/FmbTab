@@ -15,7 +15,7 @@
             style="@style/MainColumnHoleNumberTextView"
             android:text="" />
         <TextView
-        android:id="@+id/hole_id"
+        android:id="@+id/hole_no"
         style="@style/MainColumnHoleNumberTextView"
         android:text="" />
 </FrameLayout>

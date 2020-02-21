@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 
 public class HoleInfoLinear extends LinearLayout {
-    TextView tvHoleId;
+    TextView tvHoleNo;
     TextView tvPar;
     TextView tvMeter;
 
@@ -35,8 +34,8 @@ public class HoleInfoLinear extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.hole_info_linear, this, false);
-        tvHoleId = v.findViewById(R.id.hole_id);
-        tvHoleId.setText(hole.id);
+        tvHoleNo = v.findViewById(R.id.hole_no);
+        tvHoleNo.setText(hole.hole_no);
         tvPar = v.findViewById(R.id.hole_par);
         tvPar.setText("Par" + hole.par);
         tvMeter = v.findViewById(R.id.hole_meter);

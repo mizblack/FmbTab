@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="100dp"
+    android:gravity="center_vertical"
+    android:weightSum="10"
+    >
     <TextView
         android:id="@+id/playerName"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_marginRight="200dp" />
-
-    <EditText
-        android:id="@+id/et_tar_input"
-        android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_marginRight="200dp"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="2"
+        android:layout_marginEnd="60dp"
+        android:text="dffjlfdj"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/ebonyBlack"
         />
-    <EditText
-        android:id="@+id/et_putt_input"
-        android:layout_width="100dp"
-        android:layout_height="60dp" />
+
+
+
+    <com.eye3.golfpay.fmb_tab.view.ScoreInserter
+        android:id="@+id/inserter"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="3"
+        android:layout_marginEnd="80dp"
+        />
+    <com.eye3.golfpay.fmb_tab.view.ScoreInserter
+        android:id="@+id/inserter_putt"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="3"
+        />
 
 </LinearLayout>

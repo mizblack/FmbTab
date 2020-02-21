@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.databinding.FrRankingBinding;
+import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 //우선순위가 차후로 연기됨 키오스크가 되면 구현될것임.
-public class RankingFragment extends BaseFragment {
+public class RankingFragment extends BaseFragment  {
 
 
     protected String TAG = getClass().getSimpleName();
@@ -49,14 +50,12 @@ public class RankingFragment extends BaseFragment {
     private View rightLinearLayout;
     private TextView rightButtonTextView;
     private ImageView rightButtonIcon;
-
-    static int NUM_OF_COURSE;
+    static int NUM_OF_COURSE = 0;
     static int NUM_OF_HOLE = 10;
     RecyclerView mRankingRecyclerView;
     RankingAdapter mRankingAdapter;
     FrRankingBinding binding;
     ArrayList<Course> mCourseList = new ArrayList<>();
-    TextView[][] mHoleScoreView;
     ArrayList<Player> mPlayerList;
     LinearLayout mLinearHoleNoContainer = null;
     //홀정보레이아웃 어레이
@@ -70,8 +69,14 @@ public class RankingFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+        String type = "null";
+        if(Global.selectedReservation.getGroup() == null){
+             type = "null";
+        }else{
+            type = "group";
+        }
+        getReserveScore(type);
 
-        getReserveScore();
     }
 
     @Override
@@ -83,7 +88,6 @@ public class RankingFragment extends BaseFragment {
         mLinearHoleNoContainer = view.findViewById(R.id.hole_no_container);
         mParentActivity.showMainBottomBar();
 
-        getReserveScore();
         return view;
     }
 
@@ -96,7 +100,7 @@ public class RankingFragment extends BaseFragment {
         for (int j = 0; holeInfoLinear.length > j; j++) {
             for (int k = 0; holeInfoLinear[j].length - 1 > k; k++) {
                 holeInfoLinear[j][k] = new TextView(mContext);
-                holeInfoLinear[j][k].setText(mCourseList.get(j).holes[k].id);
+                holeInfoLinear[j][k].setText(mCourseList.get(j).holes[k].hole_no);
                 holeInfoLinear[j][k].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.ranking_linear_width), ViewGroup.LayoutParams.MATCH_PARENT));
                 holeInfoLinear[j][k].setTextAppearance(R.style.RankColumnHoleTextView);
                 holeInfoLinear[j][k].setGravity(Gravity.CENTER);
@@ -271,8 +275,9 @@ public class RankingFragment extends BaseFragment {
          */
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (playerList == null)
+            if (playerList == null )
                 return;
+
             RankingItemViewHolder holder1 = null;
             if (holder instanceof HeaderViewHolder) {
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
@@ -289,34 +294,39 @@ public class RankingFragment extends BaseFragment {
                 }
                 holder1.tvRank.setText(playerList.get(position).Ranking);
                 holder1.tvName.setText(playerList.get(position).name);
+
                 //동적 코스점수뷰 생성
-                int idx = 0;
-                for (int i = 0; mHoleScoreView.length > i; i++) {
-                    idx = i;
+                for (int i = 0; holder1.mHoleScoreView.length > i; i++) {
+
                     Hole[] holes = playerList.get(position).playingCourse.get(i).holes;
                     int eachCourseTotal = 0;
-                    for (int j = 0; mHoleScoreView[i].length - 1 > j; j++) {
-                        mHoleScoreView[i][j].setGravity(Gravity.CENTER);
-                        mHoleScoreView[i][j].setTextAppearance(R.style.RankColumnHoleTextView);
-                        mHoleScoreView[i][j].setText(holes[j].playedScore.tar);
+                    for (int j = 0; holder1.mHoleScoreView[i].length - 1 > j; j++) {
+                        holder1.mHoleScoreView[i][j].setGravity(Gravity.CENTER);
+                        holder1.mHoleScoreView[i][j].setTextAppearance(R.style.RankColumnHoleTextView);
+                        //여기서 각홀 타점수를 입력한다.
+                        holder1.mHoleScoreView[i][j].setText(holes[j].playedScore.tar );
+
                         if (Util.isInteger(holes[j].playedScore.tar))
                             eachCourseTotal = eachCourseTotal + Integer.valueOf(holes[j].playedScore.tar);
                     }
                     // 스코어 마지막뷰에 총합을 넣는다
-                    mHoleScoreView[i][mHoleScoreView[i].length - 1].setGravity(Gravity.CENTER);
-                    mHoleScoreView[i][mHoleScoreView[i].length - 1].setTextAppearance(R.style.RankColumnHoleTextView);
-                    mHoleScoreView[i][mHoleScoreView[i].length - 1].setText(String.valueOf(eachCourseTotal));
-                    mHoleScoreView[i][mHoleScoreView[i].length - 1].setTypeface(mHoleScoreView[i][mHoleScoreView[i].length - 1].getTypeface(), Typeface.BOLD);
+                    holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].setGravity(Gravity.CENTER);
+                    holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].setTextAppearance(R.style.RankColumnHoleTextView);
+                    holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].setText(String.valueOf(eachCourseTotal));
+                    holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].setTypeface(holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].getTypeface(), Typeface.BOLD);
 
                     holder1.tvTarTotalScore.setText(playerList.get(position).totalTar);
                     holder1.tvTarTotalScore.setTextColor(Color.WHITE);
                     holder1.tvParTotalScore.setText(displayTotalParScore(playerList.get(position).totalPar, holder1.tvParTotalScore));
                     holder1.tvParTotalScore.setVisibility(View.VISIBLE);
+                    holder1.tvNormalScore.setText(playerList.get(position).totalTar);
+                    holder1.tvNormalPar.setText(displayTotalParScore(playerList.get(position).totalPar, holder1.tvNormalPar));
 
                     holder1.tvPlayingHole.setText(playerList.get(position).lastHoleNo);
                     holder1.tvGroupName.setText(Global.selectedReservation.getGroup());
                     holder1.tvGroupName.setVisibility(View.VISIBLE);
-                    holder1.tvCourseName.setText(playerList.get(position).playingCourse.get(i).courseName); //현재치고잇는 코스명을 알아야됨
+                //    holder1.tvCourseName.setText(playerList.get(position).playingCourse.get(i).courseName); //현재치고잇는 코스명을 알아야됨
+                    holder1.tvCourseName.setText("IN");
                     holder1.tvCourseName.setVisibility(View.VISIBLE);
                 }
 
@@ -333,11 +343,12 @@ public class RankingFragment extends BaseFragment {
         }
 
         public class RankingItemViewHolder extends RecyclerView.ViewHolder {
-            protected TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore, tvPlayingHole, tvGroupName, tvCourseName;
+            protected TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore, tvPlayingHole, tvGroupName, tvCourseName, tvNormalScore, tvNormalPar;
+            public  TextView[][] mHoleScoreView;
 
             public RankingItemViewHolder(View view) {
                 super(view);
-
+                mHoleScoreView = new TextView[ NUM_OF_COURSE][NUM_OF_HOLE];
                 container = view.findViewById(R.id.linear_hole_score_container);
 
                 for (int i = 0; mHoleScoreView.length > i; i++) {
@@ -355,6 +366,8 @@ public class RankingFragment extends BaseFragment {
                 tvTarTotalScore = view.findViewById(R.id.tv_total_tar_score);
                 tvParTotalScore = view.findViewById(R.id.tv_total_par_score);
                 tvPlayingHole = view.findViewById(R.id.normal_playing_hole);
+                tvNormalScore = view.findViewById(R.id.normal_score);
+                tvNormalPar =  view.findViewById(R.id.normal_par);
                 tvGroupName = view.findViewById(R.id.normal_group);
                 tvCourseName = view.findViewById(R.id.normal_course_name);
 
@@ -384,7 +397,7 @@ public class RankingFragment extends BaseFragment {
         }
     }
 
-    private void getReserveScore() {
+    private void getReserveScore(String type) {
         showProgress("랭킹 정보를 가져오는 중입니다.");
         DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
@@ -395,7 +408,6 @@ public class RankingFragment extends BaseFragment {
                     mCourseList = getCourse(mPlayerList);
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
-                    mHoleScoreView = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
 
                     initRecyclerView("normal", mRankingRecyclerView, mPlayerList);
 

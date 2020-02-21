@@ -240,6 +240,7 @@ public class CaddieFragment extends BaseFragment {
         setDataTeamMemo();
         setGuestData();
         closeKeyboard();
+
     }
 
     @Override

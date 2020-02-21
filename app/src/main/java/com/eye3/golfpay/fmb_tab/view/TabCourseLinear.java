@@ -26,6 +26,8 @@ import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
@@ -40,7 +42,6 @@ public class TabCourseLinear extends LinearLayout {
     RecyclerView mScoreRecylerView;
     ScoreAdapter mScoreAdapter;
     Context mContext;
-    ScoreDialog sDialog;
     //각홀의 레이아웃 아이디
     int mHoleScoreLayoutIdx;
     //탭아이디 (중요)
@@ -48,7 +49,8 @@ public class TabCourseLinear extends LinearLayout {
     ArrayList<Player> mPlayerList = new ArrayList<Player>();
     Spinner mDistanceSpinner;
     ArrayAdapter arrayAdapter;
-
+    public ScoreDialog sDialog;
+    ScoreInputFinishListener inputFinishListener;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -110,6 +112,12 @@ public class TabCourseLinear extends LinearLayout {
 
     }
 
+    public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
+        if (listener != null)
+            this.inputFinishListener = listener;
+    }
+
+
     private void initRecyclerView(ArrayList<Player> playerList, int tabIdx) {
         LinearLayoutManager mManager;
 
@@ -136,8 +144,10 @@ public class TabCourseLinear extends LinearLayout {
             holeInfoLinear[k] = new HoleInfoLinear(context, holes[k]);
             holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(holeInfoLinear[k]);
-            totalPar = totalPar + Integer.valueOf(holes[k].par);
-            totalMeter = totalMeter + Integer.valueOf(holes[k].hole_total_size);
+            if (holes[k].par != null && Util.isInteger(holes[k].par))
+                totalPar = totalPar + Integer.valueOf(holes[k].par);
+            if (holes[k].hole_total_size != null && Util.isInteger(holes[k].hole_total_size))
+                totalMeter = totalMeter + Integer.valueOf(holes[k].hole_total_size);
         }
         //홀인포 전체를 나타내는 마지막 셀정보 입력
         Hole totalHole = new Hole();
@@ -145,7 +155,7 @@ public class TabCourseLinear extends LinearLayout {
         totalHole.hole_total_size = String.valueOf(totalMeter);
         holeInfoLinear[holeInfoLinear.length - 1] = new HoleInfoLinear(context, totalHole);
         TextView tvCourseName = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.course_name);
-        TextView tvCoursId = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.hole_id);
+        TextView tvCoursId = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.hole_no);
         tvCoursId.setVisibility(View.GONE);
         tvCourseName.setVisibility(View.VISIBLE);
 
@@ -252,8 +262,9 @@ public class TabCourseLinear extends LinearLayout {
             private View.OnClickListener leftListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    inputFinishListener.OnScoreInputFinished(mPlayerList);
                     sDialog.dismiss();
-                    //  sDialog.
+
                 }
             };
 
@@ -268,7 +279,9 @@ public class TabCourseLinear extends LinearLayout {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
                     mPlayerList = playerList;
-                    notifyDataSetChanged();
+                    //scorefragment로 화면갱신을위한 observer 적용
+                    inputFinishListener.OnScoreInputFinished(mPlayerList);
+//                    notifyDataSetChanged();
                 }
             };
         }
@@ -374,7 +387,7 @@ public class TabCourseLinear extends LinearLayout {
 
     private void setBadge(TextView tv, Hole playedHole) {
 
-        if(! Util.isInteger(playedHole.playedScore.tar) || "-".equals(playedHole.playedScore.tar)){
+        if (!Util.isInteger(playedHole.playedScore.tar) || "-".equals(playedHole.playedScore.tar)) {
             return;
         }
 
@@ -425,6 +438,7 @@ public class TabCourseLinear extends LinearLayout {
         }
 
     }
+
 
 
     private String Par_Tar_Total(Course course, boolean istar) {
