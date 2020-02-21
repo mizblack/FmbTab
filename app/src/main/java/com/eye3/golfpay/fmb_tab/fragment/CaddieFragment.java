@@ -59,6 +59,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -182,22 +186,47 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void setReserveGuestInfo(GuestInfo guestInfo) {
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(guestInfo, new DataInterface.ResponseCallback<GuestInfoResponse>() {
+
+         showProgress("메모 전송중입니다.");
+        RequestBody requestFile = null,requestFile2 = null;
+        MultipartBody.Part signImage = null, clubImage = null;
+        if(guestInfo.signImage != null) {
+            requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.signImage);
+             signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.signImage.getName(), requestFile);
+        }
+        if(guestInfo.clubImage != null) {
+            requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.clubImage);
+            clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.clubImage.getName(), requestFile2);
+        }
+        RequestBody reserveGuestId = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.reserveGuestId);
+        RequestBody carNo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.carNo);
+        RequestBody hp = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.hp);
+        RequestBody guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.guestMemo);
+        RequestBody teamMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.teamMemo);
+
+
+
+
+
+         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(reserveGuestId, carNo,hp,guestMemo, teamMemo, signImage, clubImage , new DataInterface.ResponseCallback<GuestInfoResponse>() {
             @Override
             public void onSuccess(GuestInfoResponse response) {
+                hideProgress();
                 if (response.getRetCode().equals("ok")) {
-                    Toast.makeText(getContext(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError(GuestInfoResponse response) {
+                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
+                hideProgress();
             }
         });
     }
@@ -215,7 +244,7 @@ public class CaddieFragment extends BaseFragment {
             }
 
             if (clubBitmapArrayList.get(i) != null) {
-                clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmapArrayList.get(i), guestId + "_signature");
+                clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmapArrayList.get(i), guestId + "_club");
             }
 
             GuestInfo guestInfo = new GuestInfo(guest.getId()
@@ -301,6 +330,7 @@ public class CaddieFragment extends BaseFragment {
             ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
             if (signatureBitmapArrayList.get(i) != null) {
                 signatureImageView.setImageBitmap(signatureBitmapArrayList.get(i));
+
             }
         }
     }

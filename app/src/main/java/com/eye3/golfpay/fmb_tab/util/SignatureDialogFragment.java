@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.util;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ public class SignatureDialogFragment extends DialogFragment {
                 TextView signatureTextView = caddieViewGuestItem.findViewById(R.id.signatureTextView);
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
                     Global.signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
+
                     signatureTextView.setVisibility(View.GONE);
                 }
                 dismiss();

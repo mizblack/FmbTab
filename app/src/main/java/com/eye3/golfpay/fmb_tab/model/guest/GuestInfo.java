@@ -7,19 +7,19 @@ import java.io.File;
 public class GuestInfo {
 
     @SerializedName("reserve_guest_id")
-    private String reserveGuestId;
+    public  String reserveGuestId;
     @SerializedName("car_no")
-    private String carNo;
+    public  String carNo;
     @SerializedName("hp")
-    private String hp;
+    public String hp;
     @SerializedName("guest_memo")
-    private String guestMemo;
+    public String guestMemo;
     @SerializedName("team_memo")
-    private String teamMemo;
+    public String teamMemo;
     @SerializedName("sign_image")
-    private File signImage;
+    public File signImage;
     @SerializedName("club_image")
-    private File clubImage;
+    public File clubImage;
 
     public GuestInfo(String reserveGuestId, String carNo, String hp, String guestMemo, String teamMemo, File signImage, File clubImage) {
         this.reserveGuestId = reserveGuestId;

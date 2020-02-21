@@ -308,11 +308,15 @@ public class OrderFragment extends BaseFragment {
             holder.tvMenuName.setText(mMenuList.get(idx).name);
             holder.tvPrice.setText(mMenuList.get(idx).price);
             holder.tvMenuId.setText(mMenuList.get(idx).id);
+  //          holder.itemView.setBackgroundColor(Color.parseColor("#F3F5F6") );
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     setFoodImage(mFoodImage, mMenuList.get(idx).image);
+                    holder.itemView.setBackgroundColor(getResources().getColor(R.color.white, getActivity().getTheme()));
                     mOrederedMenuItem = new OrederedMenuItem(holder.tvMenuId.getText().toString().trim(), "1", holder.tvPrice.getText().toString().trim());
+
+
                 }
             });
 
