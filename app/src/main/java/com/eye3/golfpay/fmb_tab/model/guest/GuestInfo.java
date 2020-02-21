@@ -2,6 +2,8 @@ package com.eye3.golfpay.fmb_tab.model.guest;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.File;
+
 public class GuestInfo {
 
     @SerializedName("reserve_guest_id")
@@ -15,11 +17,11 @@ public class GuestInfo {
     @SerializedName("team_memo")
     private String teamMemo;
     @SerializedName("sign_image")
-    private String signImage;
+    private File signImage;
     @SerializedName("club_image")
-    private String clubImage;
+    private File clubImage;
 
-    public GuestInfo(String reserveGuestId, String carNo, String hp, String guestMemo, String teamMemo, String signImage, String clubImage) {
+    public GuestInfo(String reserveGuestId, String carNo, String hp, String guestMemo, String teamMemo, File signImage, File clubImage) {
         this.reserveGuestId = reserveGuestId;
         this.carNo = carNo;
         this.hp = hp;
@@ -49,11 +51,11 @@ public class GuestInfo {
         this.teamMemo = teamMemo;
     }
 
-    public void setSignImage(String signImage) {
+    public void setSignImage(File signImage) {
         this.signImage = signImage;
     }
 
-    public void setClubImage(String clubImage) {
+    public void setClubImage(File clubImage) {
         this.clubImage = clubImage;
     }
 }

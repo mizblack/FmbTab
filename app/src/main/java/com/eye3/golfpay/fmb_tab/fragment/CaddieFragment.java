@@ -17,7 +17,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +68,6 @@ public class CaddieFragment extends BaseFragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
-    private Uri photoUri;
     View v;
     private ArrayList<Guest> guestArrayList = Global.guestArrayList;
     private LinearLayout memberLinearLayout;
@@ -107,6 +105,7 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void setSignImageBitmap(View caddieViewGuestItem, Bitmap signImageBitmap) {
+        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
         try {
             getShadeMenuBitmapThread.join();
             ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
@@ -136,7 +135,7 @@ public class CaddieFragment extends BaseFragment {
         getSignImageBitmapThread.start();
     }
 
-    private void setclubImageBitmap(View caddieViewGuestItem, Bitmap clubImageBitmap) {
+    private void setClubImageBitmap(View caddieViewGuestItem, Bitmap clubImageBitmap) {
         try {
             getSignImageBitmapThread.join();
             ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
@@ -174,7 +173,7 @@ public class CaddieFragment extends BaseFragment {
                 if (guestArrayList.get(i).getClubUrl() != null) {
                     getClubImageBitmap(guestArrayList.get(i).getClubUrl());
                     if (clubImageBitmap != null) {
-                        setclubImageBitmap(caddieViewGuestItem, clubImageBitmap);
+                        setClubImageBitmap(caddieViewGuestItem, clubImageBitmap);
                     }
                 }
 
@@ -195,12 +194,10 @@ public class CaddieFragment extends BaseFragment {
 
             @Override
             public void onError(GuestInfoResponse response) {
-                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                hideProgress();
             }
         });
     }
@@ -209,13 +206,27 @@ public class CaddieFragment extends BaseFragment {
         showProgress("서버로 데이터를 전송중입니다....");
         for (int i = 0; i < Global.guestArrayList.size(); i++) {
             Guest guest = Global.guestArrayList.get(i);
+            File signatureImageFile = null;
+            File clubImageFile = null;
+
+
+            if (signatureBitmapArrayList.get(i) != null) {
+                signatureImageFile = getResizedFile(Objects.requireNonNull(getContext()), signatureBitmapArrayList.get(i), guestId + "_signature");
+            }
+
+            if (clubBitmapArrayList.get(i) != null) {
+                clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmapArrayList.get(i), guestId + "_signature");
+            }
+
             GuestInfo guestInfo = new GuestInfo(guest.getId()
                     , guest.getCarNumber()
                     , guest.getPhoneNumber()
                     , guest.getMemo()
                     , guest.getTeamMemo()
-                    , guest.getSignImage()
-                    , guest.getClubImage());
+                    , signatureImageFile
+                    , clubImageFile
+            );
+
             setReserveGuestInfo(guestInfo);
             if (i == Global.guestArrayList.size() - 1) {
                 hideProgress();
@@ -372,7 +383,7 @@ public class CaddieFragment extends BaseFragment {
             }
 
             if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName(), photoFile);
+                Uri photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName(), photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -393,12 +404,12 @@ public class CaddieFragment extends BaseFragment {
                         sendTakePhotoIntent();
                     }
                 } else {
-                ClubImageDialogFragment clubImageDialogFragment = new ClubImageDialogFragment();
-                clubImageDialogFragment.setGuestId(guestId);
-                clubImageDialogFragment.setClubBitmapArrayList(clubBitmapArrayList);
-                assert getFragmentManager() != null;
-                clubImageDialogFragment.show(getFragmentManager(), TAG);
-                systemUIHide();
+                    ClubImageDialogFragment clubImageDialogFragment = new ClubImageDialogFragment();
+                    clubImageDialogFragment.setGuestId(guestId);
+                    clubImageDialogFragment.setClubBitmapArrayList(clubBitmapArrayList);
+                    assert getFragmentManager() != null;
+                    clubImageDialogFragment.show(getFragmentManager(), TAG);
+                    systemUIHide();
                 }
             }
         });
@@ -562,7 +573,7 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
-        //create a file to write bitmap data
+
         File f = new File(context.getCacheDir(), filename);
         try {
             f.createNewFile();
@@ -570,16 +581,12 @@ public class CaddieFragment extends BaseFragment {
             e.printStackTrace();
         }
 
-        //Convert bitmap to byte array
-        //  Bitmap bitmap = bitmap;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10 /*ignored for PNG*/, bos);
         byte[] bitmapData = bos.toByteArray();
 
-        //write the bytes in file
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(f);
+            FileOutputStream fos = new FileOutputStream(f);
             fos.write(bitmapData);
             fos.flush();
             fos.close();
@@ -590,14 +597,14 @@ public class CaddieFragment extends BaseFragment {
         return f;
     }
 
-    public static File getAlbumStorageDir(Context context, String albumName) {
-        // Get the directory for the app's private pictures directory.
-        File file = new File(context.getExternalFilesDir(
-                Environment.DIRECTORY_PICTURES), albumName);
-        if (!file.mkdirs()) {
-            Log.e("FileUtil", "Directory not created");
-        }
-        return file;
-    }
+//    public static File getAlbumStorageDir(Context context, String albumName) {
+//        // Get the directory for the app's private pictures directory.
+//        File file = new File(context.getExternalFilesDir(
+//                Environment.DIRECTORY_PICTURES), albumName);
+//        if (!file.mkdirs()) {
+//            Log.e("FileUtil", "Directory not created");
+//        }
+//        return file;
+//    }
 
 }

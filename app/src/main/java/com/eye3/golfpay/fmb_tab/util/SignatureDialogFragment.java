@@ -1,11 +1,9 @@
 package com.eye3.golfpay.fmb_tab.util;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -24,7 +22,6 @@ public class SignatureDialogFragment extends DialogFragment {
     private String guestId;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
-    private View view;
     private SignaturePad signaturePad;
 
     public void setGuestId(String guestId) {
@@ -51,7 +48,7 @@ public class SignatureDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.signature_dlg, container, false);
+        View view = inflater.inflate(R.layout.signature_dlg, container, false);
 
         signaturePad = view.findViewById(R.id.signaturePad);
 
@@ -62,9 +59,8 @@ public class SignatureDialogFragment extends DialogFragment {
                 TextView signatureTextView = caddieViewGuestItem.findViewById(R.id.signatureTextView);
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
                     Global.signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
+                    signatureTextView.setVisibility(View.GONE);
                 }
-                signatureTextView.setVisibility(View.GONE);
-//                Global.guestArrayList.get(traversalByGuestId()).setSignImage();
                 dismiss();
             }
         });

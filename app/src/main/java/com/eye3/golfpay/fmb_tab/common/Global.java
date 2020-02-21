@@ -22,7 +22,6 @@ public class Global {
     public static TeeUpTime teeUpTime;
     public static ArrayList<Guest> guestArrayList;
     public static ArrayList<Bitmap> signatureBitmapArrayList;
-    public static ArrayList<Bitmap> clubBitmapArrayList;
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
