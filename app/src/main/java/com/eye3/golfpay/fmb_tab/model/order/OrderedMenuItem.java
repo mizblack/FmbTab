@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 //주문된 메뉴아이템, 주문 전송시 사용
-public class OrederedMenuItem implements Serializable {
+public class OrderedMenuItem implements Serializable {
     @SerializedName("id")
     @Expose
     public String id = "-1";
@@ -20,11 +20,14 @@ public class OrederedMenuItem implements Serializable {
     @Expose
     public String total = "0";
 
-    public OrederedMenuItem(String id, String qty, String price ){
+    public String name ="";
+
+    public OrderedMenuItem(String id, String qty, String price, String name ){
         this.id = id;
         this.qty =  qty;
         this.price = price;
         this.total = getTotal(Integer.valueOf(qty), Integer.valueOf(price));
+        this.name = name;
     }
 
     public String getTotal(int qty, int price){
