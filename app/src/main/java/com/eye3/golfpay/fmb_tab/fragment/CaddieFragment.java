@@ -112,9 +112,11 @@ public class CaddieFragment extends BaseFragment {
         caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
         try {
             getSingBitmapThread.join();
-            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
-            signatureBitmapArrayList.set(i, signImageBitmap);
-            signatureImageView.setImageBitmap(signImageBitmap);
+            if (signImageBitmap != null) {
+                ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
+                signatureBitmapArrayList.set(i, signImageBitmap);
+                signatureImageView.setImageBitmap(signImageBitmap);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -143,9 +145,11 @@ public class CaddieFragment extends BaseFragment {
     private void setClubImageBitmap(int i, View caddieViewGuestItem, Bitmap clubImageBitmap) {
         try {
             getClubBitmapThread.join();
-            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
-            clubBitmapArrayList.set(i, clubImageBitmap);
-            clubImageView.setImageBitmap(clubImageBitmap);
+            if (clubImageBitmap != null) {
+                ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+                clubBitmapArrayList.set(i, clubImageBitmap);
+                clubImageView.setImageBitmap(clubImageBitmap);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -172,21 +176,13 @@ public class CaddieFragment extends BaseFragment {
 
                 if (guestArrayList.get(i).getSignUrl() != null) {
                     getSignImageBitmap(guestArrayList.get(i).getSignUrl());
-                    if (signImageBitmap != null) {
-                        setSignImageBitmap(i, caddieViewGuestItem, signImageBitmap);
-                    }
+                    setSignImageBitmap(i, caddieViewGuestItem, signImageBitmap);
                 }
 
                 if (guestArrayList.get(i).getClubUrl() != null) {
                     getClubImageBitmap(guestArrayList.get(i).getClubUrl());
-                    if (clubImageBitmap != null) {
-                        setClubImageBitmap(i, caddieViewGuestItem, clubImageBitmap);
-                    }
+                    setClubImageBitmap(i, caddieViewGuestItem, clubImageBitmap);
                 }
-
-                setImageSignatureImageView();
-                setImageClubImageView();
-
             }
         }
     }
@@ -273,7 +269,7 @@ public class CaddieFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setDataTeamMemo();
-//        setGuestData();
+        setGuestData();
         closeKeyboard();
 
     }
