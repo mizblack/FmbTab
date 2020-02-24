@@ -99,7 +99,7 @@ public class CaddieFragment extends BaseFragment {
                     connection.setDoInput(true);
                     connection.connect();
                     InputStream inputStream = connection.getInputStream();
-                    clubImageBitmap = BitmapFactory.decodeStream(inputStream);
+                    signImageBitmap = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -131,7 +131,7 @@ public class CaddieFragment extends BaseFragment {
                     connection.setDoInput(true);
                     connection.connect();
                     InputStream inputStream = connection.getInputStream();
-                    signImageBitmap = BitmapFactory.decodeStream(inputStream);
+                    clubImageBitmap = BitmapFactory.decodeStream(inputStream);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -273,7 +273,7 @@ public class CaddieFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setDataTeamMemo();
-        setGuestData();
+     //   setGuestData();
         closeKeyboard();
 
     }
