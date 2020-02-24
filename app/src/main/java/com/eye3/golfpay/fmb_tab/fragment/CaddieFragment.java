@@ -89,37 +89,6 @@ public class CaddieFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void getClubImageBitmap(final String imageUrl) {
-        getShadeMenuBitmapThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream inputStream = connection.getInputStream();
-                    signImageBitmap = BitmapFactory.decodeStream(inputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        getShadeMenuBitmapThread.start();
-    }
-
-    private void setSignImageBitmap(View caddieViewGuestItem, Bitmap signImageBitmap) {
-        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
-        try {
-            getShadeMenuBitmapThread.join();
-            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
-            signatureImageView.setImageBitmap(signImageBitmap);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     private void getSignImageBitmap(final String imageUrl) {
         getSignImageBitmapThread = new Thread(new Runnable() {
             @Override
@@ -139,15 +108,49 @@ public class CaddieFragment extends BaseFragment {
         getSignImageBitmapThread.start();
     }
 
-    private void setClubImageBitmap(View caddieViewGuestItem, Bitmap clubImageBitmap) {
+    private void setSignImageBitmap(int i, View caddieViewGuestItem, Bitmap signImageBitmap) {
+        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
+        try {
+            getShadeMenuBitmapThread.join();
+            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
+            signatureBitmapArrayList.set(i, signImageBitmap);
+            signatureImageView.setImageBitmap(signImageBitmap);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getClubImageBitmap(final String imageUrl) {
+        getShadeMenuBitmapThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    signImageBitmap = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        getShadeMenuBitmapThread.start();
+    }
+
+    private void setClubImageBitmap(int i, View caddieViewGuestItem, Bitmap clubImageBitmap) {
         try {
             getSignImageBitmapThread.join();
             ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+            clubBitmapArrayList.set(i, clubImageBitmap);
             clubImageView.setImageBitmap(clubImageBitmap);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
 
     private void setGuestData() {
         guestArrayList = Global.guestArrayList;
@@ -170,16 +173,19 @@ public class CaddieFragment extends BaseFragment {
                 if (guestArrayList.get(i).getSignUrl() != null) {
                     getSignImageBitmap(guestArrayList.get(i).getSignUrl());
                     if (signImageBitmap != null) {
-                        setSignImageBitmap(caddieViewGuestItem, signImageBitmap);
+                        setSignImageBitmap(i, caddieViewGuestItem, signImageBitmap);
                     }
                 }
 
                 if (guestArrayList.get(i).getClubUrl() != null) {
                     getClubImageBitmap(guestArrayList.get(i).getClubUrl());
                     if (clubImageBitmap != null) {
-                        setClubImageBitmap(caddieViewGuestItem, clubImageBitmap);
+                        setClubImageBitmap(i, caddieViewGuestItem, clubImageBitmap);
                     }
                 }
+
+                setImageSignatureImageView();
+                setImageClubImageView();
 
             }
         }
@@ -278,7 +284,6 @@ public class CaddieFragment extends BaseFragment {
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
         mParentActivity.showMainBottomBar();
         setDataTeamMemo();
-        setGuestData();
         closeKeyboard();
         return v;
     }
@@ -324,7 +329,6 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void setImageSignatureImageView() {
-        signatureBitmapArrayList = Global.signatureBitmapArrayList;
         for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
             CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
             ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
@@ -335,10 +339,22 @@ public class CaddieFragment extends BaseFragment {
         }
     }
 
+    private void setImageClubImageView() {
+        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
+            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
+            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+            if (clubBitmapArrayList.get(i) != null) {
+                clubImageView.setImageBitmap(clubBitmapArrayList.get(i));
+
+            }
+        }
+    }
+
     private void signatureDialogFragmentOnDismissListener(SignatureDialogFragment signatureDialogFragment) {
         signatureDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
+                signatureBitmapArrayList = Global.signatureBitmapArrayList;
                 setImageSignatureImageView();
             }
         });
