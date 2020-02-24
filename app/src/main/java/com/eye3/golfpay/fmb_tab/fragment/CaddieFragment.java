@@ -79,8 +79,8 @@ public class CaddieFragment extends BaseFragment {
     private ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<>();
     private ArrayList<Bitmap> clubBitmapArrayList = new ArrayList<>();
     private String guestId = "";
-    private Thread getShadeMenuBitmapThread;
-    private Thread getSignImageBitmapThread;
+    private Thread getClubBitmapThread;
+    private Thread getSingBitmapThread;
     private Bitmap clubImageBitmap;
     private Bitmap signImageBitmap;
 
@@ -90,39 +90,7 @@ public class CaddieFragment extends BaseFragment {
     }
 
     private void getSignImageBitmap(final String imageUrl) {
-        getSignImageBitmapThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream inputStream = connection.getInputStream();
-                    clubImageBitmap = BitmapFactory.decodeStream(inputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        getSignImageBitmapThread.start();
-    }
-
-    private void setSignImageBitmap(int i, View caddieViewGuestItem, Bitmap signImageBitmap) {
-        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
-        try {
-            getShadeMenuBitmapThread.join();
-            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
-            signatureBitmapArrayList.set(i, signImageBitmap);
-            signatureImageView.setImageBitmap(signImageBitmap);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void getClubImageBitmap(final String imageUrl) {
-        getShadeMenuBitmapThread = new Thread(new Runnable() {
+        getSingBitmapThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -137,12 +105,44 @@ public class CaddieFragment extends BaseFragment {
                 }
             }
         });
-        getShadeMenuBitmapThread.start();
+        getSingBitmapThread.start();
+    }
+
+    private void setSignImageBitmap(int i, View caddieViewGuestItem, Bitmap signImageBitmap) {
+        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
+        try {
+            getSingBitmapThread.join();
+            ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
+            signatureBitmapArrayList.set(i, signImageBitmap);
+            signatureImageView.setImageBitmap(signImageBitmap);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void getClubImageBitmap(final String imageUrl) {
+        getClubBitmapThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    clubImageBitmap = BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        getClubBitmapThread.start();
     }
 
     private void setClubImageBitmap(int i, View caddieViewGuestItem, Bitmap clubImageBitmap) {
         try {
-            getSignImageBitmapThread.join();
+            getClubBitmapThread.join();
             ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
             clubBitmapArrayList.set(i, clubImageBitmap);
             clubImageView.setImageBitmap(clubImageBitmap);
@@ -273,7 +273,7 @@ public class CaddieFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setDataTeamMemo();
-        setGuestData();
+//        setGuestData();
         closeKeyboard();
 
     }
