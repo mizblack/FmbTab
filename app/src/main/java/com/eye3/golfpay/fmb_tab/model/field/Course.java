@@ -10,12 +10,12 @@ public class Course implements Serializable {
     //*********************************************
     @SerializedName("course_id")
     @Expose
-    public String course_id ;
+    public String course_id;
     //********************************************
 
     @SerializedName("id")
     @Expose
-    public String id ;
+    public String id;
 
     @SerializedName("cc_id")
     @Expose
@@ -67,7 +67,7 @@ public class Course implements Serializable {
 
     @SerializedName("holes")
     @Expose
-    public Hole[] holes = new Hole[9];
+    public ArrayList<Hole> holes = new ArrayList<>();
 
 //    public Course(Course copyCourse){
 //        this.course_id = copyCourse.course_id;

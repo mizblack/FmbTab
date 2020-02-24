@@ -136,18 +136,18 @@ public class TabCourseLinear extends LinearLayout {
     private void createHoleInfoLinear(Context context, Course course) {
         mHolderLinear.removeAllViewsInLayout();
 
-        Hole[] holes = course.holes;
+        ArrayList<Hole> holes = course.holes;
 
         int totalPar = 0;
         int totalMeter = 0;
-        for (int k = 0; holes.length > k; k++) {
-            holeInfoLinear[k] = new HoleInfoLinear(context, holes[k]);
+        for (int k = 0; holes.size() > k; k++) {
+            holeInfoLinear[k] = new HoleInfoLinear(context, holes.get(k));
             holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(holeInfoLinear[k]);
-            if (holes[k].par != null && Util.isInteger(holes[k].par))
-                totalPar = totalPar + Integer.valueOf(holes[k].par);
-            if (holes[k].hole_total_size != null && Util.isInteger(holes[k].hole_total_size))
-                totalMeter = totalMeter + Integer.valueOf(holes[k].hole_total_size);
+            if (holes.get(k).par != null && Util.isInteger(holes.get(k).par))
+                totalPar = totalPar + Integer.valueOf(holes.get(k).par);
+            if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
+                totalMeter = totalMeter + Integer.valueOf(holes.get(k).hole_total_size);
         }
         //홀인포 전체를 나타내는 마지막 셀정보 입력
         Hole totalHole = new Hole();
@@ -331,41 +331,41 @@ public class TabCourseLinear extends LinearLayout {
             }
 
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes[0].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes[0].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)), course.holes[0]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes.get(0).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes.get(0).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)), course.holes.get(0));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(AppDef.Par_Tar(course.holes[1].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_putt)).setText(course.holes[1].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)), course.holes[1]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(AppDef.Par_Tar(course.holes.get(1).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_putt)).setText(course.holes.get(1).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)), course.holes.get(1));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(AppDef.Par_Tar(course.holes[2].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_putt)).setText(course.holes[2].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)), course.holes[2]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(AppDef.Par_Tar(course.holes.get(2).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_putt)).setText(course.holes.get(2).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)), course.holes.get(2));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(AppDef.Par_Tar(course.holes[3].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_putt)).setText(course.holes[3].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)), course.holes[3]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(AppDef.Par_Tar(course.holes.get(3).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_putt)).setText(course.holes.get(3).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)), course.holes.get(3));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(AppDef.Par_Tar(course.holes[4].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_putt)).setText(course.holes[4].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)), course.holes[4]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(AppDef.Par_Tar(course.holes.get(4).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_putt)).setText(course.holes.get(4).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)), course.holes.get(4));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(AppDef.Par_Tar(course.holes[5].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_putt)).setText(course.holes[5].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)), course.holes[5]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(AppDef.Par_Tar(course.holes.get(5).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_putt)).setText(course.holes.get(5).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)), course.holes.get(5));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(AppDef.Par_Tar(course.holes[6].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_putt)).setText(course.holes[6].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)), course.holes[6]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(AppDef.Par_Tar(course.holes.get(6).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_putt)).setText(course.holes.get(6).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)), course.holes.get(6));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(AppDef.Par_Tar(course.holes[7].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_putt)).setText(course.holes[7].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)), course.holes[7]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(AppDef.Par_Tar(course.holes.get(7).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_putt)).setText(course.holes.get(7).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)), course.holes.get(7));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(AppDef.Par_Tar(course.holes[8].playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes[8].playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)), course.holes[8]);
+            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(AppDef.Par_Tar(course.holes.get(8).playedScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes.get(8).playedScore.putting);
+            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)), course.holes.get(8));
 
             //코스토탈
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
@@ -440,18 +440,17 @@ public class TabCourseLinear extends LinearLayout {
     }
 
 
-
     private String Par_Tar_Total(Course course, boolean istar) {
         int total_score = 0;
         if (istar) {
-            for (int i = 0; course.holes.length > i; i++) {
-                if (Util.isIntegerNumber(course.holes[i].playedScore.tar))
-                    total_score = total_score + Integer.valueOf(course.holes[i].playedScore.tar);
+            for (int i = 0; course.holes.size() > i; i++) {
+                if (Util.isIntegerNumber(course.holes.get(i).playedScore.tar))
+                    total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.tar);
             }
         } else {
-            for (int i = 0; course.holes.length > i; i++) {
-                if (Util.isIntegerNumber(course.holes[i].playedScore.par))
-                    total_score = total_score + Integer.valueOf(course.holes[i].playedScore.par);
+            for (int i = 0; course.holes.size() > i; i++) {
+                if (Util.isIntegerNumber(course.holes.get(i).playedScore.par))
+                    total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.par);
             }
         }
         //다시 스트링으로 변환해 리턴
@@ -461,9 +460,9 @@ public class TabCourseLinear extends LinearLayout {
     private String Putt_Total(Course course) {
         int total_score = 0;
 
-        for (int i = 0; course.holes.length > i; i++) {
-            if (Util.isIntegerNumber(course.holes[i].playedScore.par))
-                total_score = total_score + Integer.valueOf(course.holes[i].playedScore.putting);
+        for (int i = 0; course.holes.size() > i; i++) {
+            if (Util.isIntegerNumber(course.holes.get(i).playedScore.par))
+                total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.putting);
         }
 
         //다시 스트링으로 변환해 리턴
