@@ -32,7 +32,9 @@ public class CourseFragment extends BaseFragment {
     private ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
     private CoursePagerAdapter mCoursePagerAdapter;
-//    private TextView mTvHoleNo, mTvHolePar, mTvCourseName;
+
+    public CourseFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,9 +50,6 @@ public class CourseFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_course, container, false);
-//        mTvHoleNo = v.findViewById(R.id.holeNo);
-//        mTvHolePar = v.findViewById(R.id.holePar);
-//        mTvCourseName = v.findViewById(R.id.courseName);
 
         mMapPager = v.findViewById(R.id.map_pager);
         (mParentActivity).hideMainBottomBar();
@@ -73,26 +72,34 @@ public class CourseFragment extends BaseFragment {
         Context mContext;
         ArrayList<Hole> mHoleList;
         ImageView mIvMap;
+        TextView mTvHoleNo, mTvHolePar, mTvCourseName;
 
         CoursePagerAdapter(Context context, ArrayList<Hole> mHoleList) {
             this.mContext = context;
             this.mHoleList = mHoleList;
         }
 
+        @SuppressLint("SetTextI18n")
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View view;
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.map_pager_page, container, false);
+
+            mTvCourseName = view.findViewById(R.id.courseName);
+            mTvHoleNo = view.findViewById(R.id.holeNo);
+            mTvHolePar = view.findViewById(R.id.holePar);
             mIvMap = view.findViewById(R.id.iv_map);
-//            mTvHoleNo.setText(mHoleList.get(position).hole_no);
-//            mTvHolePar.setText(mHoleList.get(position).par);
+
+            mTvCourseName.setText(mCourseInfoList.get(0).courseName + " COURSE");
+            mTvHoleNo.setText(mHoleList.get(position).hole_no);
+            mTvHolePar.setText(mHoleList.get(position).par);
+
             if (mHoleList.get(position).img_2_file_url != null) {
                 Glide.with(mContext)
                         .load("http://10.50.21.62:8000/" + mHoleList.get(position).img_2_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .placeholder(R.drawable.ic_noimage)
                         .into(mIvMap);
 
             } else {
@@ -129,7 +136,6 @@ public class CourseFragment extends BaseFragment {
         showProgress("코스 정보를 가져오는 중입니다.");
         DataInterface.getInstance().getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
 
-            @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(ResponseData<Course> response) {
                 hideProgress();
@@ -139,10 +145,6 @@ public class CourseFragment extends BaseFragment {
 
                     mCoursePagerAdapter = new CoursePagerAdapter(getActivity(), mCourseInfoList.get(0).holes);
                     mMapPager.setAdapter(mCoursePagerAdapter);
-//                    mMapPager.setCurrentItem(0);
-//                    mTvCourseName.setText(mCourseInfoList.get(0).courseName + " COURSE");
-//                    mTvHoleNo.setText(mCourseInfoList.get(0).holes.get(0).hole_no);
-//                    mTvHolePar.setText(mCourseInfoList.get(0).holes.get(0).par);
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
