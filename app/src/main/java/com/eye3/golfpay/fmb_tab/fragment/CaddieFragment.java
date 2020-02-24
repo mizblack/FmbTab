@@ -187,28 +187,28 @@ public class CaddieFragment extends BaseFragment {
 
     private void setReserveGuestInfo(GuestInfo guestInfo) {
 
-         showProgress("메모 전송중입니다.");
-        RequestBody requestFile = null,requestFile2 = null;
+        showProgress("메모 전송중입니다.");
+        RequestBody requestFile = null, requestFile2 = null;
         MultipartBody.Part signImage = null, clubImage = null;
-        if(guestInfo.signImage != null) {
+        if (guestInfo.signImage != null) {
             requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.signImage);
-             signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.signImage.getName(), requestFile);
+            signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.signImage.getName(), requestFile);
         }
-        if(guestInfo.clubImage != null) {
+        if (guestInfo.clubImage != null) {
             requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.clubImage);
             clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.clubImage.getName(), requestFile2);
         }
         RequestBody reserveGuestId = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.reserveGuestId);
         RequestBody carNo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.carNo);
         RequestBody hp = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.hp);
-        RequestBody guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.guestMemo);
+        RequestBody guestMemo = null;
+        if (guestInfo.guestMemo != null) {
+            guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.guestMemo);
+        }
         RequestBody teamMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.teamMemo);
 
 
-
-
-
-         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(reserveGuestId, carNo,hp,guestMemo, teamMemo, signImage, clubImage , new DataInterface.ResponseCallback<GuestInfoResponse>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
             @Override
             public void onSuccess(GuestInfoResponse response) {
                 hideProgress();
@@ -294,7 +294,7 @@ public class CaddieFragment extends BaseFragment {
         createGuestList();
         setDataTeamMemo();
         teamMemoOnClick();
-
+        setGuestData();
         v.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
