@@ -22,5 +22,7 @@ public class RestaurantMenu implements Serializable {
     @SerializedName("image")
     @Expose
     public String image;
+    //ui용 변수
+    public boolean isSelected = false;
 
 }

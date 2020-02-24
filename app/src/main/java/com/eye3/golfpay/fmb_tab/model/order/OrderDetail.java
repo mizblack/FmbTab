@@ -1,8 +1,5 @@
 package com.eye3.golfpay.fmb_tab.model.order;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,23 +18,37 @@ public class OrderDetail implements Serializable {
 
     @SerializedName("items")
     @Expose
-    public ArrayList<OrederedMenuItem> mOrderedMenuItemList = new ArrayList<OrederedMenuItem>();
+    public ArrayList<OrderedMenuItem> mOrderedMenuItemList = new ArrayList<OrderedMenuItem>();
 
-    //    public OrderDetail(String reserve_guest_id , String paid_total_amount, OrederedMenuItem orederedMenuItem){
+    //    public OrderDetail(String reserve_guest_id , String paid_total_amount, OrderedMenuItem orederedMenuItem){
 //        this.reserve_guest_id = reserve_guest_id;
 //        this.paid_total_amount = paid_total_amount;
 //        this.orderedMenuItemList.add(orederedMenuItem);
 //    }
-    public void addOrderedMenuItem(OrederedMenuItem orederedMenuItem) {
+    public OrderDetail(){
+        this.reserve_guest_id = "";
+        this.paid_total_amount = "";
+        this.mOrderedMenuItemList = new ArrayList<>();
+    }
+
+    public OrderDetail(String reserve_guest_id){
+        this.reserve_guest_id = reserve_guest_id;
+        this.paid_total_amount = "";
+        this.mOrderedMenuItemList = new ArrayList<>();
+    }
+
+    public ArrayList<OrderedMenuItem> addOrPlusOrderedMenuItem(OrderedMenuItem orederedMenuItem) {
         if (isOrderedMenuItemExist(orederedMenuItem.id)) {
             //중복 메뉴 추가시 qty를 더한다.
             plusQty(orederedMenuItem.id);
+        }else {  //중복 메뉴가 아니면 추가
+            mOrderedMenuItemList.add(orederedMenuItem);
         }
-        mOrderedMenuItemList.add(orederedMenuItem);
+        return mOrderedMenuItemList;
     }
 
     //
-    private boolean isOrderedMenuItemExist(String id) {
+    public boolean isOrderedMenuItemExist(String id) {
         if (Integer.valueOf(id) < 0) {
           //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
         }
@@ -49,8 +60,8 @@ public class OrderDetail implements Serializable {
         return false;
     }
 
-    private void plusQty(String id) {
-        if (Integer.valueOf(id) < 0)
+    public void plusQty(String id) {
+       // if (Integer.valueOf(id) < 0)
           //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
 
         for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
@@ -62,15 +73,26 @@ public class OrderDetail implements Serializable {
 
     }
 
-    public String getTotalPaidAmount() {
+    public int calculateTotalPaidAmount() {
         int tempTotal = 0;
         for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
 
             tempTotal += Integer.valueOf(mOrderedMenuItemList.get(i).qty) * Integer.valueOf(mOrderedMenuItemList.get(i).price);
         }
-        return String.valueOf(tempTotal);
+        return (tempTotal);
 
     }
+
+    public String getPaid_total_amount() {
+        return String.valueOf(calculateTotalPaidAmount());
+    }
+
+    public void setTotalPaidAmount(String total) {
+        this.paid_total_amount = total;
+
+    }
+
+
 
 
 }
