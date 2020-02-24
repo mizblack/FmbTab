@@ -1,7 +1,6 @@
 package com.eye3.golfpay.fmb_tab.net;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
@@ -47,20 +46,16 @@ public interface HttpService {
     @POST("getReserveList")
     Call<ReserveGuestList> getReserveGuestList(@Query("reserve_id") int reserveId);
 
-//    @POST("setReserveGuestInfo")
-//    Call<GuestInfoResponse> setReserveGuestInfo(@Body GuestInfo GuestInfo);
-
     @POST("orderShade")
-    Call<ResponseData<Object>> sendShdaeOrder(@Body ShadeOrder shadeOrder);
+    Call<ResponseData<Object>> sendShadeOrder(@Body ShadeOrder shadeOrder);
 
     @Multipart
     @POST("setReserveGuestInfo")
     Call<GuestInfoResponse> setReserveGuestInfo(@Part("reserve_guest_id") RequestBody reserveGuestId,
-                                                 @Part("car_no") RequestBody carNo,
-                                                 @Part("hp") RequestBody hp,
-                                                 @Part("guest_memo")  RequestBody guestMemo,
-                                                 @Part("team_memo")  RequestBody teamMemo,
-                                                 @Part MultipartBody.Part signImage,
-                                                 @Part MultipartBody.Part clubImage);
-
+                                                @Part("car_no") RequestBody carNo,
+                                                @Part("hp") RequestBody hp,
+                                                @Part("guest_memo") RequestBody guestMemo,
+                                                @Part("team_memo") RequestBody teamMemo,
+                                                @Part MultipartBody.Part signImage,
+                                                @Part MultipartBody.Part clubImage);
 }

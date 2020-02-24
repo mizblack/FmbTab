@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.util;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -68,6 +69,7 @@ public class ScoreDialog extends Dialog {
 
     View cancelLinearLayout;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,9 +98,9 @@ public class ScoreDialog extends Dialog {
         mLayoutButtons = findViewById(R.id.layoutButtons);
 
         tvHoleId = findViewById(R.id.hole_id);
-        tvHoleId.setText("Hole ID-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].id);
+        tvHoleId.setText("Hole ID-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id);
         tvPar = findViewById(R.id.par_num);
-        tvPar.setText("Par-" + mCurrentCourse.holes[mHoleScoreLayoutIdx].par);
+        tvPar.setText("Par-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).par);
         tvCourseName = findViewById(R.id.course_name);
         tvCourseName.setText("Course(" + mCurrentCourse.courseName + ")");
 
@@ -141,7 +143,7 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId, mCurrentCourse.holes[mHoleScoreLayoutIdx].id, mTabIdx, mHoleScoreLayoutIdx);
+        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
 
     }
 
@@ -208,7 +210,7 @@ public class ScoreDialog extends Dialog {
             final int playerIdx = position;
             //*******
             holder.playerName.setText(mPlayerList.get(position).name);
-            final Hole selected_hole = mCurrentCourse.holes[mHoleScoreLayoutIdx];
+            final Hole selected_hole = mCurrentCourse.holes.get(mHoleScoreLayoutIdx);
             if (AppDef.isTar) {
                final TextView[] viewArr = holder.inserter.mStrokeScoreTextViewArr;
                 for(int i=0; viewArr.length > i ;i++) {
@@ -227,7 +229,7 @@ public class ScoreDialog extends Dialog {
                 }
                 int selectedIdx = holder.inserter.mSelectedStrokeScoreTvIdx;
            //     TextView selectedTv = holder.inserter.mSelectedStrokeInserterTv;
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
 
             } else {
                final TextView[] viewArr = holder.inserter.mParScoreTextViewArr;
@@ -246,11 +248,11 @@ public class ScoreDialog extends Dialog {
                 }
                 int selectedIdx = holder.inserter.mSelectedParScoreTvIdx;
            //     TextView selectedTv = holder.inserter.mSelectedParInserterTv;
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
 
             }
 
-            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr, mCurrentCourse.holes[mHoleScoreLayoutIdx].playedScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
+            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
             for(int i=0; holder.inserterPutt.mPuttScoreTextViewArr.length > i ;i++) {
                 holder.inserterPutt.mPuttScoreTextViewArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
