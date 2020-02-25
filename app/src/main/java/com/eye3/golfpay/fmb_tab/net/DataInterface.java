@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
@@ -14,8 +13,6 @@ import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
-
-import java.io.File;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -69,11 +66,6 @@ public class DataInterface extends BasicDataInterface {
         return response.isSuccessful();
     }
 
-    //ResponseData 를 사용하지 않을때 필요없읍.
-    private void solveCommonError(Context context, ResponseCallback callback, Response response) {
-        solveCommonError(context, callback, response, true);
-    }
-
     //ResponseData 를 사용하지 않을때 필요없음.
     private void solveCommonError(Context context, ResponseCallback callback, Response response, boolean isCommonError) {
         if (callback == null) {
@@ -119,21 +111,14 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void getTodayReservesForCaddy(final Context context, String caddy_id, final ResponseCallback<TeeUpTime> callback) {
+    public void getTodayReservesForCaddy(String caddy_id, final ResponseCallback<TeeUpTime> callback) {
         try {
             Call<TeeUpTime> call = service.getTodayReservesForCaddy(caddy_id);
             call.enqueue(new Callback<TeeUpTime>() {
                 @Override
                 public void onResponse(Call<TeeUpTime> call, Response<TeeUpTime> response) {
                     TeeUpTime teeUpTime = response.body();
-                    // solveCommonError(context, callback, response, false);
-                    if (response == null) {
-                        callback.onError(teeUpTime);
-                        return;
-                    } else {
-
-                        callback.onSuccess(teeUpTime);
-                    }
+                    callback.onSuccess(teeUpTime);
                 }
 
                 @Override
@@ -148,21 +133,14 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void login(final Context context, String id, String pwd, final ResponseCallback<Login> callback) {
+    public void login(String id, String pwd, final ResponseCallback<Login> callback) {
         try {
             Call<Login> call = service.doCaddyLogin(id, pwd);
             call.enqueue(new Callback<Login>() {
                 @Override
                 public void onResponse(Call<Login> call, Response<Login> response) {
                     Login login = response.body();
-                    // solveCommonError(context, callback, response, false);
-                    if (response == null) {
-                        callback.onError(login);
-                        return;
-                    } else {
-
-                        callback.onSuccess(login);
-                    }
+                    callback.onSuccess(login);
                 }
 
                 @Override
@@ -234,7 +212,6 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Restaurant>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    // callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
@@ -257,7 +234,6 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    // callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
 
@@ -310,14 +286,13 @@ public class DataInterface extends BasicDataInterface {
 //        }
 //    }
 
-        public void setReserveGuestInfo(RequestBody reserveGuestId, RequestBody carNo, RequestBody hp, RequestBody guestMemo, RequestBody   teamMemo, MultipartBody.Part  signImage,  MultipartBody.Part   clubImage,      final ResponseCallback<GuestInfoResponse> callback) {
+    public void setReserveGuestInfo(RequestBody reserveGuestId, RequestBody carNo, RequestBody hp, RequestBody guestMemo, RequestBody teamMemo, MultipartBody.Part signImage, MultipartBody.Part clubImage, final ResponseCallback<GuestInfoResponse> callback) {
         try {
-            Call<GuestInfoResponse> call = service.setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo,teamMemo, signImage, clubImage );
+            Call<GuestInfoResponse> call = service.setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage);
             call.enqueue(new Callback<GuestInfoResponse>() {
                 @Override
                 public void onResponse(Call<GuestInfoResponse> call, Response<GuestInfoResponse> response) {
-                    GuestInfoResponse guestInfoResponse = response.body();
-                    callback.onSuccess(guestInfoResponse);
+                    callback.onSuccess(response.body());
                 }
 
                 @Override
@@ -344,7 +319,6 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    // callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
 
@@ -353,7 +327,5 @@ public class DataInterface extends BasicDataInterface {
             ex.printStackTrace();
         }
     }
-
-
 
 }

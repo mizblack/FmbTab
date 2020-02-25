@@ -83,6 +83,7 @@ public class CaddieFragment extends BaseFragment {
     private Thread getSingBitmapThread;
     private Bitmap clubImageBitmap;
     private Bitmap signImageBitmap;
+    private ArrayList<String> retCodeArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,11 +109,11 @@ public class CaddieFragment extends BaseFragment {
         getSingBitmapThread.start();
     }
 
-    private void setSignImageBitmap(int i, View caddieViewGuestItem, Bitmap signImageBitmap) {
-        caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
+    private void setSignImageBitmap(int i, View caddieViewGuestItem) {
         try {
             getSingBitmapThread.join();
             if (signImageBitmap != null) {
+                caddieViewGuestItem.findViewById(R.id.signatureTextView).setVisibility(View.GONE);
                 ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
                 signatureBitmapArrayList.set(i, signImageBitmap);
                 signatureImageView.setImageBitmap(signImageBitmap);
@@ -142,7 +143,7 @@ public class CaddieFragment extends BaseFragment {
         getClubBitmapThread.start();
     }
 
-    private void setClubImageBitmap(int i, View caddieViewGuestItem, Bitmap clubImageBitmap) {
+    private void setClubImageBitmap(int i, View caddieViewGuestItem) {
         try {
             getClubBitmapThread.join();
             if (clubImageBitmap != null) {
@@ -154,7 +155,6 @@ public class CaddieFragment extends BaseFragment {
             e.printStackTrace();
         }
     }
-
 
     private void setGuestData() {
         guestArrayList = Global.guestArrayList;
@@ -176,59 +176,75 @@ public class CaddieFragment extends BaseFragment {
 
                 if (guestArrayList.get(i).getSignUrl() != null) {
                     getSignImageBitmap(guestArrayList.get(i).getSignUrl());
-                    setSignImageBitmap(i, caddieViewGuestItem, signImageBitmap);
+                    setSignImageBitmap(i, caddieViewGuestItem);
                 }
 
                 if (guestArrayList.get(i).getClubUrl() != null) {
                     getClubImageBitmap(guestArrayList.get(i).getClubUrl());
-                    setClubImageBitmap(i, caddieViewGuestItem, clubImageBitmap);
+                    setClubImageBitmap(i, caddieViewGuestItem);
                 }
             }
         }
     }
 
-    private void setReserveGuestInfo(GuestInfo guestInfo) {
+    private int countOk() {
+        int count = 0;
+        for (int i = 0; i < retCodeArrayList.size(); i++) {
+            if (retCodeArrayList.get(i) != null) {
+                if (retCodeArrayList.get(i).equals("ok")) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
-        showProgress("메모 전송중입니다.");
-        RequestBody requestFile = null, requestFile2 = null;
+    private void setReserveGuestInfo(final int i, final GuestInfo guestInfo) {
+
+        RequestBody reserveGuestId, carNo, hp, guestMemo = null, teamMemo = null, requestFile, requestFile2;
         MultipartBody.Part signImage = null, clubImage = null;
-        if (guestInfo.signImage != null) {
-            requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.signImage);
-            signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.signImage.getName(), requestFile);
-        }
-        if (guestInfo.clubImage != null) {
-            requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.clubImage);
-            clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.clubImage.getName(), requestFile2);
-        }
-        RequestBody reserveGuestId = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.reserveGuestId);
-        RequestBody carNo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.carNo);
-        RequestBody hp = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.hp);
-        RequestBody guestMemo = null;
-        if (guestInfo.guestMemo != null) {
-            guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.guestMemo);
-        }
-        RequestBody teamMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.teamMemo);
 
+        reserveGuestId = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getReserveGuestId());
+        carNo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getCarNo());
+        hp = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getHp());
+        if (guestInfo.getGuestMemo() != null) {
+            guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getGuestMemo());
+        }
+        if (guestInfo.getTeamMemo() != null) {
+            teamMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getTeamMemo());
+        }
+        if (guestInfo.getSignImage() != null) {
+            requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getSignImage());
+            signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.getSignImage().getName(), requestFile);
+        }
+        if (guestInfo.getClubImage() != null) {
+            requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getClubImage());
+            clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.getClubImage().getName(), requestFile2);
+        }
 
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
             @Override
             public void onSuccess(GuestInfoResponse response) {
                 hideProgress();
-                if (response.getRetCode().equals("ok")) {
+                retCodeArrayList.set(i, response.getRetCode());
+                if (i == Global.guestArrayList.size() - 1 && Global.guestArrayList.size() - 1 == countOk()) {
                     Toast.makeText(getActivity(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), "전송에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                    hideProgress();
                 }
+//                if (i == Global.guestArrayList.size() - 1 && Global.guestArrayList.size() - 1 > countOk()) {
+//                    setReserveGuestInfo();
+//                }
+
             }
 
             @Override
             public void onError(GuestInfoResponse response) {
-                hideProgress();
+//                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
-                hideProgress();
+//                hideProgress();
             }
         });
     }
@@ -249,19 +265,16 @@ public class CaddieFragment extends BaseFragment {
                 clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmapArrayList.get(i), guestId + "_club");
             }
 
-            GuestInfo guestInfo = new GuestInfo(guest.getId()
-                    , guest.getCarNumber()
-                    , guest.getPhoneNumber()
-                    , guest.getMemo()
-                    , guest.getTeamMemo()
-                    , signatureImageFile
-                    , clubImageFile
-            );
+            GuestInfo guestInfo = new GuestInfo();
+            guestInfo.setReserveGuestId(guest.getId());
+            guestInfo.setCarNo(guest.getCarNumber());
+            guestInfo.setHp(guest.getPhoneNumber());
+            guestInfo.setGuestMemo(guest.getMemo());
+            guestInfo.setTeamMemo(guest.getTeamMemo());
+            guestInfo.setSignImage(signatureImageFile);
+            guestInfo.setClubImage(clubImageFile);
 
-            setReserveGuestInfo(guestInfo);
-            if (i == Global.guestArrayList.size() - 1) {
-                hideProgress();
-            }
+            setReserveGuestInfo(i, guestInfo);
         }
     }
 
@@ -271,7 +284,6 @@ public class CaddieFragment extends BaseFragment {
         setDataTeamMemo();
         setGuestData();
         closeKeyboard();
-
     }
 
     @Override
@@ -295,7 +307,6 @@ public class CaddieFragment extends BaseFragment {
         createGuestList();
         setDataTeamMemo();
         teamMemoOnClick();
-        setGuestData();
         v.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -330,17 +341,6 @@ public class CaddieFragment extends BaseFragment {
             ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
             if (signatureBitmapArrayList.get(i) != null) {
                 signatureImageView.setImageBitmap(signatureBitmapArrayList.get(i));
-
-            }
-        }
-    }
-
-    private void setImageClubImageView() {
-        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
-            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
-            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
-            if (clubBitmapArrayList.get(i) != null) {
-                clubImageView.setImageBitmap(clubBitmapArrayList.get(i));
 
             }
         }
@@ -467,6 +467,7 @@ public class CaddieFragment extends BaseFragment {
                 caddieViewGuestItemArrayList.add(caddieViewGuestItem);
                 signatureBitmapArrayList.add(null);
                 clubBitmapArrayList.add(null);
+                retCodeArrayList.add(null);
                 guestListOnClick(caddieViewGuestItem);
 
                 TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
@@ -542,8 +543,7 @@ public class CaddieFragment extends BaseFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sendTakePhotoIntent();
@@ -617,7 +617,8 @@ public class CaddieFragment extends BaseFragment {
 
     private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
 
-        File f = new File(context.getCacheDir(), filename);
+        File f = new File(context.getCacheDir(), filename + ".png");
+
         try {
             f.createNewFile();
         } catch (IOException e) {
@@ -639,15 +640,5 @@ public class CaddieFragment extends BaseFragment {
 
         return f;
     }
-
-//    public static File getAlbumStorageDir(Context context, String albumName) {
-//        // Get the directory for the app's private pictures directory.
-//        File file = new File(context.getExternalFilesDir(
-//                Environment.DIRECTORY_PICTURES), albumName);
-//        if (!file.mkdirs()) {
-//            Log.e("FileUtil", "Directory not created");
-//        }
-//        return file;
-//    }
 
 }
