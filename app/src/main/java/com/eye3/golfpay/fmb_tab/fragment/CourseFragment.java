@@ -6,8 +6,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +30,6 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.GPSUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -47,18 +44,12 @@ public class CourseFragment extends BaseFragment {
     public CourseFragment() {
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//        }
-
         getAllCourseInfo(getActivity());
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +77,6 @@ public class CourseFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
     }
-
 
     private void getAllCourseInfo(Context context) {
         showProgress("코스 정보를 가져오는 중입니다.");
@@ -120,7 +110,7 @@ public class CourseFragment extends BaseFragment {
 
                         }
                     });
-                   //초기화
+                    //초기화
                     mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
@@ -144,14 +134,11 @@ public class CourseFragment extends BaseFragment {
     }
 
 
-
     class CoursePagerAdapter extends PagerAdapter implements LocationListener {
         Context mContext;
         ArrayList<Hole> mHoleList;
         ImageView mIvMap;
-        //   TextView mTvHoleNo, mTvHolePar, mTvCourseName ,  ;
         Location mLocation;
-
 
         @SuppressLint("MissingPermission")
         CoursePagerAdapter(Context context, ArrayList<Hole> mHoleList) {
@@ -171,27 +158,17 @@ public class CourseFragment extends BaseFragment {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.map_pager_page, container, false);
 
-            //     mTvCourseName = view.findViewById(R.id.courseName);
-            //    mTvHoleNo = view.findViewById(R.id.holeNo);
-            //    mTvHolePar = view.findViewById(R.id.holePar);
             mIvMap = view.findViewById(R.id.iv_map);
-            //   mTvHereToHole = view.findViewById(R.id.here_to_hole);
+
             if (mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null)
                 mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.valueOf(mHoleList.get(position).gps_lat), Double.valueOf(mHoleList.get(position).gps_lon))));
-//            setHoleNo(mHoleList.get(position));
-//            setPar(mHoleList.get(position));
-//            setCourseName(Global.CurrentCourse);
 
-            //    mTvCourseName.setText(mCourseInfoList.get(0).courseName + " COURSE");
-            //    mTvHoleNo.setText(mHoleList.get(position).hole_no);
-            //    mTvHolePar.setText(mHoleList.get(position).par);
 
             if (mHoleList.get(position).img_2_file_url != null) {
                 Glide.with(mContext)
                         .load("http://10.50.21.62:8000/" + mHoleList.get(position).img_2_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
-
             } else {
                 mIvMap.setImageDrawable(getResources().getDrawable(R.drawable.ic_noimage, null));
             }
@@ -212,7 +189,7 @@ public class CourseFragment extends BaseFragment {
 
         @Override
         public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return (view == (View)object);
+            return (view == object);
         }
 
         @Override
@@ -224,9 +201,7 @@ public class CourseFragment extends BaseFragment {
         @Override
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged2: " + showLogOfLocationInfo(location));
-
             mLocation = location;
-
         }
 
         @Override
@@ -246,16 +221,11 @@ public class CourseFragment extends BaseFragment {
     }
 
     private String showLogOfLocationInfo(Location location) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("onLocationChanged: ").append(location.toString());
-        stringBuilder.append("\n각도 : ").append(location.getBearing());
-        //      stringBuilder.append("\n위성개수 : ").append(satelliteCount);
-        //      stringBuilder.append("\n신호세기 : ").append(Arrays.toString(cn0DbHz));
-        stringBuilder.append("\n속도 : ").append(location.getSpeed());
-        stringBuilder.append("\n정확도 : ").append(location.getAccuracy());
-        stringBuilder.append("\n제공프로바이더 : ").append(location.getProvider());
-
-        return stringBuilder.toString();
+        return "onLocationChanged: " + location.toString() +
+                "\n각도 : " + location.getBearing() +
+                "\n속도 : " + location.getSpeed() +
+                "\n정확도 : " + location.getAccuracy() +
+                "\n제공프로바이더 : " + location.getProvider();
     }
 }
 

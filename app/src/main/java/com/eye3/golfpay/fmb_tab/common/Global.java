@@ -2,22 +2,17 @@ package com.eye3.golfpay.fmb_tab.common;
 
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
-import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
-import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
-import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Global {
 
@@ -80,7 +75,7 @@ public class Global {
 
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
-    public static Course CurrentCourse ;
+    public static Course CurrentCourse;
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
 //    public static Location CurrentLocation ;
 

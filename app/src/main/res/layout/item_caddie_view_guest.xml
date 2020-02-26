@@ -35,6 +35,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="차량번호"
+            android:inputType="textShortMessage"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="22dp"

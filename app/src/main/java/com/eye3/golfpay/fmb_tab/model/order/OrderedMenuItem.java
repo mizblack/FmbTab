@@ -9,29 +9,28 @@ import java.io.Serializable;
 public class OrderedMenuItem implements Serializable {
     @SerializedName("id")
     @Expose
-    public String id = "-1";
+    public String id;
     @SerializedName("qty")
     @Expose
-    public String qty = "0";
+    String qty;
     @SerializedName("price")
     @Expose
-    public String price = "0";
+    String price;
     @SerializedName("total")
     @Expose
-    public String total = "0";
+    private String total;
 
- //   public String name ="";
+    public String name;
 
-    public OrderedMenuItem(String id, String qty, String price, String name ){
+    public OrderedMenuItem(String id, String qty, String price, String name) {
         this.id = id;
-        this.qty =  qty;
+        this.qty = qty;
         this.price = price;
         setTotal();
-      //  this.total = setTotal();
-   //     this.name = name;
+        this.name = name;
     }
 
-    public void setTotal(){
+    void setTotal() {
         this.total = String.valueOf(Integer.valueOf(this.qty) * Integer.valueOf(this.price));
     }
 }
