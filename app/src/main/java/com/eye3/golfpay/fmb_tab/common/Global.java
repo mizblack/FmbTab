@@ -8,6 +8,7 @@ import android.os.Environment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
+import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -80,6 +81,7 @@ public class Global {
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
     public static Course CurrentCourse ;
+    public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
 //    public static Location CurrentLocation ;
 
 

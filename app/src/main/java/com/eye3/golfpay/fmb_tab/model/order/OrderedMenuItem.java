@@ -20,17 +20,18 @@ public class OrderedMenuItem implements Serializable {
     @Expose
     public String total = "0";
 
-    public String name ="";
+ //   public String name ="";
 
     public OrderedMenuItem(String id, String qty, String price, String name ){
         this.id = id;
         this.qty =  qty;
         this.price = price;
-        this.total = getTotal(Integer.valueOf(qty), Integer.valueOf(price));
-        this.name = name;
+        setTotal();
+      //  this.total = setTotal();
+   //     this.name = name;
     }
 
-    public String getTotal(int qty, int price){
-        return String.valueOf(qty * price);
+    public void setTotal(){
+        this.total = String.valueOf(Integer.valueOf(this.qty) * Integer.valueOf(this.price));
     }
 }
