@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -63,6 +64,13 @@ public class CartLocationService extends Service {
     private int satelliteCount = 0;
     private float[] cn0DbHz;
 
+    private Handler mHanlder ;
+
+
+    public void setHandler(Handler handler){
+        this.mHanlder = handler;
+    }
+
     private Notification createNotification(Context context, RemoteViews remoteViews) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Util.getNotiChId(this, Global.NotiAlarmChannelID.CHANNEL_LOC))
                 .setAutoCancel(true)
@@ -81,7 +89,7 @@ public class CartLocationService extends Service {
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
-        LOCATION_INTERVAL = 5 * 1000;
+        LOCATION_INTERVAL = 3 * 1000;
 
         initializeLocationManager();
 
@@ -201,8 +209,8 @@ public class CartLocationService extends Service {
         }
 
         try {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (LOCATION_INTERVAL <= 0) ? 5000 : LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (LOCATION_INTERVAL <= 0) ? 5000 : LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (LOCATION_INTERVAL <= 0) ? 3000 : LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (LOCATION_INTERVAL <= 0) ? 3000 : LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
 
         } catch (SecurityException ex) {
             Log.i(TAG, "fail to request location update, ignore", ex);
@@ -213,18 +221,6 @@ public class CartLocationService extends Service {
 
     }
 
-
-
-
-
-
-//    private void startActivity() {
-//        Logger.i(TAG, "call nearbydrive allocationIdx = " + allocationIdx);
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.putExtra("allocationIdx", allocationIdx);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-//    }
 
 
 
@@ -257,7 +253,7 @@ public class CartLocationService extends Service {
             Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
             mLastLocation.set(location);
-
+       //     Global.CurrentLocation = mLastLocation;
 
 
         }

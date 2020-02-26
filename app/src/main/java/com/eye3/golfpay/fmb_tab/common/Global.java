@@ -2,6 +2,7 @@ package com.eye3.golfpay.fmb_tab.common;
 
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
@@ -78,6 +79,8 @@ public class Global {
 
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
+    public static Course CurrentCourse ;
+//    public static Location CurrentLocation ;
 
 
     public static boolean wifi = false;

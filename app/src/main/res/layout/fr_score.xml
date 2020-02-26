@@ -17,12 +17,18 @@
                 android:id="@+id/tab_bar"
                 layout="@layout/tab_bar" />
 
-            <FrameLayout
-                android:id="@+id/tabHolder"
+<!--            <LinearLayout-->
+<!--                android:id="@+id/tabHolder"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                />-->
+            <com.eye3.golfpay.fmb_tab.view.TabCourseLinear
+                android:id="@+id/scoreBoard"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

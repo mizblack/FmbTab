@@ -41,7 +41,10 @@ public class HoleInfoLinear extends LinearLayout {
         tvMeter = v.findViewById(R.id.hole_meter);
         //여기서 변환식 사용할것
         if(Global.isYard){
+           if(hole.hole_total_size != null)
             tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(hole.hole_total_size))));
+           else
+               tvMeter.setText("");
         }else
             tvMeter.setText(hole.hole_total_size);
 

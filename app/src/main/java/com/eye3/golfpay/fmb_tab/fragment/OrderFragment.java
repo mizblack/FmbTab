@@ -123,10 +123,10 @@ public class OrderFragment extends BaseFragment {
         }
         mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
         mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
-        setSelectedRestarant(selectedTabIdx);
+        setSelectedRestaurant(selectedTabIdx);
     }
 
-    private void setSelectedRestarant(int mSelectedRestaurantIdx) {
+    private void setSelectedRestaurant(int mSelectedRestaurantIdx) {
         initRecyclerView(mRecyclerCategory, mCateAdapter, mRestaurantList.get(mSelectedRestaurantIdx).categoryList);
     }
 
