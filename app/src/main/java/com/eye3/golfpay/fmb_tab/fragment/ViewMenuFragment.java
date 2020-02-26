@@ -352,7 +352,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
         showProgress("티업시간을 받아오는 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getTodayReservesForCaddy(getActivity(), caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(TeeUpTime response) {
@@ -360,7 +360,6 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode().equals("ok")) {
-                    //    GoNativeScreen(new ScoreFragment(), null);
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView = Objects.requireNonNull(getView()).findViewById(R.id.caddieNameTextView);
