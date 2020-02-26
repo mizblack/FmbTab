@@ -52,7 +52,8 @@ public class OrderFragment extends BaseFragment {
     private OrderedMenuItem mOrderedMenuItem = null;
     // 최상위 카테고리 이름
     private TextView mTVCateName;
-
+    private TextView mTotalPriceTextView;
+    private Button mResetButton;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,7 @@ public class OrderFragment extends BaseFragment {
         mTabLinear = v.findViewById(R.id.tabLinearLayout);
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
+        mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
         mFoodImage = v.findViewById(R.id.img_food);
@@ -127,7 +129,7 @@ public class OrderFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyTextView);
-        Button resetBtn = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
+        mResetButton = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
 
         orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +145,7 @@ public class OrderFragment extends BaseFragment {
             }
         });
 
-        resetBtn.setOnClickListener(new View.OnClickListener() {
+        mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 init();
@@ -153,8 +155,8 @@ public class OrderFragment extends BaseFragment {
 
     private void init() {
         mOrderedMenuItem = null;
-        mShadeOrders = null;
         mOrderDetailList.clear();
+        mShadeOrders = null;
 
         refreshCategory();
         mCateAdapter.mMenuAdapter.notifyDataSetChanged();
@@ -408,6 +410,7 @@ public class OrderFragment extends BaseFragment {
                             (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                             mOrderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
                             mOrderDetailList.get(idx).setTotalPaidAmount(mOrderDetailList.get(idx).getPaid_total_amount());
+                            setTheTotalInvoice();
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -418,6 +421,13 @@ public class OrderFragment extends BaseFragment {
             });
             container.addView(tv);
         }
+    }
+
+    private void setTheTotalInvoice(){
+        int theTotal = 0;
+        for(int i=0; mOrderDetailList.size() > i ;i++)
+            theTotal += Integer.valueOf(mOrderDetailList.get(i).getPaid_total_amount());
+        mTotalPriceTextView.setText(String.valueOf(theTotal) + "원");
     }
 
     private void sendShadeOrders() {
