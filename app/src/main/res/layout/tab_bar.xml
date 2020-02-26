@@ -6,15 +6,19 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-<!--        여기에 탭바가 동적으로 생성됩-->
-        <LinearLayout
-            android:id="@+id/courseLinearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible"/>
+        android:gravity="center_vertical">
+        <!--        여기에 탭바가 동적으로 생성됩-->
+<!--        <HorizontalScrollView-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="50dp">-->
+
+            <LinearLayout
+                android:id="@+id/courseLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="visible" />
+<!--        </HorizontalScrollView>-->
 
         <LinearLayout
             android:id="@+id/pinkNearestOrLinearLayout"

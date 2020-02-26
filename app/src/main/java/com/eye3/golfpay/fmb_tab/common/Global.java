@@ -20,8 +20,6 @@ public class Global {
     public static ArrayList<Guest> guestArrayList;
     public static ArrayList<Bitmap> signatureBitmapArrayList;
 
-    public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
-
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
     public static String SavedDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FMB_TAB";
@@ -77,6 +75,9 @@ public class Global {
 
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
+    public static Course CurrentCourse;
+    public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
+//    public static Location CurrentLocation ;
 
 
     public static boolean wifi = false;

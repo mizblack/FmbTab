@@ -101,7 +101,7 @@ public class ScoreDialog extends Dialog {
         tvHoleId.setText("Hole ID-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id);
         tvPar = findViewById(R.id.par_num);
         tvPar.setText("Par-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).par);
-        tvCourseName = findViewById(R.id.course_name);
+        tvCourseName = findViewById(R.id.dlg_course_name);
         tvCourseName.setText("Course(" + mCurrentCourse.courseName + ")");
 
         // 클릭 이벤트 셋팅
@@ -158,7 +158,7 @@ public class ScoreDialog extends Dialog {
                        View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse, int tabIdx, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_DeviceDefault_Light_Dialog);
         this.mContext = context;
-        this.mTabIdx = tabIdx;
+     //   this.mTabIdx = tabIdx;
         this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
         this.mLeftClickListener = leftListener;
         this.mRightClickListener = rightListener;
@@ -324,7 +324,7 @@ public class ScoreDialog extends Dialog {
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
 
-        DataInterface.getInstance().setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {

@@ -26,11 +26,11 @@ public class OrderedMenuItem implements Serializable {
         this.id = id;
         this.qty = qty;
         this.price = price;
-        this.total = getTotal(Integer.valueOf(qty), Integer.valueOf(price));
+        setTotal();
         this.name = name;
     }
 
-    private String getTotal(int qty, int price) {
-        return String.valueOf(qty * price);
+    void setTotal() {
+        this.total = String.valueOf(Integer.valueOf(this.qty) * Integer.valueOf(this.price));
     }
 }

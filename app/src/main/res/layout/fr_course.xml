@@ -1,15 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/pattensBlue01"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!-- 여기에 map_pager_page 삽입됨-->
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/map_pager"
+    <LinearLayout
+        android:id="@+id/map_info_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="110dp"
+        android:background="#555555"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/holeNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/white"
+                    android:textSize="42dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Hole Par "
+                    android:textColor="@color/white"
+                    android:textSize="42dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:id="@+id/holePar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/white"
+                    android:textSize="42dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/courseName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-COURSE"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:--"
+                    android:textColor="@color/white"
+                    android:textSize="42dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:--"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:--"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/closeLinearLayout"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/nearest_longest_close"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+  <androidx.viewpager.widget.ViewPager
+      android:id="@+id/map_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/map_info_title"
+      />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        tools:ignore="DisableBaselineAlignment">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="280dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:text="Here to Hole"
+                    android:textColor="@color/gray"
+                    android:textSize="17dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="135dp"
+                    android:text="Point to Point"
+                    android:textColor="@color/gray"
+                    android:textSize="17dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="150dp"
+                    android:text="Point to Hole"
+                    android:textColor="@color/gray"
+                    android:textSize="17dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/here_to_hole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:text="-M"
+                    android:textColor="@color/irisBlue"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="/"
+                    android:textColor="@color/irisBlue"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="-Y"
+                    android:textColor="@color/irisBlue"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="36dp"
+                    android:text="-M"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="/"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="-Y"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:text="-M"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="/"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="-Y"
+                    android:textColor="@color/black"
+                    android:textSize="40dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menuLinearLayout"
+            android:layout_width="74dp"
+            android:layout_height="68dp"
+            android:background="@color/irisBlue"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
