@@ -228,9 +228,18 @@ public class ScoreDialog extends Dialog {
                     });
                 }
                 int selectedIdx = holder.inserter.mSelectedStrokeScoreTvIdx;
-           //     TextView selectedTv = holder.inserter.mSelectedStrokeInserterTv;
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
 
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.mBtnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ScoreInserter.setAllBackGroundResourceBack(viewArr, R.drawable.score_inserter_bg);
+                        holder.inserter.mSelectedStrokeInserterTv = null;
+                        holder.inserter.mSelectedStrokeScoreTvIdx = -1;
+                        setTar(mReserveScore.guest_score_list.get(playerIdx), "-");
+                        setPar(mReserveScore.guest_score_list.get(playerIdx),"-");
+                    }
+                });
             } else {
                final TextView[] viewArr = holder.inserter.mParScoreTextViewArr;
                 for(int i=0; viewArr.length > i ;i++) {
@@ -247,8 +256,17 @@ public class ScoreDialog extends Dialog {
                     });
                 }
                 int selectedIdx = holder.inserter.mSelectedParScoreTvIdx;
-           //     TextView selectedTv = holder.inserter.mSelectedParInserterTv;
                 holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.mBtnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ScoreInserter.setAllBackGroundResourceBack(viewArr, R.drawable.score_inserter_bg);
+                        holder.inserter.mSelectedParInserterTv = null;
+                        holder.inserter.mSelectedParScoreTvIdx = -1;
+                        setTar(mReserveScore.guest_score_list.get(playerIdx), "-");
+                        setPar(mReserveScore.guest_score_list.get(playerIdx),"-");
+                    }
+                });
 
             }
 
@@ -263,11 +281,25 @@ public class ScoreDialog extends Dialog {
                     }
                 });
             }
+            holder.inserterPutt.mBtnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ScoreInserter.setAllBackGroundResourceBack(holder.inserterPutt.mPuttScoreTextViewArr, R.drawable.score_inserter_bg);
+                    holder.inserterPutt.mSelectedPuttInserterTv = null;
+                    holder.inserterPutt.mSelectedPuttScoreTvIdx = -1;
+                    mReserveScore.guest_score_list.get(playerIdx).putting = "-";
+                }
+            });
 
             mReserveScore.guest_score_list.get(playerIdx).putting = holder.inserterPutt.mSelectedPuttInserterTv.getText().toString().trim();
         }
 
         private void setTar(Score score, String scoreStr) {
+            //점수 취소를 위한 -추가
+            if(scoreStr.equals("-")){
+                score.tar = scoreStr;
+                return;
+            }
             if (scoreStr == null ||! Util.isIntegerNumber(scoreStr)) {
                 Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
                 return;
@@ -276,6 +308,10 @@ public class ScoreDialog extends Dialog {
         }
 
         private void setPar(Score score, String scoreStr) {
+            if(scoreStr.equals("-")){
+                score.par = scoreStr;
+                return;
+            }
             if (scoreStr == null || ! Util.isIntegerNumber(scoreStr)) {
                 Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
                 return;
@@ -284,6 +320,10 @@ public class ScoreDialog extends Dialog {
         }
 
         private void setPutting(Score score, String scoreStr) {
+            if(scoreStr.equals("-")){
+                score.putting = scoreStr;
+                return;
+            }
             if (scoreStr == null ||! Util.isIntegerNumber(scoreStr)) {
                 Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
                 return;

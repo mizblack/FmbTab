@@ -444,15 +444,6 @@ public class OrderFragment extends BaseFragment {
 
     }
 
-
-//    boolean findAreadyExist(OrderDetail orderDetail, OrderedMenuItem orderedMenuItem) {
-//
-//        if (orderDetail.isOrderedMenuItemExist(orderedMenuItem.id)) {
-//
-//        }
-//        return null;
-//    }
-
     private void sendShadeOrders() {
         mShadeOrders = new ShadeOrder(mRestaurantList.get(mSelectedRestaurantTabIdx).id, Global.reserveId, mOrderDetailList);
         showProgress("주문을 전송하고 있습니다.");
