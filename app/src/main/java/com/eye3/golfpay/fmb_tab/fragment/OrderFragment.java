@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,11 +85,8 @@ public class OrderFragment extends BaseFragment {
     private void createTabBar(final TextView[] tvRestTabBar, ArrayList<Restaurant> mRestaurantList) {
         for (int i = 0; mRestaurantList.size() > i; i++) {
             final int idx = i;
-            tvRestTabBar[i] = new TextView(getActivity());
+            tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
             tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-            // Todo style 마진, 패딩 적용이 안됨
-            tvRestTabBar[i].setTextAppearance(R.style.ShadeTabTitleTextView);
             tvRestTabBar[i].setText(mRestaurantList.get(i).name);
             tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -164,7 +163,7 @@ public class OrderFragment extends BaseFragment {
 
     private void resetGuestList() {
         for (int i = 0; mGuestContainer.getChildCount() > i; i++) {
-            mGuestContainer.getChildAt(i).setBackgroundColor(Color.WHITE);
+            mGuestContainer.getChildAt(i).setBackgroundResource(R.drawable.shape_gray_edge);
             ((TextView) mGuestContainer.getChildAt(i)).setTextColor(Color.parseColor("#999999"));
         }
     }
@@ -391,19 +390,22 @@ public class OrderFragment extends BaseFragment {
 
         for (int i = 0; Size > i; i++) {
             final int idx = i;
-            TextView tv = new TextView(mContext);
-            tv.setTextAppearance(R.style.ShadeGuestNameTextView);
-            tv.setLayoutParams(new ViewGroup.LayoutParams(120, 120));
+            TextView tv = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeGuestNameTextView), null, 0);
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, height);
+            tv.setLayoutParams(param);
             tv.setTag(Global.selectedReservation.getGuestData().get(idx).getId());
             tv.setText(Global.selectedReservation.getGuestData().get(idx).getGuestName());
+            tv.setBackgroundResource(R.drawable.shape_gray_edge);
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //주문된 음식이 있다면
                     if (mOrderedMenuItem != null) {
                         if (v.getTag().equals(mOrderDetailList.get(idx).reserve_guest_id)) {
-                            (v).setBackgroundColor(getResources().getColor(R.color.ebonyBlack, Objects.requireNonNull(getActivity()).getTheme()));
-                            ((TextView) v).setTextColor(getResources().getColor(R.color.white, getActivity().getTheme()));
+                            ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
+                            (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                             mOrderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
                             mOrderDetailList.get(idx).setTotalPaidAmount(mOrderDetailList.get(idx).getPaid_total_amount());
                         } else {
