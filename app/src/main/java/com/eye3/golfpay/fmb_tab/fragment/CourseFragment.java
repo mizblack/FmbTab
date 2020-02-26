@@ -40,10 +40,6 @@ public class CourseFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//        }
-
         getAllCourseInfo(getActivity());
     }
 
