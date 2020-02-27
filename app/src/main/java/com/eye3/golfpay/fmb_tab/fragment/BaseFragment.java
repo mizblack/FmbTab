@@ -242,6 +242,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         mParentActivity.GoNativeBackStack();
 //        }
     }
+
     public void systemUIHide() {
         View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -255,22 +256,22 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                    // TODO: The system bars are visible. Make any desired
-                    // adjustments to your UI, such as showing the action bar or
-                    // other navigational controls.
-                    systemUIHide();
-                } else {
-                    // TODO: The system bars are NOT visible. Make any desired
-                    // adjustments to your UI, such as hiding the action bar or
-                    // other navigational controls.
-                }
+//                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                // TODO: The system bars are visible. Make any desired
+                // adjustments to your UI, such as showing the action bar or
+                // other navigational controls.
+//                    systemUIHide();
+//                } else {
+                // TODO: The system bars are NOT visible. Make any desired
+                // adjustments to your UI, such as hiding the action bar or
+                // other navigational controls.
+//                }
             }
         });
     }
 
 
-   public  void closeKeyboard(View view) {
+    public void closeKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         systemUIHide();

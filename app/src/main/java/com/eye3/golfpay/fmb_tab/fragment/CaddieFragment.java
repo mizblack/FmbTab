@@ -226,25 +226,21 @@ public class CaddieFragment extends BaseFragment {
             @Override
             public void onSuccess(GuestInfoResponse response) {
                 hideProgress();
+                systemUIHide();
                 retCodeArrayList.set(i, response.getRetCode());
                 if (i == Global.guestArrayList.size() - 1 && Global.guestArrayList.size() - 1 == countOk()) {
                     Toast.makeText(getActivity(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                     hideProgress();
+                    systemUIHide();
                 }
-//                if (i == Global.guestArrayList.size() - 1 && Global.guestArrayList.size() - 1 > countOk()) {
-//                    setReserveGuestInfo();
-//                }
-
             }
 
             @Override
             public void onError(GuestInfoResponse response) {
-//                hideProgress();
             }
 
             @Override
             public void onFailure(Throwable t) {
-//                hideProgress();
             }
         });
     }
@@ -331,6 +327,8 @@ public class CaddieFragment extends BaseFragment {
             public void onDismiss(DialogInterface dialogInterface) {
                 setDataTeamMemo();
                 setGuestData();
+                systemUIHide();
+                closeKeyboard();
             }
         });
     }
@@ -352,6 +350,8 @@ public class CaddieFragment extends BaseFragment {
             public void onDismiss(DialogInterface dialogInterface) {
                 signatureBitmapArrayList = Global.signatureBitmapArrayList;
                 setImageSignatureImageView();
+                systemUIHide();
+                closeKeyboard();
             }
         });
     }
@@ -617,7 +617,7 @@ public class CaddieFragment extends BaseFragment {
 
     private static File getResizedFile(Context context, Bitmap bitmap, String filename) {
 
-        File f = new File(context.getCacheDir(), filename + ".png");
+        File f = new File(context.getCacheDir(), filename + ".jpg");
 
         try {
             f.createNewFile();
@@ -626,7 +626,7 @@ public class CaddieFragment extends BaseFragment {
         }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 10 /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
         byte[] bitmapData = bos.toByteArray();
 
         try {

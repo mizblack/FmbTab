@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class OrderFragment extends BaseFragment {
+    private View v;
     private static int NUM_OF_RESTAURANT;
     protected String TAG = getClass().getSimpleName();
     private Button orderOrApplyBtn;
@@ -46,28 +47,33 @@ public class OrderFragment extends BaseFragment {
     private ImageView mFoodImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mTabLinear, mGuestContainer;
+    private LinearLayout mTabLinear, mGuestContainer, orderBrowserLinearLayout;
     private ShadeOrder mShadeOrders;
-    private ArrayList<OrderDetail> mOrderDetailList = new ArrayList<>();
     private OrderedMenuItem mOrderedMenuItem = null;
     // 최상위 카테고리 이름
-    private TextView mTVCateName;
+    private TextView mTVCateName, infoTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getRestaurantMenu();
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        systemUIHide();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_restaurant_order, container, false);
+        v = inflater.inflate(R.layout.fr_restaurant_order, container, false);
         mTabLinear = v.findViewById(R.id.tabLinearLayout);
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
+        infoTextView = v.findViewById(R.id.infoTextView);
+        orderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
         mFoodImage = v.findViewById(R.id.img_food);
@@ -93,11 +99,9 @@ public class OrderFragment extends BaseFragment {
                 public void onClick(View v) {
                     mSelectedRestaurantTabIdx = idx;
                     selectRestaurant(idx);
-
                 }
             });
             mTabLinear.addView(tvRestTabBar[i]);
-
         }
         initSelectedRestaurantTabColor();
     }
@@ -110,7 +114,6 @@ public class OrderFragment extends BaseFragment {
     private void selectRestaurant(int selectedTabIdx) {
         for (TextView textView : mRestaurantTabBarArr) {
             textView.setTextColor(Color.GRAY);
-
         }
         mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
         mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
@@ -120,7 +123,6 @@ public class OrderFragment extends BaseFragment {
     private void setSelectedRestaurant(int mSelectedRestaurantIdx) {
         initRecyclerView(mRecyclerCategory, mCateAdapter, mRestaurantList.get(mSelectedRestaurantIdx).categoryList);
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -133,9 +135,6 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (orderOrApplyBtn.getText().toString().equals("주문하기")) {
-                    //    tabsLinearLayout.setVisibility(View.GONE);
-                    //   applyTabLinearLayout.setVisibility(View.VISIBLE);
-                    //   orderOrApplyBtn.setText("적용하기");
                     sendShadeOrders();
                 } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
                     GoNativeScreenAdd(new ShadePaymentFragment(), null);
@@ -154,7 +153,7 @@ public class OrderFragment extends BaseFragment {
     private void init() {
         mOrderedMenuItem = null;
         mShadeOrders = null;
-        mOrderDetailList.clear();
+        Global.orderDetailList.clear();
 
         refreshCategory();
         mCateAdapter.mMenuAdapter.notifyDataSetChanged();
@@ -191,6 +190,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onSuccess(ResponseData<Restaurant> response) {
                 hideProgress();
+                systemUIHide();
                 if (response.getResultCode().equals("ok")) {
                     response.getData();
                     mRestaurantList = (ArrayList<Restaurant>) response.getList();
@@ -211,12 +211,14 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onError(ResponseData<Restaurant> response) {
                 hideProgress();
+                systemUIHide();
                 response.getError();
             }
 
             @Override
             public void onFailure(Throwable t) {
                 hideProgress();
+                systemUIHide();
             }
         });
     }
@@ -341,11 +343,6 @@ public class OrderFragment extends BaseFragment {
                 });
             }
 
-//            public void setAllItemRefresh() {
-//                setAllRestaurantMenuUnSelected();
-//                notifyDataSetChanged();
-//            }
-
             @Override
             public int getItemCount() {
                 return mMenuList.size();
@@ -382,11 +379,11 @@ public class OrderFragment extends BaseFragment {
         //최초주문시 사이즈가 0이면
         if (Global.orderDetailList.size() == 0) {
             for (int i = 0; Size > i; i++) {
-                mOrderDetailList.add(i, new OrderDetail(Global.selectedReservation.getGuestData().get(i).getId()));
+                Global.orderDetailList.add(i, new OrderDetail(Global.selectedReservation.getGuestData().get(i).getId()));
             }
-
-        } else
-            mOrderDetailList = Global.orderDetailList;
+//        } else {
+//            mOrderDetailList = Global.orderDetailList;
+        }
 
         for (int i = 0; Size > i; i++) {
             final int idx = i;
@@ -403,11 +400,16 @@ public class OrderFragment extends BaseFragment {
                 public void onClick(View v) {
                     //주문된 음식이 있다면
                     if (mOrderedMenuItem != null) {
-                        if (v.getTag().equals(mOrderDetailList.get(idx).reserve_guest_id)) {
+                        if (v.getTag().equals(Global.orderDetailList.get(idx).reserve_guest_id)) {
+                            infoTextView.setVisibility(View.GONE);
                             ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
                             (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
-                            mOrderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
-                            mOrderDetailList.get(idx).setTotalPaidAmount(mOrderDetailList.get(idx).getPaid_total_amount());
+                            Global.orderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
+                            Global.orderDetailList.get(idx).setTotalPaidAmount(Global.orderDetailList.get(idx).getPaid_total_amount());
+
+                            // Todo
+//                            orderBrowserLinearLayout;
+
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -421,7 +423,7 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void sendShadeOrders() {
-        mShadeOrders = new ShadeOrder(mRestaurantList.get(mSelectedRestaurantTabIdx).id, Global.reserveId, mOrderDetailList);
+        mShadeOrders = new ShadeOrder(mRestaurantList.get(mSelectedRestaurantTabIdx).id, Global.reserveId, Global.orderDetailList);
         showProgress("주문을 전송하고 있습니다.");
         DataInterface.getInstance().sendShadeOrders(mContext, mShadeOrders, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
