@@ -32,6 +32,7 @@ import com.eye3.golfpay.fmb_tab.model.order.RestaurantMenu;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.view.OrderItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -400,6 +401,7 @@ public class OrderFragment extends BaseFragment {
             tv.setText(Global.selectedReservation.getGuestData().get(idx).getGuestName());
             tv.setBackgroundResource(R.drawable.shape_gray_edge);
             tv.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
                     //주문된 음식이 있다면
@@ -410,8 +412,34 @@ public class OrderFragment extends BaseFragment {
                             (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                             Global.orderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
                             Global.orderDetailList.get(idx).setTotalPaidAmount(Global.orderDetailList.get(idx).getPaid_total_amount());
-                            // Todo
-//                            orderBrowserLinearLayout;
+
+                            OrderItem orderItem = null;
+                            TextView menuNameTextView;
+                            TextView menuQuantityTextView;
+
+                            String menuName = "";
+                            String menuQuantity = "";
+
+//                            if (Global.orderDetailList.get(idx).isOrderedMenuItemExist(mOrderedMenuItem.id)) {
+//                                for (int i = 0; Global.orderDetailList.get(idx).getOrderedMenuItemList().size() > i; i++) {
+//                                    if (mOrderedMenuItem.id.equals(Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getId())) {
+//                                        orderItem = (OrderItem) orderBrowserLinearLayout.getChildAt(i);
+//                                        menuName = Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getName();
+//                                        menuQuantity = Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getQty();
+//                                    }
+//                                }
+//                            } else {
+                            orderItem = new OrderItem(getContext());
+                            orderItem.setTag(mOrderedMenuItem.id);
+                            orderBrowserLinearLayout.addView(orderItem);
+//                            }
+
+                            menuNameTextView = orderItem.findViewById(R.id.menuNameTextView);
+                            menuNameTextView.setText(menuName);
+
+                            menuQuantityTextView = orderItem.findViewById(R.id.menuQuantityTextView);
+                            menuQuantityTextView.setText(menuQuantity + "개");
+
                             setTheTotalInvoice();
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();

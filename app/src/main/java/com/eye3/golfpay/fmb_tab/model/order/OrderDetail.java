@@ -19,10 +19,8 @@ public class OrderDetail implements Serializable {
     @Expose
     private ArrayList<OrderedMenuItem> mOrderedMenuItemList = new ArrayList<>();
 
-    public OrderDetail() {
-        this.reserve_guest_id = "";
-        this.paid_total_amount = "";
-        //  this.mOrderedMenuItemList = new ArrayList<>();
+    public ArrayList<OrderedMenuItem> getOrderedMenuItemList() {
+        return mOrderedMenuItemList;
     }
 
     public OrderDetail(String reserve_guest_id) {
@@ -40,7 +38,7 @@ public class OrderDetail implements Serializable {
         }
     }
 
-    private boolean isOrderedMenuItemExist(String id) {
+    public boolean isOrderedMenuItemExist(String id) {
 
         if (mOrderedMenuItemList == null || Integer.parseInt(id) < 0) {
             //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
