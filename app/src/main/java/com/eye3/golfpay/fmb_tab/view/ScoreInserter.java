@@ -8,8 +8,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
@@ -17,19 +19,20 @@ import com.eye3.golfpay.fmb_tab.common.AppDef;
 
 import java.util.ArrayList;
 
-public class ScoreInserter extends HorizontalScrollView {
+public class ScoreInserter extends RelativeLayout {
+
     AppDef.ScoreType mScoreType;
     public ArrayList mParScoreIntegerArrayList;
     public TextView[] mParScoreTextViewArr;
     public TextView mSelectedParInserterTv;
     public int mSelectedParScoreTvIdx = -1000;
 
-   public  ArrayList mStrokesScoreIntegerArrayList;
+    public ArrayList mStrokesScoreIntegerArrayList;
     public TextView[] mStrokeScoreTextViewArr;
     public TextView mSelectedStrokeInserterTv;
-    public int mSelectedStrokeScoreTvIdx =  -1000;
+    public int mSelectedStrokeScoreTvIdx = -1000;
 
-   public  ArrayList mPuttIntegerArrayList;
+    public ArrayList mPuttIntegerArrayList;
     public TextView[] mPuttScoreTextViewArr;
     public TextView mSelectedPuttInserterTv;
     public int mSelectedPuttScoreTvIdx = -1000;
@@ -38,6 +41,7 @@ public class ScoreInserter extends HorizontalScrollView {
     ArrayList mLongestIntegerArrayList;
     LinearLayout mLinearScoreInserterContainer;
     Context mContext;
+    public Button mBtnCancel;
 
     public ScoreInserter(Context context) {
         super(context);
@@ -59,8 +63,8 @@ public class ScoreInserter extends HorizontalScrollView {
         createIntegerArrayList();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
-        mLinearScoreInserterContainer =  v.findViewById(R.id.linear_score_insert_container);
-         //createScoreInserters();
+        mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
+        mBtnCancel = v.findViewById(R.id.btn_score_cancel);
         addView(v);
     }
 
@@ -74,6 +78,7 @@ public class ScoreInserter extends HorizontalScrollView {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
+        mBtnCancel = v.findViewById(R.id.btn_score_cancel);
         createScoreInserter(type);
         addView(v);
 
@@ -98,7 +103,6 @@ public class ScoreInserter extends HorizontalScrollView {
     }
 
 
-
     public void setAllBackGroundColor(TextView[] tvArr, int color) {
         for (int i = 0; tvArr.length > i; i++) {
             tvArr[i].setBackgroundColor(color);
@@ -113,7 +117,7 @@ public class ScoreInserter extends HorizontalScrollView {
 
     public static void setAllBackGroundResourceBack(TextView[] tvArr, int id) {
         for (int i = 0; tvArr.length > i; i++) {
-            tvArr[i].getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN) ;
+            tvArr[i].getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN);
             tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
         }
     }
@@ -125,8 +129,8 @@ public class ScoreInserter extends HorizontalScrollView {
     }
 
     public void setBackGroundColorSelected(TextView[] tv, String score, int idx) {
-         if(idx <= -1000)
-             return;
+        if (idx <= -1000)
+            return;
         tv[idx].setBackgroundResource(R.drawable.score_inserter_bg);
         tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.DST_IN);
     }
@@ -200,14 +204,14 @@ public class ScoreInserter extends HorizontalScrollView {
     private void createScoreInserters() {
 
         for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
-            mParScoreTextViewArr[i]  = new TextView(mContext);
+            mParScoreTextViewArr[i] = new TextView(mContext);
 
             mParScoreTextViewArr[i].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
             mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
         }
 
         for (int i = 0; mStrokesScoreIntegerArrayList.size() > i; i++) {
-              mStrokeScoreTextViewArr[i] =  new TextView(mContext);
+            mStrokeScoreTextViewArr[i] = new TextView(mContext);
             mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
             mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
         }
@@ -215,7 +219,7 @@ public class ScoreInserter extends HorizontalScrollView {
         for (int i = 0; mPuttIntegerArrayList.size() > i; i++) {
             mPuttScoreTextViewArr[i] = new TextView(mContext);
             mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
-            mLinearScoreInserterContainer.addView( mPuttScoreTextViewArr[i]);
+            mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
         }
 
 
@@ -223,10 +227,10 @@ public class ScoreInserter extends HorizontalScrollView {
 
 
     private void createScoreInserter(String scoreType) {
-   //     LinearLayout aContainer = new LinearLayout(mContext);
+        //     LinearLayout aContainer = new LinearLayout(mContext);
         switch (scoreType) {
             case AppDef.ScoreType.Par:
-                mParScoreTextViewArr = new TextView[ mParScoreIntegerArrayList.size()];
+                mParScoreTextViewArr = new TextView[mParScoreIntegerArrayList.size()];
                 for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
                     final int idx = i;
                     mParScoreTextViewArr[idx] = new TextView(mContext);
@@ -244,14 +248,22 @@ public class ScoreInserter extends HorizontalScrollView {
                             mSelectedParScoreTvIdx = idx;
                         }
                     });
-                    mLinearScoreInserterContainer.addView( mParScoreTextViewArr[i]);
+                    mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
+                    mBtnCancel.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setAllBackGroundResourceBack(mParScoreTextViewArr, R.drawable.score_inserter_bg);
+                            mSelectedParInserterTv = null;
+                            mSelectedParScoreTvIdx = -1;
+                        }
+                    });
                 }
                 break;
             case AppDef.ScoreType.Tar:
-                mStrokeScoreTextViewArr = new TextView[ mStrokesScoreIntegerArrayList.size()];
+                mStrokeScoreTextViewArr = new TextView[mStrokesScoreIntegerArrayList.size()];
                 for (int i = 0; mStrokesScoreIntegerArrayList.size() > i; i++) {
                     final int idx = i;
-                    mStrokeScoreTextViewArr[i] = new  TextView(mContext);
+                    mStrokeScoreTextViewArr[i] = new TextView(mContext);
                     mStrokeScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
                     mStrokeScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
                     mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
@@ -266,14 +278,22 @@ public class ScoreInserter extends HorizontalScrollView {
                             mSelectedStrokeScoreTvIdx = idx;
                         }
                     });
-                    mLinearScoreInserterContainer.addView(   mStrokeScoreTextViewArr[i]);
+                    mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
+                    mBtnCancel.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setAllBackGroundResourceBack(mStrokeScoreTextViewArr, R.drawable.score_inserter_bg);
+                            mSelectedStrokeInserterTv = null;
+                            mSelectedStrokeScoreTvIdx = -1;
+                        }
+                    });
                 }
                 break;
             case AppDef.ScoreType.Putt:
-                mPuttScoreTextViewArr = new TextView[ mPuttIntegerArrayList.size()];
+                mPuttScoreTextViewArr = new TextView[mPuttIntegerArrayList.size()];
                 for (int i = 0; mPuttIntegerArrayList.size() > i; i++) {
                     final int idx = i;
-                    mPuttScoreTextViewArr[i] = new  TextView(mContext);
+                    mPuttScoreTextViewArr[i] = new TextView(mContext);
                     mPuttScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
                     mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
                     mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
@@ -289,6 +309,14 @@ public class ScoreInserter extends HorizontalScrollView {
                         }
                     });
                     mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
+                    mBtnCancel.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            setAllBackGroundResourceBack(mPuttScoreTextViewArr, R.drawable.score_inserter_bg);
+                            mSelectedPuttInserterTv = null;
+                            mSelectedPuttScoreTvIdx = -1;
+                        }
+                    });
                 }
                 break;
             default:

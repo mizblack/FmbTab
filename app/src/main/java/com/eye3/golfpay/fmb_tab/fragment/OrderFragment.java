@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class OrderFragment extends BaseFragment {
     private OrderedMenuItem mOrderedMenuItem = null;
     // 최상위 카테고리 이름
     private TextView mTVCateName, infoTextView;
+    private TextView mTotalPriceTextView;
+    private Button mResetButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class OrderFragment extends BaseFragment {
         mTVCateName = v.findViewById(R.id.tv_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
         orderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
+        mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
         mFoodImage = v.findViewById(R.id.img_food);
@@ -129,7 +133,7 @@ public class OrderFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyTextView);
-        Button resetBtn = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
+        mResetButton = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
 
         orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +146,7 @@ public class OrderFragment extends BaseFragment {
             }
         });
 
-        resetBtn.setOnClickListener(new View.OnClickListener() {
+        mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 init();
@@ -153,7 +157,7 @@ public class OrderFragment extends BaseFragment {
     private void init() {
         mOrderedMenuItem = null;
         mShadeOrders = null;
-        Global.orderDetailList.clear();
+//        Global.orderDetailList.clear();
 
         refreshCategory();
         mCateAdapter.mMenuAdapter.notifyDataSetChanged();
@@ -406,10 +410,9 @@ public class OrderFragment extends BaseFragment {
                             (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                             Global.orderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
                             Global.orderDetailList.get(idx).setTotalPaidAmount(Global.orderDetailList.get(idx).getPaid_total_amount());
-
                             // Todo
 //                            orderBrowserLinearLayout;
-
+                            setTheTotalInvoice();
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();
                         }
@@ -420,6 +423,14 @@ public class OrderFragment extends BaseFragment {
             });
             container.addView(tv);
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setTheTotalInvoice() {
+        int theTotal = 0;
+        for (int i = 0; Global.orderDetailList.size() > i; i++)
+            theTotal += Integer.parseInt(Global.orderDetailList.get(i).getPaid_total_amount());
+        mTotalPriceTextView.setText(theTotal + "원");
     }
 
     private void sendShadeOrders() {
@@ -447,9 +458,4 @@ public class OrderFragment extends BaseFragment {
             }
         });
     }
-
 }
-
-
-
-

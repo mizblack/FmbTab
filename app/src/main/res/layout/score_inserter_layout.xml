@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:scrollbars="none">
+    android:gravity="center_vertical"
+    >
 
-    <LinearLayout
-        android:id="@+id/linear_score_insert_container"
-        android:layout_width="match_parent"
-        android:layout_height="101dp"
+    <HorizontalScrollView
+        android:id="@+id/linear_score_insert_sv"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal"
+        android:scrollbars="none">
 
-</HorizontalScrollView>
+        <LinearLayout
+            android:id="@+id/linear_score_insert_container"
+            android:layout_width="match_parent"
+            android:layout_height="101dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/btn_score_cancel"
+        android:layout_toRightOf="@id/linear_score_insert_sv"
+        android:layout_width="53dp"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="X"
+        android:textSize="30dp"
+        android:textColor="@color/white"
+        android:background="@color/gray50"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        />
+</RelativeLayout>
+
