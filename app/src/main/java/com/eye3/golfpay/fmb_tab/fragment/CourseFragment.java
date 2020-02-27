@@ -36,7 +36,7 @@ import static android.content.Context.LOCATION_SERVICE;
 public class CourseFragment extends BaseFragment {
     protected String TAG = getClass().getSimpleName();
 
-    private ViewPager mMapPager;
+    public ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
     private CoursePagerAdapter mCoursePagerAdapter;
     private TextView mTvCourseName, mTvHoleNo, mTvHolePar, mTvHereToHole;
@@ -157,12 +157,13 @@ public class CourseFragment extends BaseFragment {
             View view;
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.map_pager_page, container, false);
+//            Global.viewPagerPosition = position;
 
             mIvMap = view.findViewById(R.id.iv_map);
 
-            if (mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null)
-                mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.valueOf(mHoleList.get(position).gps_lat), Double.valueOf(mHoleList.get(position).gps_lon))));
-
+            if (mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
+                mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))));
+            }
 
             if (mHoleList.get(position).img_2_file_url != null) {
                 Glide.with(mContext)

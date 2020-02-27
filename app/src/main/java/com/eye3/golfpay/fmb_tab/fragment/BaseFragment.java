@@ -256,16 +256,16 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-//                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                // TODO: The system bars are visible. Make any desired
-                // adjustments to your UI, such as showing the action bar or
-                // other navigational controls.
-//                    systemUIHide();
-//                } else {
-                // TODO: The system bars are NOT visible. Make any desired
-                // adjustments to your UI, such as hiding the action bar or
-                // other navigational controls.
-//                }
+                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                    // TODO: The system bars are visible. Make any desired
+                    // adjustments to your UI, such as showing the action bar or
+                    // other navigational controls.
+                    systemUIHide();
+                } else {
+                    // TODO: The system bars are NOT visible. Make any desired
+                    // adjustments to your UI, such as hiding the action bar or
+                    // other navigational controls.
+                }
             }
         });
     }

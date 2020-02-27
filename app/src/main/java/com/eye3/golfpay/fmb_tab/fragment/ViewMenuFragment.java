@@ -244,7 +244,9 @@ public class ViewMenuFragment extends BaseFragment {
         getView().findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new CourseFragment(), null);
+                CourseFragment courseFragment = new CourseFragment();
+                GoNativeScreen(courseFragment, null);
+                Global.courseFragment = courseFragment;
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });

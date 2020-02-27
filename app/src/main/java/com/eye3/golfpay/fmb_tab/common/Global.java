@@ -1,9 +1,11 @@
 package com.eye3.golfpay.fmb_tab.common;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
@@ -77,7 +79,10 @@ public class Global {
     public static ArrayList<Player> playerList = new ArrayList<>();
     public static Course CurrentCourse;
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
-//    public static Location CurrentLocation ;
+    //    public static Location CurrentLocation ;
+    @SuppressLint("StaticFieldLeak")
+    public static CourseFragment courseFragment;
+    public static int viewPagerPosition = 0;
 
 
     public static boolean wifi = false;
