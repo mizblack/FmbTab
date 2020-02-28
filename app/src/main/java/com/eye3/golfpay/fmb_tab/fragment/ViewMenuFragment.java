@@ -352,7 +352,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
         showProgress("티업시간을 받아오는 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(TeeUpTime response) {
@@ -601,7 +601,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void getReserveGuestList(int reserveId) {
         showProgress("플레이어의 정보를 받아오는 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
             @Override
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {

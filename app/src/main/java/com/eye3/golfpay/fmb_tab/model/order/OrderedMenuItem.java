@@ -20,14 +20,14 @@ public class OrderedMenuItem implements Serializable {
     @Expose
     private String total;
 
-    public String name;
+ //   public String name;
 
     public OrderedMenuItem(String id, String qty, String price, String name) {
         this.id = id;
         this.qty = qty;
         this.price = price;
         setTotal();
-        this.name = name;
+  //      this.name = name;
     }
 
     void setTotal() {

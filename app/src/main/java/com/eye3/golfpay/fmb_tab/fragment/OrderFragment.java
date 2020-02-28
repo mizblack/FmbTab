@@ -52,8 +52,9 @@ public class OrderFragment extends BaseFragment {
     private OrderedMenuItem mOrderedMenuItem = null;
     // 최상위 카테고리 이름
     private TextView mTVCateName;
-    private TextView mTotalPriceTextView;
+    private TextView mTotalPriceTextView, mTvTheRestaurant;
     private Button mResetButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,7 @@ public class OrderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_restaurant_order, container, false);
         mTabLinear = v.findViewById(R.id.tabLinearLayout);
+        mTvTheRestaurant = v.findViewById(R.id.tvTheRestaurant);
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
         mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
@@ -85,21 +87,36 @@ public class OrderFragment extends BaseFragment {
 
     //최상위 레스토랑 선택바
     private void createTabBar(final TextView[] tvRestTabBar, ArrayList<Restaurant> mRestaurantList) {
+        boolean isTheRestaurant = false;
         for (int i = 0; mRestaurantList.size() > i; i++) {
-            final int idx = i;
-            tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
-            tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            tvRestTabBar[i].setText(mRestaurantList.get(i).name);
-            tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mSelectedRestaurantTabIdx = idx;
-                    selectRestaurant(idx);
+            if (mRestaurantList.get(i).store_type.equals("대식당") && ! isTheRestaurant) {
+                mTvTheRestaurant.setText((mRestaurantList.get(i).name));
+                mTvTheRestaurant.setTag(mRestaurantList.get(i));
+                mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSelectedRestaurantTabIdx = -1;
+                        selectRestaurant(-1);
+                    }
+                });
+                isTheRestaurant = true;
+                mRestaurantList.remove(i);
+                 i--;
+            }else {
+                final int idx = i;
+                tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
+                tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                tvRestTabBar[i].setText(mRestaurantList.get(i).name);
+                tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSelectedRestaurantTabIdx = idx;
+                        selectRestaurant(idx);
 
-                }
-            });
-            mTabLinear.addView(tvRestTabBar[i]);
-
+                    }
+                });
+                mTabLinear.addView(tvRestTabBar[i]);
+            }
         }
         initSelectedRestaurantTabColor();
     }
@@ -110,16 +127,27 @@ public class OrderFragment extends BaseFragment {
 
     //레스토랑바 선택시 보여주는 함수
     private void selectRestaurant(int selectedTabIdx) {
-        for (TextView textView : mRestaurantTabBarArr) {
+        mTvTheRestaurant.setTextColor(Color.GRAY);
+        for (int i =0; mRestaurantTabBarArr.length-1 > i ;i++) {
+            TextView textView = mRestaurantTabBarArr[i];
             textView.setTextColor(Color.GRAY);
 
         }
-        mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
-        mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
+        if (selectedTabIdx < 0) {
+            mTvTheRestaurant.setTextColor(Color.BLACK);
+            mTvTheRestaurant.setVisibility(View.VISIBLE);
+        } else {
+            mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
+            mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
+        }
         setSelectedRestaurant(selectedTabIdx);
     }
 
     private void setSelectedRestaurant(int mSelectedRestaurantIdx) {
+        if (mSelectedRestaurantIdx == -1) {
+            initRecyclerView(mRecyclerCategory, mCateAdapter, ((Restaurant) mTvTheRestaurant.getTag()).categoryList);
+            return;
+        }
         initRecyclerView(mRecyclerCategory, mCateAdapter, mRestaurantList.get(mSelectedRestaurantIdx).categoryList);
     }
 
@@ -161,6 +189,7 @@ public class OrderFragment extends BaseFragment {
         refreshCategory();
         mCateAdapter.mMenuAdapter.notifyDataSetChanged();
         resetGuestList();
+        mFoodImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_noimage, getActivity().getTheme()));
     }
 
     private void resetGuestList() {
@@ -189,12 +218,12 @@ public class OrderFragment extends BaseFragment {
 
     private void getRestaurantMenu() {
         showProgress("식당 메뉴 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
             @Override
             public void onSuccess(ResponseData<Restaurant> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    response.getData();
+
                     mRestaurantList = (ArrayList<Restaurant>) response.getList();
                     NUM_OF_RESTAURANT = mRestaurantList.size();
                     mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
@@ -343,10 +372,6 @@ public class OrderFragment extends BaseFragment {
                 });
             }
 
-//            public void setAllItemRefresh() {
-//                setAllRestaurantMenuUnSelected();
-//                notifyDataSetChanged();
-//            }
 
             @Override
             public int getItemCount() {
@@ -423,9 +448,9 @@ public class OrderFragment extends BaseFragment {
         }
     }
 
-    private void setTheTotalInvoice(){
+    private void setTheTotalInvoice() {
         int theTotal = 0;
-        for(int i=0; mOrderDetailList.size() > i ;i++)
+        for (int i = 0; mOrderDetailList.size() > i; i++)
             theTotal += Integer.valueOf(mOrderDetailList.get(i).getPaid_total_amount());
         mTotalPriceTextView.setText(String.valueOf(theTotal) + "원");
     }
@@ -433,7 +458,7 @@ public class OrderFragment extends BaseFragment {
     private void sendShadeOrders() {
         mShadeOrders = new ShadeOrder(mRestaurantList.get(mSelectedRestaurantTabIdx).id, Global.reserveId, mOrderDetailList);
         showProgress("주문을 전송하고 있습니다.");
-        DataInterface.getInstance().sendShadeOrders(mContext, mShadeOrders, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).sendShadeOrders(mContext, mShadeOrders, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if (response.getResultCode().equals("ok")) {
