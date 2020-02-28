@@ -1,6 +1,5 @@
 package com.eye3.golfpay.fmb_tab.service;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -8,43 +7,28 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PixelFormat;
 import android.location.GnssStatus;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.net.DataInterface;
-import com.eye3.golfpay.fmb_tab.util.Logger;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class CartLocationService extends Service {
     private static final String TAG = "CartLocationService";
@@ -53,23 +37,22 @@ public class CartLocationService extends Service {
     private static final float LOCATION_DISTANCE = 0.0f;
     private static final int NOTIFICATION_ID = 1;
 
-    private WindowManager.LayoutParams params;
-    private WindowManager mManager;
+//    private WindowManager.LayoutParams params;
+//    private WindowManager mManager;
 
-    private static final int ALWAYS_ON_TOP_SERVICE_ID = 1;
+//    private static final int ALWAYS_ON_TOP_SERVICE_ID = 1;
 
     private Timer timer;
-    private long allocationIdx = -1;
+//    private long allocationIdx = -1;
 
     private int satelliteCount = 0;
     private float[] cn0DbHz;
 
-    private Handler mHanlder ;
-
-
-    public void setHandler(Handler handler){
-        this.mHanlder = handler;
-    }
+//    private Handler mHandler;
+//
+//    public void setHandler(Handler handler) {
+//        this.mHandler = handler;
+//    }
 
     private Notification createNotification(Context context, RemoteViews remoteViews) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Util.getNotiChId(this, Global.NotiAlarmChannelID.CHANNEL_LOC))
@@ -86,6 +69,7 @@ public class CartLocationService extends Service {
 
     //   @SuppressLint("MissingPermission")
     //   @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint("ObsoleteSdkInt")
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
@@ -182,9 +166,9 @@ public class CartLocationService extends Service {
                                     }
                                 }
 
-                                if(tmpCn0DbHz.size() > 0) {
+                                if (tmpCn0DbHz.size() > 0) {
                                     cn0DbHz = new float[tmpCn0DbHz.size()];
-                                    for(int i=0; i<cn0DbHz.length; i++) {
+                                    for (int i = 0; i < cn0DbHz.length; i++) {
                                         cn0DbHz[i] = tmpCn0DbHz.get(i);
                                     }
                                 } else {
@@ -217,31 +201,22 @@ public class CartLocationService extends Service {
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
-
-
     }
 
-
-
-
-
     private String showLogOfLocationInfo(Location location) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("onLocationChanged: ").append(location.toString());
-        stringBuilder.append("\n각도 : ").append(location.getBearing());
-        stringBuilder.append("\n위성개수 : ").append(satelliteCount);
-        stringBuilder.append("\n신호세기 : ").append(Arrays.toString(cn0DbHz));
-        stringBuilder.append("\n속도 : ").append(location.getSpeed());
-        stringBuilder.append("\n정확도 : ").append(location.getAccuracy());
-        stringBuilder.append("\n제공프로바이더 : ").append(location.getProvider());
-
-        return stringBuilder.toString();
+        return "onLocationChanged: " + location.toString() +
+                "\n각도 : " + location.getBearing() +
+                "\n위성개수 : " + satelliteCount +
+                "\n신호세기 : " + Arrays.toString(cn0DbHz) +
+                "\n속도 : " + location.getSpeed() +
+                "\n정확도 : " + location.getAccuracy() +
+                "\n제공프로바이더 : " + location.getProvider();
     }
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
 
-        public LocationListener(String provider) {
+        LocationListener(String provider) {
             Log.e(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
 
@@ -253,9 +228,9 @@ public class CartLocationService extends Service {
             Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
             mLastLocation.set(location);
-       //     Global.CurrentLocation = mLastLocation;
-
-
+            if (Global.courseFragment != null && Global.courseFragment.isVisible()) {
+                Global.courseFragment.mMapPager.setCurrentItem(Global.viewPagerPosition);
+            }
         }
 
         @Override
@@ -274,12 +249,10 @@ public class CartLocationService extends Service {
         }
     }
 
-
     LocationListener[] mLocationListeners = new LocationListener[]{
             new LocationListener(LocationManager.GPS_PROVIDER),
             new LocationListener(LocationManager.NETWORK_PROVIDER)
     };
-
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -298,12 +271,12 @@ public class CartLocationService extends Service {
         Log.e(TAG, "onDestroy");
         super.onDestroy();
         if (mLocationManager != null) {
-            for (int i = 0; i < mLocationListeners.length; i++) {
+            for (LocationListener mLocationListener : mLocationListeners) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
-                    mLocationManager.removeUpdates(mLocationListeners[i]);
+                    mLocationManager.removeUpdates(mLocationListener);
                 } catch (Exception ex) {
                     Log.i(TAG, "fail to remove location listener, ignore", ex);
                 }
@@ -322,8 +295,5 @@ public class CartLocationService extends Service {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
     }
-
-
-
 
 }

@@ -67,7 +67,7 @@
 
             <ImageView
                 android:id="@+id/img_food"
-                android:layout_width="480dp"
+                android:layout_width="500dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_noimage"
                 tools:ignore="ContentDescription" />

@@ -70,12 +70,12 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final ArrayList<Player> playerList,  int tabIdx) {
+    public void init(final Context context, final ArrayList<Player> playerList, int tabIdx) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
         this.mPlayerList = playerList;
-         //스코어뷰를 재활용하므로 반드시 이전 뷰들을 모두 제거해야 현생성되는 뷰가 보여진다.
+        //스코어뷰를 재활용하므로 반드시 이전 뷰들을 모두 제거해야 현생성되는 뷰가 보여진다.
         this.removeAllViewsInLayout();
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -172,6 +172,7 @@ public class TabCourseLinear extends LinearLayout {
         ArrayList<Player> playerList;
         Course mCurrentCourse;
         Context mContext;
+
         public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
             this.playerList = playerList;
             this.mCurrentCourse = mCourse;
@@ -252,6 +253,7 @@ public class TabCourseLinear extends LinearLayout {
                                 default:
 
                             }
+                            Global.viewPagerPosition = mHoleScoreLayoutIdx;
                             sDialog = new ScoreDialog(mContext, "타이틀", "", "취소", "확인", null, null, playerList, playerList.get(0).playingCourse.get(mTabIdx), mTabIdx, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
