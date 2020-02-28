@@ -22,6 +22,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
@@ -30,6 +31,7 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.GPSUtil;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -61,7 +63,22 @@ public class CourseFragment extends BaseFragment {
         mTvCourseName = v.findViewById(R.id.courseName);
         mTvHoleNo = v.findViewById(R.id.holeNo);
         mTvHolePar = v.findViewById(R.id.holePar);
-        //초기화
+        View menuLinearLayout = v.findViewById(R.id.menuLinearLayout);
+        View closeLinearLayout = v.findViewById(R.id.closeLinearLayout);
+
+        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+            }
+        });
+
+        menuLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).openDrawerLayout();
+            }
+        });
 
         (mParentActivity).hideMainBottomBar();
         return v;

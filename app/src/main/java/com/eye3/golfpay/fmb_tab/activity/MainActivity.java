@@ -25,9 +25,9 @@ import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.Security;
-import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -43,10 +43,8 @@ import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    final int CAMERA_REQUEST_CODE = 1;
     NavigationView navigationView;
-    DrawerLayout drawer_layout;
-    SettingsCustomDialog settingsCustomDialog;
+    public DrawerLayout drawer_layout;
     TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
     ImageView markView, cancelView;
     LinearLayout ll_login;
@@ -59,8 +57,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_main);
         init();
         startLocationService();
-
-
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -79,7 +75,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-
     private void login(String id, String pwd) {
         showProgress("로그인 중입니다....");
 
@@ -89,7 +84,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 hideProgress();
                 systemUIHide();
 
-                if (response.getRetCode().equals("ok")) {
+                if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
                     changeDrawerViewToMenuView();
                 }
@@ -110,13 +105,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
     }
 
+    public void openDrawerLayout() {
+        drawer_layout.openDrawer(GravityCompat.END);
+    }
+
+    private void closeDrawerLayout() {
+        drawer_layout.closeDrawer(GravityCompat.END);
+    }
+
     @SuppressLint("CutPasteId")
     private void init() {
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer_layout.openDrawer(GravityCompat.END);
+        drawer_layout = findViewById(R.id.drawer_layout);
+        openDrawerLayout();
 
         startTextView = findViewById(R.id.startTextView);
         nameEditText = findViewById(R.id.nameEditText);
@@ -133,7 +136,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         cancelView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer_layout.closeDrawer(GravityCompat.END);
+                closeDrawerLayout();
 
             }
         });
@@ -144,7 +147,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 CourseFragment courseFragment = new CourseFragment();
                 GoNativeScreen(courseFragment, null);
                 Global.courseFragment = courseFragment;
-                drawer_layout.closeDrawer(GravityCompat.END);
+                closeDrawerLayout();
             }
         });
 
@@ -153,7 +156,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
-                drawer_layout.closeDrawer(GravityCompat.END);
+                closeDrawerLayout();
             }
         });
 
@@ -162,7 +165,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ControlFragment(), null);
-                drawer_layout.closeDrawer(GravityCompat.END);
+                closeDrawerLayout();
             }
         });
 
@@ -170,7 +173,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         markView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer_layout.openDrawer(GravityCompat.END);
+                openDrawerLayout();
             }
         });
 
@@ -190,9 +193,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     e.printStackTrace();
                 }
 
-                //changeDrawerViewToMenuView();
-                //  drawer_layout.closeDrawer(GravityCompat.END);
-
                 closeKeyboard(findViewById(R.id.nameEditText));
                 closeKeyboard(findViewById(R.id.phoneNumberEditText));
 
@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new QRScanFragment(), null);
-                drawer_layout.closeDrawer(GravityCompat.END);
+                closeDrawerLayout();
             }
         });
 
@@ -231,8 +231,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     }
 
-
-    //**************************************************
     public void changeDrawerViewToMenuView() {
 
         ll_login.setVisibility(View.GONE);
@@ -261,56 +259,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-//        if (id == R.id.takeover_test) {
-//            // Handle the camera action
-//            //  GoNativeScreenAdd(new FrDeviceSearch(), null);
-//        } else if (id == R.id.nav_device_search) {
-//            //           GoNativeScreenAdd(new FrDeviceSearch(), null);
-////            Intent intent = new Intent(this, MarkerMapActivity.class);
-////            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////            startActivity(intent);
-//        } else if (id == R.id.failover_inspection) {
-//            ;
-//        } else if (id == R.id.manual) {
-//
-//        }
-
-        drawer_layout.closeDrawer(GravityCompat.END);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        closeDrawerLayout();
         return true;
     }
 
-    /**
-     * .
-     * 메뉴 열기
-     */
+    // 메뉴 열기
     public void OpenMenuMap() {
         if (mBaseFragment != null) {
             UIThread.executeInUIThread(new Runnable() {
                 @Override
                 public void run() {
-                    drawer_layout.openDrawer(GravityCompat.END);
+                    openDrawerLayout();
                 }
             });
-        } else {
-            //   ShowToast("메뉴 구성 중입니다. 잠시만 기다려 주세요.");
-            return;
-            //requestMenuList();
         }
     }
 
-    /**
-     * 메뉴 닫기
-     *
-     * @return true: 닫기 성공, false: 실패 (or 무시)
-     */
-    public boolean HideMenuMap() {
+    // 메뉴 닫기
+    public void HideMenuMap() {
         if (mBaseFragment != null) {
             UIThread.executeInUIThread(new Runnable() {
                 @Override
@@ -318,9 +286,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     drawer_layout.closeDrawer(GravityCompat.START);
                 }
             });
-            return true;
         }
-        return false;
     }
 
     @Override
@@ -328,7 +294,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
-
             super.onBackPressed();
         }
     }
