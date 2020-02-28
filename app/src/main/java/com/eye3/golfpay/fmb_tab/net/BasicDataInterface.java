@@ -21,7 +21,7 @@ public class BasicDataInterface {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);  //상용으로 올릴때는 false로
         Retrofit retrofit;
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-        retrofit = new Retrofit.Builder().baseUrl(Global.HOST_ADDRESS_DEV).addConverterFactory(GsonConverterFactory.create()).client(setHeader()).build();
+        retrofit = new Retrofit.Builder().baseUrl(Global.HOST_ADDRESS_AWS).addConverterFactory(GsonConverterFactory.create()).client(setHeader()).build();
 
         service = retrofit.create(HttpService.class);
     }

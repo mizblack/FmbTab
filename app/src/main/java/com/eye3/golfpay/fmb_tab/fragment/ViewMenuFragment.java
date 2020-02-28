@@ -361,7 +361,7 @@ public class ViewMenuFragment extends BaseFragment {
                 hideProgress();
                 systemUIHide();
 
-                if (response.getRetCode().equals("ok")) {
+                if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView = Objects.requireNonNull(getView()).findViewById(R.id.caddieNameTextView);

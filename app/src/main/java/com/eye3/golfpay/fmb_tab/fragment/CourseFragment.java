@@ -22,6 +22,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
@@ -30,6 +31,7 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.GPSUtil;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -38,8 +40,9 @@ public class CourseFragment extends BaseFragment {
 
     public ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
-    private CoursePagerAdapter mCoursePagerAdapter;
-    private TextView mTvCourseName, mTvHoleNo, mTvHolePar, mTvHereToHole;
+    public CoursePagerAdapter mCoursePagerAdapter;
+    private TextView mTvCourseName, mTvHoleNo, mTvHolePar;
+    public TextView mTvHereToHole;
 
     public CourseFragment() {
     }
@@ -60,7 +63,22 @@ public class CourseFragment extends BaseFragment {
         mTvCourseName = v.findViewById(R.id.courseName);
         mTvHoleNo = v.findViewById(R.id.holeNo);
         mTvHolePar = v.findViewById(R.id.holePar);
-        //초기화
+        View menuLinearLayout = v.findViewById(R.id.menuLinearLayout);
+        View closeLinearLayout = v.findViewById(R.id.closeLinearLayout);
+
+        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+            }
+        });
+
+        menuLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).openDrawerLayout();
+            }
+        });
 
         (mParentActivity).hideMainBottomBar();
         return v;
@@ -134,11 +152,11 @@ public class CourseFragment extends BaseFragment {
     }
 
 
-    class CoursePagerAdapter extends PagerAdapter implements LocationListener {
+    public class CoursePagerAdapter extends PagerAdapter implements LocationListener {
         Context mContext;
-        ArrayList<Hole> mHoleList;
+        public ArrayList<Hole> mHoleList;
         ImageView mIvMap;
-        Location mLocation;
+        public Location mLocation;
 
         @SuppressLint("MissingPermission")
         CoursePagerAdapter(Context context, ArrayList<Hole> mHoleList) {
@@ -161,13 +179,13 @@ public class CourseFragment extends BaseFragment {
 
             mIvMap = view.findViewById(R.id.iv_map);
 
-            if (mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
+            if (mLocation != null && mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
                 mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))));
             }
 
             if (mHoleList.get(position).img_2_file_url != null) {
                 Glide.with(mContext)
-                        .load("http://10.50.21.62:8000/" + mHoleList.get(position).img_2_file_url)
+                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_2_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
             } else {
