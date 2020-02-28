@@ -95,7 +95,7 @@ public class CaddieFragment extends BaseFragment {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_AWS + imageUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
                     connection.connect();
@@ -129,7 +129,7 @@ public class CaddieFragment extends BaseFragment {
             @Override
             public void run() {
                 try {
-                    URL url = new URL(Global.HOST_BASE_ADDRESS_DEV + imageUrl);
+                    URL url = new URL(Global.HOST_BASE_ADDRESS_AWS + imageUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
                     connection.connect();
@@ -222,7 +222,7 @@ public class CaddieFragment extends BaseFragment {
             clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.getClubImage().getName(), requestFile2);
         }
 
-        DataInterface.getInstance(Global.HOST_ADDRESS_DEV).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
             @Override
             public void onSuccess(GuestInfoResponse response) {
                 hideProgress();

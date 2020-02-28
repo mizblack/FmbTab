@@ -122,6 +122,187 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tourament"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- / -"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Regular"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- / -"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ladies"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- / -"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Championship"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- / -"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Front"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- / -"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/closeLinearLayout"
             android:layout_width="70dp"
             android:layout_height="match_parent"
@@ -138,12 +319,11 @@
 
     </LinearLayout>
 
-  <androidx.viewpager.widget.ViewPager
-      android:id="@+id/map_pager"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_below="@id/map_info_title"
-      />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/map_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/map_info_title" />
 
     <LinearLayout
         android:layout_width="match_parent"

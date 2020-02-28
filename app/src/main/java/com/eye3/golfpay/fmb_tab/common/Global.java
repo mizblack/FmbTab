@@ -51,7 +51,9 @@ public class Global {
     /**
      * 접속 호스트 주소. 운영
      */
-    public static final String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
+    public static final String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
+
+    public static final String HOST_ADDRESS_AWS = HOST_BASE_ADDRESS_AWS + "api/v1/";
     /**
      * 접속 호스트 주소. 개발계
      */

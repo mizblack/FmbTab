@@ -23,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.util.GPSUtil;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
 import java.util.ArrayList;
@@ -230,6 +231,13 @@ public class CartLocationService extends Service {
             mLastLocation.set(location);
             if (Global.courseFragment != null && Global.courseFragment.isVisible()) {
                 Global.courseFragment.mMapPager.setCurrentItem(Global.viewPagerPosition);
+                if (Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat != null && Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon != null) {
+                    Global.courseFragment.mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(
+                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
+                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
+                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
+                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon))));
+                }
             }
         }
 

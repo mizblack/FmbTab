@@ -38,8 +38,9 @@ public class CourseFragment extends BaseFragment {
 
     public ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
-    private CoursePagerAdapter mCoursePagerAdapter;
-    private TextView mTvCourseName, mTvHoleNo, mTvHolePar, mTvHereToHole;
+    public CoursePagerAdapter mCoursePagerAdapter;
+    private TextView mTvCourseName, mTvHoleNo, mTvHolePar;
+    public TextView mTvHereToHole;
 
     public CourseFragment() {
     }
@@ -134,11 +135,11 @@ public class CourseFragment extends BaseFragment {
     }
 
 
-    class CoursePagerAdapter extends PagerAdapter implements LocationListener {
+    public class CoursePagerAdapter extends PagerAdapter implements LocationListener {
         Context mContext;
-        ArrayList<Hole> mHoleList;
+        public ArrayList<Hole> mHoleList;
         ImageView mIvMap;
-        Location mLocation;
+        public Location mLocation;
 
         @SuppressLint("MissingPermission")
         CoursePagerAdapter(Context context, ArrayList<Hole> mHoleList) {
@@ -167,7 +168,7 @@ public class CourseFragment extends BaseFragment {
 
             if (mHoleList.get(position).img_2_file_url != null) {
                 Glide.with(mContext)
-                        .load("http://10.50.21.62:8000/" + mHoleList.get(position).img_2_file_url)
+                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_2_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
             } else {
