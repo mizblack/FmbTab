@@ -162,7 +162,7 @@ public class CourseFragment extends BaseFragment {
 
             mIvMap = view.findViewById(R.id.iv_map);
 
-            if (mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
+            if (mLocation != null && mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
                 mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))));
             }
 

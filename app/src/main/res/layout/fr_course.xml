@@ -124,13 +124,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -160,13 +163,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_white_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -196,13 +202,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_red_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -232,13 +241,16 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_blue_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -268,14 +280,17 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_red_circle" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -323,151 +338,184 @@
         android:id="@+id/map_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/map_info_title" />
+        android:layout_below="@id/map_info_title"
+        android:background="@color/lightGray" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:orientation="horizontal"
         tools:ignore="DisableBaselineAlignment">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="280dp"
-                android:orientation="horizontal">
+                android:text="Hole cup position"
+                android:textColor="@color/gray"
+                android:textSize="17dp"
+                tools:ignore="HardcodedText,SpUsage" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="36dp"
-                    android:text="Here to Hole"
-                    android:textColor="@color/gray"
-                    android:textSize="17dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/aliceBlue"
+                android:src="@drawable/ic_noimage"
+                tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="135dp"
-                    android:text="Point to Point"
-                    android:textColor="@color/gray"
-                    android:textSize="17dp"
-                    tools:ignore="HardcodedText,SpUsage" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="150dp"
-                    android:text="Point to Hole"
-                    android:textColor="@color/gray"
-                    android:textSize="17dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Here to Hole"
+                android:textColor="@color/gray"
+                android:textSize="17dp"
+                tools:ignore="HardcodedText,SpUsage" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/here_to_hole"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
+                    android:layout_height="wrap_content"
                     android:text="-M"
                     android:textColor="@color/irisBlue"
-                    android:textSize="40dp"
+                    android:textSize="56dp"
                     tools:ignore="HardcodedText,SpUsage" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="/"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/aliceBlue"
+                    android:src="@drawable/ic_noimage"
+                    tools:ignore="ContentDescription" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="-Y"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="36dp"
-                    android:text="-M"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-카트"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="/"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/shape_white_circle"
+                        android:src="@drawable/ic_noimage"
+                        tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="-Y"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="30dp"
-                    android:text="-M"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="/"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="-Y"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                </LinearLayout>
 
                 <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_white_circle" />
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/shape_white_circle" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-카트"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/shape_white_circle"
+                        android:src="@drawable/ic_noimage"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_red_circle" />
+
+                <View
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/shape_red_circle" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-카트"
+                        android:textColor="@color/mandy"
+                        android:textSize="18dp"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/shape_red_circle"
+                        android:src="@drawable/ic_noimage"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/menuLinearLayout"
