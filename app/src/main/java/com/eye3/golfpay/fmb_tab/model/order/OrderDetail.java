@@ -11,6 +11,7 @@ public class OrderDetail implements Serializable {
     @SerializedName("reserve_guest_id")
     @Expose
     public String reserve_guest_id;
+
     @SerializedName("paid_total_amount")
     @Expose
     private String paid_total_amount;
