@@ -34,7 +34,8 @@ import com.eye3.golfpay.fmb_tab.model.order.RestaurantMenu;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.view.OrderItemView;
+import com.eye3.golfpay.fmb_tab.view.NameOrderView;
+import com.eye3.golfpay.fmb_tab.view.OrderItemInvoiceView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -51,7 +52,7 @@ public class OrderFragment extends BaseFragment {
     private ImageView mFoodImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mTabLinear, mGuestContainer, orderBrowserLinearLayout;
+    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout;
     private ShadeOrder mShadeOrders;
     private OrderedMenuItem mOrderedMenuItem = null;
     // 최상위 카테고리 이름
@@ -81,7 +82,7 @@ public class OrderFragment extends BaseFragment {
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
-        orderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
+        mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
         mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
@@ -98,6 +99,7 @@ public class OrderFragment extends BaseFragment {
 
     //최상위 레스토랑 선택바
     private void createTabBar(final TextView[] tvRestTabBar, ArrayList<Restaurant> mRestaurantList) {
+
         boolean isTheRestaurant = false;
         for (int i = 0; mRestaurantList.size() > i; i++) {
             if (mRestaurantList.get(i).store_type.equals("대식당") && !isTheRestaurant) {
@@ -138,6 +140,10 @@ public class OrderFragment extends BaseFragment {
 
     //레스토랑바 선택시 보여주는 함수
     private void selectRestaurant(int selectedTabIdx) {
+        refreshCategory();
+        mCateAdapter.mMenuAdapter.notifyDataSetChanged();
+        resetGuestList();
+
         mTvTheRestaurant.setTextColor(Color.GRAY);
         for (int i = 0; mRestaurantTabBarArr.length - 1 > i; i++) {
             TextView textView = mRestaurantTabBarArr[i];
@@ -208,7 +214,9 @@ public class OrderFragment extends BaseFragment {
         orderOrApplyBtn.setText("주문하기");
         mOrderedMenuItem = null;
 
+
         mShadeOrders = null;
+        mOrderBrowserLinearLayout.removeAllViewsInLayout();
         mTotalPriceTextView.setText("");
         mFoodImage.setImageResource(R.drawable.ic_noimage);
         refreshCategory();
@@ -448,39 +456,15 @@ public class OrderFragment extends BaseFragment {
                 public void onClick(View v) {
                     //주문된 음식이 있다면
                     if (mOrderedMenuItem != null) {
+                        mOrderBrowserLinearLayout.removeAllViewsInLayout();
                         if (v.getTag().equals(Global.orderDetailList.get(idx).reserve_guest_id)) {
                             infoTextView.setVisibility(View.GONE);
                             ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
                             (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                             Global.orderDetailList.get(idx).addOrPlusOrderedMenuItem(mOrderedMenuItem);
                             Global.orderDetailList.get(idx).setTotalPaidAmount(Global.orderDetailList.get(idx).getPaid_total_amount());
-
-                            OrderItemView orderItem = null;
-                            TextView menuNameTextView;
-                            TextView menuQuantityTextView;
-
-                            String menuName = "";
-                            String menuQuantity = "";
-
-//                            if (Global.orderDetailList.get(idx).isOrderedMenuItemExist(mOrderedMenuItem.id)) {
-//                                for (int i = 0; Global.orderDetailList.get(idx).getOrderedMenuItemList().size() > i; i++) {
-//                                    if (mOrderedMenuItem.id.equals(Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getId())) {
-//                                        orderItem = (OrderItem) orderBrowserLinearLayout.getChildAt(i);
-//                                        menuName = Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getName();
-//                                        menuQuantity = Global.orderDetailList.get(idx).getOrderedMenuItemList().get(i).getQty();
-//                                    }
-//                                }
-//                            } else {
-//                            orderItem = new OrderItemView(getContext());
-//                            orderItem.setTag(mOrderedMenuItem.id);
-//                            orderBrowserLinearLayout.addView(orderItem);
-////                            }
-//
-//                            menuNameTextView = orderItem.findViewById(R.id.menuNameTextView);
-//                            menuNameTextView.setText(menuName);
-//
-//                            menuQuantityTextView = orderItem.findViewById(R.id.menuQuantityTextView);
-//                            menuQuantityTextView.setText(menuQuantity + "개");
+                            makeOrderItems(Global.orderDetailList);
+                            makeOrderItemInvoiceArrViews();
 
                             setTheTotalInvoice();
                         } else {
@@ -496,44 +480,98 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void makeOrderItems(ArrayList<OrderDetail> orderDetailList) {
-
-
+        mOrderItemInvoiceArrayList = null;
+        mOrderItemInvoiceArrayList = new  ArrayList<OrderItemInvoice>();
+        OrderItemInvoice a_ItemInvoice = null;
         for (int i = 0; orderDetailList.size() > i; i++) {
             OrderDetail a_orderDetail = orderDetailList.get(i);
-            for (int j = 0; a_orderDetail.getOrderedMenuItemList().size() > j; j++) {
-                OrderItemInvoice a_ItemInvoice = new OrderItemInvoice();
-                int a = isAlreadyExist(mOrderItemInvoiceArrayList, a_orderDetail);
-                if (a >= 0) {
-                     //메뉴이름이 같을때
-                    mOrderItemInvoiceArrayList.get(a).mTvQty += Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(j).getQty());
-                    mOrderItemInvoiceArrayList.get(a).mNameOrders.add(new NameOrder(a_orderDetail.reserve_guest_id, Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(j).getQty())));
+          final int Size =  mOrderItemInvoiceArrayList.size();
+            if (Size == 0) {
+                a_ItemInvoice = new OrderItemInvoice();
+                for (int k = 0; a_orderDetail.getOrderedMenuItemList().size() > k; k++) {
+                    if (a_ItemInvoice.mMenunName.equals(a_orderDetail.getOrderedMenuItemList().get(k).name)) {
 
-                } else {
-                    //신규 인보이스로 추가
-                    a_ItemInvoice.mMenunName = a_orderDetail.getOrderedMenuItemList().get(j).name;
-                    a_ItemInvoice.mTvQty = Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(j).getQty());
-                    a_ItemInvoice.mNameOrders.add((new NameOrder(a_orderDetail.reserve_guest_id, Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(j).getQty()))));
+                        //메뉴이름이 같을때
+                        a_ItemInvoice.mQty += Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(k).getQty());
+                        a_ItemInvoice.mNameOrders.add(new NameOrder(a_orderDetail.reserve_guest_id, Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(k).getQty())));
+                    } else {
+
+
+                        a_ItemInvoice.mMenunName = a_orderDetail.getOrderedMenuItemList().get(k).name;
+                        a_ItemInvoice.mQty = Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(0).getQty());
+                        a_ItemInvoice.mNameOrders.add((new NameOrder(a_orderDetail.reserve_guest_id, Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(0).getQty()))));
+                        mOrderItemInvoiceArrayList.add(a_ItemInvoice);
+                    }
+                }
+
+            } else {
+               final int Size2 =  mOrderItemInvoiceArrayList.size();
+                for (int j = 0; Size2 > j; j++) {
+                    a_ItemInvoice = mOrderItemInvoiceArrayList.get(j);
+                   final int Size3 = a_orderDetail.getOrderedMenuItemList().size();
+                    for (int k = 0; Size3 > k; k++) {
+                        if (a_ItemInvoice.mMenunName.equals(a_orderDetail.getOrderedMenuItemList().get(k).name)) {
+
+                            //메뉴이름이 같을때
+                            a_ItemInvoice.mQty += Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(k).getQty());
+                            a_ItemInvoice.mNameOrders.set(k, new NameOrder(a_orderDetail.reserve_guest_id, a_ItemInvoice.mQty));
+                        } else {
+
+                            a_ItemInvoice = new OrderItemInvoice();
+                            a_ItemInvoice.mMenunName = a_orderDetail.getOrderedMenuItemList().get(k).name;
+                            a_ItemInvoice.mQty = Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(k).getQty());
+                            a_ItemInvoice.mNameOrders.add((new NameOrder(a_orderDetail.reserve_guest_id, Integer.valueOf(a_orderDetail.getOrderedMenuItemList().get(k).getQty()))));
+                            mOrderItemInvoiceArrayList.add(a_ItemInvoice);
+
+                        }
+                    }
                 }
             }
         }
     }
 
-    private void makeOrderItemInvoiceView(){
-        for (int i =0; mOrderItemInvoiceArrayList.size() > i ;i++){
-            OrderItemView a_view = new OrderItemView(mContext);
-            a_view.setTag(mOrderItemInvoiceArrayList.get(i));
 
+    private OrderItemInvoiceView makeOrderItemInvoiceView(OrderItemInvoice orderItemInvoice) {
+        OrderItemInvoiceView a_InvoiceView;
+        if (orderItemInvoice == null || orderItemInvoice.mMenunName == null)
+            return null;
+        else
+            a_InvoiceView = new OrderItemInvoiceView(mContext);
+
+        a_InvoiceView.setTag(orderItemInvoice);
+        for (int i = 0; orderItemInvoice.mNameOrders.size() > i; i++) {
+            NameOrderView a_NameOrderview = new NameOrderView(mContext);
+            a_NameOrderview.setTag(orderItemInvoice.mNameOrders.get(i));
+            a_NameOrderview.mNameTv.setText(((NameOrder) a_NameOrderview.getTag()).name);
+            a_NameOrderview.mQtyTv.setText(String.valueOf(((NameOrder) a_NameOrderview.getTag()).qty));
+            a_InvoiceView.mLinearNameOrder.addView(a_NameOrderview);
         }
+        a_InvoiceView.mTvMenuName.setText(((OrderItemInvoice) a_InvoiceView.getTag()).mMenunName);
+        int _qty = ((OrderItemInvoice) a_InvoiceView.getTag()).mQty;
+        a_InvoiceView.mTvQty.setText(String.valueOf(_qty));
+        return a_InvoiceView;
     }
 
+    //최종적으로 Orderfragment 인보이스 레이아웃에 add..
+    private void makeOrderItemInvoiceArrViews() {
+        mOrderBrowserLinearLayout = null;
+        mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
+        for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
 
-      //인보이스상에 동일한 메뉴가 있으면 인데스 a를 리턴한다.
-    private int isAlreadyExist(ArrayList<OrderItemInvoice> mOrderItemInvoiceArrayList, OrderDetail a_orderDetail) {
+            OrderItemInvoiceView an_OrderItemInvoiceView = makeOrderItemInvoiceView(mOrderItemInvoiceArrayList.get(i));
+            if (an_OrderItemInvoiceView != null)
+                mOrderBrowserLinearLayout.addView(an_OrderItemInvoiceView);
 
-        for(int i =0; mOrderItemInvoiceArrayList.size() > i ; i++ )
-        if (mOrderItemInvoiceArrayList.get(i).mMenunName.equals(a_orderDetail.getOrderedMenuItemList().get(i).name)) {
-            return i;
         }
+
+    }
+
+    //인보이스상에 동일한 메뉴가 있으면 인덱스 a를 리턴한다.
+    private int isAlreadyExist(OrderItemInvoice a_invoice, OrderDetail a_orderDetail) {
+        for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++)
+            if (a_invoice.mMenunName.equals(a_orderDetail.getOrderedMenuItemList().get(i).name)) {
+                return i;
+            }
 
         return -1;
     }

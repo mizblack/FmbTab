@@ -19,7 +19,7 @@ public class OrderedMenuItem implements Serializable {
     @SerializedName("total")
     @Expose
     private String total;
-
+    //메뉴이름
     public String name;
 
     public OrderedMenuItem(String id, String qty, String price, String name) {

@@ -15,55 +15,66 @@
     <LinearLayout
         android:id="@+id/menuLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/menuNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="-"
-            android:textColor="@color/gray"
-            android:textSize="18dp"
-            tools:ignore="HardcodedText,SpUsage" />
-
-        <TextView
-            android:id="@+id/menuQuantityTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="-개"
-            android:textColor="@color/gray"
-            android:textSize="18dp"
-            tools:ignore="HardcodedText,SpUsage" />
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-        <!--        *******-->
         <LinearLayout
-            android:id="@+id/extendAndFoldingLinearLayout"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:gravity="center">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/extendAndFoldingImageView"
+            <TextView
+                android:id="@+id/menuNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="-"
+                android:textColor="@color/gray"
+                android:textSize="18dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <TextView
+                android:id="@+id/menuQuantityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="-개"
+                android:textColor="@color/gray"
+                android:textSize="18dp"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <View
                 android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/down_arrow"
-                tools:ignore="ContentDescription" />
+                android:layout_height="match_parent" />
+            <!--        *******-->
+            <LinearLayout
+                android:id="@+id/extendAndFoldingLinearLayout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:gravity="center">
 
+                <ImageView
+                    android:id="@+id/extendAndFoldingImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/down_arrow"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linear_name_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:text="hhhhhhhhhhh"
+            android:textSize="40sp"
+            />
 
     </LinearLayout>
 
