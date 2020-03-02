@@ -641,4 +641,30 @@ public class CaddieFragment extends BaseFragment {
         return f;
     }
 
+    private static File getResizedFilePNG(Context context, Bitmap bitmap, String filename, int quality) {
+
+        File f = new File(context.getCacheDir(), filename + ".png");
+
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, quality /*ignored for PNG*/, bos);
+        byte[] bitmapData = bos.toByteArray();
+
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapData);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
 }

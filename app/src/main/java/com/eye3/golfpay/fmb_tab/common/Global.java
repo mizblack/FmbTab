@@ -46,14 +46,11 @@ public class Global {
      */
     //  public static String HOST_ADDRESS = (RealSetting ? HOST_ADDRESS_REAL : HOST_ADDRESS_DEV);
 
-    public static String HOST_ADDRES_SKIE = "10.50.21.62:8000/api/v1/getAllCourse?cc_id=1";
-
     /**
      * 접속 호스트 주소. 운영
      */
+    public static final String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
     public static final String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
-
-    public static final String HOST_ADDRESS_AWS = HOST_BASE_ADDRESS_AWS + "api/v1/";
     /**
      * 접속 호스트 주소. 개발계
      */
