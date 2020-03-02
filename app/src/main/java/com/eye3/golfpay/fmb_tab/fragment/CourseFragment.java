@@ -183,9 +183,9 @@ public class CourseFragment extends BaseFragment {
                 mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))));
             }
 
-            if (mHoleList.get(position).img_2_file_url != null) {
+            if (mHoleList.get(position).img_1_file_url != null) {
                 Glide.with(mContext)
-                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_2_file_url)
+                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_1_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
             } else {

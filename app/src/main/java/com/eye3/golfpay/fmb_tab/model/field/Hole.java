@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Hole  implements Serializable {
+public class Hole implements Serializable {
     //**************************************
 //    @SerializedName("hole_id")
 //    @Expose
@@ -15,8 +15,8 @@ public class Hole  implements Serializable {
 
     @SerializedName("id")
     @Expose
-    public String id ;
-                  //countryclub Id
+    public String id;
+    //countryclub Id
     @SerializedName("cc_id")
     @Expose
     public String cc_id;
@@ -115,10 +115,10 @@ public class Hole  implements Serializable {
     public String img_2_file_url;
 
 
-//*************************************
+    //*************************************
     @SerializedName("score")
     @Expose
-    public Score playedScore ;
+    public Score playedScore;
 
 //
 //    public Hole(String id, String par, String distance){
