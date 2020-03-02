@@ -143,7 +143,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tourament"
+                    android:text="Tournament"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     tools:ignore="HardcodedText,SpUsage" />
@@ -368,7 +368,7 @@
                 android:layout_height="250dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/aliceBlue"
-                android:src="@drawable/ic_noimage"
+                android:src="@drawable/hole_cup_image"
                 tools:ignore="ContentDescription" />
 
 
