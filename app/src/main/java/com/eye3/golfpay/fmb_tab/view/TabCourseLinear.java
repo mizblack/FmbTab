@@ -254,7 +254,7 @@ public class TabCourseLinear extends LinearLayout {
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            sDialog = new ScoreDialog(mContext, "타이틀", "", "취소", "확인", null, null, playerList, playerList.get(0).playingCourse.get(mTabIdx), mTabIdx, mHoleScoreLayoutIdx);
+                            sDialog = new ScoreDialog(mContext, "타이틀", "", "저장", "취소", null, null, playerList, playerList.get(0).playingCourse.get(mTabIdx), mTabIdx, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
