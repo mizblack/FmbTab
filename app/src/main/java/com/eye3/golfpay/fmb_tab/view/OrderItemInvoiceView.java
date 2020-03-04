@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class OrderItemInvoiceView extends RelativeLayout {
     public TextView mTvMenuName , mTvQty;
-   public LinearLayout mLinearNameOrder;
+   public LinearLayout mLinearNameOrder , mExtendAndFoldingLinearLayout;
 
 //    public OrderItemView(Context context, AttributeSet attrs) {
 //        super(context, attrs);
@@ -38,9 +38,14 @@ public class OrderItemInvoiceView extends RelativeLayout {
         mTvMenuName = v.findViewById(R.id.menuNameTextView);
         mTvQty = v.findViewById(R.id.menuQuantityTextView);
         mLinearNameOrder =   v.findViewById(R.id.linear_name_order);
+        mExtendAndFoldingLinearLayout = v.findViewById(R.id.extendAndFoldingLinearLayout);
+        mExtendAndFoldingLinearLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLinearNameOrder.setSystemUiVisibility(View.VISIBLE);
+            }
+        });
 
-     //   mTvMenuName.setText(((OrderItemInvoice) getTag()).mMenunName);
-     //   mTvQty.setText(((OrderItemInvoice) getTag()).mTvQty);
         addView(v);
 
     }

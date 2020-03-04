@@ -25,9 +25,8 @@ public class NameOrderView extends LinearLayout {
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.linear_name_order, this, false);
         mNameTv =  v.findViewById(R.id.NameTextView);
-//        mNameTv.setText(((NameOrder)getTag()).name);
         mQtyTv = v.findViewById(R.id.MenuQuantityTextView);
- //       mQtyTv.setText(((NameOrder)getTag()).qty);
+
         deleteLinear = v.findViewById(R.id.deleteLinearLayout);
         addView(v);
 

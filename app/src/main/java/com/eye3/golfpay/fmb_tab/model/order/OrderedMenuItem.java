@@ -12,18 +12,27 @@ public class OrderedMenuItem implements Serializable {
     public String id;
     @SerializedName("qty")
     @Expose
-    String qty;
+    public String qty;
     @SerializedName("price")
     @Expose
-    String price;
+    public String price;
     @SerializedName("total")
     @Expose
-    private String total;
+    public String total;
     //메뉴이름
     public String name;
+     public OrderedMenuItem(){
+         this.id ="";
+         this.qty = "0";
+         this.price = "0";
+         this.total = "0";
+         this.name = "";
+
+     }
 
     public OrderedMenuItem(String id, String qty, String price, String name) {
-        this.id = id;
+        super();
+         this.id = id;
         this.qty = qty;
         this.price = price;
         setTotal();

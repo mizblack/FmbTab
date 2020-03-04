@@ -14,16 +14,18 @@ public class OrderDetail implements Serializable {
 
     @SerializedName("paid_total_amount")
     @Expose
-    private String paid_total_amount;
+    public String paid_total_amount;
 
     @SerializedName("items")
     @Expose
-    private ArrayList<OrderedMenuItem> mOrderedMenuItemList = new ArrayList<>();
+    public ArrayList<OrderedMenuItem> mOrderedMenuItemList = new ArrayList<>();
 
     public ArrayList<OrderedMenuItem> getOrderedMenuItemList() {
         return mOrderedMenuItemList;
     }
+    public OrderDetail() {
 
+    }
     public OrderDetail(String reserve_guest_id) {
         this.reserve_guest_id = reserve_guest_id;
         this.paid_total_amount = "";
@@ -59,7 +61,7 @@ public class OrderDetail implements Serializable {
         //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
         for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
             if (id.equals(mOrderedMenuItemList.get(i).id)) {
-                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.parseInt(mOrderedMenuItemList.get(i).qty) + 1);
+                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + 1);
                 //중복 메뉴일경우 qty 추가후 total 을 다시계산
                 mOrderedMenuItemList.get(i).setTotal();
                 return;
