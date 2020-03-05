@@ -63,7 +63,7 @@ public class ScoreFragment extends BaseFragment  {
             Toast.makeText(getActivity(), "진행할 코스가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-        mScoreBoard.init(getActivity(), mPlayerList, mTabIdx);
+        mScoreBoard.init(getActivity(), mPlayerList, mCourseList.get(mTabIdx),  mTabIdx);
         mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
             @Override
             public void OnScoreInputFinished(ArrayList<Player> playerList) {

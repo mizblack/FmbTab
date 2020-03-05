@@ -60,7 +60,7 @@ public class OrderFragment extends BaseFragment {
     private ImageView mFoodImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout;
+    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout, mTabsRootLinear;
     private ShadeOrder mShadeOrders;
     private OrderedMenuItem mOrderedMenuItem = null;
     private String mOrderedGuestId = "";
@@ -92,6 +92,7 @@ public class OrderFragment extends BaseFragment {
         mTVCateName = v.findViewById(R.id.tv_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
         mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
+        mTabsRootLinear = v.findViewById(R.id.tabsRootLinearLayout);
         mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
@@ -193,12 +194,13 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (orderOrApplyBtn.getText().toString().equals("주문하기")) {
-                    //    tabsLinearLayout.setVisibility(View.GONE);
-                    //   applyTabLinearLayout.setVisibility(View.VISIBLE);
-                    //   orderOrApplyBtn.setText("적용하기");
+                  //  mTabsRootLinear.setVisibility(View.GONE);
+                    orderOrApplyBtn.setText("적용하기");
                     sendShadeOrders();
                 } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
-                    // GoNativeScreenAdd(new ShadePaymentFragment(), null);
+                    mTabsRootLinear.setVisibility(View.GONE);
+                    GoOrderLeftBoard(new ApplyFragment(), null);
+
                 }
             }
         });
@@ -226,7 +228,7 @@ public class OrderFragment extends BaseFragment {
 
     private void init() {
         initOrderDetailList();
-        orderOrApplyBtn.setText("주문하기");
+      //  orderOrApplyBtn.setText("주문하기");
         mOrderedMenuItem = null;
         mOrderItemInvoiceArrayList = null;
         mOrderItemInvoiceArrayList = new ArrayList<OrderItemInvoice>();

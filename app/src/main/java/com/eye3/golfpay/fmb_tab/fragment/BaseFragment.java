@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -159,6 +158,10 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
     }
 
 
+    public void GoOrderLeftBoard(BaseFragment fragment , Bundle bundle){
+        if (mParentActivity != null)
+            mParentActivity.GoOrderLeftBoard(fragment, bundle);
+    }
     /**
      * 네비게이션과 화면 사이의 Divider 출력 처리
      *
@@ -219,6 +222,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         });
 
     }
+
 
     // 프로그레스 다이얼로그 숨기기
     protected void hideProgress() {

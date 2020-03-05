@@ -51,6 +51,8 @@ public class TabCourseLinear extends LinearLayout {
     ArrayAdapter arrayAdapter;
     public ScoreDialog sDialog;
     ScoreInputFinishListener inputFinishListener;
+    //ctype에따라 정렬된 코스
+    Course mCtypeArrangedCourse ;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -60,9 +62,9 @@ public class TabCourseLinear extends LinearLayout {
     /*
      * idx : tab의 순서idx (순서대로 tabcourselinear 뿌려주면됨)
      */
-    public TabCourseLinear(Context context, ArrayList<Player> playerList, int tabIdx) {
+    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course ctyped, int tabIdx) {
         super(context);
-        init(context, playerList, tabIdx);
+        init(context, playerList,ctyped, tabIdx);
 
     }
 
@@ -70,11 +72,12 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final ArrayList<Player> playerList, int tabIdx) {
+    public void init(final Context context, final ArrayList<Player> playerList, Course ctyped ,  int tabIdx) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
         this.mPlayerList = playerList;
+        this.mCtypeArrangedCourse = ctyped;
         //스코어뷰를 재활용하므로 반드시 이전 뷰들을 모두 제거해야 현생성되는 뷰가 보여진다.
         this.removeAllViewsInLayout();
 
@@ -93,11 +96,11 @@ public class TabCourseLinear extends LinearLayout {
                 if ((parent.getItemAtPosition(position)).toString().equals("yard")) {
                     Global.isYard = true;
                     mDistanceSpinner.setSelection(2);
-                    createHoleInfoLinear(mContext, mPlayerList.get(0).playingCourse.get(mTabIdx));
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
                 } else if ((parent.getItemAtPosition(position)).toString().equals("meter")) {
                     Global.isYard = false;
                     mDistanceSpinner.setSelection(1);
-                    createHoleInfoLinear(mContext, mPlayerList.get(0).playingCourse.get(mTabIdx));
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
                 }
             }
 
@@ -107,7 +110,7 @@ public class TabCourseLinear extends LinearLayout {
             }
         });
 
-        createHoleInfoLinear(mContext, mPlayerList.get(0).playingCourse.get(mTabIdx));
+        createHoleInfoLinear(mContext, mCtypeArrangedCourse);
 
         mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
         initRecyclerView(mPlayerList, mTabIdx);
@@ -254,7 +257,7 @@ public class TabCourseLinear extends LinearLayout {
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            sDialog = new ScoreDialog(mContext, "타이틀", "", "저장", "취소", null, null, playerList, playerList.get(0).playingCourse.get(mTabIdx), mTabIdx, mHoleScoreLayoutIdx);
+                            sDialog = new ScoreDialog(mContext,  "저장", "취소", null, null, playerList,mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
@@ -467,7 +470,7 @@ public class TabCourseLinear extends LinearLayout {
         int total_score = 0;
 
         for (int i = 0; course.holes.size() > i; i++) {
-            if (Util.isIntegerNumber(course.holes.get(i).playedScore.par))
+            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting ))
                 total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.putting);
         }
 

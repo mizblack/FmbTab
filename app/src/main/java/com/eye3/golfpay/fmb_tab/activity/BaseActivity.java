@@ -4,7 +4,6 @@ package com.eye3.golfpay.fmb_tab.activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,12 +19,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
 import com.eye3.golfpay.fmb_tab.fragment.BaseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
 import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
-
-import java.util.Objects;
 
 
 public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
@@ -152,6 +149,22 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         transaction.replace(R.id.nav_view, mBaseFragment).commitAllowingStateLoss();
+
+    }
+
+    public void GoOrderLeftBoard(BaseFragment fragment, Bundle bundle) {
+        if (fragment == null) {
+            return;
+        }
+
+        mBaseFragment = fragment;
+        if (bundle != null) {
+            mBaseFragment.setArguments(bundle);
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        transaction.replace(R.id.fl_order_left_board, mBaseFragment).commitAllowingStateLoss();
 
     }
 

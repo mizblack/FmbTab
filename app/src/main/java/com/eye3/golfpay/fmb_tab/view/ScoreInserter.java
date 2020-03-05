@@ -20,6 +20,9 @@ import com.eye3.golfpay.fmb_tab.common.AppDef;
 import java.util.ArrayList;
 
 public class ScoreInserter extends RelativeLayout {
+    public static final int NUM_STROKE_SELLECTED_PREVIOUS_KEY = 1 + 2 << 24;
+    public static final int NUM_PAR_SELLECTED_PREVIOUS_KEY = 1 + 3 << 24;
+    public static final int NUM_PUTT_SELLECTED_PREVIOUS_KEY = 1 + 4 << 24;
 
     AppDef.ScoreType mScoreType;
     public ArrayList mParScoreIntegerArrayList;
@@ -41,7 +44,6 @@ public class ScoreInserter extends RelativeLayout {
     ArrayList mLongestIntegerArrayList;
     LinearLayout mLinearScoreInserterContainer;
     Context mContext;
- //   public Button mBtnCancel;
 
     public ScoreInserter(Context context) {
         super(context);
@@ -64,7 +66,6 @@ public class ScoreInserter extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
-   //     mBtnCancel = v.findViewById(R.id.btn_score_cancel);
         addView(v);
     }
 
@@ -78,7 +79,6 @@ public class ScoreInserter extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
- //       mBtnCancel = v.findViewById(R.id.btn_score_cancel);
         createScoreInserter(type);
         addView(v);
 
@@ -115,17 +115,18 @@ public class ScoreInserter extends RelativeLayout {
             tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
         }
     }
-
-    public static void setAllBackGroundResourceBack(TextView[] tvArr, int id) {
+    //스코어 블럭 배경을 초기화 시킨다.
+    public static void initAllBackGroundResources(TextView[] tvArr) {
         for (int i = 0; tvArr.length > i; i++) {
             tvArr[i].getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN);
             tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
+
         }
     }
 
     public void setBackGroundColorSelected(TextView[] tv, int idx) {
         tv[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.DST_IN);
+        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
 
     }
 
@@ -133,7 +134,7 @@ public class ScoreInserter extends RelativeLayout {
         if (idx <= -1000)
             return;
         tv[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.DST_IN);
+        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
     }
 
     public static TextView findScoreInserterTextViewbyScore(TextView[] tvArr, String score) {
@@ -143,6 +144,42 @@ public class ScoreInserter extends RelativeLayout {
         }
         return null;
 
+    }
+
+    public void initScoreBackgroundSelected(String score, boolean isTar){
+        if(score.equals("-"))
+            return;
+        TextView tv;
+        if(isTar) {
+            if(mStrokeScoreTextViewArr != null) {
+                tv = findScoreInserterTextViewbyScore(mStrokeScoreTextViewArr, score);
+                tv.setBackgroundResource(R.drawable.score_inserter_bg);
+                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                tv.setTag(ScoreInserter.NUM_STROKE_SELLECTED_PREVIOUS_KEY, true);
+            }
+        }else{
+            if(mParScoreTextViewArr != null) {
+                tv = findScoreInserterTextViewbyScore(mParScoreTextViewArr, score);
+                tv.setBackgroundResource(R.drawable.score_inserter_bg);
+                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                tv.setTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
+            }
+        }
+
+
+    }
+
+    public void initPuttScoreBackgroundSelected(String puttScore){
+        if(puttScore.equals("-"))
+            return;
+        TextView tv;
+
+            if(mPuttScoreTextViewArr != null) {
+                tv = findScoreInserterTextViewbyScore(mPuttScoreTextViewArr, puttScore);
+                tv.setBackgroundResource(R.drawable.score_inserter_bg);
+                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                tv.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
+            }
     }
 
 
@@ -240,24 +277,19 @@ public class ScoreInserter extends RelativeLayout {
                     mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
                     mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
                     mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
+                    mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
                     mParScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            setAllBackGroundResourceBack(mParScoreTextViewArr, R.drawable.score_inserter_bg);
+                            initAllBackGroundResources(mParScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedParInserterTv = (TextView) v;
+                            v.setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
                             mSelectedParScoreTvIdx = idx;
                         }
                     });
                     mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
-//                    mBtnCancel.setOnClickListener(new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            setAllBackGroundResourceBack(mParScoreTextViewArr, R.drawable.score_inserter_bg);
-//                            mSelectedParInserterTv = null;
-//                            mSelectedParScoreTvIdx = -1;
-//                        }
-//                    });
+
                 }
                 break;
             case AppDef.ScoreType.Tar:
@@ -270,24 +302,19 @@ public class ScoreInserter extends RelativeLayout {
                     mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
                     mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
                     mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
+                    mStrokeScoreTextViewArr[i].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
                     mStrokeScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            setAllBackGroundResourceBack(mStrokeScoreTextViewArr, R.drawable.score_inserter_bg);
+                            initAllBackGroundResources(mStrokeScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedStrokeInserterTv = (TextView) v;
+                            v.setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, true);
                             mSelectedStrokeScoreTvIdx = idx;
                         }
                     });
                     mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
-//                    mBtnCancel.setOnClickListener(new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            setAllBackGroundResourceBack(mStrokeScoreTextViewArr, R.drawable.score_inserter_bg);
-//                            mSelectedStrokeInserterTv = null;
-//                            mSelectedStrokeScoreTvIdx = -1;
-//                        }
-//                    });
+
                 }
                 break;
             case AppDef.ScoreType.Putt:
@@ -300,24 +327,19 @@ public class ScoreInserter extends RelativeLayout {
                     mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
                     mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
                     mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
+                    mPuttScoreTextViewArr[i].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
                     mPuttScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            setAllBackGroundResourceBack(mPuttScoreTextViewArr, R.drawable.score_inserter_bg);
+                            initAllBackGroundResources(mPuttScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedPuttInserterTv = (TextView) v;
+                            v.setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
                             mSelectedPuttScoreTvIdx = idx;
                         }
                     });
                     mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
-//                    mBtnCancel.setOnClickListener(new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            setAllBackGroundResourceBack(mPuttScoreTextViewArr, R.drawable.score_inserter_bg);
-//                            mSelectedPuttInserterTv = null;
-//                            mSelectedPuttScoreTvIdx = -1;
-//                        }
-//                    });
+
                 }
                 break;
             default:
@@ -325,6 +347,7 @@ public class ScoreInserter extends RelativeLayout {
         }
 
     }
+
 
 //    public LinearLayout getmParScoreInserter() {
 //        return createScoreInserter(AppDef.ScoreType.Par);
