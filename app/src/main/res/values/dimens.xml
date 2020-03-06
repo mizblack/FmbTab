@@ -26,4 +26,7 @@
     <dimen name="score_inserter_width">50dp</dimen>
     <dimen name="scorer_inserter_height">100dp</dimen>
 
+    <dimen name="personal_bill_unit_width">250dp</dimen>
+    <dimen name="personal_bill_unit_height">650dp</dimen>
+
 </resources>

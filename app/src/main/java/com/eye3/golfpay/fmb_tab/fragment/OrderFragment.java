@@ -150,10 +150,21 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void initFoodImage() {
-        if (mSelectedRestaurantTabIdx < 0)
-            setFoodImage(mFoodImage, (((Restaurant) mTvTheRestaurant.getTag()).categoryList.get(0).Menus.get(0).image));
-        else
-            setFoodImage(mFoodImage, (mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList.get(0).Menus.get(0).image));
+        if(mRestaurantList == null) {
+            Toast.makeText(getActivity() , "존재하는 식당 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(mRestaurantList.get(0).categoryList == null){
+            Toast.makeText(getActivity() , "존재하는 식당 메뉴 카테고리가 없습니다.",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(mRestaurantList.get(0).categoryList.get(0).Menus.size() > 0) {
+
+            if (mSelectedRestaurantTabIdx < 0)
+                setFoodImage(mFoodImage, (((Restaurant) mTvTheRestaurant.getTag()).categoryList.get(0).Menus.get(0).image));
+            else
+                setFoodImage(mFoodImage, (mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList.get(0).Menus.get(0).image));
+        }
     }
 
     //레스토랑바 선택시 보여주는 함수
@@ -194,11 +205,12 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (orderOrApplyBtn.getText().toString().equals("주문하기")) {
-                  //  mTabsRootLinear.setVisibility(View.GONE);
+                    mTabsRootLinear.setVisibility(View.VISIBLE);
                     orderOrApplyBtn.setText("적용하기");
                     sendShadeOrders();
                 } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
-                    mTabsRootLinear.setVisibility(View.GONE);
+                    mTabsRootLinear.setVisibility(View.INVISIBLE);
+                    orderOrApplyBtn.setText("주문하기");
                     GoOrderLeftBoard(new ApplyFragment(), null);
 
                 }
@@ -480,7 +492,7 @@ public class OrderFragment extends BaseFragment {
         }
     }
 
-    private String getGuestName(String reserveId) {
+    public static String getGuestName(String reserveId) {
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
             if (Global.selectedReservation.getGuestData().get(i).getId().equals(reserveId)) {
                 return Global.selectedReservation.getGuestData().get(i).getGuestName();
@@ -658,7 +670,7 @@ public class OrderFragment extends BaseFragment {
             a_NameOrderview.mNameTv.setText(((NameOrder) a_NameOrderview.getTag()).name);
 
             a_NameOrderview.mQtyTv.setText(String.valueOf(((NameOrder) a_NameOrderview.getTag()).qty));
-            a_NameOrderview.deleteLinear.setOnClickListener(listener);
+        //    a_NameOrderview.deleteLinear.setOnClickListener(listener);
             a_InvoiceView.mLinearNameOrder.addView(a_NameOrderview);
         }
         a_InvoiceView.mTvMenuName.setText(((OrderItemInvoice) a_InvoiceView.getTag()).mMenunName);
@@ -697,7 +709,6 @@ public class OrderFragment extends BaseFragment {
     //최종적으로 Orderfragment 인보이스 레이아웃에 add..
     private void makeOrderItemInvoiceArrViews() {
         mOrderBrowserLinearLayout.removeAllViewsInLayout();
-        //  mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
         if (mOrderItemInvoiceArrayList.size() == 0) {
             return;
         }
@@ -734,7 +745,7 @@ public class OrderFragment extends BaseFragment {
                     hideProgress();
                     orderOrApplyBtn.setText("적용하기");
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    init();
+                    //init();
                 }
             }
 

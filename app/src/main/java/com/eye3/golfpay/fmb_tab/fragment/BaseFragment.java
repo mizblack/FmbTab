@@ -158,10 +158,11 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
     }
 
 
-    public void GoOrderLeftBoard(BaseFragment fragment , Bundle bundle){
+    public void GoOrderLeftBoard(BaseFragment fragment, Bundle bundle) {
         if (mParentActivity != null)
             mParentActivity.GoOrderLeftBoard(fragment, bundle);
     }
+
     /**
      * 네비게이션과 화면 사이의 Divider 출력 처리
      *
@@ -248,6 +249,10 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
     }
 
     public void systemUIHide() {
+           if(getActivity() == null)
+               return;
+        if (Objects.requireNonNull(getActivity()).getWindow().getDecorView() == null)
+            return;
         View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

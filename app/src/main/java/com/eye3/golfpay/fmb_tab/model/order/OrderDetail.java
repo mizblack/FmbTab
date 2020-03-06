@@ -14,7 +14,7 @@ public class OrderDetail implements Serializable {
 
     @SerializedName("paid_total_amount")
     @Expose
-    public String paid_total_amount;
+    public String paid_total_amount = "0";
 
     @SerializedName("items")
     @Expose
@@ -28,7 +28,7 @@ public class OrderDetail implements Serializable {
     }
     public OrderDetail(String reserve_guest_id) {
         this.reserve_guest_id = reserve_guest_id;
-        this.paid_total_amount = "";
+        this.paid_total_amount = "0";
         //    this.mOrderedMenuItemList = new ArrayList<>();
     }
 

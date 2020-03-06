@@ -5,44 +5,51 @@ import android.text.Html;
 import com.eye3.golfpay.fmb_tab.model.score.Score;
 
 public class AppDef {
-//    public final static int ACTIVITY_CLOSE = 9000;
+    //    public final static int ACTIVITY_CLOSE = 9000;
 //    public final static String TAKEOVER_TEST_BEFORE  = "10";
-   public static  boolean wifi = false;
+    public static boolean wifi = false;
 
-   public static boolean gps = false;
+    public static boolean gps = false;
 
-   public static boolean isTar = false;
+    public static boolean isTar = false;
 
-   //스코어 점수를 par로 보여줄지 타수로 보여줄지 결정하는 함수
+    //스코어 점수를 par로 보여줄지 타수로 보여줄지 결정하는 함수
    /*   Score : 스코어
    //   istar : 설정화면시 타수 스윗치값
     */
-   public static String Par_Tar(Score score, boolean istar) {
-      if (istar)
-         return score.tar;
-      else
-         return score.par;
-   }
+    public static String Par_Tar(Score score, boolean istar) {
+        if (istar)
+            return score.tar;
+        else
+            return score.par;
+    }
 
 
-   public interface CType{
-      String OUT = "OUT";
-      String IN = "IN";
-   }
+    public interface CType {
+        String OUT = "OUT";
+        String IN = "IN";
+    }
 
-   public static int MeterToYard(int meter){
-      double yard = meter * 1.0936;
+    public static int MeterToYard(int meter) {
+        double yard = meter * 1.0936;
 
-      return (int) yard;
-   }
+        return (int) yard;
+    }
 
-   public interface ScoreType{
-      String Par = "par";
-      String Tar = "tar";
-      String Putt = "putt";
-   }
+    public interface ScoreType {
+        String Par = "par";
+        String Tar = "tar";
+        String Putt = "putt";
+    }
 
-
-
-
+    public static String priceMapper(int price) {
+        String priceToString = "" + price;
+        if (price >= 1000) {
+            int length = priceToString.length();
+            String string00 = priceToString.substring(0, priceToString.length() - 3);
+            String string01 = priceToString.substring(priceToString.length() - 3, length);
+            priceToString = string00 + "," + string01;
+        }
+        return priceToString;
+    }
 }
