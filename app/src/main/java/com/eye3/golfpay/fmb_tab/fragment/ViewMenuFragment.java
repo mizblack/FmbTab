@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -279,8 +278,11 @@ public class ViewMenuFragment extends BaseFragment {
         getView().findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new NearestLongestFragment(), null);
+                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
+                assert getFragmentManager() != null;
+                nearestLongestDialogFragment.show(getFragmentManager(), TAG);
                 drawer_layout.closeDrawer(GravityCompat.END);
+                systemUIHide();
             }
         });
 
