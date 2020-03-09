@@ -43,6 +43,7 @@ public class CourseFragment extends BaseFragment {
     public CoursePagerAdapter mCoursePagerAdapter;
     private TextView mTvCourseName, mTvHoleNo, mTvHolePar;
     public TextView mTvHereToHole;
+    private TextView tournamentTextView, regularTextView, ladiesTextView, championshipTextView, frontTextView;
 
     public CourseFragment() {
     }
@@ -65,6 +66,12 @@ public class CourseFragment extends BaseFragment {
         mTvHolePar = v.findViewById(R.id.holePar);
         View menuLinearLayout = v.findViewById(R.id.menuLinearLayout);
         View closeLinearLayout = v.findViewById(R.id.closeLinearLayout);
+
+        tournamentTextView = v.findViewById(R.id.tournamentTextView);
+        regularTextView = v.findViewById(R.id.regularTextView);
+        ladiesTextView = v.findViewById(R.id.ladiesTextView);
+        championshipTextView = v.findViewById(R.id.championshipTextView);
+        frontTextView = v.findViewById(R.id.frontTextView);
 
         closeLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +128,14 @@ public class CourseFragment extends BaseFragment {
                             mTvHoleNo.setText(Global.CurrentCourse.holes.get(position).hole_no);
                             mTvCourseName.setText(Global.CurrentCourse.courseName);
                             mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
+
+                            if (Global.CurrentCourse.holes.get(position).tBox != null) {
+                                tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
+                                regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
+                                ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
+                                championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
+                                frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
+                            }
                         }
 
                         @Override
@@ -133,6 +148,11 @@ public class CourseFragment extends BaseFragment {
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
 
+                    tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
+                    regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
+                    ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
+                    championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
+                    frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -180,7 +200,7 @@ public class CourseFragment extends BaseFragment {
             mIvMap = view.findViewById(R.id.iv_map);
 
             if (mLocation != null && mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
-                mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))));
+                mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))) + "M");
             }
 
             if (mHoleList.get(position).img_1_file_url != null) {
