@@ -787,7 +787,7 @@
                     android:background="@color/lightGray50" />
 
                 <LinearLayout
-                    android:id="@+id/galleryLinearLayout"
+                    android:id="@+id/galleryLinear"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"
