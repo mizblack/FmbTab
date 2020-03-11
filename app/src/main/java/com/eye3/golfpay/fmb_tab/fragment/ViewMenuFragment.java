@@ -4,6 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,16 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -298,6 +296,15 @@ public class ViewMenuFragment extends BaseFragment {
             public void onClick(View v) {
                 GoNativeScreen(new ControlFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+        getView().findViewById(R.id.galleryLinear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new GalleryFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+
             }
         });
 
