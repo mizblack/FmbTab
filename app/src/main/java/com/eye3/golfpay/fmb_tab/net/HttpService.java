@@ -4,6 +4,7 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
@@ -58,4 +59,7 @@ public interface HttpService {
                                                 @Part("team_memo") RequestBody teamMemo,
                                                 @Part MultipartBody.Part signImage,
                                                 @Part MultipartBody.Part clubImage);
+
+    @POST("getNoticeList")
+    Call<ResponseData<NoticeItem>> getNoticeList();
 }
