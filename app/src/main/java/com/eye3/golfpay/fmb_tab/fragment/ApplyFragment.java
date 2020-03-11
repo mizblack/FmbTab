@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
 import java.util.ArrayList;
 
+import static com.eye3.golfpay.fmb_tab.fragment.OrderFragment.mTabsRootLinear;
+
 public class ApplyFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
@@ -24,6 +27,7 @@ public class ApplyFragment extends BaseFragment {
     int TOTAL_NUM_OF_MEMBER = 0;
     int mTotalAmount;
     String mPayType = "dutch";
+    private ImageView mArrow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,14 @@ public class ApplyFragment extends BaseFragment {
             createPersonalDutchPayBillViewList(Global.orderDetailList);
         else
             createOneOverNBillViewList(Global.orderDetailList);
-
+        mArrow = v.findViewById(R.id.arrow);
+        mArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mParentActivity.removeFragment(ApplyFragment.this);
+                mTabsRootLinear.setVisibility(View.VISIBLE);
+            }
+        });
         return v;
     }
 

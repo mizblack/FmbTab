@@ -60,7 +60,8 @@ public class OrderFragment extends BaseFragment {
     private ImageView mFoodImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout, mTabsRootLinear;
+    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout;
+            public static LinearLayout mTabsRootLinear;
     private ShadeOrder mShadeOrders;
     private OrderedMenuItem mOrderedMenuItem = null;
     private String mOrderedGuestId = "";
@@ -69,7 +70,7 @@ public class OrderFragment extends BaseFragment {
     private TextView mTotalPriceTextView;
     private Button mResetButton;
     ArrayList<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
-
+  //  private ImageView mArrow;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,8 @@ public class OrderFragment extends BaseFragment {
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
         mFoodImage = v.findViewById(R.id.img_food);
         mParentActivity.showMainBottomBar();
+
+
         return v;
     }
 

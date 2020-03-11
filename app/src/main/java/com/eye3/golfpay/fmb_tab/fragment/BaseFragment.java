@@ -157,6 +157,16 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         }
     }
 
+//    public BaseFragment getVisibleFragment() {
+//        for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
+//            if (fragment.isVisible()) {
+//                return ((BaseFragment) fragment);
+//            }
+//        }
+//        return null;
+//    }
+
+
 
     public void GoOrderLeftBoard(BaseFragment fragment, Bundle bundle) {
         if (mParentActivity != null)
