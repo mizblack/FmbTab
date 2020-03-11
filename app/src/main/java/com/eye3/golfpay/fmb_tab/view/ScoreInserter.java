@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
@@ -51,6 +54,7 @@ public class ScoreInserter extends RelativeLayout {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public ScoreInserter(Context context, String type) {
         super(context);
         init(context, type);
@@ -69,6 +73,7 @@ public class ScoreInserter extends RelativeLayout {
         addView(v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void init(Context context, String type) {
         this.mContext = context;
         this.mSelectedParInserterTv = new TextView(mContext);
@@ -115,6 +120,7 @@ public class ScoreInserter extends RelativeLayout {
             tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
         }
     }
+
     //스코어 블럭 배경을 초기화 시킨다.
     public static void initAllBackGroundResources(TextView[] tvArr) {
         for (int i = 0; tvArr.length > i; i++) {
@@ -146,19 +152,19 @@ public class ScoreInserter extends RelativeLayout {
 
     }
 
-    public void initScoreBackgroundSelected(String score, boolean isTar){
-        if(score.equals("-"))
+    public void initScoreBackgroundSelected(String score, boolean isTar) {
+        if (score.equals("-"))
             return;
         TextView tv;
-        if(isTar) {
-            if(mStrokeScoreTextViewArr != null) {
+        if (isTar) {
+            if (mStrokeScoreTextViewArr != null) {
                 tv = findScoreInserterTextViewbyScore(mStrokeScoreTextViewArr, score);
                 tv.setBackgroundResource(R.drawable.score_inserter_bg);
                 tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                 tv.setTag(ScoreInserter.NUM_STROKE_SELLECTED_PREVIOUS_KEY, true);
             }
-        }else{
-            if(mParScoreTextViewArr != null) {
+        } else {
+            if (mParScoreTextViewArr != null) {
                 tv = findScoreInserterTextViewbyScore(mParScoreTextViewArr, score);
                 tv.setBackgroundResource(R.drawable.score_inserter_bg);
                 tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
@@ -169,17 +175,17 @@ public class ScoreInserter extends RelativeLayout {
 
     }
 
-    public void initPuttScoreBackgroundSelected(String puttScore){
-        if(puttScore.equals("-"))
+    public void initPuttScoreBackgroundSelected(String puttScore) {
+        if (puttScore.equals("-"))
             return;
         TextView tv;
 
-            if(mPuttScoreTextViewArr != null) {
-                tv = findScoreInserterTextViewbyScore(mPuttScoreTextViewArr, puttScore);
-                tv.setBackgroundResource(R.drawable.score_inserter_bg);
-                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                tv.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
-            }
+        if (mPuttScoreTextViewArr != null) {
+            tv = findScoreInserterTextViewbyScore(mPuttScoreTextViewArr, puttScore);
+            tv.setBackgroundResource(R.drawable.score_inserter_bg);
+            tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+            tv.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
+        }
     }
 
 
@@ -264,6 +270,7 @@ public class ScoreInserter extends RelativeLayout {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void createScoreInserter(String scoreType) {
         //     LinearLayout aContainer = new LinearLayout(mContext);
         switch (scoreType) {
@@ -275,7 +282,7 @@ public class ScoreInserter extends RelativeLayout {
                     mParScoreTextViewArr[idx].setBackgroundResource(R.drawable.score_inserter_bg);
                     mParScoreTextViewArr[idx].setTextAppearance(R.style.ScoreInserterTextView);
                     mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
-                    mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
+                    mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
                     mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
                     mParScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
@@ -300,7 +307,7 @@ public class ScoreInserter extends RelativeLayout {
                     mStrokeScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
                     mStrokeScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
                     mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
+                    mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
                     mStrokeScoreTextViewArr[i].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
                     mStrokeScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
@@ -325,7 +332,7 @@ public class ScoreInserter extends RelativeLayout {
                     mPuttScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
                     mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
                     mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(80, 120));
+                    mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
                     mPuttScoreTextViewArr[i].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
                     mPuttScoreTextViewArr[i].setOnClickListener(new OnClickListener() {

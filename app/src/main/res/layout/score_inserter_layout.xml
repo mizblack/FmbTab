@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    >
+    android:gravity="center_vertical">
 
-<!--    <HorizontalScrollView-->
-<!--        android:id="@+id/linear_score_insert_sv"-->
-<!--        android:layout_width="250dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:scrollbars="none">-->
+    <HorizontalScrollView
+        android:id="@+id/linear_score_insert_sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:id="@+id/linear_score_insert_container"
-            android:layout_width="match_parent"
-            android:layout_height="121dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal" />
 
-<!--    </HorizontalScrollView>-->
+    </HorizontalScrollView>
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_score_cancel"-->
-<!--        android:layout_toRightOf="@id/linear_score_insert_sv"-->
-<!--        android:layout_width="53dp"-->
-<!--        android:layout_height="70dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="X"-->
-<!--        android:textSize="30dp"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:background="@color/gray50"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        />-->
 </RelativeLayout>
 
