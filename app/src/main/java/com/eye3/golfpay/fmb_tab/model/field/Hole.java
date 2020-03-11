@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Hole implements Serializable {
     //**************************************
@@ -114,6 +115,9 @@ public class Hole implements Serializable {
     @Expose
     public String img_2_file_url;
 
+    @SerializedName("tbox")
+    @Expose
+    public ArrayList<TBox> tBox = new ArrayList<>();
 
     //*************************************
     @SerializedName("score")

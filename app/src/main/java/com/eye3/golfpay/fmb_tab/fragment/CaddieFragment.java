@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.icu.text.SimpleDateFormat;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -72,7 +74,7 @@ public class CaddieFragment extends BaseFragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
-    View v;
+    private View v;
     private ArrayList<Guest> guestArrayList = Global.guestArrayList;
     private LinearLayout memberLinearLayout;
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
@@ -254,7 +256,7 @@ public class CaddieFragment extends BaseFragment {
 
 
             if (signatureBitmapArrayList.get(i) != null) {
-                signatureImageFile = getResizedFile(Objects.requireNonNull(getContext()), signatureBitmapArrayList.get(i), guestId + "_signature");
+                signatureImageFile = getResizedFilePNG(Objects.requireNonNull(getContext()), signatureBitmapArrayList.get(i), guestId + "_signature");
             }
 
             if (clubBitmapArrayList.get(i) != null) {
@@ -402,6 +404,7 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private File createImageFile() throws IOException {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "TEST_" + timeStamp + "_";
@@ -415,6 +418,7 @@ public class CaddieFragment extends BaseFragment {
         return image;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void sendTakePhotoIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
@@ -436,6 +440,7 @@ public class CaddieFragment extends BaseFragment {
 
     private void clubImageViewOnClick(final ImageView clubImageView, final int i) {
         clubImageView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 guestId = guestArrayList.get(i).getId();
@@ -542,6 +547,7 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
@@ -641,7 +647,7 @@ public class CaddieFragment extends BaseFragment {
         return f;
     }
 
-    private static File getResizedFilePNG(Context context, Bitmap bitmap, String filename, int quality) {
+    private static File getResizedFilePNG(Context context, Bitmap bitmap, String filename) {
 
         File f = new File(context.getCacheDir(), filename + ".png");
 
@@ -652,7 +658,7 @@ public class CaddieFragment extends BaseFragment {
         }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, quality /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 10 /*ignored for PNG*/, bos);
         byte[] bitmapData = bos.toByteArray();
 
         try {

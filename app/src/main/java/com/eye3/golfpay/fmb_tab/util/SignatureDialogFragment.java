@@ -62,7 +62,7 @@ public class SignatureDialogFragment extends DialogFragment {
                 CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
                 TextView signatureTextView = caddieViewGuestItem.findViewById(R.id.signatureTextView);
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
-          //          Global.signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
+                    Global.signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
                     ImageView imgView = caddieViewGuestItemArrayList.get(traversalByGuestId()).findViewById(R.id.signatureImageView);
                     setImageWithGlide(imgView, signaturePad.getTransparentSignatureBitmap());
                     signatureTextView.setVisibility(View.GONE);

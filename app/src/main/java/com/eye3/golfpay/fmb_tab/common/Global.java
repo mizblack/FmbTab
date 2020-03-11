@@ -77,6 +77,7 @@ public class Global {
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
     public static Course CurrentCourse;
+
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
     //    public static Location CurrentLocation ;
     @SuppressLint("StaticFieldLeak")

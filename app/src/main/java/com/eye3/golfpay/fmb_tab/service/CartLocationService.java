@@ -238,7 +238,7 @@ public class CartLocationService extends Service {
                             Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
                             Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
                             Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
-                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon))));
+                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon)) + "M"));
                 }
             }
         }

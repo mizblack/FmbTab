@@ -3,17 +3,16 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rootView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/translucentBlack"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="1160dp"
             android:layout_height="650dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="50dp"
             android:background="@color/white"
             android:orientation="horizontal"
             tools:ignore="DisableBaselineAlignment">
@@ -38,7 +37,8 @@
                         android:gravity="center"
                         android:text="Nearest"
                         android:textColor="@color/gray"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
                         android:id="@+id/longestTextView"
@@ -48,7 +48,8 @@
                         android:gravity="center"
                         android:text="Longest"
                         android:textColor="@color/gray"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <View
                         android:layout_width="0dp"
@@ -61,7 +62,8 @@
                         android:gravity="center"
                         android:text="Hole -"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -69,7 +71,8 @@
                         android:gravity="center"
                         android:text=" / "
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -77,7 +80,8 @@
                         android:gravity="center"
                         android:text="Par-"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -85,7 +89,8 @@
                         android:gravity="center"
                         android:text="- Course (-)"
                         android:textColor="@color/black"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                 </LinearLayout>
 
@@ -114,7 +119,8 @@
                             android:paddingStart="0dp"
                             android:text="Rank"
                             android:textColor="@color/black"
-                            android:textStyle="normal" />
+                            android:textStyle="normal"
+                            tools:ignore="HardcodedText,RtlSymmetry" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -123,7 +129,8 @@
 
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -131,7 +138,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -139,7 +147,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -147,7 +156,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                     </LinearLayout>
 
@@ -161,7 +171,8 @@
                             android:paddingStart="0dp"
                             android:text="Player"
                             android:textColor="@color/black"
-                            android:textStyle="normal" />
+                            android:textStyle="normal"
+                            tools:ignore="HardcodedText,RtlSymmetry" />
 
                         <TextView
                             android:id="@+id/member00NameTextView"
@@ -170,7 +181,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:id="@+id/member01NameTextView"
@@ -179,7 +191,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:id="@+id/member02NameTextView"
@@ -188,7 +201,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:id="@+id/member03NameTextView"
@@ -197,7 +211,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/black"
-                            android:textSize="26dp" />
+                            android:textSize="26dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                     </LinearLayout>
 
@@ -207,14 +222,13 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-
                         <TextView
                             style="@style/MainColumnInOrOutTextView"
                             android:paddingStart="0dp"
                             android:text="Score"
                             android:textColor="@color/irisBlue"
-                            android:textStyle="normal" />
-
+                            android:textStyle="normal"
+                            tools:ignore="HardcodedText,RtlSymmetry" />
 
                     </LinearLayout>
 
@@ -271,7 +285,8 @@
                         android:gravity="center_vertical"
                         android:text="Top Player"
                         android:textColor="@color/white"
-                        android:textSize="24dp" />
+                        android:textSize="24dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <View
                         android:id="@+id/nameDivider"
@@ -285,7 +300,8 @@
                         android:gravity="center"
                         android:text="-\n-"
                         android:textColor="@color/white"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        tools:ignore="HardcodedText,SpUsage" />
 
                     <View
                         android:layout_width="match_parent"
@@ -305,7 +321,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -314,7 +331,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -322,7 +340,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                     </LinearLayout>
 
@@ -344,7 +363,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -353,8 +373,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
-
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -362,7 +382,8 @@
                             android:gravity="center_vertical"
                             android:text="-"
                             android:textColor="@color/white"
-                            android:textSize="24dp" />
+                            android:textSize="24dp"
+                            tools:ignore="HardcodedText,SpUsage" />
 
                     </LinearLayout>
 

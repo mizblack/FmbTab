@@ -41,6 +41,7 @@ public class RankingFragment extends BaseFragment {
     protected String TAG = getClass().getSimpleName();
 
     private View tabBar;
+    private View pinkNearestOrLinearLayout;
     private View viewRankingViewDetailLinearLayout;
     private View nearestLongestLinearLayout;
     private TextView viewRankingText;
@@ -81,9 +82,7 @@ public class RankingFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fr_ranking, container, false);
-        View view = binding.getRoot();
+        View view = inflater.inflate(R.layout.fr_ranking, container, false);
         mRankingRecyclerView = view.findViewById(R.id.player_ranking_recycler);
         mLinearHoleNoContainer = view.findViewById(R.id.hole_no_container);
         mParentActivity.showMainBottomBar();
@@ -153,10 +152,6 @@ public class RankingFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        SetTitle("KT WMMS");
-//        SetDividerVisibility(false);
-        //   setDrawerLayoutEnable(true);
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -165,6 +160,8 @@ public class RankingFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         tabBar = Objects.requireNonNull(getView()).findViewById(R.id.tab_bar);
+        pinkNearestOrLinearLayout = tabBar.findViewById(R.id.pinkNearestOrLinearLayout);
+        pinkNearestOrLinearLayout.setVisibility(View.GONE);
         viewRankingViewDetailLinearLayout = tabBar.findViewById(R.id.viewRankingViewDetailLinearLayout);
         viewRankingText = tabBar.findViewById(R.id.viewRankingText);
         viewDetailText = tabBar.findViewById(R.id.viewDetailText);
@@ -212,13 +209,12 @@ public class RankingFragment extends BaseFragment {
         ArrayList<Course> playingCourse;
         LinearLayout container;
 
-        public RankingAdapter(String DisplayMode, Context context, ArrayList<Player> playerList, ArrayList<Course> playingCourse) {
+        RankingAdapter(String DisplayMode, Context context, ArrayList<Player> playerList, ArrayList<Course> playingCourse) {
             this.mDisplayMode = DisplayMode;
             this.context = context;
             this.playerList = playerList;
             this.playingCourse = playingCourse;
         }
-
 
         @NonNull
         @Override
@@ -242,7 +238,7 @@ public class RankingFragment extends BaseFragment {
                     }
                     break;
                 case "detail":
-                    //필요없는 뷰는 생성하자마자 gone으로 처리
+                    //필요없는 뷰는 생성하자마자 gone 으로 처리
                     if (viewType == TYPE_HEADER) {
                         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ranking_column, parent, false);
                         viewHolder = new HeaderViewHolder(view);
@@ -264,6 +260,7 @@ public class RankingFragment extends BaseFragment {
 
             }
 
+            assert viewHolder != null;
             return viewHolder;
 
         }
@@ -273,6 +270,7 @@ public class RankingFragment extends BaseFragment {
          *  holeScoreView: 각홀의점수를 담는 뷰어레이
          * holes: 각홀의 점수데이터 어레이
          */
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (playerList == null)
@@ -283,7 +281,7 @@ public class RankingFragment extends BaseFragment {
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             } else {
                 position = position - 1;
-                // Item을 하나, 하나 보여주는(bind 되는) 함수입니다.
+                // Item 을 하나, 하나 보여주는(bind 되는) 함수입니다.
                 holder1 = (RankingItemViewHolder) holder;
 
                 if (position % 2 == 0) {
@@ -307,7 +305,7 @@ public class RankingFragment extends BaseFragment {
                         holder1.mHoleScoreView[i][j].setText(holes.get(j).playedScore.tar);
 
                         if (Util.isInteger(holes.get(j).playedScore.tar))
-                            eachCourseTotal = eachCourseTotal + Integer.valueOf(holes.get(j).playedScore.tar);
+                            eachCourseTotal = eachCourseTotal + Integer.parseInt(holes.get(j).playedScore.tar);
                     }
                     // 스코어 마지막뷰에 총합을 넣는다
                     holder1.mHoleScoreView[i][holder1.mHoleScoreView[i].length - 1].setGravity(Gravity.CENTER);
@@ -334,7 +332,7 @@ public class RankingFragment extends BaseFragment {
         }
 
         private String displayTotalParScore(String parTotalScore, TextView tv) {
-            int parScoreInt = Integer.valueOf(parTotalScore);
+            int parScoreInt = Integer.parseInt(parTotalScore);
             if (parScoreInt >= 0) {
                 tv.setTextColor(Color.RED);
             } else
@@ -342,11 +340,11 @@ public class RankingFragment extends BaseFragment {
             return "(" + parTotalScore + ")";
         }
 
-        public class RankingItemViewHolder extends RecyclerView.ViewHolder {
-            protected TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore, tvPlayingHole, tvGroupName, tvCourseName, tvNormalScore, tvNormalPar;
-            public TextView[][] mHoleScoreView;
+        class RankingItemViewHolder extends RecyclerView.ViewHolder {
+            TextView tvRank, tvName, tvTarTotalScore, tvParTotalScore, tvPlayingHole, tvGroupName, tvCourseName, tvNormalScore, tvNormalPar;
+            TextView[][] mHoleScoreView;
 
-            public RankingItemViewHolder(View view) {
+            RankingItemViewHolder(View view) {
                 super(view);
                 mHoleScoreView = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
                 container = view.findViewById(R.id.linear_hole_score_container);
@@ -372,7 +370,6 @@ public class RankingFragment extends BaseFragment {
                 tvCourseName = view.findViewById(R.id.normal_course_name);
 
             }
-
 
         }
 
@@ -406,7 +403,7 @@ public class RankingFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = (ArrayList<Player>) response.getList();
                     mCourseList = getCourse(mPlayerList);
-                    NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum을 요청할것
+                    NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
 
                     initRecyclerView("normal", mRankingRecyclerView, mPlayerList);
@@ -430,13 +427,9 @@ public class RankingFragment extends BaseFragment {
 
     }
 
-
     private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         return playerList.get(0).playingCourse;
-
     }
 
 }
-
-
