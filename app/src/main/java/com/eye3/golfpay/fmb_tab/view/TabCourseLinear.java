@@ -52,7 +52,7 @@ public class TabCourseLinear extends LinearLayout {
     public ScoreDialog sDialog;
     ScoreInputFinishListener inputFinishListener;
     //ctype에따라 정렬된 코스
-    Course mCtypeArrangedCourse ;
+    Course mCtypeArrangedCourse;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -64,7 +64,7 @@ public class TabCourseLinear extends LinearLayout {
      */
     public TabCourseLinear(Context context, ArrayList<Player> playerList, Course ctyped, int tabIdx) {
         super(context);
-        init(context, playerList,ctyped, tabIdx);
+        init(context, playerList, ctyped, tabIdx);
 
     }
 
@@ -72,7 +72,7 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final ArrayList<Player> playerList, Course ctyped ,  int tabIdx) {
+    public void init(final Context context, final ArrayList<Player> playerList, Course ctyped, int tabIdx) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
@@ -96,11 +96,11 @@ public class TabCourseLinear extends LinearLayout {
                 if ((parent.getItemAtPosition(position)).toString().equals("yard")) {
                     Global.isYard = true;
                     mDistanceSpinner.setSelection(2);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
+                    resetHoleInforLinear(mContext, mCtypeArrangedCourse);
                 } else if ((parent.getItemAtPosition(position)).toString().equals("meter")) {
                     Global.isYard = false;
                     mDistanceSpinner.setSelection(1);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
+                    resetHoleInforLinear(mContext, mCtypeArrangedCourse);
                 }
             }
 
@@ -116,6 +116,44 @@ public class TabCourseLinear extends LinearLayout {
         initRecyclerView(mPlayerList, mTabIdx);
         addView(v);
 
+    }
+
+    private void resetHoleInforLinear(Context context, Course course) {
+        //  mHolderLinear.removeAllViewsInLayout();
+        ArrayList<Hole> holes = course.holes;
+
+        int totalPar = 0;
+        int totalMeter = 0;
+
+        for (int i = 0; mHolderLinear.getChildCount() - 1 > i; i++) {
+            ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvHoleNo.setText(holes.get(i).hole_no);
+            ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvPar.setText(holes.get(i).par);
+            //((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(holes.get(i).hole_total_size);
+            if (Global.isYard) {
+                if (holes.get(i).hole_total_size != null)
+                    ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(holes.get(i).hole_total_size))));
+                else
+                    ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText("");
+            } else
+                ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(holes.get(i).hole_total_size);
+
+            if (holes.get(i).par != null && Util.isInteger(holes.get(i).par))
+                totalPar = totalPar + Integer.valueOf(holes.get(i).par);
+            if (holes.get(i).hole_total_size != null && Util.isInteger(holes.get(i).hole_total_size))
+                totalMeter = totalMeter + Integer.valueOf(holes.get(i).hole_total_size);
+        }
+        //홀인포 전체를 나타내는 마지막 셀정보 입력
+        Hole totalHole = new Hole();
+        totalHole.par = String.valueOf(totalPar);
+        totalHole.hole_total_size = String.valueOf(totalMeter);
+
+        HoleInfoLinear totalLinear = ((HoleInfoLinear) mHolderLinear.getChildAt(mHolderLinear.getChildCount() - 1));
+        totalLinear.tvPar.setText(totalHole.par);
+        TextView tvCourseName = totalLinear.findViewById(R.id.course_name);
+        TextView tvCoursId = totalLinear.findViewById(R.id.hole_no);
+        tvCoursId.setVisibility(View.GONE);
+        tvCourseName.setVisibility(View.VISIBLE);
+        tvCourseName.setText(course.courseName);
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
@@ -140,16 +178,17 @@ public class TabCourseLinear extends LinearLayout {
      *
      */
     private void createHoleInfoLinear(Context context, Course course) {
-        mHolderLinear.removeAllViewsInLayout();
-
+        // mHolderLinear.removeAllViewsInLayout();
         ArrayList<Hole> holes = course.holes;
 
         int totalPar = 0;
         int totalMeter = 0;
         for (int k = 0; holes.size() > k; k++) {
             holeInfoLinear[k] = new HoleInfoLinear(context, holes.get(k));
+
             holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(holeInfoLinear[k]);
+
             if (holes.get(k).par != null && Util.isInteger(holes.get(k).par))
                 totalPar = totalPar + Integer.valueOf(holes.get(k).par);
             if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
@@ -257,7 +296,7 @@ public class TabCourseLinear extends LinearLayout {
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            sDialog = new ScoreDialog(mContext,  "저장", "취소", null, null, playerList,mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
+                            sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
                             sDialog.setOnScoreInputFinishListener(listener);
                             sDialog.show();
 
@@ -470,7 +509,7 @@ public class TabCourseLinear extends LinearLayout {
         int total_score = 0;
 
         for (int i = 0; course.holes.size() > i; i++) {
-            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting ))
+            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting))
                 total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.putting);
         }
 

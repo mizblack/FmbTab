@@ -15,9 +15,9 @@ import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 
 public class HoleInfoLinear extends LinearLayout {
-    TextView tvHoleNo;
-    TextView tvPar;
-    TextView tvMeter;
+    public TextView tvHoleNo;
+    public TextView tvPar;
+   public  TextView tvMeter;
 
     public HoleInfoLinear(Context context, Hole hole) {
         super(context);

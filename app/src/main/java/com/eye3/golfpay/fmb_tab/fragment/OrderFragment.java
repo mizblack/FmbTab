@@ -150,15 +150,15 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void initFoodImage() {
-        if(mRestaurantList == null) {
-            Toast.makeText(getActivity() , "존재하는 식당 정보가 없습니다.",Toast.LENGTH_SHORT).show();
+        if (mRestaurantList == null) {
+            Toast.makeText(getActivity(), "존재하는 식당 정보가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(mRestaurantList.get(0).categoryList == null){
-            Toast.makeText(getActivity() , "존재하는 식당 메뉴 카테고리가 없습니다.",Toast.LENGTH_SHORT).show();
+        if (mRestaurantList.get(0).categoryList == null) {
+            Toast.makeText(getActivity(), "존재하는 식당 메뉴 카테고리가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(mRestaurantList.get(0).categoryList.get(0).Menus.size() > 0) {
+        if (mRestaurantList.get(0).categoryList.get(0).Menus.size() > 0) {
 
             if (mSelectedRestaurantTabIdx < 0)
                 setFoodImage(mFoodImage, (((Restaurant) mTvTheRestaurant.getTag()).categoryList.get(0).Menus.get(0).image));
@@ -210,7 +210,7 @@ public class OrderFragment extends BaseFragment {
                     sendShadeOrders();
                 } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
                     mTabsRootLinear.setVisibility(View.INVISIBLE);
-                    orderOrApplyBtn.setText("주문하기");
+                    //  orderOrApplyBtn.setText("주문하기");
                     GoOrderLeftBoard(new ApplyFragment(), null);
 
                 }
@@ -220,7 +220,13 @@ public class OrderFragment extends BaseFragment {
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                init();
+                if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
+                    mTabsRootLinear.setVisibility(View.VISIBLE);
+                   // mTabsRootLinear.setVisibility(View.INVISIBLE);
+
+                } else {
+                    init();
+                }
             }
         });
     }
@@ -240,7 +246,7 @@ public class OrderFragment extends BaseFragment {
 
     private void init() {
         initOrderDetailList();
-      //  orderOrApplyBtn.setText("주문하기");
+        //  orderOrApplyBtn.setText("주문하기");
         mOrderedMenuItem = null;
         mOrderItemInvoiceArrayList = null;
         mOrderItemInvoiceArrayList = new ArrayList<OrderItemInvoice>();
@@ -670,7 +676,7 @@ public class OrderFragment extends BaseFragment {
             a_NameOrderview.mNameTv.setText(((NameOrder) a_NameOrderview.getTag()).name);
 
             a_NameOrderview.mQtyTv.setText(String.valueOf(((NameOrder) a_NameOrderview.getTag()).qty));
-        //    a_NameOrderview.deleteLinear.setOnClickListener(listener);
+            //    a_NameOrderview.deleteLinear.setOnClickListener(listener);
             a_InvoiceView.mLinearNameOrder.addView(a_NameOrderview);
         }
         a_InvoiceView.mTvMenuName.setText(((OrderItemInvoice) a_InvoiceView.getTag()).mMenunName);

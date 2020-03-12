@@ -27,11 +27,11 @@ public class Hole implements Serializable {
 
     @SerializedName("hole_no")
     @Expose
-    public String hole_no;
+    public String hole_no = "";
 
     @SerializedName("par")
     @Expose
-    public String par;
+    public String par = "";
 
     @SerializedName("handiCap")
     @Expose
