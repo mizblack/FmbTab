@@ -26,20 +26,10 @@
                 android:textSize="30dp"
                 android:textStyle="bold" />
 
-            <ScrollView
-                android:id="@+id/noticeScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
-                tools:ignore="ScrollViewCount">
-
-                <LinearLayout
-                    android:id="@+id/noticeLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-            </ScrollView>
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/recycler_notice"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />.
 
         </LinearLayout>
 
@@ -70,7 +60,7 @@
             android:layout_height="match_parent"
             android:padding="30dp"
             android:scrollbars="none"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/contentLinearLayout"

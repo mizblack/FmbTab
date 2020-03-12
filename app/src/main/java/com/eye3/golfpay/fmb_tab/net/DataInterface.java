@@ -7,6 +7,7 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
+import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
@@ -265,26 +266,34 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-//    public void setReserveGuestInfo(GuestInfo guestInfo, final ResponseCallback<GuestInfoResponse> callback) {
-//        try {
-//            Call<GuestInfoResponse> call = service.setReserveGuestInfo(guestInfo);
-//            call.enqueue(new Callback<GuestInfoResponse>() {
-//                @Override
-//                public void onResponse(Call<GuestInfoResponse> call, Response<GuestInfoResponse> response) {
-//                    GuestInfoResponse guestInfoResponse = response.body();
-//                    callback.onSuccess(guestInfoResponse);
-//                }
-//
-//                @Override
-//                public void onFailure(Call<GuestInfoResponse> call, Throwable t) {
-//
-//                }
-//
-//            });
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
+
+
+
+
+
+    public void getNoticeList(final Context context, final ResponseCallback<ResponseData<NoticeItem>> callback) {
+        try {
+            Call<ResponseData<NoticeItem>> call = service.getNoticeList();
+            call.enqueue(new Callback<ResponseData<NoticeItem>>() {
+
+                @Override
+                public void onResponse(Call<ResponseData<NoticeItem>> call, Response<ResponseData<NoticeItem>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<NoticeItem>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 
     public void setReserveGuestInfo(RequestBody reserveGuestId, RequestBody carNo, RequestBody hp, RequestBody guestMemo, RequestBody teamMemo, MultipartBody.Part signImage, MultipartBody.Part clubImage, final ResponseCallback<GuestInfoResponse> callback) {
         try {

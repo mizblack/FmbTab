@@ -1,7 +1,5 @@
 package com.eye3.golfpay.fmb_tab.common;
 
-import android.text.Html;
-
 import com.eye3.golfpay.fmb_tab.model.score.Score;
 
 public class AppDef {
@@ -52,4 +50,6 @@ public class AppDef {
         }
         return priceToString;
     }
+
+    public static int  previousCntOfNotice = 0;
 }
