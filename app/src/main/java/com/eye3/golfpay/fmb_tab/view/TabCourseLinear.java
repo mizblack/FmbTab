@@ -494,5 +494,5 @@ public class TabCourseLinear extends LinearLayout {
         }
         return totalDistance;
     }
-    
+
 }
