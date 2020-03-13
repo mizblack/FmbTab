@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/personal_bill_root"
     android:layout_width="@dimen/personal_bill_unit_width"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -120,6 +121,7 @@
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/tvInstead"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"

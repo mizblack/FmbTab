@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
@@ -41,18 +40,7 @@ public class ControlFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     //   mBtnTaokeoverTest = (Button)getView().findViewById(R.id.btnTakeoverTest);
-      //  mBtnTaokeoverTest.setOnClickListener();
-//        getView().findViewById(R.id.btnTakeoverTest).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                GoNativeScreenAdd(new FrDeviceSearch(), null);
-////                Intent intent = new Intent(getActivity(), DeviceSearchActivity.class);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            }
-//        });
+
     }
 
 

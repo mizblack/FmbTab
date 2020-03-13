@@ -15,12 +15,14 @@
         <TextView
             android:id="@+id/course_name"
             style="@style/MainColumnHoleNumberTextView"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/hole_no"
             style="@style/MainColumnHoleNumberTextView"
-            android:text="vvvvvv" />
+            android:text="vvvvvv"
+            android:textColor="@color/gray" />
     </FrameLayout>
 
     <View
@@ -32,17 +34,19 @@
     <TextView
         android:id="@+id/hole_par"
         style="@style/MainColumnParOrMetersTextView"
-        android:text="par 3" />
+        android:text="par 3"
+        android:textColor="@color/gray" />
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="38dp"-->
-<!--        android:layout_weight="1" />-->
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="38dp"-->
+    <!--        android:layout_weight="1" />-->
 
     <TextView
         android:id="@+id/hole_meter"
         style="@style/MainColumnParOrMetersTextView"
         android:paddingBottom="16dp"
-        android:text="aaaaa" />
+        android:text="aaaaa"
+        android:textColor="@color/gray" />
 
 </LinearLayout>

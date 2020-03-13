@@ -143,15 +143,17 @@ public class CartLocationService extends Service {
                             break;
                         case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                             try {
-                                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                    // TODO: Consider calling
-                                    //    Activity#requestPermissions
-                                    // here to request the missing permissions, and then overriding
-                                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                    //                                          int[] grantResults)
-                                    // to handle the case where the user grants the permission. See the documentation
-                                    // for Activity#requestPermissions for more details.
-                                    return;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                        // TODO: Consider calling
+                                        //    Activity#requestPermissions
+                                        // here to request the missing permissions, and then overriding
+                                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                        //                                          int[] grantResults)
+                                        // to handle the case where the user grants the permission. See the documentation
+                                        // for Activity#requestPermissions for more details.
+                                        return;
+                                    }
                                 }
                                 GpsStatus status = mLocationManager.getGpsStatus(null);
                                 Iterable sats = status.getSatellites();
@@ -238,7 +240,7 @@ public class CartLocationService extends Service {
                             Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
                             Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
                             Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
-                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon))));
+                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon)) + "M"));
                 }
             }
         }

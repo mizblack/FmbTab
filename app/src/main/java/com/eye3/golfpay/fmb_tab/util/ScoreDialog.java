@@ -84,9 +84,9 @@ public class ScoreDialog extends Dialog {
         mRightButton = findViewById(R.id.btnRight);
 
         tvHoleId = findViewById(R.id.hole_id);
-        tvHoleId.setText("Hole ID-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id);
+        tvHoleId.setText("Hole" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).hole_no);
         tvPar = findViewById(R.id.par_num);
-        tvPar.setText("Par-" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).par);
+        tvPar.setText("Par" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).par);
         tvCourseName = findViewById(R.id.dlg_course_name);
         tvCourseName.setText("    Course(" + mCurrentCourse.courseName + ")");
 
@@ -232,7 +232,7 @@ public class ScoreDialog extends Dialog {
                         public void onClick(View v) {
                             ScoreInserter.initAllBackGroundResources(viewArr);
 
-                            if ( !(boolean) v.getTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY)) {
+                            if (!(boolean) v.getTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY)) {
                                 v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                                 setPar(mReserveScore.guest_score_list.get(playerIdx), ((TextView) v).getText().toString().trim());
                                 setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(((TextView) v).getText().toString().trim()) + Integer.valueOf(selected_hole.par)));
@@ -256,7 +256,7 @@ public class ScoreDialog extends Dialog {
                 holder.inserterPutt.mPuttScoreTextViewArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ScoreInserter.initAllBackGroundResources( holder.inserterPutt.mPuttScoreTextViewArr);
+                        ScoreInserter.initAllBackGroundResources(holder.inserterPutt.mPuttScoreTextViewArr);
                         mReserveScore.guest_score_list.get(playerIdx).putting = ((TextView) v).getText().toString().trim();
                         if (!(boolean) v.getTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY)) {
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);

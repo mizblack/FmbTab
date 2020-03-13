@@ -9,11 +9,18 @@
     android:weightSum="10"
     tools:ignore="DisableBaselineAlignment">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/fl_order_left_board"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="7">
+        android:layout_weight="7"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:id="@+id/applyFragmentLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            />
 
         <LinearLayout
             android:id="@+id/tabsRootLinearLayout"
@@ -102,7 +109,7 @@
             </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/orderBrowserRootLinearLayout"

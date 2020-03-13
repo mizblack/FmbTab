@@ -1,21 +1,37 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AdapterDataProvider;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.common.BasicSpinnerAdapter;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+
+import dreammaker.android.widget.Spinner;
+
+import static com.eye3.golfpay.fmb_tab.fragment.OrderFragment.mTabsRootLinear;
 
 public class ApplyFragment extends BaseFragment {
 
@@ -24,6 +40,9 @@ public class ApplyFragment extends BaseFragment {
     int TOTAL_NUM_OF_MEMBER = 0;
     int mTotalAmount;
     String mPayType = "dutch";
+    private ImageView mArrow;
+    Spinner mSpinn_Pay_Person;
+    BasicSpinnerAdapter mSpinnAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,8 +90,67 @@ public class ApplyFragment extends BaseFragment {
             createPersonalDutchPayBillViewList(Global.orderDetailList);
         else
             createOneOverNBillViewList(Global.orderDetailList);
+        mArrow = v.findViewById(R.id.arrow);
+        mArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mParentActivity.removeFragment(ApplyFragment.this);
+                mTabsRootLinear.setVisibility(View.VISIBLE);
+            }
+        });
+        mSpinn_Pay_Person = v.findViewById(R.id.spinn_pay_person);
+        //    mSpinnAdapter = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_multichoice, getResources().getStringArray(R.array.spinn_array));
+        mSpinnAdapter = new BasicSpinnerAdapter(getActivity(),
+                R.layout.simple_multiple_choice_single_line_item, AdapterDataProvider.getGuestList());
+        //  mSpinnAdapter.setDropDownViewResource( R.layout.simple_multiple_choice_single_line_item);
+        mSpinn_Pay_Person.setAdapter(mSpinnAdapter);
+        mSpinn_Pay_Person.setSelection(0);
+//        mSpinn_Pay_Person.getDialogBuilder().setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                mSpinn_Pay_Person.getSelectedPositions();
+//                disablePersonalBill();
+//            }
+//        });
+        mSpinn_Pay_Person.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0) {
+                    String[] list = s.toString().split(",");
+                    disablePersonalBillofSelectedGuest(list);
+                }
+            }
+        });
+        //거리 환산 적용
+        mSpinn_Pay_Person.setOnSpinnerItemClickListener(new Spinner.OnSpinnerItemClickListener() {
+            @Override
+            public boolean onClickSpinnerItem(Spinner spinner, int adapterPosition) {
+                //  spinner.getSelectedPositions()
+                return false;
+            }
+        });
 
         return v;
+
+    }
+
+
+    ArrayList<String> getGuestList() {
+        ArrayList<String> ArrList = new ArrayList<>();
+        for (int i = 0; Global.orderDetailList.size() > i; i++) {
+            ArrList.add(OrderFragment.getGuestName(Global.orderDetailList.get(i).reserve_guest_id));
+        }
+        return ArrList;
     }
 
     private View createPersonalDutchPayBillView(OrderDetail orderDetail) {
@@ -135,6 +213,7 @@ public class ApplyFragment extends BaseFragment {
 
         for (int i = 0; orderDetailArrayList.size() > i; i++) {
             View orderbillView = createPersonalDutchPayBillView(orderDetailArrayList.get(i));
+            orderbillView.setTag(orderDetailArrayList.get(i));
             mLinearPersonalBillContainer.addView(orderbillView);
         }
     }
@@ -143,7 +222,65 @@ public class ApplyFragment extends BaseFragment {
 
         for (int i = 0; orderDetailArrayList.size() > i; i++) {
             View orderbillView = createOneOverNBillView(orderDetailArrayList.get(i));
+            orderbillView.setTag(orderDetailArrayList.get(i));
             mLinearPersonalBillContainer.addView(orderbillView);
+        }
+    }
+
+    private void resetPersonalBill() {
+        View v;
+        TextView tvTextName = null, tvMemberPrice = null;
+        LinearLayout memberOrderLinearLayout = null;
+        for (int i = 0; mLinearPersonalBillContainer.getChildCount() > i; i++) {
+            v = mLinearPersonalBillContainer.getChildAt(i);
+            tvTextName = v.findViewById(R.id.memberNameTextView);
+            tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
+            memberOrderLinearLayout = v.findViewById(R.id.memberLinearLayout);
+            Objects.requireNonNull(tvTextName).setTextColor(Color.BLACK);
+            Objects.requireNonNull(tvMemberPrice).setTextColor(Color.BLACK);
+            Objects.requireNonNull(tvMemberPrice).setText(((OrderDetail) (v.getTag())).paid_total_amount);
+
+            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
+            if(memberOrderLinearLayout != null)
+            Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    private void disablePersonalBillofSelectedGuest(String[] selectedGuestArr) {
+        resetPersonalBill();
+        View v;
+        TextView tvTextName = null, tvMemberPrice = null, tvOneOverN = null;
+        LinearLayout memberOrderLinearLayout = null;
+        for (int i = 0; mLinearPersonalBillContainer.getChildCount() > i; i++) {
+            v = mLinearPersonalBillContainer.getChildAt(i);
+            OrderDetail a_order = (OrderDetail) v.getTag();
+            for (int j = 0; selectedGuestArr.length > j; j++) {
+                switch (mPayType) {
+                    case "dutch":
+                        if (OrderFragment.getGuestName(a_order.reserve_guest_id).equals(selectedGuestArr[j].trim())) {
+                            tvTextName = v.findViewById(R.id.memberNameTextView);
+                            tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
+                            memberOrderLinearLayout = v.findViewById(R.id.memberLinearLayout);
+                            Objects.requireNonNull(tvTextName).setTextColor(Color.parseColor("#88cccccc"));
+                            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
+                            if(memberOrderLinearLayout != null)
+                            Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.INVISIBLE);
+
+                        }
+                        break;
+                    case "one_over_n":
+                        if (OrderFragment.getGuestName(a_order.reserve_guest_id).equals(selectedGuestArr[j].trim())) {
+                            tvTextName = v.findViewById(R.id.memberNameTextView);
+                            tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
+                            tvOneOverN = v.findViewById(R.id.member01OneOverNTextView);
+                            Objects.requireNonNull(tvTextName).setTextColor(Color.parseColor("#88cccccc"));
+                            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
+                            Objects.requireNonNull(tvOneOverN).setVisibility(View.INVISIBLE);
+                        }
+                        break;
+                }
+            }
         }
     }
 

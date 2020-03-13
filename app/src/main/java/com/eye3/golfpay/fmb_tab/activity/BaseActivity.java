@@ -164,7 +164,17 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.fl_order_left_board, mBaseFragment).commitAllowingStateLoss();
+        transaction.replace(R.id.applyFragmentLinear, mBaseFragment).commitAllowingStateLoss();
+
+    }
+
+    public void removeFragment(BaseFragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+       transaction.setCustomAnimations(R.anim.push_out_down, R.anim.pull_in_top);
+
+        transaction.remove(fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
     }
 
@@ -373,6 +383,8 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
                 mOnKeyBackPressedListener.onBack();
         }
     }
+
+
 
     /**
      * Navigation 메뉴들과 타이틀 View 핸들 설정

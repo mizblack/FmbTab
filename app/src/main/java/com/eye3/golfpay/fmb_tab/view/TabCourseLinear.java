@@ -51,7 +51,7 @@ public class TabCourseLinear extends LinearLayout {
     ArrayAdapter arrayAdapter;
     public ScoreDialog sDialog;
     ScoreInputFinishListener inputFinishListener;
-    //ctype에따라 정렬된 코스
+    //ctype 에따라 정렬된 코스
     Course mCtypeArrangedCourse;
 
     public TabCourseLinear(Context context) {
@@ -60,7 +60,7 @@ public class TabCourseLinear extends LinearLayout {
     }
 
     /*
-     * idx : tab의 순서idx (순서대로 tabcourselinear 뿌려주면됨)
+     * idx : tab 의 순서 idx (순서대로 tabCourseLinear 뿌려주면됨)
      */
     public TabCourseLinear(Context context, ArrayList<Player> playerList, Course ctyped, int tabIdx) {
         super(context);
@@ -85,7 +85,7 @@ public class TabCourseLinear extends LinearLayout {
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
         mDistanceSpinner = v.findViewById(R.id.spinn_distance);
-        arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.spinn_array));
+        arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.spinn_array));
         mDistanceSpinner.setAdapter(arrayAdapter);
         mDistanceSpinner.setSelection(0);
         //거리 환산 적용
@@ -96,11 +96,11 @@ public class TabCourseLinear extends LinearLayout {
                 if ((parent.getItemAtPosition(position)).toString().equals("yard")) {
                     Global.isYard = true;
                     mDistanceSpinner.setSelection(2);
-                    resetHoleInforLinear(mContext, mCtypeArrangedCourse);
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
                 } else if ((parent.getItemAtPosition(position)).toString().equals("meter")) {
                     Global.isYard = false;
                     mDistanceSpinner.setSelection(1);
-                    resetHoleInforLinear(mContext, mCtypeArrangedCourse);
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
                 }
             }
 
@@ -265,7 +265,6 @@ public class TabCourseLinear extends LinearLayout {
                                     break;
                                 case R.id.hole3_ll:
                                     mHoleScoreLayoutIdx = 2;
-                                    ;
                                     notifyDataSetChanged();
                                     break;
                                 case R.id.hole4_ll:
@@ -509,7 +508,7 @@ public class TabCourseLinear extends LinearLayout {
         int total_score = 0;
 
         for (int i = 0; course.holes.size() > i; i++) {
-            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting))
+            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting ))
                 total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.putting);
         }
 
