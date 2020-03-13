@@ -39,7 +39,7 @@ public class TabCourseLinear extends LinearLayout {
     LinearLayout mHolderLinear;
     //홀정보레이아웃 어레이
     HoleInfoLinear[] holeInfoLinear = new HoleInfoLinear[10];
-    RecyclerView mScoreRecylerView;
+    RecyclerView mScoreRecyclerView;
     ScoreAdapter mScoreAdapter;
     Context mContext;
     //각홀의 레이아웃 아이디
@@ -62,11 +62,11 @@ public class TabCourseLinear extends LinearLayout {
     /*
      * idx : tab 의 순서 idx (순서대로 tabCourseLinear 뿌려주면됨)
      */
-    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course ctyped, int tabIdx) {
-        super(context);
-        init(context, playerList, ctyped, tabIdx);
-
-    }
+//    public TabCourseLinear(Context context, ArrayList<Player> playerList, Course ctyped, int tabIdx) {
+//        super(context);
+//        init(context, playerList, ctyped, tabIdx);
+//
+//    }
 
     public TabCourseLinear(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -112,7 +112,7 @@ public class TabCourseLinear extends LinearLayout {
 
         createHoleInfoLinear(mContext, mCtypeArrangedCourse);
 
-        mScoreRecylerView = v.findViewById(R.id.scoreRecylerView);
+        mScoreRecyclerView = v.findViewById(R.id.scoreRecylerView);
         initRecyclerView(mPlayerList, mTabIdx);
         addView(v);
 
@@ -165,11 +165,11 @@ public class TabCourseLinear extends LinearLayout {
     private void initRecyclerView(ArrayList<Player> playerList, int tabIdx) {
         LinearLayoutManager mManager;
 
-        mScoreRecylerView.setHasFixedSize(true);
+        mScoreRecyclerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
-        mScoreRecylerView.setLayoutManager(mManager);
+        mScoreRecyclerView.setLayoutManager(mManager);
         mScoreAdapter = new ScoreAdapter(mContext, playerList, playerList.get(0).playingCourse.get(tabIdx));
-        mScoreRecylerView.setAdapter(mScoreAdapter);
+        mScoreRecyclerView.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
     }
 
@@ -530,6 +530,5 @@ public class TabCourseLinear extends LinearLayout {
         }
         return totalDistance;
     }
-
-
+    
 }
