@@ -280,7 +280,9 @@ public class ScoreInserter extends RelativeLayout {
                     final int idx = i;
                     mParScoreTextViewArr[idx] = new TextView(mContext);
                     mParScoreTextViewArr[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-                    mParScoreTextViewArr[idx].setTextAppearance(R.style.ScoreInserterTextView);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        mParScoreTextViewArr[idx].setTextAppearance(R.style.ScoreInserterTextView);
+                    }
                     mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
                     mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
@@ -330,7 +332,9 @@ public class ScoreInserter extends RelativeLayout {
                     final int idx = i;
                     mPuttScoreTextViewArr[i] = new TextView(mContext);
                     mPuttScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-                    mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
+                    }
                     mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
                     mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
