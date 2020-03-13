@@ -23,6 +23,7 @@ public class OrderDetail implements Serializable {
     public ArrayList<OrderedMenuItem> getOrderedMenuItemList() {
         return mOrderedMenuItemList;
     }
+
     public OrderDetail() {
 
     }

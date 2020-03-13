@@ -21,7 +21,8 @@ public class OrderedMenuItem implements Serializable {
     public String total;
     //메뉴이름
     public String name;
-     public OrderedMenuItem(){
+
+    public OrderedMenuItem(){
          this.id ="";
          this.qty = "0";
          this.price = "0";

@@ -25,7 +25,8 @@ public class NoticeItem implements Serializable {
     @SerializedName("updated_at")
     public String mUpdatedAt;
     @SerializedName("use_yn")
-    public Object mUseYn;
+    public String mUseYn = "n";
+
 
     public int getAdminsId() {
         return mAdminsId;
@@ -87,7 +88,7 @@ public class NoticeItem implements Serializable {
         return mUseYn;
     }
 
-    public void setUseYn(Object useYn) {
+    public void setUseYn(String useYn) {
         mUseYn = useYn;
     }
 

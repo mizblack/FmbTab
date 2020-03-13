@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
@@ -24,11 +25,12 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoticeFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
-    private ArrayList<NoticeItem> mNoticeItemList = new ArrayList<>();
+    private List<NoticeItem> mNoticeItemList = new ArrayList<>();
     private NoticeAdapter mNoticeAdapter;
     private RecyclerView mRecyclerNotice;
     private TextView mTitleTextView, mContentTextView, mTimeTextView;
@@ -73,7 +75,7 @@ public class NoticeFragment extends BaseFragment {
 
     }
 
-    private void initRecyclerView(ArrayList<NoticeItem> noticeList) {
+    private void initRecyclerView(List<NoticeItem> noticeList) {
         LinearLayoutManager mManager;
         if (noticeList == null)
             return;
@@ -86,6 +88,11 @@ public class NoticeFragment extends BaseFragment {
     }
 
     private void showNoticeDetail(NoticeItem item) {
+
+        if(item.mUseYn.equals("Y") ) {
+            item.mUseYn = "y";
+
+        }
         imageLayout.setVisibility(View.GONE);
         mTitleTextView.setText(item.mTitle);
         mTimeTextView.setText("작성일 " + item.mCreatedAt);
@@ -93,13 +100,13 @@ public class NoticeFragment extends BaseFragment {
     }
 
 
-    private class NoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class NoticeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         Context context;
-        ArrayList<NoticeItem> noticeList;
+        List<NoticeItem> noticeList;
 
 
-        NoticeAdapter(Context context, ArrayList<NoticeItem> noticeList) {
+        NoticeAdapter(Context context, List<NoticeItem> noticeList) {
             this.context = context;
             this.noticeList = noticeList;
 
@@ -107,9 +114,9 @@ public class NoticeFragment extends BaseFragment {
 
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view;
-            RecyclerView.ViewHolder viewHolder = null;
+            ViewHolder viewHolder = null;
             view = LayoutInflater.from(mContext).inflate(R.layout.notice_row, parent, false);
             viewHolder = new NoticeAdapter.NoticeItemViewHolder(view);
 
@@ -119,17 +126,22 @@ public class NoticeFragment extends BaseFragment {
 
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (noticeList == null)
                 return;
-            NoticeItemViewHolder viewHolder = (NoticeItemViewHolder) holder;
+            final NoticeItemViewHolder viewHolder = (NoticeItemViewHolder) holder;
             viewHolder.tvTitle.setText(noticeList.get(position).mTitle);
             viewHolder.tvContent.setText(Html.fromHtml(noticeList.get(position).mContents));
             viewHolder.tvDateTime.setText(noticeList.get(position).mCreatedAt);
             viewHolder.itemView.setTag(noticeList.get(position));
+            if(noticeList.get(position).mUseYn.equals("y"))
+                viewHolder.imgNew.setVisibility(View.INVISIBLE);
+            else
+                viewHolder.imgNew.setVisibility(View.VISIBLE);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    viewHolder.imgNew.setVisibility(View.INVISIBLE);
                     showNoticeDetail((NoticeItem) v.getTag());
                 }
             });
@@ -141,7 +153,7 @@ public class NoticeFragment extends BaseFragment {
         }
 
 
-        class NoticeItemViewHolder extends RecyclerView.ViewHolder {
+        class NoticeItemViewHolder extends ViewHolder {
             TextView tvTitle, tvContent, tvDateTime;
             ImageView imgNew;
 
@@ -159,16 +171,24 @@ public class NoticeFragment extends BaseFragment {
     }
 
     private void getNoticeList(Context context) {
-        showProgress("랭킹 정보를 가져오는 중입니다.");
+        showProgress("공지사항 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getNoticeList(context, new DataInterface.ResponseCallback<ResponseData<NoticeItem>>() {
             @Override
             public void onSuccess(ResponseData<NoticeItem> response) {
                 hideProgress();
                 //나중에 수정할것
                 if (response.getResultCode().equals("ok")) {
-                    mNoticeItemList = (ArrayList<NoticeItem>) response.getList();
-                    AppDef.previousCntOfNotice = mNoticeItemList.size();
-                    initRecyclerView(mNoticeItemList);
+                    mNoticeItemList = (List<NoticeItem>) response.getList();
+                    AppDef.previousCntOfNotice =  Global.noticeItemArrayList.size();
+                    if(Global.noticeItemArrayList.size() == 0)
+                        Global.noticeItemArrayList = mNoticeItemList;
+                    if(Global.noticeItemArrayList.size() < mNoticeItemList.size()) {
+                        for(int i = Global.noticeItemArrayList.size() -1; mNoticeItemList.size() > i ;i++) {
+                            Global.noticeItemArrayList.add(mNoticeItemList.get(i));
+                        }
+                    }
+
+                    initRecyclerView(Global.noticeItemArrayList);
 
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -189,6 +209,11 @@ public class NoticeFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mNoticeItemList = null;
+    }
 }
 
 

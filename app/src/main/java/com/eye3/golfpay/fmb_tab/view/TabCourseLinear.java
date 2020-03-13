@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,8 +25,6 @@ import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
-import com.eye3.golfpay.fmb_tab.net.DataInterface;
-import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
@@ -118,44 +115,6 @@ public class TabCourseLinear extends LinearLayout {
 
     }
 
-    private void resetHoleInforLinear(Context context, Course course) {
-        //  mHolderLinear.removeAllViewsInLayout();
-        ArrayList<Hole> holes = course.holes;
-
-        int totalPar = 0;
-        int totalMeter = 0;
-
-        for (int i = 0; mHolderLinear.getChildCount() - 1 > i; i++) {
-            ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvHoleNo.setText(holes.get(i).hole_no);
-            ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvPar.setText(holes.get(i).par);
-            //((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(holes.get(i).hole_total_size);
-            if (Global.isYard) {
-                if (holes.get(i).hole_total_size != null)
-                    ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(holes.get(i).hole_total_size))));
-                else
-                    ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText("");
-            } else
-                ((HoleInfoLinear) mHolderLinear.getChildAt(i)).tvMeter.setText(holes.get(i).hole_total_size);
-
-            if (holes.get(i).par != null && Util.isInteger(holes.get(i).par))
-                totalPar = totalPar + Integer.valueOf(holes.get(i).par);
-            if (holes.get(i).hole_total_size != null && Util.isInteger(holes.get(i).hole_total_size))
-                totalMeter = totalMeter + Integer.valueOf(holes.get(i).hole_total_size);
-        }
-        //홀인포 전체를 나타내는 마지막 셀정보 입력
-        Hole totalHole = new Hole();
-        totalHole.par = String.valueOf(totalPar);
-        totalHole.hole_total_size = String.valueOf(totalMeter);
-
-        HoleInfoLinear totalLinear = ((HoleInfoLinear) mHolderLinear.getChildAt(mHolderLinear.getChildCount() - 1));
-        totalLinear.tvPar.setText(totalHole.par);
-        TextView tvCourseName = totalLinear.findViewById(R.id.course_name);
-        TextView tvCoursId = totalLinear.findViewById(R.id.hole_no);
-        tvCoursId.setVisibility(View.GONE);
-        tvCourseName.setVisibility(View.VISIBLE);
-        tvCourseName.setText(course.courseName);
-    }
-
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
         if (listener != null)
             this.inputFinishListener = listener;
@@ -178,21 +137,20 @@ public class TabCourseLinear extends LinearLayout {
      *
      */
     private void createHoleInfoLinear(Context context, Course course) {
-        // mHolderLinear.removeAllViewsInLayout();
+        mHolderLinear.removeAllViewsInLayout();
+
         ArrayList<Hole> holes = course.holes;
 
         int totalPar = 0;
         int totalMeter = 0;
         for (int k = 0; holes.size() > k; k++) {
             holeInfoLinear[k] = new HoleInfoLinear(context, holes.get(k));
-
             holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(holeInfoLinear[k]);
-
             if (holes.get(k).par != null && Util.isInteger(holes.get(k).par))
-                totalPar = totalPar + Integer.valueOf(holes.get(k).par);
+                totalPar = totalPar + Integer.parseInt(holes.get(k).par);
             if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
-                totalMeter = totalMeter + Integer.valueOf(holes.get(k).hole_total_size);
+                totalMeter = totalMeter + Integer.parseInt(holes.get(k).hole_total_size);
         }
         //홀인포 전체를 나타내는 마지막 셀정보 입력
         Hole totalHole = new Hole();
@@ -215,21 +173,21 @@ public class TabCourseLinear extends LinearLayout {
         Course mCurrentCourse;
         Context mContext;
 
-        public ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
+        ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
             this.playerList = playerList;
             this.mCurrentCourse = mCourse;
             this.mContext = context;
         }
 
 
-        public class ScoreItemViewHolder extends RecyclerView.ViewHolder {
-            protected TextView tvRank, tvName;
-            protected LinearLayout[] holeScoreLayout = new LinearLayout[9];
-            protected LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
-            protected TextView wholeTotal;
-            protected LinearLayout ll_score_row;
+        class ScoreItemViewHolder extends RecyclerView.ViewHolder {
+            TextView tvRank, tvName;
+            LinearLayout[] holeScoreLayout = new LinearLayout[9];
+            LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
+            TextView wholeTotal;
+            LinearLayout ll_score_row;
 
-            public ScoreItemViewHolder(View view) {
+            ScoreItemViewHolder(View view) {
                 super(view);
                 ll_score_row = view.findViewById(R.id.ll_score_row);
                 tvRank = view.findViewById(R.id.rank);
@@ -306,27 +264,27 @@ public class TabCourseLinear extends LinearLayout {
 
             }
 
-            private View.OnClickListener leftListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    inputFinishListener.OnScoreInputFinished(mPlayerList);
-                    sDialog.dismiss();
-
-                }
-            };
-
-            private View.OnClickListener rightListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //
-                }
-            };
+//            private View.OnClickListener leftListener = new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    inputFinishListener.OnScoreInputFinished(mPlayerList);
+//                    sDialog.dismiss();
+//
+//                }
+//            };
+//
+//            private View.OnClickListener rightListener = new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    //
+//                }
+//            };
 
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
                 public void OnScoreInputFinished(ArrayList<Player> playerList) {
                     mPlayerList = playerList;
-                    //scorefragment로 화면갱신을위한 observer 적용
+                    //scoreFragment 로 화면갱신을위한 observer 적용
                     inputFinishListener.OnScoreInputFinished(mPlayerList);
 //                    notifyDataSetChanged();
                 }
@@ -334,12 +292,12 @@ public class TabCourseLinear extends LinearLayout {
         }
 
 
-        // RecyclerView에 새로운 데이터를 보여주기 위해 필요한 ViewHolder를 생성해야 할 때 호출됩니다.
+        // RecyclerView 에 새로운 데이터를 보여주기 위해 필요한 ViewHolder 를 생성해야 할 때 호출됩니다.
+        @NonNull
         @Override
-        public ScoreAdapter.ScoreItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        public ScoreAdapter.ScoreItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.score_row, viewGroup, false);
-            ScoreAdapter.ScoreItemViewHolder viewHolder = new ScoreAdapter.ScoreItemViewHolder(view);
-            return viewHolder;
+            return new ScoreItemViewHolder(view);
         }
 
         /*
@@ -348,7 +306,6 @@ public class TabCourseLinear extends LinearLayout {
          */
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
-            final int pos = i;                            //course tab index
             Course course = playerList.get(i).playingCourse.get(mTabIdx);
 
             if (playerList.get(i).Ranking.equals("1")) {
@@ -361,10 +318,17 @@ public class TabCourseLinear extends LinearLayout {
             for (int j = 0; scoreItemViewHolder.holeScoreLayout.length > j; j++) {
                 if (j == mHoleScoreLayoutIdx) {
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.GRAY);
-                    holeInfoLinear[j].setBackgroundColor(Color.BLUE);
+                    holeInfoLinear[j].setBackgroundColor(0xff00abc5);
+                    holeInfoLinear[j].tvHoleNo.setTextColor(0xffffffff);
+                    holeInfoLinear[j].tvPar.setTextColor(0xfff5f7f8);
+                    holeInfoLinear[j].tvMeter.setTextColor(0xfff5f7f8);
                 } else {
                     scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.WHITE);
-                    holeInfoLinear[j].setBackgroundColor(Color.WHITE);
+                    holeInfoLinear[j].setBackgroundColor(0xffffffff);
+                    holeInfoLinear[j].tvHoleNo.setTextColor(0xff999999);
+                    holeInfoLinear[j].tvPar.setTextColor(0xff999999);
+                    holeInfoLinear[j].tvMeter.setTextColor(0xff999999);
+
                     if (i % 2 == 0) {
                         scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#EBEFF1"));
                         scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
@@ -440,7 +404,7 @@ public class TabCourseLinear extends LinearLayout {
 
         switch (playedHole.par) {
             case "3":
-                switch (Integer.valueOf(playedHole.playedScore.tar)) {
+                switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
@@ -450,7 +414,7 @@ public class TabCourseLinear extends LinearLayout {
                 }
                 break;
             case "4":
-                switch (Integer.valueOf(playedHole.playedScore.tar)) {
+                switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
@@ -464,7 +428,7 @@ public class TabCourseLinear extends LinearLayout {
                 break;
 
             case "5":
-                switch (Integer.valueOf(playedHole.playedScore.tar)) {
+                switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
@@ -492,12 +456,12 @@ public class TabCourseLinear extends LinearLayout {
         if (istar) {
             for (int i = 0; course.holes.size() > i; i++) {
                 if (Util.isIntegerNumber(course.holes.get(i).playedScore.tar))
-                    total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.tar);
+                    total_score = total_score + Integer.parseInt(course.holes.get(i).playedScore.tar);
             }
         } else {
             for (int i = 0; course.holes.size() > i; i++) {
                 if (Util.isIntegerNumber(course.holes.get(i).playedScore.par))
-                    total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.par);
+                    total_score = total_score + Integer.parseInt(course.holes.get(i).playedScore.par);
             }
         }
         //다시 스트링으로 변환해 리턴
@@ -508,8 +472,8 @@ public class TabCourseLinear extends LinearLayout {
         int total_score = 0;
 
         for (int i = 0; course.holes.size() > i; i++) {
-            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting ))
-                total_score = total_score + Integer.valueOf(course.holes.get(i).playedScore.putting);
+            if (Util.isIntegerNumber(course.holes.get(i).playedScore.putting))
+                total_score = total_score + Integer.parseInt(course.holes.get(i).playedScore.putting);
         }
 
         //다시 스트링으로 변환해 리턴
@@ -525,10 +489,11 @@ public class TabCourseLinear extends LinearLayout {
                 return -1;
             } else {
                 if (Util.isNumber(holes[i].hole_total_size))
-                    totalDistance = totalDistance + Integer.valueOf(holes[i].hole_total_size);
+                    totalDistance = totalDistance + Integer.parseInt(holes[i].hole_total_size);
             }
         }
         return totalDistance;
     }
-    
+
 }
+

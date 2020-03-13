@@ -8,6 +8,7 @@ import android.os.Environment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
+import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -15,6 +16,7 @@ import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Global {
 
@@ -77,7 +79,7 @@ public class Global {
     public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
     public static ArrayList<Player> playerList = new ArrayList<>();
     public static Course CurrentCourse;
-
+    public static List<NoticeItem> noticeItemArrayList = new ArrayList<>();
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
     //    public static Location CurrentLocation ;
     @SuppressLint("StaticFieldLeak")

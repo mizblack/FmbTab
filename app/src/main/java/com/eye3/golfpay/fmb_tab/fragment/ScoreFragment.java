@@ -43,7 +43,6 @@ public class ScoreFragment extends BaseFragment {
     //코스스코어보드
     TabCourseLinear mScoreBoard;
     int mTabIdx = 0;
-    LinearLayout mTabHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
