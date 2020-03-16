@@ -95,8 +95,10 @@
 
         <LinearLayout
             android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="60dp"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            >
           <dreammaker.android.widget.Spinner
               android:id="@+id/spinn_pay_person"
               android:layout_width="match_parent"

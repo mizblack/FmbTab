@@ -1,7 +1,6 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,8 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +22,6 @@ import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -37,12 +33,13 @@ public class ApplyFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
     LinearLayout mDutchPayLInear, mOneOverNLinear, mLinearPersonalBillContainer;
-    int TOTAL_NUM_OF_MEMBER = 0;
+    int TOTAL_PAY_MEMBER = 0;
     int mTotalAmount;
     String mPayType = "dutch";
     private ImageView mArrow;
     Spinner mSpinn_Pay_Person;
     BasicSpinnerAdapter mSpinnAdapter;
+    String[] mPayPersonList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +49,8 @@ public class ApplyFragment extends BaseFragment {
         if (bundle != null) {
             mPayType = bundle.get("payType").toString();
         }
-        TOTAL_NUM_OF_MEMBER = Global.orderDetailList.size();
+        TOTAL_PAY_MEMBER = Global.orderDetailList.size();
+        mPayPersonList = new String[TOTAL_PAY_MEMBER];
         mTotalAmount = getTheTotalInvoice(Global.orderDetailList);
     }
 
@@ -105,6 +103,10 @@ public class ApplyFragment extends BaseFragment {
         //  mSpinnAdapter.setDropDownViewResource( R.layout.simple_multiple_choice_single_line_item);
         mSpinn_Pay_Person.setAdapter(mSpinnAdapter);
         mSpinn_Pay_Person.setSelection(0);
+        mSpinn_Pay_Person.setText("결제인원 선택");
+        mSpinn_Pay_Person.setGravity(Gravity.CENTER);
+        mSpinn_Pay_Person.setTextColor(Color.WHITE);
+        mSpinn_Pay_Person.setBackgroundColor(Color.BLACK);
 //        mSpinn_Pay_Person.getDialogBuilder().setPositiveButton("확인", new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
@@ -126,8 +128,20 @@ public class ApplyFragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().length() > 0) {
-                    String[] list = s.toString().split(",");
-                    disablePersonalBillofSelectedGuest(list);
+                    mPayPersonList = s.toString().split(",");
+                    TOTAL_PAY_MEMBER = mPayPersonList.length;
+                    switch (mPayType) {
+                        case "dutch":
+                            createPersonalDutchPayBillViewList(Global.orderDetailList);
+                            disablePersonalBillofSelectedGuest(mPayPersonList);
+                            break;
+                        case "one_over_n":
+                            createOneOverNBillViewList(Global.orderDetailList);
+                            disablePersonalBillofSelectedGuest(mPayPersonList);
+                            break;
+
+                    }
+
                 }
             }
         });
@@ -164,7 +178,7 @@ public class ApplyFragment extends BaseFragment {
 
         String strPrice = AppDef.priceMapper(Integer.valueOf(orderDetail.paid_total_amount));
         tvPrice.setText(strPrice + "원");
-        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.memberOrderLinearLayout);
+        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
 
         for (int i = 0; orderDetail.mOrderedMenuItemList.size() > i; i++) {
             OrderedMenuItem a_item = orderDetail.mOrderedMenuItemList.get(i);
@@ -184,17 +198,15 @@ public class ApplyFragment extends BaseFragment {
 
     private View createOneOverNBillView(OrderDetail orderDetail) {
         String paidPortion = "1";
-
-        LayoutInflater inflater = (LayoutInflater)
-                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.personal_bill, null, false);
 
         TextView tvName = v.findViewById(R.id.memberNameTextView);
         tvName.setText(OrderFragment.getGuestName(orderDetail.reserve_guest_id));
         TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
-        String strAmount = String.valueOf(mTotalAmount / TOTAL_NUM_OF_MEMBER);
+        String strAmount = String.valueOf(mTotalAmount / TOTAL_PAY_MEMBER);
         tvPrice.setText(strAmount + "원");
-        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.memberOrderLinearLayout);
+        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
 
         TextView TvOneOverN = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
         LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(250, 50);
@@ -202,7 +214,7 @@ public class ApplyFragment extends BaseFragment {
         lllp.leftMargin = 10;
         TvOneOverN.setLayoutParams(lllp);
         TvOneOverN.setPadding(8, 0, 0, 0);
-        String str = paidPortion + "/" + String.valueOf(TOTAL_NUM_OF_MEMBER);
+        String str = paidPortion + "/" + String.valueOf(TOTAL_PAY_MEMBER);
         TvOneOverN.setText(str);
         memberOrderLinearLayout.addView(TvOneOverN);
         return v;
@@ -219,7 +231,7 @@ public class ApplyFragment extends BaseFragment {
     }
 
     private void createOneOverNBillViewList(ArrayList<OrderDetail> orderDetailArrayList) {
-
+        mLinearPersonalBillContainer.removeAllViewsInLayout();
         for (int i = 0; orderDetailArrayList.size() > i; i++) {
             View orderbillView = createOneOverNBillView(orderDetailArrayList.get(i));
             orderbillView.setTag(orderDetailArrayList.get(i));
@@ -240,11 +252,20 @@ public class ApplyFragment extends BaseFragment {
             Objects.requireNonNull(tvMemberPrice).setTextColor(Color.BLACK);
             Objects.requireNonNull(tvMemberPrice).setText(((OrderDetail) (v.getTag())).paid_total_amount);
 
-            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
-            if(memberOrderLinearLayout != null)
-            Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.VISIBLE);
+            Objects.requireNonNull(tvMemberPrice).setVisibility(View.VISIBLE);
+            if (memberOrderLinearLayout != null)
+                Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.VISIBLE);
 
         }
+    }
+
+    private boolean isExist(String name, String[] selectedGuestArr) {
+        for (int i = 0; selectedGuestArr.length > i; i++) {
+            if (name.equals(selectedGuestArr[i].trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void disablePersonalBillofSelectedGuest(String[] selectedGuestArr) {
@@ -255,34 +276,40 @@ public class ApplyFragment extends BaseFragment {
         for (int i = 0; mLinearPersonalBillContainer.getChildCount() > i; i++) {
             v = mLinearPersonalBillContainer.getChildAt(i);
             OrderDetail a_order = (OrderDetail) v.getTag();
-            for (int j = 0; selectedGuestArr.length > j; j++) {
-                switch (mPayType) {
-                    case "dutch":
-                        if (OrderFragment.getGuestName(a_order.reserve_guest_id).equals(selectedGuestArr[j].trim())) {
-                            tvTextName = v.findViewById(R.id.memberNameTextView);
-                            tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
-                            memberOrderLinearLayout = v.findViewById(R.id.memberLinearLayout);
-                            Objects.requireNonNull(tvTextName).setTextColor(Color.parseColor("#88cccccc"));
-                            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
-                            if(memberOrderLinearLayout != null)
-                            Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.INVISIBLE);
+            switch (mPayType) {
+                case "dutch":
+                    if (!isExist(OrderFragment.getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
+                        tvTextName = v.findViewById(R.id.memberNameTextView);
+                        tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
+                        memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
+                        tvTextName.setTextColor(Color.parseColor("#88cccccc"));
+                        tvMemberPrice.setVisibility(View.VISIBLE);
+                        tvMemberPrice.setTextColor(Color.parseColor("#88cccccc"));
+                        if (memberOrderLinearLayout != null)
+                            memberOrderLinearLayout.setVisibility(View.INVISIBLE);
 
-                        }
-                        break;
-                    case "one_over_n":
-                        if (OrderFragment.getGuestName(a_order.reserve_guest_id).equals(selectedGuestArr[j].trim())) {
-                            tvTextName = v.findViewById(R.id.memberNameTextView);
-                            tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
-                            tvOneOverN = v.findViewById(R.id.member01OneOverNTextView);
-                            Objects.requireNonNull(tvTextName).setTextColor(Color.parseColor("#88cccccc"));
-                            Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
-                            Objects.requireNonNull(tvOneOverN).setVisibility(View.INVISIBLE);
-                        }
-                        break;
-                }
+                    } else {
+                        Objects.requireNonNull(tvMemberPrice).setVisibility(View.VISIBLE);
+                    }
+
+                    break;
+                case "one_over_n":
+                    if (!isExist(OrderFragment.getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
+                        tvTextName = v.findViewById(R.id.memberNameTextView);
+                        tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
+                        memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
+                        tvOneOverN = v.findViewById(R.id.member01OneOverNTextView);
+                        Objects.requireNonNull(tvTextName).setTextColor(Color.parseColor("#88cccccc"));
+                        Objects.requireNonNull(tvMemberPrice).setVisibility(View.INVISIBLE);
+                        Objects.requireNonNull(tvMemberPrice).setTextColor(Color.parseColor("#88cccccc"));
+                        Objects.requireNonNull(tvOneOverN).setVisibility(View.INVISIBLE);
+                        if (memberOrderLinearLayout != null)
+                            Objects.requireNonNull(memberOrderLinearLayout).setVisibility(View.INVISIBLE);
+                    }
+                    break;
             }
         }
     }
-
-
 }
+
+

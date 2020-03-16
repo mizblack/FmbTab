@@ -206,15 +206,16 @@ public class OrderFragment extends BaseFragment {
         orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (orderOrApplyBtn.getText().toString().equals("주문하기")) {
-                    mTabsRootLinear.setVisibility(View.VISIBLE);
-                    orderOrApplyBtn.setText("적용하기");
-                    sendShadeOrders();
-                } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
+                if (orderOrApplyBtn.getText().toString().equals("주문하기") || orderOrApplyBtn.getText().toString().equals("추가 주문하기") ) {
                     mTabsRootLinear.setVisibility(View.INVISIBLE);
-                    //  orderOrApplyBtn.setText("주문하기");
-                    GoOrderLeftBoard(new ApplyFragment(), null);
+                    orderOrApplyBtn.setText("추가 주문하기");
+                    sendShadeOrders();
 
+//                } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
+//                    mTabsRootLinear.setVisibility(View.INVISIBLE);
+//                    //  orderOrApplyBtn.setText("주문하기");
+//                    GoOrderLeftBoard(new ApplyFragment(), null);
+//
                 }
             }
         });
@@ -222,13 +223,8 @@ public class OrderFragment extends BaseFragment {
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
-                    mTabsRootLinear.setVisibility(View.VISIBLE);
-                   // mTabsRootLinear.setVisibility(View.INVISIBLE);
 
-                } else {
                     init();
-                }
             }
         });
     }
@@ -717,8 +713,8 @@ public class OrderFragment extends BaseFragment {
             public void onSuccess(ResponseData<Object> response) {
                 if (response.getResultCode().equals("ok")) {
                     hideProgress();
-                    orderOrApplyBtn.setText("적용하기");
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    GoOrderLeftBoard(new ApplyFragment(), null);
                     //init();
                 }
             }

@@ -43,6 +43,7 @@ public class NoticeFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
+
     }
 
     @Override
@@ -170,6 +171,9 @@ public class NoticeFragment extends BaseFragment {
         }
     }
 
+    private void maekeNull(List<NoticeItem> list){
+               list = null;
+    }
     private void getNoticeList(Context context) {
         showProgress("공지사항 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getNoticeList(context, new DataInterface.ResponseCallback<ResponseData<NoticeItem>>() {
