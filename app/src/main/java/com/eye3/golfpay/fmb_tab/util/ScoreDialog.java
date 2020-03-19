@@ -35,6 +35,7 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.ScoreInserter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ScoreDialog extends Dialog {
@@ -51,7 +52,7 @@ public class ScoreDialog extends Dialog {
     private View.OnClickListener mRightClickListener;
 
     RecyclerView recycler;
-    ArrayList<Player> mPlayerList;
+    List<Player> mPlayerList;
     Course mCurrentCourse;
     ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
@@ -127,7 +128,7 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
+        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
 
     }
 
@@ -139,7 +140,7 @@ public class ScoreDialog extends Dialog {
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, ArrayList<Player> mPlayerList, Course currentCourse, int mTabIdx, int mHoleScoreLayoutIdx) {
+                       View.OnClickListener rightListener, List<Player> mPlayerList, Course currentCourse, int mTabIdx, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContext = context;
         this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
@@ -168,10 +169,10 @@ public class ScoreDialog extends Dialog {
 
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-        ArrayList<Player> mPlayerList;
+        List<Player> mPlayerList;
         Course mCurrentCourse;
 
-        public ScoreInputAdapter(Context context, ArrayList<Player> playerList, Course currentCourse) {
+        public ScoreInputAdapter(Context context, List<Player> playerList, Course currentCourse) {
 
             this.mPlayerList = playerList;
             this.mCurrentCourse = currentCourse;
@@ -352,7 +353,7 @@ public class ScoreDialog extends Dialog {
                 if ("ok".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                     mReserveScore = null; //다음 입력을 위해 clear한다.
-                    inputFinishListener.OnScoreInputFinished(mPlayerList);
+                    inputFinishListener.OnScoreInputFinished((ArrayList<Player>) mPlayerList);
                     dismiss();
                 } else if ("fail".equals(response.getResultCode())) {
                     Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();

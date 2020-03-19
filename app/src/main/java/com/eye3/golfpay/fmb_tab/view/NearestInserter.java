@@ -13,7 +13,8 @@ import com.eye3.golfpay.fmb_tab.R;
 import java.util.List;
 
 public class NearestInserter extends Inserter {
-    List<Integer> mNearestInserterList;
+  //  List<Integer> mNearestInserterList;
+
     public NearestInserter(Context context) {
         super(context);
     }
@@ -23,30 +24,18 @@ public class NearestInserter extends Inserter {
         init();
     }
 
-    private void init(){
+    private void init() {
         createIntegerArrayList();
-        createNearestInserter();
+        createInserter();
     }
 
     @Override
     public void createIntegerArrayList() {
         //단위 cm  10cm~ 20M
-        mNearestInserterList =  incrementsLoop(10, 2000, 100);
-    }
-
-    public void createNearestInserter(){
-        for (int i = 0; mNearestInserterList.size() > i; i++) {
-            TextView tvLongeset = new TextView(mContext);
-            TextView tv = new TextView(new ContextThemeWrapper(mContext, R.style.ScoreInserterTextView), null, 0);
-            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
-            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, height);
-            tv.setLayoutParams(param);
-            tvLongeset.setTag(mNearestInserterList.get(i));
-            tvLongeset.setText(String.valueOf(mNearestInserterList.get(i)));
-            mLinearScoreInserterContainer.addView(tvLongeset);
-        }
+        mIntInserterList = incrementsLoop(10, 2000, 100);
     }
 
 
 }
+
+

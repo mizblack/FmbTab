@@ -8,6 +8,7 @@ import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  *   스코어를 서버에 최종적으로 보낼때 사용, ReserveScore에 리스트를 포함함.
@@ -33,7 +34,7 @@ public class ReserveScore implements Serializable {
     @Expose
     public ArrayList<ScoreSend> guest_score_list = new ArrayList<>();
 
-    public ReserveScore(ArrayList<Player> playerList, Course playingCourse, String reserve_id, String hole_id, int tabIdx, int mHoleScoreLayoutIdx) {
+    public ReserveScore(List<Player> playerList,  String reserve_id, String hole_id, int tabIdx, int mHoleScoreLayoutIdx) {
         for (int i = 0; playerList.size() > i; i++) {
             Hole aHole = playerList.get(i).playingCourse.get(tabIdx).holes.get(mHoleScoreLayoutIdx);
 

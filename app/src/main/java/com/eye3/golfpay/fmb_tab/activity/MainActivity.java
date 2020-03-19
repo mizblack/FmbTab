@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -22,8 +23,10 @@ import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ViewMenuFragment;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.Security;
 import com.google.android.material.navigation.NavigationView;
@@ -33,10 +36,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -239,8 +244,39 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void changeDrawerViewToMenuView() {
 
         ll_login.setVisibility(View.GONE);
+        getAllCourseInfo(MainActivity.this);
         GoNavigationDrawer(new ViewMenuFragment(), null);
+
     }
+
+    private void getAllCourseInfo(Context context) {
+        showProgress("코스 정보를 가져오는 중입니다.");
+        DataInterface.getInstance().getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
+
+            @Override
+            public void onSuccess(ResponseData<Course> response) {
+                hideProgress();
+                if (response.getResultCode().equals("ok")) {
+                    Global.courseInfoList = (ArrayList<Course>) response.getList();
+
+                } else if (response.getResultCode().equals("fail")) {
+                   // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onError(ResponseData<Course> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

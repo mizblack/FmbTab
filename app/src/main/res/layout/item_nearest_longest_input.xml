@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:layout_marginStart="40dp"
-    android:layout_marginEnd="40dp"
+    android:layout_marginEnd="20dp"
     android:orientation="horizontal">
 
     <TextView
@@ -15,11 +15,13 @@
         android:text="-"
         android:textColor="@color/black"
         android:textSize="26dp"
-        tools:ignore="HardcodedText,SpUsage" />
+        tools:ignore="HardcodedText,SpUsage"
+        android:layout_marginStart="40dp"
+        />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="180dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="-"
@@ -41,39 +43,32 @@
         <TextView
             android:id="@+id/metersTextView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="-"
             android:textColor="@color/irisBlue"
-            android:textSize="30dp"
+            android:textSize="30sp"
             tools:ignore="HardcodedText,SpUsage" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/selectorLinearLayout"
-        android:layout_width="0dp"
+        android:layout_width="450dp"
         android:layout_height="match_parent"
         android:layout_marginStart="12dp"
-        android:layout_weight="1"
         android:orientation="horizontal"
-        tools:ignore="DisableBaselineAlignment">
+        android:gravity="center"
+        >
 
-        <HorizontalScrollView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            tools:ignore="NestedWeights,UselessParent">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/selectorItemRelativeLayout"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                tools:ignore="UselessLeaf" />
+                android:gravity="center" />
 
-        </HorizontalScrollView>
 
         <View
             android:id="@+id/modifyDivider"

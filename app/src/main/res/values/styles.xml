@@ -152,14 +152,29 @@
     </style>
 
     <style name="ScoreInserterTextView">
-<!--        <item name="android:layout_width">60dp</item>-->
-<!--        <item name="android:layout_height">100dp</item>-->
+
         <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
 <!--        <item name="android:textStyle">bold</item>-->
         <item name="android:background">@drawable/shape_gray_edge</item>
     </style>
+
+    <style name="InserterTextView">
+
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="InserterTextViewBold">
+
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!--   //*************-->
     <style name="RankColumnHoleTextView">
         <item name="android:layout_width">@dimen/ranking_linear_width</item>
