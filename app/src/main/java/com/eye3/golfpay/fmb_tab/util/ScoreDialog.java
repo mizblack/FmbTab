@@ -182,14 +182,14 @@ public class ScoreDialog extends Dialog {
         @NonNull
         @Override
         //recyclerview가 parent임
-        public ScoreInputAdapter.ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.score_input_row, parent, false);
-            ScoreInputAdapter.ScoreInputItemViewHolder viewHolder = new ScoreInputAdapter.ScoreInputItemViewHolder(view);
+            ScoreInputItemViewHolder viewHolder = new ScoreInputItemViewHolder(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ScoreInputItemViewHolder holder, int position) {
             final int playerIdx = position;
             //*******
             holder.playerName.setText(mPlayerList.get(position).name);

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.eye3.golfpay.fmb_tab"
-        minSdkVersion 23
+        minSdkVersion 24
         //noinspection OldTargetApi
         targetSdkVersion 28
         versionCode 1

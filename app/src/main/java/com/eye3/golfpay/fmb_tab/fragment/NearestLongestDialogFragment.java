@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,4 +94,8 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
 }
