@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:id ="@+id/fl_login"
+        android:id="@+id/fl_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/irisBlue"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <View
                 android:layout_width="match_parent"
@@ -34,15 +35,16 @@
                     android:layout_height="70dp"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="이름을 입력해 주세요."
+                    android:hint="메일 주소를 입력해 주세요."
                     android:inputType="textPersonName"
                     android:maxLines="1"
                     android:paddingStart="20dp"
-                    android:text="test@test.test"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
+                <!--                android:text="test@test.test"-->
 
                 <View
                     android:id="@+id/nameDivider"
@@ -56,16 +58,16 @@
                     android:layout_height="70dp"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="전화번호를 입력해 주세요."
+                    android:hint="패스워드를 입력해 주세요."
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingStart="20dp"
-                    android:text="@12345"
                     android:textColor="@color/white"
                     android:textColorHint="@color/mediumTurquoise"
                     android:textSize="24dp"
                     android:textStyle="bold"
-                    tools:ignore="TextFields" />
+                    tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage,TextFields" />
+                <!--                android:text="@12345"-->
 
                 <View
                     android:id="@+id/phoneNumberDivider"
@@ -83,7 +85,8 @@
                     android:text="시작하기"
                     android:textColor="@color/white"
                     android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText,SpUsage" />
 
             </LinearLayout>
 
@@ -98,7 +101,8 @@
                 android:layout_height="60dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -115,7 +119,8 @@
                     android:text="QR 코드로 시작하기"
                     android:textColor="@color/white"
                     android:textSize="24dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText,SpUsage" />
 
             </LinearLayout>
 
@@ -135,7 +140,8 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/x_button" />
+                    android:src="@drawable/x_button"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
 

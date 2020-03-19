@@ -66,9 +66,9 @@
             android:layout_weight="1"
             tools:ignore="NestedWeights,UselessParent">
 
-            <LinearLayout
-                android:id="@+id/selectorItemLinearLayout"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/selectorItemRelativeLayout"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 tools:ignore="UselessLeaf" />
