@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Serializable {
 
@@ -44,6 +44,6 @@ public class Player implements Serializable {
 
     @SerializedName("course")
     @Expose
-    public ArrayList<Course> playingCourse = new ArrayList<Course>();
+    public List<Course> playingCourse ;
 
 }

@@ -31,6 +31,7 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.GPSUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -174,12 +175,12 @@ public class CourseFragment extends BaseFragment {
 
     public class CoursePagerAdapter extends PagerAdapter implements LocationListener {
         Context mContext;
-        public ArrayList<Hole> mHoleList;
+        public List<Hole> mHoleList;
         ImageView mIvMap;
         public Location mLocation;
 
         @SuppressLint("MissingPermission")
-        CoursePagerAdapter(Context context, ArrayList<Hole> mHoleList) {
+        CoursePagerAdapter(Context context, List<Hole> mHoleList) {
             this.mContext = context;
             this.mHoleList = mHoleList;
 

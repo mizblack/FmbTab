@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Course implements Serializable {
     //*********************************************
@@ -67,7 +67,7 @@ public class Course implements Serializable {
 
     @SerializedName("holes")
     @Expose
-    public ArrayList<Hole> holes = new ArrayList<>();
+    public List<Hole> holes ;
 
 //    public Course(Course copyCourse){
 //        this.course_id = copyCourse.course_id;

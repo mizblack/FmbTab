@@ -23,7 +23,6 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,7 +95,7 @@ public class ScoreFragment extends BaseFragment {
     /*
      * 자유 컨트리클럽을 위한 inout 코스 변경
      */
-    private void swapList(Course first, Course second, ArrayList<Course> courses) {
+    private void swapList(Course first, Course second, List<Course> courses) {
 
         courses.add(0, second);
         courses.remove(2);
@@ -129,12 +128,15 @@ public class ScoreFragment extends BaseFragment {
     private void createTabBar(final TextView[] tvCourseBarArr, List<Course> mCourseList) {
         for (int i = 0; mCourseList.size() > i; i++) {
             final int idx = i;
-            tvCourseBarArr[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.MainTabTitleTextViewPadding), null, 0);
-            tvCourseBarArr[i].setText(mCourseList.get(i).courseName);
-            tvCourseBarArr[i].setOnClickListener(new View.OnClickListener() {
+            tvCourseBarArr[idx] = new TextView(new ContextThemeWrapper(getActivity(), R.style.MainTabTitleTextViewPadding), null, 0);
+            tvCourseBarArr[idx].setText(mCourseList.get(i).courseName);
+            tvCourseBarArr[idx].setTag(mCourseList.get(idx));
+            tvCourseBarArr[idx].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mTabIdx = idx;
+                    Global.CurrentCourse =   (Course)tvCourseBarArr[idx].getTag();
+
                     selectCourse(mPlayerList, idx);
                 }
             });
@@ -144,12 +146,14 @@ public class ScoreFragment extends BaseFragment {
 
     //코스바 선택시 스코어보드 생성 함수
     private void selectCourse(List<Player> playerList, int selectedTabIdx) {
+
         for (TextView textView : CourseTabBar) {
             textView.setTextColor(Color.GRAY);
         }
         CourseTabBar[selectedTabIdx].setTextColor(Color.BLACK);
-
+         TabCourseLinear.setmHoleScoreLayoutIdx(-1);
         createScoreTab(playerList, selectedTabIdx);
+
     }
 
     @Override

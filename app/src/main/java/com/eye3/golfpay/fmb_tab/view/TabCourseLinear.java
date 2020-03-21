@@ -29,11 +29,11 @@ import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TabCourseLinear extends LinearLayout {
     static final int NUM_OF_HOLES = 9;
+
     //최상단 홀정보를 보여주기위한 홀더
     LinearLayout mHolderLinear;
     //홀정보레이아웃 어레이
@@ -42,7 +42,7 @@ public class TabCourseLinear extends LinearLayout {
     ScoreAdapter mScoreAdapter;
     Context mContext;
     //각홀의 레이아웃 아이디
-    int mHoleScoreLayoutIdx;
+     static int mHoleScoreLayoutIdx;
     //탭아이디 (중요)
     int mTabIdx;
     List<Player> mPlayerList;
@@ -58,25 +58,62 @@ public class TabCourseLinear extends LinearLayout {
 
     }
 
+    public static int getmHoleScoreLayoutIdx(){
+        return mHoleScoreLayoutIdx;
+    }
+
+    public static void setmHoleScoreLayoutIdx(int Idx){
+        mHoleScoreLayoutIdx  = Idx;
+    }
     private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx, int mHoleScoreLayoutIdx) {
 
         int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx - 1;
+        // int previousCourseIdx = mTabIdx - 1;
         if (playerList == null)
             return false;
-        //최초 홀은 통과
-        if (mHoleScoreLayoutIdx == 0)
+        //최초 홀은 무조건 통과
+        if (mTabIdx == 0 && mHoleScoreLayoutIdx == 0)
             return true;
         for (int i = 0; playerList.size() > i; i++) {
-            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.par.equals("-"))
-                return false;
-            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
-                return false;
-            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
-                return false;
+
+//            for(int j= 0; playerList.get(i).playingCourse.size() -1 > j ;j++) {
+//                Course course = playerList.get(i).playingCourse.get(j);
+//                for(int x = 0; course.holes.size() > x ; x++) {
+//                    if (course.holes.get(x).playedScore.tar.equals("-"))
+//                        return false;
+//                    if (course.holes.get(x).playedScore.putting.equals("-"))
+//                        return false;
+//                }
+//            }
+
+            if (mTabIdx == 0) {
+
+
+                // the last(current) course
+                for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
+                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                        return false;
+                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                        return false;
+                }
+
+            } else {
+                if (playerList.get(i).playingCourse.get(mTabIdx - 1).holes.get(8).playedScore.tar.equals("-"))
+                    return false;
+                if (playerList.get(i).playingCourse.get(mTabIdx-1).holes.get(8).playedScore.putting.equals("-"))
+                    return false;
+
+                for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
+                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                        return false;
+                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                        return false;
+                }
+            }
+
         }
         return true;
     }
-
     /*
      * idx : tab 의 순서 idx (순서대로 tabCourseLinear 뿌려주면됨)
      */
@@ -90,7 +127,8 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final List<Player> playerList, Course ctyped, int tabIdx) {
+    public void init(final Context context, final List<Player> playerList, Course ctyped,
+                     int tabIdx) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
@@ -160,7 +198,7 @@ public class TabCourseLinear extends LinearLayout {
     private void createHoleInfoLinear(Context context, Course course) {
         mHolderLinear.removeAllViewsInLayout();
 
-        ArrayList<Hole> holes = course.holes;
+        List<Hole> holes = course.holes;
 
         int totalPar = 0;
         int totalMeter = 0;
@@ -236,45 +274,46 @@ public class TabCourseLinear extends LinearLayout {
                             switch (v.getId()) {
                                 case R.id.hole1_ll:
                                     mHoleScoreLayoutIdx = 0;
-                                    notifyDataSetChanged();
+                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole2_ll:
                                     mHoleScoreLayoutIdx = 1;
-                                    notifyDataSetChanged();
+                             //       notifyDataSetChanged();
                                     break;
                                 case R.id.hole3_ll:
                                     mHoleScoreLayoutIdx = 2;
-                                    notifyDataSetChanged();
+                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole4_ll:
                                     mHoleScoreLayoutIdx = 3;
-                                    notifyDataSetChanged();
+                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole5_ll:
                                     mHoleScoreLayoutIdx = 4;
-                                    notifyDataSetChanged();
+                               //     notifyDataSetChanged();
                                     break;
                                 case R.id.hole6_ll:
                                     mHoleScoreLayoutIdx = 5;
-                                    notifyDataSetChanged();
+                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole7_ll:
                                     mHoleScoreLayoutIdx = 6;
-                                    notifyDataSetChanged();
+                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole8_ll:
                                     mHoleScoreLayoutIdx = 7;
-                                    notifyDataSetChanged();
+                               //     notifyDataSetChanged();
                                     break;
                                 case R.id.hole9_ll:
                                     mHoleScoreLayoutIdx = 8;
-                                    notifyDataSetChanged();
+                                 //   notifyDataSetChanged();
                                     break;
                                 default:
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
                             if (isPreviousHoleScoreFilledUp(playerList, mTabIdx, mHoleScoreLayoutIdx)) {
+                                notifyDataSetChanged();
                                 sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
                                 sDialog.setOnScoreInputFinishListener(listener);
                                 sDialog.show();

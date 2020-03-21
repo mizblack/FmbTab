@@ -32,6 +32,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
     private View cancelLinearLayout;
     private ArrayList<NearestLongestInputItem> nearestLongestInputItemArrayList = new ArrayList<>();
     private TextView mTabLongest, mTabNearest;
+    private String mNearestOrLongest = "롱기스트";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +48,26 @@ public class NearestLongestDialogFragment extends DialogFragment {
         mTabLongest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //니어스트를 초기화 시킨다.
-                ((TextView)v).setTextAppearance(R.style.MainTabTitleTextView);
+
+                if(mNearestOrLongest.equals("니어스트")) {
+                    mTabNearest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
+                }
+                mNearestOrLongest = "롱기스트";
+                ((TextView) v).setTextAppearance(R.style.MainTabTitleTextViewBold);
+
+
             }
         });
         mTabNearest = view.findViewById(R.id.nearestTextView);
         mTabNearest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TextView)v).setTextAppearance(R.style.MainTabTitleTextView);
+                if(mNearestOrLongest.equals("롱기스트")) {
+                    mTabLongest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
+                }
+                mNearestOrLongest ="니어스트";
+                ((TextView)v).setTextAppearance(R.style.MainTabTitleTextViewBold);
+
             }
         });
         return view;
