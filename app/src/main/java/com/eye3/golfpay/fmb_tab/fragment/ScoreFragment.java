@@ -24,6 +24,7 @@ import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ScoreFragment extends BaseFragment {
@@ -36,8 +37,8 @@ public class ScoreFragment extends BaseFragment {
     private LinearLayout pinkNearestOrLinearLayout;
     private View rightLinearLayout;
     private TextView rightButtonTextView;
-    ArrayList<Player> mPlayerList = new ArrayList<>();
-    ArrayList<Course> mCourseList = new ArrayList<>();
+    List<Player> mPlayerList ;
+    List<Course> mCourseList ;
     //코스탭바
     TextView[] CourseTabBar;
     //코스스코어보드
@@ -53,7 +54,7 @@ public class ScoreFragment extends BaseFragment {
     }
 
     //스코어 보드를 생성한다.
-    private void createScoreTab(ArrayList<Player> mPlayerList, int mTabIdx) {
+    private void createScoreTab(List<Player> mPlayerList, int mTabIdx) {
         showProgress("스코어생성 작업중");
 
         if (NUM_OF_COURSE <= 0) {
@@ -63,7 +64,7 @@ public class ScoreFragment extends BaseFragment {
         mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, mCourseList.get(mTabIdx), mTabIdx);
         mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
             @Override
-            public void OnScoreInputFinished(ArrayList<Player> playerList) {
+            public void OnScoreInputFinished(List<Player> playerList) {
                 refreshScore();
             }
         });
@@ -76,7 +77,7 @@ public class ScoreFragment extends BaseFragment {
         selectCourse(mPlayerList, 0);
     }
 
-    private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
+    private List<Course> getCtypedCourse(List<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         //예약에서 inout 을 확인하고 코스순서를 다시 재정렬함
         if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
@@ -125,7 +126,7 @@ public class ScoreFragment extends BaseFragment {
     }
 
     //최상위 코스 선택바
-    private void createTabBar(final TextView[] tvCourseBarArr, ArrayList<Course> mCourseList) {
+    private void createTabBar(final TextView[] tvCourseBarArr, List<Course> mCourseList) {
         for (int i = 0; mCourseList.size() > i; i++) {
             final int idx = i;
             tvCourseBarArr[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.MainTabTitleTextViewPadding), null, 0);
@@ -142,7 +143,7 @@ public class ScoreFragment extends BaseFragment {
     }
 
     //코스바 선택시 스코어보드 생성 함수
-    private void selectCourse(ArrayList<Player> playerList, int selectedTabIdx) {
+    private void selectCourse(List<Player> playerList, int selectedTabIdx) {
         for (TextView textView : CourseTabBar) {
             textView.setTextColor(Color.GRAY);
         }
@@ -181,9 +182,13 @@ public class ScoreFragment extends BaseFragment {
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    mPlayerList = (ArrayList<Player>) response.getList();
-                    mCourseList = getCourse(mPlayerList);
-                    NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것
+                    mPlayerList = response.getList();
+                    mCourseList = getCtypedCourse(mPlayerList);
+
+              //      Global.courseInfoList = mCourseList;
+                    Global.CurrentCourse = mCourseList.get(0);
+                    Global.CurrentHole =  Global.CurrentCourse.holes.get(0);
+                    NUM_OF_COURSE = mCourseList.size();
                     CourseTabBar = new TextView[NUM_OF_COURSE];
 
                     createTabBar(CourseTabBar, mCourseList);
@@ -215,7 +220,7 @@ public class ScoreFragment extends BaseFragment {
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    mPlayerList = (ArrayList<Player>) response.getList();
+                    mPlayerList = response.getList();
                     //                Global.playerList = mPlayerList;
                     createScoreTab(mPlayerList, mTabIdx);
 

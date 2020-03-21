@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +23,14 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
-import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TabCourseLinear extends LinearLayout {
     static final int NUM_OF_HOLES = 9;
@@ -43,7 +45,7 @@ public class TabCourseLinear extends LinearLayout {
     int mHoleScoreLayoutIdx;
     //탭아이디 (중요)
     int mTabIdx;
-    ArrayList<Player> mPlayerList = new ArrayList<Player>();
+    List<Player> mPlayerList;
     Spinner mDistanceSpinner;
     ArrayAdapter arrayAdapter;
     public ScoreDialog sDialog;
@@ -54,6 +56,25 @@ public class TabCourseLinear extends LinearLayout {
     public TabCourseLinear(Context context) {
         super(context);
 
+    }
+
+    private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx, int mHoleScoreLayoutIdx) {
+
+        int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx - 1;
+        if (playerList == null)
+            return false;
+        //최초 홀은 통과
+        if (mHoleScoreLayoutIdx == 0)
+            return true;
+        for (int i = 0; playerList.size() > i; i++) {
+            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.par.equals("-"))
+                return false;
+            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                return false;
+            if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                return false;
+        }
+        return true;
     }
 
     /*
@@ -69,7 +90,7 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final ArrayList<Player> playerList, Course ctyped, int tabIdx) {
+    public void init(final Context context, final List<Player> playerList, Course ctyped, int tabIdx) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
@@ -121,7 +142,7 @@ public class TabCourseLinear extends LinearLayout {
     }
 
 
-    private void initRecyclerView(ArrayList<Player> playerList, int tabIdx) {
+    private void initRecyclerView(List<Player> playerList, int tabIdx) {
         LinearLayoutManager mManager;
 
         mScoreRecyclerView.setHasFixedSize(true);
@@ -169,11 +190,11 @@ public class TabCourseLinear extends LinearLayout {
 
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
-        ArrayList<Player> playerList;
+        List<Player> playerList;
         Course mCurrentCourse;
         Context mContext;
 
-        ScoreAdapter(Context context, ArrayList<Player> playerList, Course mCourse) {
+        ScoreAdapter(Context context, List<Player> playerList, Course mCourse) {
             this.playerList = playerList;
             this.mCurrentCourse = mCourse;
             this.mContext = context;
@@ -253,9 +274,13 @@ public class TabCourseLinear extends LinearLayout {
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
-                            sDialog.setOnScoreInputFinishListener(listener);
-                            sDialog.show();
+                            if (isPreviousHoleScoreFilledUp(playerList, mTabIdx, mHoleScoreLayoutIdx)) {
+                                sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
+                                sDialog.setOnScoreInputFinishListener(listener);
+                                sDialog.show();
+                            } else {
+                                Toast.makeText(mContext, "이전 플레이어 점수를 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            }
 
                         }
                     });
@@ -282,7 +307,7 @@ public class TabCourseLinear extends LinearLayout {
 
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
-                public void OnScoreInputFinished(ArrayList<Player> playerList) {
+                public void OnScoreInputFinished(List<Player> playerList) {
                     mPlayerList = playerList;
                     //scoreFragment 로 화면갱신을위한 observer 적용
                     inputFinishListener.OnScoreInputFinished(mPlayerList);

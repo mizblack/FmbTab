@@ -7,10 +7,10 @@ import android.os.Environment;
 
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
-import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 
@@ -76,9 +76,11 @@ public class Global {
         String CHANNEL_PUSH = "macaron_push";
     }
 
-    public static ArrayList<Course> courseInfoList = new ArrayList<Course>();
-    public static ArrayList<Player> playerList = new ArrayList<>();
+    public static List<Course> courseInfoList = new ArrayList<Course>();
+
+    //현재 경기진행중인 코스 정보
     public static Course CurrentCourse;
+    public static Hole CurrentHole;
     public static List<NoticeItem> noticeItemArrayList = new ArrayList<>();
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
     //    public static Location CurrentLocation ;
