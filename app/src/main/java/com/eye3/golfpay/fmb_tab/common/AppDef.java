@@ -16,6 +16,8 @@ public class AppDef {
    //   istar : 설정화면시 타수 스윗치값
     */
     public static String Par_Tar(Score score, boolean istar) {
+        if(score == null)
+            return null;
         if (istar)
             return score.tar;
         else

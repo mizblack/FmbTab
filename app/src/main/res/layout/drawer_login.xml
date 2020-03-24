@@ -39,12 +39,12 @@
                     android:inputType="textPersonName"
                     android:maxLines="1"
                     android:paddingStart="20dp"
+                    android:text="test@test.test"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="24dp"
                     android:textStyle="bold"
                     tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
-                <!--                android:text="test@test.test"-->
 
                 <View
                     android:id="@+id/nameDivider"
@@ -62,12 +62,12 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:paddingStart="20dp"
+                    android:text="@12345"
                     android:textColor="@color/white"
                     android:textColorHint="@color/mediumTurquoise"
                     android:textSize="24dp"
                     android:textStyle="bold"
                     tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage,TextFields" />
-                <!--                android:text="@12345"-->
 
                 <View
                     android:id="@+id/phoneNumberDivider"

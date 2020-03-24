@@ -9,8 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,7 +66,7 @@ public class ScoreInserter extends RelativeLayout {
         this.mContext = context;
         createIntegerArrayList();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
+        View v = inflater.inflate(R.layout.inserter_layout, this, false);
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
         addView(v);
     }
@@ -82,7 +80,7 @@ public class ScoreInserter extends RelativeLayout {
 
         createIntegerArrayList();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.score_inserter_layout, this, false);
+        View v = inflater.inflate(R.layout.inserter_layout, this, false);
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
         createScoreInserter(type);
         addView(v);
@@ -187,63 +185,6 @@ public class ScoreInserter extends RelativeLayout {
             tv.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
         }
     }
-
-
-//    void createIntegerViewArr() {
-//        if (mParScoreIntegerArrayList != null) {
-//            mParScoreTextViewArr = new TextView[mParScoreIntegerArrayList.size()];
-//
-//            for (int i = 0; mParScoreTextViewArr.length > i; i++) {
-//                final int idx = i;
-//                mParScoreTextViewArr[idx] = new TextView(mContext);
-//                mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
-//                mParScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        setAllBackGroundResourceBack(mParScoreTextViewArr, Color.WHITE);
-//                        v.setBackgroundColor(Color.parseColor("#00AEC9"));
-//                        mSelectedParInserterTv = (TextView) v;
-//                        mSelectedParScoreTvIdx = idx;
-//                    }
-//                });
-//            }
-//        }
-//        if (mStrokesScoreIntegerArrayList != null) {
-//            mStrokeScoreTextViewArr = new TextView[mStrokesScoreIntegerArrayList.size()];
-//
-//            for (int i = 0; mStrokeScoreTextViewArr.length > i; i++) {
-//                final int idx = i;
-//                mStrokeScoreTextViewArr[idx] = new TextView(mContext);
-//                mStrokeScoreTextViewArr[idx].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
-//                mStrokeScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        setAllBackGroundColor(mStrokeScoreTextViewArr, Color.WHITE);
-//                        v.setBackgroundColor(Color.parseColor("#00AEC9"));
-//                        mSelectedParInserterTv = (TextView) v;
-//                        mSelectedStrokeScoreTvIdx = idx;
-//                    }
-//                });
-//            }
-//
-//        }
-//
-//        if (mPuttIntegerArrayList != null) {
-//            mPuttScoreTextViewArr = new TextView[mPuttIntegerArrayList.size()];
-//            for (int i = 0; mPuttScoreTextViewArr.length > i; i++) {
-//                final int idx = i;
-//                mPuttScoreTextViewArr[i] = new TextView(mContext);
-//                mPuttScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        setAllBackGroundColor(mPuttScoreTextViewArr, Color.WHITE);
-//                        v.setBackgroundColor(Color.CYAN);
-//                        mSelectedPuttScoreTvIdx = idx;
-//                    }
-//                });
-//            }
-//        }
-//    }
 
     private void createScoreInserters() {
 

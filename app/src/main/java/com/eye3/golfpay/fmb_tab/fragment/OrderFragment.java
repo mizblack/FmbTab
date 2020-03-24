@@ -715,7 +715,7 @@ public class OrderFragment extends BaseFragment {
                     hideProgress();
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
                     GoOrderLeftBoard(new ApplyFragment(), null);
-                    //init();
+
                 }
             }
 

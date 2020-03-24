@@ -36,8 +36,8 @@ public class ScoreFragment extends BaseFragment {
     private LinearLayout pinkNearestOrLinearLayout;
     private View rightLinearLayout;
     private TextView rightButtonTextView;
-    List<Player> mPlayerList ;
-    List<Course> mCourseList ;
+    List<Player> mPlayerList;
+    List<Course> mCourseList;
     //코스탭바
     TextView[] CourseTabBar;
     //코스스코어보드
@@ -135,7 +135,7 @@ public class ScoreFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     mTabIdx = idx;
-                    Global.CurrentCourse =   (Course)tvCourseBarArr[idx].getTag();
+                    Global.CurrentCourse = (Course) tvCourseBarArr[idx].getTag();
 
                     selectCourse(mPlayerList, idx);
                 }
@@ -146,12 +146,12 @@ public class ScoreFragment extends BaseFragment {
 
     //코스바 선택시 스코어보드 생성 함수
     private void selectCourse(List<Player> playerList, int selectedTabIdx) {
-
-        for (TextView textView : CourseTabBar) {
-            textView.setTextColor(Color.GRAY);
-        }
         CourseTabBar[selectedTabIdx].setTextColor(Color.BLACK);
-         TabCourseLinear.setmHoleScoreLayoutIdx(-1);
+        for (int i = 0; CourseTabBar.length > i; i++) {
+            if (i != selectedTabIdx)
+                CourseTabBar[i].setTextColor(Color.GRAY);
+        }
+        TabCourseLinear.setmHoleScoreLayoutIdx(-1);
         createScoreTab(playerList, selectedTabIdx);
 
     }
@@ -189,9 +189,9 @@ public class ScoreFragment extends BaseFragment {
                     mPlayerList = response.getList();
                     mCourseList = getCtypedCourse(mPlayerList);
 
-              //      Global.courseInfoList = mCourseList;
+                    //      Global.courseInfoList = mCourseList;
                     Global.CurrentCourse = mCourseList.get(0);
-                    Global.CurrentHole =  Global.CurrentCourse.holes.get(0);
+                    Global.CurrentHole = Global.CurrentCourse.holes.get(0);
                     NUM_OF_COURSE = mCourseList.size();
                     CourseTabBar = new TextView[NUM_OF_COURSE];
 

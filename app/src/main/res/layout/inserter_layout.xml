@@ -6,7 +6,7 @@
     android:gravity="center_vertical">
 
     <HorizontalScrollView
-        android:id="@+id/linear_score_insert_sv"
+        android:id="@+id/linear_insert_sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -16,10 +16,11 @@
 
         <LinearLayout
             android:id="@+id/linear_score_insert_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            />
 
     </HorizontalScrollView>
 

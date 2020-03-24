@@ -129,6 +129,10 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
             mParentActivity.GoNativeScreen(fragment, bundle);
     }
 
+    public void GoNavigationDrawer(BaseFragment fragment, Bundle bundle){
+        if (mParentActivity != null)
+            mParentActivity.GoNavigationDrawer(fragment, bundle);
+    }
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle) {
         if (mParentActivity != null) {
