@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Picture;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
@@ -42,6 +43,7 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
+import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -61,13 +64,22 @@ public class GalleryFragment extends BaseFragment {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
     Button mBtnTakePicture;
-    ArrayList<Bitmap> mPictureList = new ArrayList<>();
-    ImageView image;
-
+    List<GalleryPicture> mPictureList;
+    ImageView mPictureImage;
+    ImageView mPictureClose;
+    RecyclerView mGalleryRecycler;
+    GalleryAdapter mGalleryAdatper;
+    FrameLayout mFlPicture;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mPictureList = new ArrayList<>();
+        GalleryPicture picture1 = new GalleryPicture("0", "1234", "storage/reserve_guests/club/1/3555_club_103457.jpg", "");
+        mPictureList.add(picture1);
+        GalleryPicture picture2 = new GalleryPicture("1", "1234", "storage/reserve_guests/club/1/3556_club_103415.jpg", "");
+        mPictureList.add(picture2);
+        GalleryPicture picture3 = new GalleryPicture("2", "1234", "storage/reserve_guests/club/1/3557_club_103458.jpg", "");
+        mPictureList.add(picture3);
     }
 
 
@@ -82,8 +94,20 @@ public class GalleryFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_galllery, container, false);
         mLinearGuestTab = v.findViewById(R.id.guestTabLinearLayout);
-        createGuestList(mLinearGuestTab);
+        mPictureClose = v.findViewById(R.id.pic_gallery_close);
+        mFlPicture = v.findViewById( R.id.fl_pic_gallery);
+        mPictureClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mParentActivity.showMainBottomBar();
+                mFlPicture.setVisibility(View.GONE);
+                mGalleryRecycler.setVisibility(View.VISIBLE);
 
+            }
+        });
+        createGuestList(mLinearGuestTab);
+        mGalleryRecycler = v.findViewById(R.id.recycler_gallery);
+        initRecyclerView(mPictureList);
         mBtnTakePicture = v.findViewById(R.id.bt_take_picture);
         mBtnTakePicture.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -97,12 +121,27 @@ public class GalleryFragment extends BaseFragment {
                 }
             }
         });
-        image = v.findViewById(R.id.pic_gallery);
+        mPictureImage = v.findViewById(R.id.pic_gallery);
         mParentActivity.showMainBottomBar();
         return v;
     }
 
 
+    private void initRecyclerView(List<GalleryPicture> pictureList) {
+        GridLayoutManager mManager = new GridLayoutManager(getActivity(), 2);
+        mManager.setOrientation(RecyclerView.HORIZONTAL);
+//        LinearLayoutManager horizonalLayoutManager
+//                = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        if (pictureList == null)
+            return;
+    //    mManager = new LinearLayoutManager(mContext);
+       // mGalleryRecycler.setHasFixedSize(true);
+        mGalleryRecycler.setLayoutManager(mManager);
+
+        mGalleryAdatper = new GalleryAdapter(mContext, pictureList);
+        mGalleryRecycler.setAdapter(mGalleryAdatper);
+        mGalleryAdatper.notifyDataSetChanged();
+    }
 
     private void createGuestList(LinearLayout container) {
 
@@ -130,41 +169,64 @@ public class GalleryFragment extends BaseFragment {
 
     private class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ImageView mImage;
-        ArrayList<Picture> mPictureList;
+        Context mContext;
+        List<GalleryPicture> mPictureList;
+
+        public GalleryAdapter(Context context, List<GalleryPicture> pictureList) {
+            mContext = context;
+            mPictureList = pictureList;
+        }
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
+            View view;
+            //  RecyclerView.ViewHolder viewHolder = null;
+            view = LayoutInflater.from(mContext).inflate(R.layout.gallery_picture_item, parent, false);
+            return new GalleryItemViewHolder(view);
         }
 
+
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            //setClubImage();
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+            GalleryItemViewHolder  viewHolder = (GalleryItemViewHolder)holder;
+            viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mParentActivity.hideMainBottomBar();
+                    mGalleryRecycler.setVisibility(View.INVISIBLE);
+                    mFlPicture.setVisibility(View.VISIBLE);
+                    mPictureImage.setVisibility(View.VISIBLE);
+                    setClubImage(mPictureImage, mPictureList.get(position).url);
+
+                }
+            });
+            setClubImage(viewHolder.imageView, mPictureList.get(position).url);
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return mPictureList.size();
         }
 
         public class GalleryItemViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageView;
 
             public GalleryItemViewHolder(@NonNull View itemView) {
                 super(itemView);
+                imageView = itemView.findViewById(R.id.img_galllery);
             }
         }
 
         private void setClubImage(ImageView img, String url) {
 
-
             if (img != null) {
 
                 Glide.with(mContext)
-                        .load("http://testerp.golfpay.co.kr" + url)
+                        .load(Global.HOST_BASE_ADDRESS_AWS + url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .placeholder(R.drawable.ic_noimage)
-                        .into(mImage);
+                        .into(img);
             }
         }
     }
@@ -225,8 +287,8 @@ public class GalleryFragment extends BaseFragment {
                 exifDegree = 0;
             }
 
-            mPictureList.add(bitmap);
-            image.setImageBitmap(bitmap);
+            //   mPictureList.add(bitmap);
+            mPictureImage.setImageBitmap(bitmap);
 
 //            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
 //            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
@@ -241,6 +303,7 @@ public class GalleryFragment extends BaseFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {

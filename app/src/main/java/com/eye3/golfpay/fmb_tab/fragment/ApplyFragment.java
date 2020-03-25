@@ -24,9 +24,6 @@ import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
-import dreammaker.android.widget.Spinner;
-
 import static com.eye3.golfpay.fmb_tab.fragment.OrderFragment.mTabsRootLinear;
 
 public class ApplyFragment extends BaseFragment {
@@ -37,7 +34,7 @@ public class ApplyFragment extends BaseFragment {
     int mTotalAmount;
     String mPayType = "dutch";
     private ImageView mArrow;
-    Spinner mSpinn_Pay_Person;
+    dreammaker.android.widget.Spinner mSpinn_Pay_Person;
     BasicSpinnerAdapter mSpinnAdapter;
     String[] mPayPersonList;
 
@@ -146,12 +143,12 @@ public class ApplyFragment extends BaseFragment {
             }
         });
         //거리 환산 적용
-        mSpinn_Pay_Person.setOnSpinnerItemClickListener(new Spinner.OnSpinnerItemClickListener() {
+        mSpinn_Pay_Person.setOnSpinnerItemClickListener(new dreammaker.android.widget.Spinner.OnSpinnerItemClickListener() {
             @Override
-            public boolean onClickSpinnerItem(Spinner spinner, int adapterPosition) {
-                //  spinner.getSelectedPositions()
+            public boolean onClickSpinnerItem(dreammaker.android.widget.Spinner spinner, int adapterPosition) {
                 return false;
             }
+
         });
 
         return v;

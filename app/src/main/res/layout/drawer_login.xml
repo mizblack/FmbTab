@@ -45,7 +45,7 @@
                     android:textSize="24dp"
                     android:textStyle="bold"
                     tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
-                <!--                android:text="test@test.test"-->
+<!--                android:text="test@test.test"-->
 
                 <View
                     android:id="@+id/nameDivider"
@@ -69,8 +69,7 @@
                     android:textSize="24dp"
                     android:textStyle="bold"
                     tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage,TextFields" />
-                <!--                android:text="@12345"-->
-
+<!--                android:text="@12345"-->
                 <View
                     android:id="@+id/phoneNumberDivider"
                     android:layout_width="match_parent"

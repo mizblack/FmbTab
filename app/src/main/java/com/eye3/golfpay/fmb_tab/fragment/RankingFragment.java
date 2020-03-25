@@ -16,14 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.databinding.FrRankingBinding;
-import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
@@ -31,7 +29,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 //우선순위가 차후로 연기됨 키오스크가 되면 구현될것임.
@@ -56,8 +54,8 @@ public class RankingFragment extends BaseFragment {
     RecyclerView mRankingRecyclerView;
     RankingAdapter mRankingAdapter;
     FrRankingBinding binding;
-    ArrayList<Course> mCourseList = new ArrayList<>();
-    ArrayList<Player> mPlayerList;
+    List<Course> mCourseList ;
+    List<Player> mPlayerList;
     LinearLayout mLinearHoleNoContainer = null;
     //홀정보레이아웃 어레이
     TextView[][] holeInfoLinear;
@@ -188,7 +186,7 @@ public class RankingFragment extends BaseFragment {
         viewRankingText.performClick(); //초기화로 상세보기
     }
 
-    private void initRecyclerView(String DisplayMode, RecyclerView rankingRecyclerView, ArrayList<Player> playerList) {
+    private void initRecyclerView(String DisplayMode, RecyclerView rankingRecyclerView, List<Player> playerList) {
         LinearLayoutManager mManager;
         if (playerList == null)
             return;
@@ -205,11 +203,11 @@ public class RankingFragment extends BaseFragment {
         private final int TYPE_ITEM = 1;
         String mDisplayMode;
         Context context;
-        ArrayList<Player> playerList;
-        ArrayList<Course> playingCourse;
+        List<Player> playerList;
+        List<Course> playingCourse;
         LinearLayout container;
 
-        RankingAdapter(String DisplayMode, Context context, ArrayList<Player> playerList, ArrayList<Course> playingCourse) {
+        RankingAdapter(String DisplayMode, Context context, List<Player> playerList, List<Course> playingCourse) {
             this.mDisplayMode = DisplayMode;
             this.context = context;
             this.playerList = playerList;
@@ -295,8 +293,7 @@ public class RankingFragment extends BaseFragment {
 
                 //동적 코스점수뷰 생성
                 for (int i = 0; holder1.mHoleScoreView.length > i; i++) {
-
-                    ArrayList<Hole> holes = playerList.get(position).playingCourse.get(i).holes;
+                    List<Hole> holes = playerList.get(position).playingCourse.get(i).holes;
                     int eachCourseTotal = 0;
                     for (int j = 0; holder1.mHoleScoreView[i].length - 1 > j; j++) {
                         holder1.mHoleScoreView[i][j].setGravity(Gravity.CENTER);
@@ -401,7 +398,7 @@ public class RankingFragment extends BaseFragment {
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    mPlayerList = (ArrayList<Player>) response.getList();
+                    mPlayerList =  response.getList();
                     mCourseList = getCourse(mPlayerList);
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
@@ -427,7 +424,7 @@ public class RankingFragment extends BaseFragment {
 
     }
 
-    private ArrayList<Course> getCourse(ArrayList<Player> playerList) {
+    private List<Course> getCourse(List<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         return playerList.get(0).playingCourse;
     }
