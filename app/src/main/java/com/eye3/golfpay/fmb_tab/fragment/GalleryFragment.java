@@ -32,6 +32,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -190,14 +191,21 @@ public class GalleryFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
             GalleryItemViewHolder  viewHolder = (GalleryItemViewHolder)holder;
+            viewHolder.imageView.setTag(position);
             viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mParentActivity.hideMainBottomBar();
-                    mGalleryRecycler.setVisibility(View.INVISIBLE);
-                    mFlPicture.setVisibility(View.VISIBLE);
-                    mPictureImage.setVisibility(View.VISIBLE);
-                    setClubImage(mPictureImage, mPictureList.get(position).url);
+                    
+//                    mGalleryRecycler.setVisibility(View.INVISIBLE);
+//                    mFlPicture.setVisibility(View.VISIBLE);
+//                    mPictureImage.setVisibility(View.VISIBLE);
+//                    setClubImage(mPictureImage, mPictureList.get(position).url);
+                    GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int)v.getTag());
+                    assert getFragmentManager() != null;
+                    galleryViewFragment.show(getFragmentManager(), TAG);
+                   // closeDrawer();
+                    systemUIHide();
 
                 }
             });
@@ -358,64 +366,6 @@ public class GalleryFragment extends BaseFragment {
         return f;
     }
 
-    public class GalleryPagerAdapter extends PagerAdapter {
-        Context mContext;
-//        public ArrayList<Hole> mHoleList;
-//        ImageView mIvMap;
-
-        @SuppressLint("MissingPermission")
-        GalleryPagerAdapter(Context context, ArrayList<Hole> mHoleList) {
-
-
-        }
-
-        @SuppressLint("SetTextI18n")
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view;
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.map_pager_page, container, false);
-//            Global.viewPagerPosition = position;
-
-//            mIvMap = view.findViewById(R.id.iv_map);
-//
-//
-//            if (mHoleList.get(position).img_1_file_url != null) {
-//                Glide.with(mContext)
-//                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_1_file_url)
-//                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                        .into(mIvMap);
-//            } else {
-//                mIvMap.setImageDrawable(getResources().getDrawable(R.drawable.ic_noimage, null));
-//            }
-//            container.addView(view);
-            return view;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
-            // 뷰페이저에서 삭제.
-            container.removeView((View) object);
-        }
-
-        @Override
-        public int getCount() {
-            return -1000;
-            //return mHoleList.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return (view == object);
-        }
-
-        @Override
-        public int getItemPosition(@NonNull Object item) {
-            return POSITION_NONE;
-        }
-
-    }
 
 
 }

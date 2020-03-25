@@ -300,4 +300,8 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         systemUIHide();
     }
 
+    public void closeDrawer(){
+        mParentActivity.hideDrawer();
+    }
+
 }
