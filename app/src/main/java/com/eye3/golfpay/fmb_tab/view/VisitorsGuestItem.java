@@ -29,4 +29,3 @@ public class VisitorsGuestItem extends RelativeLayout {
     }
 
 }
-
