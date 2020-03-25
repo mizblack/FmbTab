@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
+import com.eye3.golfpay.fmb_tab.view.VisitorsGuestItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -524,8 +526,10 @@ public class ViewMenuFragment extends BaseFragment {
 
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
 
+        View view, divider;
         ArrayList<TodayReserveList> todayReserveList;
-        TextView teeUpTimeTextView, reservationGuestNameTextView;
+        TextView teeUpTimeTextView, reservationGuestNameTextView, startTextView;
+        LinearLayout visitorsGuestItemLinearLayout;
 
         TeeUpAdapter(ArrayList<TodayReserveList> todayReserveList) {
             this.todayReserveList = todayReserveList;
@@ -538,6 +542,9 @@ public class ViewMenuFragment extends BaseFragment {
 
                 teeUpTimeTextView = view.findViewById(R.id.teeUpTimeTextView);
                 reservationGuestNameTextView = view.findViewById(R.id.reservationPersonNameTextView);
+                visitorsGuestItemLinearLayout = view.findViewById(R.id.visitorsGuestItemLinearLayout);
+                divider = view.findViewById(R.id.divider);
+                startTextView = view.findViewById(R.id.startTextView);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -568,14 +575,27 @@ public class ViewMenuFragment extends BaseFragment {
         @NonNull
         @Override
         public TeeUpAdapter.TeeUpTimeItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
             return new TeeUpAdapter.TeeUpTimeItemViewHolder(view);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull TeeUpAdapter.TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
-            teeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
+            if (position == 0) {
+                view.setBackgroundResource(R.drawable.shape_black_edge);
+                divider.setVisibility(View.VISIBLE);
+                startTextView.setText("시작");
+                startTextView.setTextColor(0xff00abc5);
+            }
+            teeUpTimeTextView.setText(todayReserveList.get(position).getInoutCourse() + " " + timeMapper(todayReserveList.get(position).getTeeoff()));
             reservationGuestNameTextView.setText(todayReserveList.get(position).getGuestName());
+            for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
+                VisitorsGuestItem visitorsGuestItem = new VisitorsGuestItem(mContext);
+                TextView memberNameTextView = visitorsGuestItem.findViewById(R.id.memberNameTextView);
+                memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
+                visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
+            }
         }
 
         @Override
@@ -591,7 +611,8 @@ public class ViewMenuFragment extends BaseFragment {
             } else {
                 amOrPm = " AM";
             }
-            timeString = time.split(":")[0] + ":" + time.split(":")[1] + amOrPm;
+//            timeString = time.split(":")[0] + ":" + time.split(":")[1] + amOrPm;
+            timeString = time.split(":")[0] + ":" + time.split(":")[1];
             return timeString;
         }
 
