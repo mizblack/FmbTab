@@ -164,8 +164,8 @@ public class QRScanFragment extends BaseFragment {
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
                     changeDrawerViewToMenuView();
-                    mParentActivity.openDrawer();
                     GoNativeScreen(new MainWorkFragment() , null);
+
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
 

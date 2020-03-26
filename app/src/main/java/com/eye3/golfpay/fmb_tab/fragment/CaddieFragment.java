@@ -41,6 +41,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
@@ -282,15 +283,17 @@ public class CaddieFragment extends BaseFragment {
         setDataTeamMemo();
         setGuestData();
         closeKeyboard();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         v = inflater.inflate(R.layout.fr_caddie, container, false);
         memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
-        mParentActivity.showMainBottomBar();
         setDataTeamMemo();
         closeKeyboard();
+      //  mParentActivity.showMainBottomBar();
         return v;
     }
 
@@ -610,8 +613,9 @@ public class CaddieFragment extends BaseFragment {
             clubImageView.setImageBitmap(clubImageBitmap);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-            ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
-
+            ( (MainActivity)mParentActivity).changeDrawerViewToMenuView();
+            closeDrawer();
+            return;
         }
     }
 
@@ -673,4 +677,9 @@ public class CaddieFragment extends BaseFragment {
         return f;
     }
 
+    @Override
+    public void onBack() {
+        super.onBack();
+        closeDrawer();
+    }
 }

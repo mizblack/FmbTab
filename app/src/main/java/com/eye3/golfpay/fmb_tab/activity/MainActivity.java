@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
@@ -46,6 +48,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import static android.view.Gravity.LEFT;
+
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
@@ -56,11 +60,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         systemUIHide();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         init();
+        hideMainBottomBar();
         startLocationService();
     }
 
@@ -81,7 +87,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void login(String id, String pwd) {
-        showProgress("로그인 중입니다....");
+        //   showProgress("로그인 중입니다....");
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).login(id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
@@ -115,7 +121,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void openDrawerLayout() {
-        drawer_layout.openDrawer(GravityCompat.END);
+        if (drawer_layout != null)
+            drawer_layout.openDrawer(GravityCompat.END);
     }
 
     private void closeDrawerLayout() {
@@ -244,6 +251,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         ll_login.setVisibility(View.GONE);
         getAllCourseInfo(MainActivity.this);
+
         GoNavigationDrawer(new ViewMenuFragment(), null);
 
     }
@@ -259,7 +267,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Global.courseInfoList = (ArrayList<Course>) response.getList();
 
                 } else if (response.getResultCode().equals("fail")) {
-                   // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -323,7 +331,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             UIThread.executeInUIThread(new Runnable() {
                 @Override
                 public void run() {
-                    drawer_layout.closeDrawer(GravityCompat.START);
+                    if (drawer_layout != null)
+                        drawer_layout.closeDrawer(GravityCompat.END);
                 }
             });
         }
@@ -343,5 +352,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onResume();
         systemUIHide();
     }
+
 
 }

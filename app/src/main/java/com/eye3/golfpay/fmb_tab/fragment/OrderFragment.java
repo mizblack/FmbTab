@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.NameOrder;
@@ -61,7 +62,7 @@ public class OrderFragment extends BaseFragment {
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
     private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout;
-            public static LinearLayout mTabsRootLinear;
+    public static LinearLayout mTabsRootLinear;
     private ShadeOrder mShadeOrders;
     private OrderedMenuItem mOrderedMenuItem = null;
     private String mOrderedGuestId = "";
@@ -99,7 +100,6 @@ public class OrderFragment extends BaseFragment {
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
         mFoodImage = v.findViewById(R.id.img_food);
         mParentActivity.showMainBottomBar();
-
         return v;
     }
 
@@ -206,7 +206,7 @@ public class OrderFragment extends BaseFragment {
         orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (orderOrApplyBtn.getText().toString().equals("주문하기") || orderOrApplyBtn.getText().toString().equals("추가 주문하기") ) {
+                if (orderOrApplyBtn.getText().toString().equals("주문하기") || orderOrApplyBtn.getText().toString().equals("추가 주문하기")) {
                     mTabsRootLinear.setVisibility(View.INVISIBLE);
                     orderOrApplyBtn.setText("추가 주문하기");
                     sendShadeOrders();
@@ -224,7 +224,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 
-                    init();
+                init();
             }
         });
     }
@@ -379,7 +379,7 @@ public class OrderFragment extends BaseFragment {
         class CategoryItemViewHolder extends RecyclerView.ViewHolder {
             RecyclerView mRecyclerMenu;
 
-            //onCreateViewHolder 의 view 임()
+            //onCreateViewHolder 의 mMenuView 임()
             CategoryItemViewHolder(@NonNull final View itemView) {
                 super(itemView);
 
@@ -469,7 +469,7 @@ public class OrderFragment extends BaseFragment {
             class MenuItemViewHolder extends RecyclerView.ViewHolder {
                 TextView tvMenuName, tvPrice, tvMenuId;
 
-                //onCreateViewHolder 의 view 임()
+                //onCreateViewHolder 의 mMenuView 임()
                 MenuItemViewHolder(@NonNull final View itemView) {
                     super(itemView);
                     tvMenuName = itemView.findViewById(R.id.tv_menu_name);
@@ -613,7 +613,7 @@ public class OrderFragment extends BaseFragment {
 
         a_InvoiceView.setTag(orderItemInvoice);
         //네임오더가 없으면 뷰를 생성하지 않고 null 리턴
-        if(orderItemInvoice.mNameOrders.size() == 0){
+        if (orderItemInvoice.mNameOrders.size() == 0) {
             return null;
         }
         for (int i = 0; orderItemInvoice.mNameOrders.size() > i; i++) {
@@ -662,12 +662,12 @@ public class OrderFragment extends BaseFragment {
         }
     };
 
-    private void deleteNameOrderFromInvoiceArrayList(String menuName, NameOrder deletedNameOrder){
-        for(int i = 0 ; mOrderItemInvoiceArrayList.size() > i ; i++){
+    private void deleteNameOrderFromInvoiceArrayList(String menuName, NameOrder deletedNameOrder) {
+        for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
             OrderItemInvoice a_itemInvoice = mOrderItemInvoiceArrayList.get(i);
-            if(a_itemInvoice.mMenunName.equals(menuName)){
-                for(int j = 0; a_itemInvoice.mNameOrders.size() > j ; j++) {
-                    if ((a_itemInvoice.mNameOrders.get(j).name).equals(deletedNameOrder.name) &&  a_itemInvoice.mNameOrders.get(j).qty == deletedNameOrder.qty){
+            if (a_itemInvoice.mMenunName.equals(menuName)) {
+                for (int j = 0; a_itemInvoice.mNameOrders.size() > j; j++) {
+                    if ((a_itemInvoice.mNameOrders.get(j).name).equals(deletedNameOrder.name) && a_itemInvoice.mNameOrders.get(j).qty == deletedNameOrder.qty) {
                         a_itemInvoice.mNameOrders.remove(a_itemInvoice.mNameOrders.get(j));
                         a_itemInvoice.mQty -= deletedNameOrder.qty;
                     }
@@ -685,7 +685,7 @@ public class OrderFragment extends BaseFragment {
         }
         for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
             OrderItemInvoiceView an_OrderItemInvoiceView = makeOrderItemInvoiceView(mOrderItemInvoiceArrayList.get(i));
-            if (an_OrderItemInvoiceView != null )
+            if (an_OrderItemInvoiceView != null)
                 mOrderBrowserLinearLayout.addView(an_OrderItemInvoiceView);
 
         }
@@ -698,7 +698,7 @@ public class OrderFragment extends BaseFragment {
         int theTotal = 0;
         for (int i = 0; Global.orderDetailList.size() > i; i++)
             theTotal += Integer.parseInt(Global.orderDetailList.get(i).getPaid_total_amount());
-        mTotalPriceTextView.setText(theTotal + "원");
+        mTotalPriceTextView.setText(AppDef.priceMapper(theTotal) + "원");
     }
 
     private void sendShadeOrders() {

@@ -71,15 +71,16 @@ public class GalleryFragment extends BaseFragment {
     RecyclerView mGalleryRecycler;
     GalleryAdapter mGalleryAdatper;
     FrameLayout mFlPicture;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPictureList = new ArrayList<>();
-        GalleryPicture picture1 = new GalleryPicture("0", "1234", "storage/reserve_guests/club/1/3555_club_103457.jpg", "");
+        GalleryPicture picture1 = new GalleryPicture("0", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3555_club_103457.jpg", "");
         mPictureList.add(picture1);
-        GalleryPicture picture2 = new GalleryPicture("1", "1234", "storage/reserve_guests/club/1/3556_club_103415.jpg", "");
+        GalleryPicture picture2 = new GalleryPicture("1", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3556_club_103415.jpg", "");
         mPictureList.add(picture2);
-        GalleryPicture picture3 = new GalleryPicture("2", "1234", "storage/reserve_guests/club/1/3557_club_103458.jpg", "");
+        GalleryPicture picture3 = new GalleryPicture("2", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3557_club_103458.jpg", "");
         mPictureList.add(picture3);
     }
 
@@ -96,7 +97,7 @@ public class GalleryFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fr_galllery, container, false);
         mLinearGuestTab = v.findViewById(R.id.guestTabLinearLayout);
         mPictureClose = v.findViewById(R.id.pic_gallery_close);
-        mFlPicture = v.findViewById( R.id.fl_pic_gallery);
+        mFlPicture = v.findViewById(R.id.fl_pic_gallery);
         mPictureClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,8 +136,8 @@ public class GalleryFragment extends BaseFragment {
 //                = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         if (pictureList == null)
             return;
-    //    mManager = new LinearLayoutManager(mContext);
-       // mGalleryRecycler.setHasFixedSize(true);
+        //    mManager = new LinearLayoutManager(mContext);
+        // mGalleryRecycler.setHasFixedSize(true);
         mGalleryRecycler.setLayoutManager(mManager);
 
         mGalleryAdatper = new GalleryAdapter(mContext, pictureList);
@@ -190,21 +191,21 @@ public class GalleryFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-            GalleryItemViewHolder  viewHolder = (GalleryItemViewHolder)holder;
+            GalleryItemViewHolder viewHolder = (GalleryItemViewHolder) holder;
             viewHolder.imageView.setTag(position);
             viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mParentActivity.hideMainBottomBar();
-                    
+
 //                    mGalleryRecycler.setVisibility(View.INVISIBLE);
 //                    mFlPicture.setVisibility(View.VISIBLE);
 //                    mPictureImage.setVisibility(View.VISIBLE);
 //                    setClubImage(mPictureImage, mPictureList.get(position).url);
-                    GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int)v.getTag());
+                    GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int) v.getTag());
                     assert getFragmentManager() != null;
                     galleryViewFragment.show(getFragmentManager(), TAG);
-                   // closeDrawer();
+                    // closeDrawer();
                     systemUIHide();
 
                 }
@@ -231,7 +232,7 @@ public class GalleryFragment extends BaseFragment {
             if (img != null) {
 
                 Glide.with(mContext)
-                        .load(Global.HOST_BASE_ADDRESS_AWS + url)
+                        .load(url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .placeholder(R.drawable.ic_noimage)
                         .into(img);
@@ -295,8 +296,9 @@ public class GalleryFragment extends BaseFragment {
                 exifDegree = 0;
             }
 
-            //   mPictureList.add(bitmap);
-            mPictureImage.setImageBitmap(bitmap);
+            mPictureList.add(0, new GalleryPicture("567", "1234", imageFilePath, ""));
+            mGalleryAdatper.notifyDataSetChanged();
+            //   mPictureImage.setImageBitmap(bitmap);
 
 //            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
 //            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
@@ -365,7 +367,6 @@ public class GalleryFragment extends BaseFragment {
 
         return f;
     }
-
 
 
 }

@@ -10,6 +10,7 @@ public class GalleryPicture {
         this.group_id = group_id;
         this.url = url;
         this.created_at = created_at;
+        this.file_path = file_path;
     }
 
     @SerializedName("id")
@@ -24,6 +25,10 @@ public class GalleryPicture {
     @SerializedName("url")
     @Expose
     public String url;
+
+    @SerializedName("file_path")
+    @Expose
+    public String file_path;
 
     @SerializedName("created_at")
     @Expose

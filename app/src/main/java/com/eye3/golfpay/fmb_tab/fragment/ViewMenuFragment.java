@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -47,6 +48,7 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView inOutTextView00;
     private TextView inOutTextView01;
     private TextView tvCartNo;
+    private TextView controlTxtView;
     private View selectTobDivider, selectBottomDivider, roundingLinearLayout;
     private DrawerLayout drawer_layout;
     private FmbCustomDialog fmbDialog;
@@ -86,7 +88,10 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView galleryTextView00;
     private TextView galleryTextView01;
     private View galleryDivider;
-
+    private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
+            orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear;
+    // public View mCurrentItemView;
+    //int saveIndex = -1;
 
     public ViewMenuFragment() {
         // Required empty public constructor
@@ -96,69 +101,85 @@ public class ViewMenuFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+            getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fr_view_menu, container, false);
+        View v = inflater.inflate(R.layout.fr_view_menu, container, false);
+        teeUpRecyclerView = v.findViewById(R.id.teeUpRecyclerView);
+        gpsLinear = v.findViewById(R.id.gpsLinearLayout);
+        scoreBoardLinear = v.findViewById(R.id.scoreBoardLinearLayout);
+        nearstLongestLinear = v.findViewById(R.id.nearestLongestLinearLayout);
+        rankingNormalLinear = v.findViewById(R.id.rankingNormalLinearLayout);
+        caddieLinear = v.findViewById(R.id.caddieLinearLayout);
+        orderLinear = v.findViewById(R.id.orderLinearLayout);
+        paymentLinear = v.findViewById(R.id.paymentLinearLayout);
+        settingLinear = v.findViewById(R.id.settingsLinearLayout);
+        scoreLinear = v.findViewById(R.id.scoreLinearLayout);
+        controlLinear = v.findViewById(R.id.controlLinearLayout);
+        closeLinear = v.findViewById(R.id.closeLinearLayoutViewMenu);
+        caddieNameTextView = v.findViewById(R.id.caddieNameTextView);
+        init(v);
+        return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        init();
+
     }
 
+
     @SuppressLint("CutPasteId")
-    private void init() {
-        gpsTextView00 = Objects.requireNonNull(getView()).findViewById(R.id.gpsTextView00);
-        gpsTextView01 = getView().findViewById(R.id.gpsTextView01);
-        courseDivider = getView().findViewById(R.id.courseDivider);
+    private void init(View v) {
+        gpsTextView00 = Objects.requireNonNull(v.findViewById(R.id.gpsTextView00));
+        gpsTextView01 = v.findViewById(R.id.gpsTextView01);
+        courseDivider = v.findViewById(R.id.courseDivider);
 
-        scoreBoardTextView00 = getView().findViewById(R.id.scoreBoardTextView00);
-        scoreBoardTextView01 = getView().findViewById(R.id.scoreBoardTextView01);
-        scoreBoardDivider = getView().findViewById(R.id.scoreBoardDivider);
+        scoreBoardTextView00 = v.findViewById(R.id.scoreBoardTextView00);
+        scoreBoardTextView01 = v.findViewById(R.id.scoreBoardTextView01);
+        scoreBoardDivider = v.findViewById(R.id.scoreBoardDivider);
 
-        nearestLongestTextView00 = getView().findViewById(R.id.nearestLongestTextView00);
-        nearestLongestTextView01 = getView().findViewById(R.id.nearestLongestTextView01);
-        nearestLongestDivider = getView().findViewById(R.id.nearestLongestDivider);
+        nearestLongestTextView00 = v.findViewById(R.id.nearestLongestTextView00);
+        nearestLongestTextView01 = v.findViewById(R.id.nearestLongestTextView01);
+        nearestLongestDivider = v.findViewById(R.id.nearestLongestDivider);
 
-        rankingTextView00 = getView().findViewById(R.id.rankingTextView00);
-        rankingTextView01 = getView().findViewById(R.id.rankingTextView01);
-        rankingDivider = getView().findViewById(R.id.rankingDivider);
+        rankingTextView00 = v.findViewById(R.id.rankingTextView00);
+        rankingTextView01 = v.findViewById(R.id.rankingTextView01);
+        rankingDivider = v.findViewById(R.id.rankingDivider);
 
-        caddieTextView00 = getView().findViewById(R.id.caddieTextView00);
-        caddieTextView01 = getView().findViewById(R.id.caddieTextView01);
-        caddieDivider = getView().findViewById(R.id.caddieDivider);
+        caddieTextView00 = v.findViewById(R.id.caddieTextView00);
+        caddieTextView01 = v.findViewById(R.id.caddieTextView01);
+        caddieDivider = v.findViewById(R.id.caddieDivider);
 
-        orderTextView00 = getView().findViewById(R.id.orderTextView00);
-        orderTextView01 = getView().findViewById(R.id.orderTextView01);
-        orderDivider = getView().findViewById(R.id.orderDivider);
+        orderTextView00 = v.findViewById(R.id.orderTextView00);
+        orderTextView01 = v.findViewById(R.id.orderTextView01);
+        orderDivider = v.findViewById(R.id.orderDivider);
 
-        paymentTextView00 = getView().findViewById(R.id.paymentTextView00);
-        paymentTextView01 = getView().findViewById(R.id.paymentTextView01);
-        paymentDivider = getView().findViewById(R.id.paymentDivider);
+        paymentTextView00 = v.findViewById(R.id.paymentTextView00);
+        paymentTextView01 = v.findViewById(R.id.paymentTextView01);
+        paymentDivider = v.findViewById(R.id.paymentDivider);
 
-        topdressingTextView00 = getView().findViewById(R.id.topdressingTextView00);
-        topdressingTextView01 = getView().findViewById(R.id.topdressingTextView01);
-        topdressingDivider = getView().findViewById(R.id.topdressingDivider);
+        topdressingTextView00 = v.findViewById(R.id.topdressingTextView00);
+        topdressingTextView01 = v.findViewById(R.id.topdressingTextView01);
+        topdressingDivider = v.findViewById(R.id.topdressingDivider);
 
-        galleryTextView00 = getView().findViewById(R.id.galleryTextView00);
-        galleryTextView01 = getView().findViewById(R.id.galleryTextView01);
-        galleryDivider = getView().findViewById(R.id.galleryDivider);
+        galleryTextView00 = v.findViewById(R.id.galleryTextView00);
+        galleryTextView01 = v.findViewById(R.id.galleryTextView01);
+        galleryDivider = v.findViewById(R.id.galleryDivider);
 
         drawer_layout = (mParentActivity).findViewById(R.id.drawer_layout);
-        selectTobDivider = Objects.requireNonNull(getView()).findViewById(R.id.selectTobDivider);
-        selectBottomDivider = getView().findViewById(R.id.selectBottomDivider);
+        selectTobDivider = Objects.requireNonNull(v.findViewById(R.id.selectTobDivider));
+        selectBottomDivider = v.findViewById(R.id.selectBottomDivider);
 
-        tvCartNo = getView().findViewById(R.id.cart_no);
-        teeUpRecyclerView = getView().findViewById(R.id.teeUpRecyclerView);
-        TextView showListTextView = getView().findViewById(R.id.showListTextView);
+        tvCartNo = v.findViewById(R.id.cart_no);
+        teeUpRecyclerView = v.findViewById(R.id.teeUpRecyclerView);
+        TextView showListTextView = v.findViewById(R.id.showListTextView);
         showListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 selectTobDivider.setVisibility(View.VISIBLE);
                 selectBottomDivider.setVisibility(View.VISIBLE);
                 teeUpRecyclerView.setVisibility(View.VISIBLE);
@@ -168,13 +189,13 @@ public class ViewMenuFragment extends BaseFragment {
                 setDisableColor();
             }
         });
-        groupNameTextView = getView().findViewById(R.id.groupNameTextView);
-        reservationPersonNameTextView = getView().findViewById(R.id.reservationPersonNameTextView);
-        roundingTeeUpTimeTextView = getView().findViewById(R.id.teeUpTimeTextView);
-        inOutTextView00 = getView().findViewById(R.id.inOutTextView00);
-        inOutTextView01 = getView().findViewById(R.id.inOutTextView01);
-        roundingLinearLayout = getView().findViewById(R.id.roundingLinearLayout);
-        TextView controlTxtView = Objects.requireNonNull(getActivity()).findViewById(R.id.main_bottom_bar).findViewById(R.id.controlTextView);
+        groupNameTextView = v.findViewById(R.id.groupNameTextView);
+        reservationPersonNameTextView = v.findViewById(R.id.reservationPersonNameTextView);
+        roundingTeeUpTimeTextView = v.findViewById(R.id.teeUpTimeTextView);
+        inOutTextView00 = v.findViewById(R.id.inOutTextView00);
+        inOutTextView01 = v.findViewById(R.id.inOutTextView01);
+        roundingLinearLayout = v.findViewById(R.id.roundingLinearLayout);
+        controlTxtView = v.findViewById(R.id.controlTextViewViewMenu);
 
         selectBottomDivider.setVisibility(View.VISIBLE);
         teeUpRecyclerView.setVisibility(View.VISIBLE);
@@ -189,15 +210,15 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        ImageView markView = getActivity().findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
-        markView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer_layout.openDrawer(GravityCompat.END);
-            }
-        });
+//        ImageView markView = getActivity().findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
+//        markView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                drawer_layout.openDrawer(GravityCompat.END);
+//            }
+//        });
 
-        getView().findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -208,7 +229,7 @@ public class ViewMenuFragment extends BaseFragment {
 
 
         // 캐디수첩
-        getView().findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
@@ -216,7 +237,7 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
         // 그늘집 주문하기
-        getView().findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.orderLinearLayout).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -226,7 +247,7 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
         // 공지사항
-        getView().findViewById(R.id.noticeLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.noticeLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new NoticeFragment(), null);
@@ -234,14 +255,14 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        getView().findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.gpsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CourseFragment courseFragment = new CourseFragment();
@@ -252,7 +273,7 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
         // 설정
-        getView().findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.settingsLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 settingsCustomDialog = new SettingsCustomDialog(getActivity());
@@ -260,7 +281,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.scoreLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.scoreLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
@@ -268,7 +289,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.scoreBoardLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.scoreBoardLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
@@ -276,7 +297,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ScoreFragment(), null);
@@ -288,7 +309,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.rankingNormalLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.rankingNormalLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  GoNativeScreen(new ScoreFragment(), null);
@@ -297,7 +318,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.controlLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.controlLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new ControlFragment(), null);
@@ -305,7 +326,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.galleryLinear).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.galleryLinear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoNativeScreen(new GalleryFragment(), null);
@@ -314,7 +335,7 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        getView().findViewById(R.id.closeLinearLayout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.closeLinearLayoutViewMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
@@ -322,10 +343,10 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        showListTextView = getView().findViewById(R.id.showListTextView);
+        showListTextView = v.findViewById(R.id.showListTextView);
         showListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 selectTobDivider.setVisibility(View.VISIBLE);
                 selectBottomDivider.setVisibility(View.VISIBLE);
                 teeUpRecyclerView.setVisibility(View.VISIBLE);
@@ -366,7 +387,7 @@ public class ViewMenuFragment extends BaseFragment {
 
 
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
-        showProgress("티업시간을 받아오는 중입니다....");
+        //   showProgress("티업시간을 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -375,19 +396,18 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    if(Global.saveIdx == -1)
+                         Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
-                    caddieNameTextView = Objects.requireNonNull(getView()).findViewById(R.id.caddieNameTextView);
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
-
                     teeUpAdapter = new TeeUpAdapter(Global.teeUpTime.getTodayReserveList());
-                    teeUpRecyclerView = getView().findViewById(R.id.teeUpRecyclerView);
                     teeUpRecyclerView.setHasFixedSize(true);
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity());
                     teeUpRecyclerView.setLayoutManager(manager);
                     teeUpRecyclerView.setAdapter(teeUpAdapter);
                     teeUpAdapter.notifyDataSetChanged();
+
 
                 }
             }
@@ -449,18 +469,17 @@ public class ViewMenuFragment extends BaseFragment {
             mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
 
-        Objects.requireNonNull(getView()).findViewById(R.id.gpsLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.scoreBoardLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.nearestLongestLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.rankingNormalLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.caddieLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.orderLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.paymentLinearLayout).setEnabled(true);
-
-        getView().findViewById(R.id.settingsLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.scoreLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.controlLinearLayout).setEnabled(true);
-        getView().findViewById(R.id.closeLinearLayout).setEnabled(true);
+        gpsLinear.setEnabled(true);
+        scoreBoardLinear.setEnabled(true);
+        nearstLongestLinear.setEnabled(true);
+        rankingNormalLinear.setEnabled(true);
+        caddieLinear.setEnabled(true);
+        orderLinear.setEnabled(true);
+        paymentLinear.setEnabled(true);
+        settingLinear.setEnabled(true);
+        scoreLinear.setEnabled(true);
+        controlLinear.setEnabled(true);
+        closeLinear.setEnabled(true);
 
         setEnableColor();
     }
@@ -508,25 +527,26 @@ public class ViewMenuFragment extends BaseFragment {
             (mParentActivity).getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         }
 
-        Objects.requireNonNull(getView()).findViewById(R.id.gpsLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.scoreBoardLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.nearestLongestLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.rankingNormalLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.caddieLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.orderLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.paymentLinearLayout).setEnabled(false);
+        gpsLinear.setEnabled(false);
+        scoreBoardLinear.setEnabled(false);
+        nearstLongestLinear.setEnabled(false);
+        rankingNormalLinear.setEnabled(false);
+        caddieLinear.setEnabled(false);
+        orderLinear.setEnabled(false);
+        paymentLinear.setEnabled(false);
 
-        getView().findViewById(R.id.settingsLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.scoreLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.controlLinearLayout).setEnabled(false);
-        getView().findViewById(R.id.closeLinearLayout).setEnabled(false);
+        settingLinear.setEnabled(false);
+        scoreLinear.setEnabled(false);
+        controlLinear.setEnabled(false);
+        closeLinear.setEnabled(false);
 
         setDisableColor();
     }
 
     private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
 
-        View view, divider;
+        View mMenuView, divider;
+
         ArrayList<TodayReserveList> todayReserveList;
         TextView teeUpTimeTextView, reservationGuestNameTextView, startTextView;
         LinearLayout visitorsGuestItemLinearLayout;
@@ -537,15 +557,15 @@ public class ViewMenuFragment extends BaseFragment {
 
         class TeeUpTimeItemViewHolder extends RecyclerView.ViewHolder {
 
-            TeeUpTimeItemViewHolder(View view) {
-                super(view);
+            TeeUpTimeItemViewHolder(View v) {
+                super(v);
 
-                teeUpTimeTextView = view.findViewById(R.id.teeUpTimeTextView);
-                reservationGuestNameTextView = view.findViewById(R.id.reservationPersonNameTextView);
-                visitorsGuestItemLinearLayout = view.findViewById(R.id.visitorsGuestItemLinearLayout);
-                divider = view.findViewById(R.id.divider);
-                startTextView = view.findViewById(R.id.startTextView);
-
+                teeUpTimeTextView = v.findViewById(R.id.teeUpTimeTextView);
+                reservationGuestNameTextView = v.findViewById(R.id.reservationPersonNameTextView);
+                visitorsGuestItemLinearLayout = v.findViewById(R.id.visitorsGuestItemLinearLayout);
+                divider = v.findViewById(R.id.divider);
+                startTextView = v.findViewById(R.id.startTextView);
+                //    mCurrentItemView = itemView;
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -575,15 +595,15 @@ public class ViewMenuFragment extends BaseFragment {
         @NonNull
         @Override
         public TeeUpAdapter.TeeUpTimeItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
-            return new TeeUpAdapter.TeeUpTimeItemViewHolder(view);
+            mMenuView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
+            return new TeeUpAdapter.TeeUpTimeItemViewHolder(mMenuView);
         }
 
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull TeeUpAdapter.TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
             if (position == 0) {
-                view.setBackgroundResource(R.drawable.shape_black_edge);
+                mMenuView.setBackgroundResource(R.drawable.shape_black_edge);
                 divider.setVisibility(View.VISIBLE);
                 startTextView.setText("시작");
                 startTextView.setTextColor(0xff00abc5);
@@ -596,6 +616,8 @@ public class ViewMenuFragment extends BaseFragment {
                 memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
                 visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
             }
+            if (position == Global.saveIdx)
+                scoreItemViewHolder.itemView.performClick();
         }
 
         @Override
@@ -660,4 +682,17 @@ public class ViewMenuFragment extends BaseFragment {
         });
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null)
+            outState.putInt("selected", Global.selectedTeeUpIndex);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null)
+            Global.saveIdx = savedInstanceState.getInt("selected");
+    }
 }

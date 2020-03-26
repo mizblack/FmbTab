@@ -22,7 +22,7 @@ import com.eye3.golfpay.fmb_tab.util.Logger;
 import java.util.Objects;
 
 
-//layout(content view)을 갖고 있지 않음
+//layout(content mMenuView)을 갖고 있지 않음
 public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 
     protected String TAG;
@@ -206,7 +206,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 //    public void showCarStatusErrorDialog(Context context, String msg) {
 //        commonDialog = new FmbCustomDialog(context, null, msg, "확인", new View.OnClickListener() {
 //            @Override
-//            public void onClick(View view) {
+//            public void onClick(View mMenuView) {
 //                commonDialog.dismiss();
 //             //   GoNativeScreenAdd(new DrivingFragment(), null);
 //            }

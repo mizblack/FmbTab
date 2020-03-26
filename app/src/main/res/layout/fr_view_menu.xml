@@ -909,6 +909,7 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
+                   android:id="@+id/controlTextViewViewMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
@@ -921,7 +922,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/closeLinearLayout"
+                android:id="@+id/closeLinearLayoutViewMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"

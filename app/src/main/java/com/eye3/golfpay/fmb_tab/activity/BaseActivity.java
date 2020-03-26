@@ -6,7 +6,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -19,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.fragment.BaseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
 import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
@@ -34,12 +39,14 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     public DrawerLayout drawer;
     private boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
-
+    RelativeLayout mContentRelativeLayout;
+    LinearLayout mBottomBarLinearLayout;
     public void setOnKeyBackPressedListener(BaseFragment listener) {
         mOnKeyBackPressedListener = listener;
 
     }
-    public DrawerLayout getDrawer(){
+
+    public DrawerLayout getDrawer() {
         return drawer;
     }
 
@@ -52,11 +59,18 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
 
     public void showMainBottomBar() {
-        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.VISIBLE);
+        mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
+        mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.content_view_height)));
+        mBottomBarLinearLayout = findViewById(R.id.main_bottom_bar);
+        mBottomBarLinearLayout.setVisibility(View.VISIBLE);
     }
 
     public void hideMainBottomBar() {
-        findViewById(R.id.content_main_inc).findViewById(R.id.main_bottom_bar).setVisibility(View.GONE);
+        mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
+        mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        mBottomBarLinearLayout = findViewById(R.id.main_bottom_bar);
+        mBottomBarLinearLayout.setVisibility(View.GONE);
+
 
     }
 
@@ -170,14 +184,13 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
     public void removeFragment(BaseFragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-       transaction.setCustomAnimations(R.anim.push_out_down, R.anim.pull_in_top);
+        transaction.setCustomAnimations(R.anim.push_out_down, R.anim.pull_in_top);
 
         transaction.remove(fragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
     }
-
 
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle) {
@@ -383,7 +396,6 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
                 mOnKeyBackPressedListener.onBack();
         }
     }
-
 
 
     /**

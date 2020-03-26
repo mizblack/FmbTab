@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Global {
 
-    public static TeeUpTime teeUpTime;
+    public static TeeUpTime teeUpTime ;
     public static ArrayList<Guest> guestArrayList;
     public static ArrayList<Bitmap> signatureBitmapArrayList;
 
@@ -33,10 +33,9 @@ public class Global {
     public static String SavedPictureName = "";
     public static String SavedPicturePath = SavedDir + File.separator + SavedPictureName;
 
-    //  public static UserInfo userInfo = new UserInfo();
-    //  public static ArrayList<UploadPhoto> photoList = new ArrayList<>();
     public static String Token = "";
-    //  public static String[] searchItem = new String[7];
+    public static int saveIdx = -1;
+
 
     /**
      * 운영용으로 컴파일 할시에 true 로 세팅해준다. 호스트 접속페이지 처리.
@@ -64,7 +63,7 @@ public class Global {
 
     public static String imageBaseDir = HOST_ADDRESS_DEV + "/attachments";
 
-    public static int selectedTeeUpIndex = 0;
+    public static int selectedTeeUpIndex = -1;
     public static String reserveId = "0";
     public static String CaddyNo;
     public static TodayReserveList selectedReservation;

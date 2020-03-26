@@ -33,6 +33,7 @@ public class MainWorkFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mParentActivity.openDrawer();
 //        SetTitle("KT WMMS");
 //        SetDividerVisibility(false);
      //   setDrawerLayoutEnable(true);

@@ -2,6 +2,7 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,12 +98,16 @@ public class GalleryViewFragment extends DialogFragment {
 
             mIvMap = view.findViewById(R.id.iv_map);
 
-
             if (mPictureList.get(position).url != null) {
                 Glide.with(mContext)
-                        .load(Global.HOST_BASE_ADDRESS_AWS + mPictureList.get(position).url)
+                        .load(Uri.parse(mPictureList.get(position).url))
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
+//            } else if(mPictureList.get(position).url == null && mPictureList.get(position).file_path != null){
+//                Glide.with(mContext)
+//                        .load(
+//                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                        .into(mIvMap);
             } else {
                 mIvMap.setImageDrawable(getResources().getDrawable(R.drawable.ic_noimage, null));
             }
