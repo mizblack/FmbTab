@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -34,6 +33,8 @@ import com.eye3.golfpay.fmb_tab.view.VisitorsGuestItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,6 +93,7 @@ public class ViewMenuFragment extends BaseFragment {
             orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear;
     // public View mCurrentItemView;
     //int saveIndex = -1;
+    Timer timer;
 
     public ViewMenuFragment() {
         // Required empty public constructor
@@ -101,7 +103,8 @@ public class ViewMenuFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+        getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+        startTimer();
 
     }
 
@@ -396,8 +399,8 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    if(Global.saveIdx == -1)
-                         Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    if (Global.saveIdx == -1)
+                        Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
@@ -425,6 +428,28 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
     }
+
+    private void startTimer() {
+
+        timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+
+            @Override
+
+            public void run() {
+
+                getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+
+
+                //    update();
+
+            }
+
+        }, 10 * 1000, 1000 * 5);
+
+    }
+
 
     private void setEnableColor() {
         gpsTextView00.setTextColor(0xff7e8181);
@@ -569,7 +594,7 @@ public class ViewMenuFragment extends BaseFragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        timer.cancel();
                         selectTobDivider.setVisibility(View.GONE);
                         selectBottomDivider.setVisibility(View.GONE);
                         teeUpRecyclerView.setVisibility(View.GONE);
@@ -613,7 +638,14 @@ public class ViewMenuFragment extends BaseFragment {
             for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
                 VisitorsGuestItem visitorsGuestItem = new VisitorsGuestItem(mContext);
                 TextView memberNameTextView = visitorsGuestItem.findViewById(R.id.memberNameTextView);
+                ImageView ivCheckin = visitorsGuestItem.findViewById(R.id.iv_checkin);
                 memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
+                if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
+                    //내장객이 입장을 안했을때
+                    //  ivCheckin.setImageAlpha(50);
+                    ivCheckin.setVisibility(View.INVISIBLE);
+
+                }
                 visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
             }
             if (position == Global.saveIdx)

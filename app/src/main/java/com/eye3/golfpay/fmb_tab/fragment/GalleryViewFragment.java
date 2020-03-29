@@ -2,13 +2,11 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -18,7 +16,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 
 import java.util.List;
@@ -100,7 +97,8 @@ public class GalleryViewFragment extends DialogFragment {
 
             if (mPictureList.get(position).url != null) {
                 Glide.with(mContext)
-                        .load(Uri.parse(mPictureList.get(position).url))
+                       .load(mPictureList.get(position).url)
+                        // .load(Uri.parse(mPictureList.get(position).url))
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
 //            } else if(mPictureList.get(position).url == null && mPictureList.get(position).file_path != null){

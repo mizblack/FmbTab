@@ -7,11 +7,13 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@+id/iv_checkin"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_noimage"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        />
 
     <TextView
         android:id="@+id/memberNameTextView"

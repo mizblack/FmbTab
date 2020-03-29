@@ -32,18 +32,15 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 
 import java.io.ByteArrayOutputStream;
@@ -368,5 +365,9 @@ public class GalleryFragment extends BaseFragment {
         return f;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mParentActivity.showMainBottomBar();
+    }
 }
