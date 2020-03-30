@@ -42,7 +42,7 @@ public class TabCourseLinear extends LinearLayout {
     ScoreAdapter mScoreAdapter;
     Context mContext;
     //각홀의 레이아웃 아이디
-     static int mHoleScoreLayoutIdx;
+    static int mHoleScoreLayoutIdx;
     //탭아이디 (중요)
     int mTabIdx;
     List<Player> mPlayerList;
@@ -58,17 +58,17 @@ public class TabCourseLinear extends LinearLayout {
 
     }
 
-    public static int getmHoleScoreLayoutIdx(){
+    public static int getmHoleScoreLayoutIdx() {
         return mHoleScoreLayoutIdx;
     }
 
-    public static void setmHoleScoreLayoutIdx(int Idx){
-        mHoleScoreLayoutIdx  = Idx;
+    public static void setmHoleScoreLayoutIdx(int Idx) {
+        mHoleScoreLayoutIdx = Idx;
     }
+
     private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx, int mHoleScoreLayoutIdx) {
 
         int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx - 1;
-        // int previousCourseIdx = mTabIdx - 1;
         if (playerList == null)
             return false;
         //최초 홀은 무조건 통과
@@ -76,31 +76,18 @@ public class TabCourseLinear extends LinearLayout {
             return true;
         for (int i = 0; playerList.size() > i; i++) {
 
-//            for(int j= 0; playerList.get(i).playingCourse.size() -1 > j ;j++) {
-//                Course course = playerList.get(i).playingCourse.get(j);
-//                for(int x = 0; course.holes.size() > x ; x++) {
-//                    if (course.holes.get(x).playedScore.tar.equals("-"))
-//                        return false;
-//                    if (course.holes.get(x).playedScore.putting.equals("-"))
-//                        return false;
-//                }
-//            }
-
             if (mTabIdx == 0) {
 
-
                 // the last(current) course
-                for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
-                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
-                        return false;
-                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
-                        return false;
-                }
+                if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                    return false;
+                if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                    return false;
 
             } else {
                 if (playerList.get(i).playingCourse.get(mTabIdx - 1).holes.get(8).playedScore.tar.equals("-"))
                     return false;
-                if (playerList.get(i).playingCourse.get(mTabIdx-1).holes.get(8).playedScore.putting.equals("-"))
+                if (playerList.get(i).playingCourse.get(mTabIdx - 1).holes.get(8).playedScore.putting.equals("-"))
                     return false;
 
                 for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
@@ -274,39 +261,30 @@ public class TabCourseLinear extends LinearLayout {
                             switch (v.getId()) {
                                 case R.id.hole1_ll:
                                     mHoleScoreLayoutIdx = 0;
-                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole2_ll:
                                     mHoleScoreLayoutIdx = 1;
-                             //       notifyDataSetChanged();
                                     break;
                                 case R.id.hole3_ll:
                                     mHoleScoreLayoutIdx = 2;
-                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole4_ll:
                                     mHoleScoreLayoutIdx = 3;
-                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole5_ll:
                                     mHoleScoreLayoutIdx = 4;
-                               //     notifyDataSetChanged();
                                     break;
                                 case R.id.hole6_ll:
                                     mHoleScoreLayoutIdx = 5;
-                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole7_ll:
                                     mHoleScoreLayoutIdx = 6;
-                              //      notifyDataSetChanged();
                                     break;
                                 case R.id.hole8_ll:
                                     mHoleScoreLayoutIdx = 7;
-                               //     notifyDataSetChanged();
                                     break;
                                 case R.id.hole9_ll:
                                     mHoleScoreLayoutIdx = 8;
-                                 //   notifyDataSetChanged();
                                     break;
                                 default:
 

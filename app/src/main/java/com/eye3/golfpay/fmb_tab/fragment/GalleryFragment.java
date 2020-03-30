@@ -69,6 +69,7 @@ public class GalleryFragment extends BaseFragment {
     GalleryAdapter mGalleryAdatper;
     FrameLayout mFlPicture;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,12 +194,7 @@ public class GalleryFragment extends BaseFragment {
             viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mParentActivity.hideMainBottomBar();
-
-//                    mGalleryRecycler.setVisibility(View.INVISIBLE);
-//                    mFlPicture.setVisibility(View.VISIBLE);
-//                    mPictureImage.setVisibility(View.VISIBLE);
-//                    setClubImage(mPictureImage, mPictureList.get(position).url);
+                  //  mParentActivity.hideMainBottomBar();
                     GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int) v.getTag());
                     assert getFragmentManager() != null;
                     galleryViewFragment.show(getFragmentManager(), TAG);

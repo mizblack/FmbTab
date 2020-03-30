@@ -91,9 +91,10 @@ public class ViewMenuFragment extends BaseFragment {
     private View galleryDivider;
     private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
             orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear;
-    // public View mCurrentItemView;
-    //int saveIndex = -1;
+
     Timer timer;
+
+    TextView mTvRoundStartfinish;
 
     public ViewMenuFragment() {
         // Required empty public constructor
@@ -179,6 +180,13 @@ public class ViewMenuFragment extends BaseFragment {
 
         tvCartNo = v.findViewById(R.id.cart_no);
         teeUpRecyclerView = v.findViewById(R.id.teeUpRecyclerView);
+        mTvRoundStartfinish = v.findViewById(R.id.first_round_start);
+        mTvRoundStartfinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((TextView) v).setText("전반종료");
+            }
+        });
         TextView showListTextView = v.findViewById(R.id.showListTextView);
         showListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +265,17 @@ public class ViewMenuFragment extends BaseFragment {
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
+
+        // 배토관리
+        v.findViewById(R.id.topdressingLinearLayout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new TopDressingFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
+
+
 
         v.findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override

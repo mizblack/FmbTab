@@ -24,6 +24,7 @@ public class GalleryViewFragment extends DialogFragment {
     ViewPager mGalleryViewPager;
     GalleryPagerAdapter mGalleryPagerAdapter;
     List<GalleryPicture> mGalleryPictureList;
+    ImageView mIvLeft, mIvRight;
     int mSelectedId;
 
     @Override
@@ -40,10 +41,26 @@ public class GalleryViewFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.gallery_view_dialog, container, false);
+
         mGalleryViewPager = view.findViewById(R.id.gallery_view_pager);
         mGalleryPagerAdapter = new GalleryPagerAdapter(getActivity(), mGalleryPictureList);
         mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
         mGalleryViewPager.setCurrentItem(mSelectedId);
+        mIvLeft = view.findViewById(R.id.arrow_left);
+        mIvLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGalleryViewPager.arrowScroll(View.FOCUS_LEFT);
+            }
+        });
+
+        mIvRight = view.findViewById(R.id.arrow_right);
+        mIvRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGalleryViewPager.arrowScroll(View.FOCUS_RIGHT);
+            }
+        });
         mGalleryViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -101,11 +118,6 @@ public class GalleryViewFragment extends DialogFragment {
                         // .load(Uri.parse(mPictureList.get(position).url))
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
-//            } else if(mPictureList.get(position).url == null && mPictureList.get(position).file_path != null){
-//                Glide.with(mContext)
-//                        .load(
-//                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                        .into(mIvMap);
             } else {
                 mIvMap.setImageDrawable(getResources().getDrawable(R.drawable.ic_noimage, null));
             }

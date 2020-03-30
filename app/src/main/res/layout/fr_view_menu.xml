@@ -319,11 +319,12 @@
                                 tools:ignore="UselessParent">
 
                                 <TextView
+                                    android:id="@+id/first_round_start"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
                                     android:background="@color/ebonyBlack"
                                     android:gravity="center"
-                                    android:text="전반종료"
+                                    android:text="전반시작"
                                     android:textColor="@color/white"
                                     android:textSize="20dp"
                                     tools:ignore="HardcodedText,SpUsage" />

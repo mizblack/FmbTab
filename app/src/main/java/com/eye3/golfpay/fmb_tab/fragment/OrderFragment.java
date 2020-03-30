@@ -71,7 +71,7 @@ public class OrderFragment extends BaseFragment {
     private TextView mTotalPriceTextView;
     private Button mResetButton;
     ArrayList<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
-
+    private ImageView mArrowToApply;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +93,7 @@ public class OrderFragment extends BaseFragment {
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
+        mArrowToApply = v.findViewById(R.id.arrow_to_apply);
         mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
         mTabsRootLinear = v.findViewById(R.id.tabsRootLinearLayout);
         mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
@@ -202,13 +203,18 @@ public class OrderFragment extends BaseFragment {
 
         orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyTextView);
         mResetButton = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
-
+        mArrowToApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTabsRootLinear.setVisibility(View.INVISIBLE);
+                GoOrderLeftBoard(new ApplyFragment(), null);
+            }
+        });
         orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (orderOrApplyBtn.getText().toString().equals("주문하기") || orderOrApplyBtn.getText().toString().equals("추가 주문하기")) {
-                    mTabsRootLinear.setVisibility(View.INVISIBLE);
-                    orderOrApplyBtn.setText("추가 주문하기");
+                    orderOrApplyBtn.setText("주문하기");
                     sendShadeOrders();
 
 //                } else if (orderOrApplyBtn.getText().toString().equals("적용하기")) {
