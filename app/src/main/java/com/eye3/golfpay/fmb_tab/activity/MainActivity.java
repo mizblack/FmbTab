@@ -139,6 +139,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         nameEditText = findViewById(R.id.nameEditText);
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
         ll_login = findViewById(R.id.login_view_include);
+
         startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,7 +248,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void changeDrawerViewToMenuView() {
 
-        ll_login.setVisibility(View.GONE);
+       // ll_login.setVisibility(View.GONE);
         getAllCourseInfo(MainActivity.this);
 
         GoNavigationDrawer(new ViewMenuFragment(), null);

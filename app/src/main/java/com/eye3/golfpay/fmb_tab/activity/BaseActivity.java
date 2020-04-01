@@ -52,32 +52,6 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         backPressCloseHandler = new BackPressCloseHandler(this);
-//        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-//            @Override
-//            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-//                if(getVisibleFragment() != null) {
-//                    if (getVisibleFragment() instanceof MainWorkFragment ){
-//
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onDrawerOpened(@NonNull View drawerView) {
-//
-//            }
-//
-//            @Override
-//            public void onDrawerClosed(@NonNull View drawerView) {
-//
-//            }
-//
-//            @Override
-//            public void onDrawerStateChanged(int newState) {
-//
-//            }
-//        });
         systemUIHide();
     }
 
