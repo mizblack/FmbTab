@@ -610,7 +610,7 @@ public class ViewMenuFragment extends BaseFragment {
                 divider = v.findViewById(R.id.divider);
                 startTextView = v.findViewById(R.id.startTextView);
                 //    mCurrentItemView = itemView;
-                itemView.setOnClickListener(new View.OnClickListener() {
+                startTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         timer.cancel();
@@ -663,9 +663,10 @@ public class ViewMenuFragment extends BaseFragment {
                     //내장객이 입장을 안했을때
                     //  ivCheckin.setImageAlpha(50);
                     ivCheckin.setVisibility(View.INVISIBLE);
-
+                    startTextView.setEnabled(false);
                 }
                 visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
+
             }
             if (position == Global.saveIdx)
                 scoreItemViewHolder.itemView.performClick();
@@ -712,7 +713,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
-                    Global.guestArrayList = response.getList();
+                    Global.guestList = response.getList();
                     GoNativeScreen(new CaddieFragment(), null);
                     drawer_layout.closeDrawer(GravityCompat.END);
                     hideProgress();

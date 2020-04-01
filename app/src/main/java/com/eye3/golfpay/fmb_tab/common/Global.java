@@ -21,8 +21,8 @@ import java.util.List;
 public class Global {
 
     public static TeeUpTime teeUpTime ;
-    public static ArrayList<Guest> guestArrayList;
-    public static ArrayList<Bitmap> signatureBitmapArrayList;
+    public static List<Guest> guestList;
+    public static ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<Bitmap>();
 
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
@@ -65,7 +65,7 @@ public class Global {
 
     public static int selectedTeeUpIndex = -1;
     public static String reserveId = "0";
-    public static String CaddyNo;
+    public static String CaddyNo = "29";
     public static TodayReserveList selectedReservation;
 
     public interface NotiAlarmChannelID {

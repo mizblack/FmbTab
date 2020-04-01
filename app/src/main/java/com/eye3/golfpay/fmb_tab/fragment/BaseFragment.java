@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.eye3.golfpay.fmb_tab.R;
@@ -125,6 +127,8 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
      * @param bundle   Parameter 번들
      */
     public void GoNativeScreen(BaseFragment fragment, Bundle bundle) {
+        if(mParentActivity.getVisibleFragment() != null)
+            getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         if (mParentActivity != null)
             mParentActivity.GoNativeScreen(fragment, bundle);
     }
@@ -186,19 +190,19 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         if (ivDivider != null) ivDivider.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
     }
 
-//    public void setDrawerLayoutEnable(final boolean isEnable) {
-//        if (mParentActivity != null) {
-//            if(mParentActivity.getDrawerLayout() != null) {
-//                if(isEnable) {
-//                    mParentActivity.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-//                } else {
-//                    mParentActivity.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//                }
-//            } else {
-//                Log.e("<PHD>", "## NavigationView Null..!!!!!!!");
-//            }
-//        }
-//    }
+    public void setDrawerLayoutEnable(final boolean isEnable) {
+        if (mParentActivity != null) {
+            if(mParentActivity.getDrawerLayout() != null) {
+                if(isEnable) {
+                    mParentActivity.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                } else {
+                    mParentActivity.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                }
+            } else {
+                Log.e("<PHD>", "## NavigationView Null..!!!!!!!");
+            }
+        }
+    }
 
 
 //    private FmbCustomDialog commonDialog;
@@ -302,6 +306,10 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 
     public void closeDrawer(){
         mParentActivity.hideDrawer();
+    }
+
+    public DrawerLayout getDrawer(){
+       return mParentActivity.getDrawer();
     }
 
 }

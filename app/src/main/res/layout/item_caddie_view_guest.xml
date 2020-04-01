@@ -9,6 +9,17 @@
     android:padding="16dp"
     tools:ignore="DisableBaselineAlignment">
 
+    <TextView
+        android:id="@+id/memberNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="-"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText,SpUsage" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,16 +31,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/memberNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="-"
-                android:textColor="@color/black"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText,SpUsage" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,12 +128,12 @@
 
                 </LinearLayout>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:scrollbars="none"
-                    tools:ignore="NestedScrolling">
+<!--                <ScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:scrollbars="none"-->
+<!--                    tools:ignore="NestedScrolling">-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -143,7 +144,7 @@
                             android:id="@+id/guestMemoContentTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text=""
+                            android:text="xxxxx"
                             android:textColor="@color/black"
                             android:textSize="20dp"
                             tools:ignore="HardcodedText,SpUsage" />
@@ -159,7 +160,7 @@
 
                     </LinearLayout>
 
-                </ScrollView>
+<!--                </ScrollView>-->
 
             </LinearLayout>
 

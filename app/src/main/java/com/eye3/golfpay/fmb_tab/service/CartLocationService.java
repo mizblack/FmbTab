@@ -58,7 +58,7 @@ public class CartLocationService extends Service {
     private Notification createNotification(Context context, RemoteViews remoteViews) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Util.getNotiChId(this, Global.NotiAlarmChannelID.CHANNEL_LOC))
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.fmb_launcher)
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(getString(R.string.txt_noti_cont));
 
@@ -228,7 +228,7 @@ public class CartLocationService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
+           // Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
             mLastLocation.set(location);
             if (Global.courseFragment != null && Global.courseFragment.isVisible()) {

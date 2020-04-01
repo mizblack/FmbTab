@@ -6,9 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -23,7 +21,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.fragment.BaseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
 import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
@@ -47,6 +44,7 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     }
 
     public DrawerLayout getDrawer() {
+        drawer = ((MainActivity)this).drawer_layout;
         return drawer;
     }
 
@@ -54,6 +52,32 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         backPressCloseHandler = new BackPressCloseHandler(this);
+//        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+//            @Override
+//            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+//                if(getVisibleFragment() != null) {
+//                    if (getVisibleFragment() instanceof MainWorkFragment ){
+//
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onDrawerOpened(@NonNull View drawerView) {
+//
+//            }
+//
+//            @Override
+//            public void onDrawerClosed(@NonNull View drawerView) {
+//
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//
+//            }
+//        });
         systemUIHide();
     }
 

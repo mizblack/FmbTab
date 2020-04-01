@@ -1,13 +1,12 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.eye3.golfpay.fmb_tab.R;
 
@@ -27,7 +26,9 @@ public class MainWorkFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         return inflater.inflate(R.layout.main_fragment, container, false);
+
     }
 
     @Override
@@ -57,8 +58,11 @@ public class MainWorkFragment extends BaseFragment {
 //        });
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
 }
 
 

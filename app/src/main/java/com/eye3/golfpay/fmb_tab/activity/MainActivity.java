@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -23,7 +21,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
@@ -48,8 +45,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import static android.view.Gravity.LEFT;
-
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
@@ -68,6 +63,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
         hideMainBottomBar();
         startLocationService();
+        if(getVisibleFragment() == null)
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -97,11 +94,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
-                    changeDrawerViewToMenuView();
+                  //  changeDrawerViewToMenuView();
                 } else {
-                    Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
-                    nameEditText.setText("");
-                    phoneNumberEditText.setText("");
+                    changeDrawerViewToMenuView();
+              //      Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
+              //     nameEditText.setText("");
+               //     phoneNumberEditText.setText("");
                 }
 
             }
@@ -327,6 +325,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // 메뉴 닫기
     public void HideMenuMap() {
+
         if (mBaseFragment != null) {
             UIThread.executeInUIThread(new Runnable() {
                 @Override
