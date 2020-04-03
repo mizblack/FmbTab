@@ -19,6 +19,7 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -155,7 +156,6 @@ public class EditorDialogFragment extends DialogFragment {
 
         return view;
     }
-
 
     public void setOnEditorFinishListener(OnEditorFinishListener listener) {
         if (listener != null)

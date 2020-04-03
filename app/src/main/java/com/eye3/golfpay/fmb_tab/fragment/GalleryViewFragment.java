@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -25,6 +26,7 @@ public class GalleryViewFragment extends DialogFragment {
     GalleryPagerAdapter mGalleryPagerAdapter;
     List<GalleryPicture> mGalleryPictureList;
     ImageView mIvLeft, mIvRight;
+    RelativeLayout mRootView ;
     int mSelectedId;
 
     @Override
@@ -41,7 +43,13 @@ public class GalleryViewFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.gallery_view_dialog, container, false);
-
+        mRootView =  view.findViewById(R.id.rootView);
+        mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         mGalleryViewPager = view.findViewById(R.id.gallery_view_pager);
         mGalleryPagerAdapter = new GalleryPagerAdapter(getActivity(), mGalleryPictureList);
         mGalleryViewPager.setAdapter(mGalleryPagerAdapter);
@@ -50,7 +58,11 @@ public class GalleryViewFragment extends DialogFragment {
         mIvLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGalleryViewPager.arrowScroll(View.FOCUS_LEFT);
+               if(  mGalleryPagerAdapter.getItemPosition( mGalleryViewPager.getCurrentItem()) == mGalleryPagerAdapter.getCount() -1) {
+         //         mIvLeft.setImageResource(R.);
+               }else{
+                   mGalleryViewPager.arrowScroll(View.FOCUS_LEFT);
+               }
             }
         });
 
@@ -72,14 +84,11 @@ public class GalleryViewFragment extends DialogFragment {
 //                mTvHoleNo.setText(Global.CurrentCourse.holes.get(position).hole_no);
 //                mTvCourseName.setText(Global.CurrentCourse.courseName);
 //                mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
-//
-//                if (Global.CurrentCourse.holes.get(position).tBox != null) {
-//                    tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
-//                    regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
-//                    ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
-//                    championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
-//                    frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
-//                }
+
+                 if(position == mGalleryPagerAdapter.getCount() -1){
+
+                 }
+
             }
 
             @Override

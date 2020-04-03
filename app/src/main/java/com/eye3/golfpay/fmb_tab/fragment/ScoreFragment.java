@@ -23,6 +23,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +44,8 @@ public class ScoreFragment extends BaseFragment {
     //코스스코어보드
     TabCourseLinear mScoreBoard;
     int mTabIdx = 0;
+
+    private static ArrayList<String> firstGuestIdList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,6 +181,24 @@ public class ScoreFragment extends BaseFragment {
         rightLinearLayoutOnClick();
 
     }
+    //순위에따른 위치고정 함수
+    @Deprecated
+    private void reArrangeOrder(List<Player> playerList) {
+        for (int i = 0; firstGuestIdList.size() > i; i++) {
+            for (int j = 0; playerList.size() > j; j++) {
+
+                if (firstGuestIdList.get(i).equals(playerList.get(j).guest_id)) {
+                    playerList.set(i, playerList.get(j));
+                }
+            }
+        }
+    }
+    //순위에따른 위치고정 함수의 초기값 설정함수
+    @Deprecated
+    private void getFirstGuestIdList(List<Player> playerList) {
+        for (int i = 0; playerList.size() > i; i++)
+            firstGuestIdList.add(playerList.get(i).guest_id);
+    }
 
     private void getReserveScore() {
         showProgress("스코어 정보를 가져오는 중입니다.");
@@ -189,7 +210,6 @@ public class ScoreFragment extends BaseFragment {
                     mPlayerList = response.getList();
                     mCourseList = getCtypedCourse(mPlayerList);
 
-                    //      Global.courseInfoList = mCourseList;
                     Global.CurrentCourse = mCourseList.get(0);
                     Global.CurrentHole = Global.CurrentCourse.holes.get(0);
                     NUM_OF_COURSE = mCourseList.size();
@@ -225,7 +245,7 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
-                    //                Global.playerList = mPlayerList;
+          //          reArrangeOrder(mPlayerList);
                     createScoreTab(mPlayerList, mTabIdx);
 
                 } else if (response.getResultCode().equals("fail")) {

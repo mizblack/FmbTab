@@ -54,7 +54,7 @@
                 <TextView
                     android:id="@+id/tv_top_dressing_start_time"
                     android:layout_width="300dp"
-                    android:layout_height="100dp"
+                    android:layout_height="89dp"
                     android:gravity="center"
                     android:text="DDDDDDD"
                     android:textColor="@color/black"
@@ -75,7 +75,7 @@
             <Button
                 android:id="@+id/btn_top_dressing"
                 android:layout_width="300dp"
-                android:layout_height="140dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center_vertical"
                 android:background="@color/black"
                 android:gravity="center"

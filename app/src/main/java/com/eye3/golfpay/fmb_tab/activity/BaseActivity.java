@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.fragment.BaseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.MainWorkFragment;
+import com.eye3.golfpay.fmb_tab.fragment.ViewMenuFragment;
 import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
 
@@ -142,8 +143,13 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
             mBaseFragment.setArguments(bundle);
         }
 
+        if (getVisibleFragment() instanceof ViewMenuFragment){
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+        //replace시 새로운 fragment가 생성되면서 올라오면 , 현 fragment는 onDestroy를 호출한다.(메모리에서 사라지게됨)
         transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
 
     }
@@ -444,4 +450,8 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
         systemUIHide();
     }
 
+
+
+    protected void onViewStateRestored(Bundle savedInstanceState) {
+    }
 }

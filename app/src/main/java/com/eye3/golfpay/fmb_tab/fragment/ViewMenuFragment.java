@@ -276,7 +276,6 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
 
-
         v.findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -418,8 +417,7 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    if (Global.saveIdx == -1)
-                        Toast.makeText(context, "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
@@ -509,9 +507,9 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void enableMenu() {
-        if (mParentActivity.getDrawer() != null) {
-            mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
+//        if (mParentActivity.getDrawer() != null) {
+//            mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+//        }
 
         gpsLinear.setEnabled(true);
         scoreBoardLinear.setEnabled(true);
@@ -646,12 +644,12 @@ public class ViewMenuFragment extends BaseFragment {
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull TeeUpAdapter.TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
-            if (position == 0) {
+       //     if (position == 0) {
                 mMenuView.setBackgroundResource(R.drawable.shape_black_edge);
-                divider.setVisibility(View.VISIBLE);
+//                divider.setVisibility(View.VISIBLE);
                 startTextView.setText("시작");
                 startTextView.setTextColor(0xff00abc5);
-            }
+      //      }
             teeUpTimeTextView.setText(todayReserveList.get(position).getInoutCourse() + " " + timeMapper(todayReserveList.get(position).getTeeoff()));
             reservationGuestNameTextView.setText(todayReserveList.get(position).getGuestName());
             for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
@@ -668,8 +666,7 @@ public class ViewMenuFragment extends BaseFragment {
                 visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
 
             }
-            if (position == Global.saveIdx)
-                scoreItemViewHolder.itemView.performClick();
+
         }
 
         @Override
@@ -734,17 +731,4 @@ public class ViewMenuFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (outState != null)
-            outState.putInt("selected", Global.selectedTeeUpIndex);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null)
-            Global.saveIdx = savedInstanceState.getInt("selected");
-    }
 }

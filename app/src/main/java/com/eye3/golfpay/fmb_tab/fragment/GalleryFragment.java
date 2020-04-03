@@ -194,11 +194,9 @@ public class GalleryFragment extends BaseFragment {
             viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  mParentActivity.hideMainBottomBar();
                     GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int) v.getTag());
                     assert getFragmentManager() != null;
                     galleryViewFragment.show(getFragmentManager(), TAG);
-                    // closeDrawer();
                     systemUIHide();
 
                 }
@@ -301,7 +299,8 @@ public class GalleryFragment extends BaseFragment {
 //            clubImageView.setImageBitmap(clubImageBitmap);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-            ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
+
+            ;
 
         }
     }

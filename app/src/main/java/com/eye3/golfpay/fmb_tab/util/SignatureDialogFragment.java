@@ -20,12 +20,22 @@ import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import java.util.ArrayList;
 
+import static com.eye3.golfpay.fmb_tab.common.Global.signatureBitmapArrayList;
+
 public class SignatureDialogFragment extends DialogFragment {
 
     private String guestId;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
     private SignaturePad signaturePad;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if( signatureBitmapArrayList.size() == 0){
+            //signatureBitmapArrayList.add(new Bitmap());
+        }
+    }
 
     public void setGuestId(String guestId) {
         this.guestId = guestId;
@@ -58,10 +68,11 @@ public class SignatureDialogFragment extends DialogFragment {
         view.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
                 TextView signatureTextView = caddieViewGuestItem.findViewById(R.id.signatureTextView);
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
-                    Global.signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
+                   // signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
                     ImageView imgView = caddieViewGuestItemArrayList.get(traversalByGuestId()).findViewById(R.id.signatureImageView);
                     setImageWithGlide(imgView, signaturePad.getTransparentSignatureBitmap());
                     signatureTextView.setVisibility(View.GONE);

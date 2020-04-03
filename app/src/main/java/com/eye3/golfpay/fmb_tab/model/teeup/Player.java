@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Player implements Serializable {
+public class Player implements Serializable{
 
     @SerializedName("guestName")
     @Expose
@@ -46,4 +46,14 @@ public class Player implements Serializable {
     @Expose
     public List<Course> playingCourse ;
 
+//    @Override
+//    public int compareTo(Player o) {
+//        if (Integer.valueOf(this.Ranking) < Integer.valueOf(o.Ranking)) {
+//            return -1;
+//        } else if (Integer.valueOf(this.Ranking) > Integer.valueOf(o.Ranking)) {
+//            return 1;
+//        }
+//
+//        return 0;
+//    }
 }

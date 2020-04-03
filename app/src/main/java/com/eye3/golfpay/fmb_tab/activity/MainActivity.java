@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,8 +14,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -63,9 +66,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
         hideMainBottomBar();
         startLocationService();
-        if(getVisibleFragment() == null)
-            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+      //  if (getVisibleFragment() == null)
+           drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+
     }
+
 
     @SuppressLint("ObsoleteSdkInt")
     private void startLocationService() {
@@ -94,12 +99,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
-                  //  changeDrawerViewToMenuView();
-                } else {
                     changeDrawerViewToMenuView();
-              //      Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
-              //     nameEditText.setText("");
-               //     phoneNumberEditText.setText("");
+                } else {
+                    //   changeDrawerViewToMenuView();
+                    Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
+                    nameEditText.setText("");
+                    phoneNumberEditText.setText("");
                 }
 
             }
@@ -248,7 +253,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void changeDrawerViewToMenuView() {
 
-       // ll_login.setVisibility(View.GONE);
+        // ll_login.setVisibility(View.GONE);
         getAllCourseInfo(MainActivity.this);
 
         GoNavigationDrawer(new ViewMenuFragment(), null);
@@ -351,7 +356,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         systemUIHide();
+      //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null)
+            outState.putInt("selected", Global.selectedTeeUpIndex);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+//        if (savedInstanceState != null)
+//            Global.saveIdx = savedInstanceState.getInt("selected");
+    }
 }

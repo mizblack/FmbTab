@@ -24,5 +24,6 @@ public class RestaurantMenu implements Serializable {
     public String image;
     //ui용 변수
     public boolean isSelected = false;
+    public boolean isSelectedBefore = false;
 
 }

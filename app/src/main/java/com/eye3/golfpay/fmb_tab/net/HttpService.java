@@ -15,6 +15,9 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -26,11 +29,13 @@ public interface HttpService {
 
     @Headers("Authorization: abc")
 
+    @FormUrlEncoded
     @POST("caddyLogin")
-    Call<Login> doCaddyLogin(@Query("id") String id, @Query("pwd") String pwd);
+    Call<Login> doCaddyLogin(@Field("id") String id, @Field("pwd") String pwd);
 
+    @FormUrlEncoded
     @POST("getTodayReservesForCaddy")
-    Call<TeeUpTime> getTodayReservesForCaddy(@Query("caddy_id") String caddy_id);
+    Call<TeeUpTime> getTodayReservesForCaddy(@Field("caddy_id") String caddy_id);
 
     @GET("getAllCourse")
     Call<ResponseData<Course>> getCourseInfo(@Query("cc_id") String ccId);
@@ -38,14 +43,17 @@ public interface HttpService {
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
 
+
     @POST("setReserveScore")
     Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);
 
     @GET("shadeMenu")
     Call<ResponseData<Restaurant>> getRestaurantMenu(@Query("caddy_id") String caddyId, @Query("reserve_no") String reserveNo);
 
+    @FormUrlEncoded
     @POST("getReserveList")
-    Call<ReserveGuestList> getReserveGuestList(@Query("reserve_id") int reserveId);
+    Call<ReserveGuestList> getReserveGuestList(@Field("reserve_id") int reserveId);
+
 
     @POST("orderShade")
     Call<ResponseData<Object>> sendShadeOrder(@Body ShadeOrder shadeOrder);
@@ -59,6 +67,7 @@ public interface HttpService {
                                                 @Part("team_memo") RequestBody teamMemo,
                                                 @Part MultipartBody.Part signImage,
                                                 @Part MultipartBody.Part clubImage);
+
 
     @POST("getNoticeList")
     Call<ResponseData<NoticeItem>> getNoticeList();
