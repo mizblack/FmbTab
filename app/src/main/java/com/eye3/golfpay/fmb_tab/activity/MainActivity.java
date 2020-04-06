@@ -203,7 +203,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onClick(View v) {
 
                 try {
-                    login(nameEditText.getText().toString(), Security.encrypt(phoneNumberEditText.getText().toString()));
+                    login(nameEditText.getText().toString().trim(), Security.encrypt(phoneNumberEditText.getText().toString()));
                 } catch (NoSuchPaddingException
                         | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException

@@ -38,6 +38,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
@@ -288,7 +289,7 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
-        memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
+        memberLinearLayout = v.findViewById(R.id.guestViewContainerLinearLayout);
         mParentActivity.showMainBottomBar();
         setDataTeamMemo();
         closeKeyboard();
@@ -387,76 +388,30 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    private void signatureRelativeLayoutOnClick(View signatureRelativeLayout, final int position) {
-        signatureRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Global.signatureBitmapArrayList = signatureBitmapArrayList;
-                SignatureDialogFragment signatureDialogFragment = new SignatureDialogFragment();
-                signatureDialogFragment.setGuestId(guestArrayList.get(position).getId());
-                signatureDialogFragment.setCaddieViewGuestItemArrayList(caddieViewGuestItemArrayList);
-                showDialogFragment(signatureDialogFragment);
-                signatureDialogFragmentOnDismissListener(signatureDialogFragment);
-                systemUIHide();
-            }
-        });
-    }
 
-    private File createImageFile() throws IOException {
-        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "TEST_" + timeStamp + "_";
-        File storageDir = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,      /* prefix */
-                ".jpg",         /* suffix */
-                storageDir          /* directory */
-        );
-        imageFilePath = image.getAbsolutePath();
-        return image;
-    }
-
-    private void sendTakePhotoIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-
-            if (photoFile != null) {
-                Uri photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getPackageName(), photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-            }
-        }
-    }
-
-    private void clubImageViewOnClick(final ImageView clubImageView, final int i) {
-        clubImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                guestId = guestArrayList.get(i).getId();
-                if (clubImageView.getDrawable() == null) {
-                    if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.CAMERA},
-                                0);
-                    } else {
-                        sendTakePhotoIntent();
-                    }
-                } else {
-                    ClubImageDialogFragment clubImageDialogFragment = new ClubImageDialogFragment();
-                    clubImageDialogFragment.setGuestId(guestId);
-                    clubImageDialogFragment.setClubBitmapArrayList(clubBitmapArrayList);
-                    assert getFragmentManager() != null;
-                    clubImageDialogFragment.show(getFragmentManager(), TAG);
-                    systemUIHide();
-                }
-            }
-        });
-    }
+//    private void clubImageViewOnClick(final ImageView clubImageView, final int i) {
+//        clubImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                guestId = guestArrayList.get(i).getId();
+//                if (clubImageView.getDrawable() == null) {
+//                    if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.CAMERA},
+//                                0);
+//                    } else {
+//                        sendTakePhotoIntent();
+//                    }
+//                } else {
+//                    ClubImageDialogFragment clubImageDialogFragment = new ClubImageDialogFragment();
+//                    clubImageDialogFragment.setGuestId(guestId);
+//                    clubImageDialogFragment.setClubBitmapArrayList(clubBitmapArrayList);
+//                    assert getFragmentManager() != null;
+//                    clubImageDialogFragment.show(getFragmentManager(), TAG);
+//                    systemUIHide();
+//                }
+//            }
+//        });
+//    }
 
     private void createGuestList() {
         if (guestArrayList != null && guestArrayList.size() != 0) {
@@ -513,11 +468,11 @@ public class CaddieFragment extends BaseFragment {
                 TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
                 guestMemoContentTextView.setText(guestArrayList.get(i).getMemo());
 
-                View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
-                signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
-
-                ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
-                clubImageViewOnClick(clubImageView, i);
+//                View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
+//                signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
+//
+//                ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+//                clubImageViewOnClick(clubImageView, i);
             }
         }
     }
@@ -550,16 +505,16 @@ public class CaddieFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                sendTakePhotoIntent();
-            } else {
-                Toast.makeText(getActivity(), "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                sendTakePhotoIntent();
+//            } else {
+//                Toast.makeText(getActivity(), "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     private int exifOrientationToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
@@ -582,10 +537,20 @@ public class CaddieFragment extends BaseFragment {
         return index;
     }
 
+    private int traversalByGuestId(String guestId) {
+        int index = 0;
+        for (int i = 0; i < guestArrayList.size(); i++) {
+            if (guestId.equals(guestArrayList.get(i).getId())) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
+            Bitmap bitmap = BitmapFactory.decodeFile(AppDef.imageFilePath);
             ExifInterface exif = null;
 
             try {
@@ -604,12 +569,13 @@ public class CaddieFragment extends BaseFragment {
                 exifDegree = 0;
             }
 
-            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
-            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+//            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId(AppDef.guestid));
+//            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
+//
+//            Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
+//            clubBitmapArrayList.set(traversalByGuestId(), clubImageBitmap);
+//            clubImageView.setImageBitmap(clubImageBitmap);
 
-            Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
-            clubBitmapArrayList.set(traversalByGuestId(), clubImageBitmap);
-            clubImageView.setImageBitmap(clubImageBitmap);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
           ;

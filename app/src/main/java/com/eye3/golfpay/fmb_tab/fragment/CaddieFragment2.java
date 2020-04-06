@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +38,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
@@ -74,23 +73,24 @@ public class CaddieFragment2 extends BaseFragment {
     private String imageFilePath;
     View v;
     private List<Guest> guestList = Global.guestList;
-    private LinearLayout memberLinearLayout;
-    private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
+    private LinearLayout mGuestViewContainerLinearLayout, mTeamMemoLinear;
+    //  private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList = new ArrayList<>();
     private String guestId = "";
     private ArrayList<String> retCodeArrayList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
-    private void setSignImage(int i, View caddieViewGuestItem, String url) {
+    private void setSignImage(View caddieViewGuestItem, String url) {
         ImageView signatureImageView = caddieViewGuestItem.findViewById(R.id.signatureImageView);
         setImagewithUri(signatureImageView, url);
 
     }
 
-    private void setClubImage(int i, View caddieViewGuestItem, String url) {
+    private void setClubImage(View caddieViewGuestItem, String url) {
         ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
         setImagewithUri(clubImageView, url);
 
@@ -117,35 +117,130 @@ public class CaddieFragment2 extends BaseFragment {
         }
     }
 
-    private void setGuestData() {
-        guestList = Global.guestList;
-        if (caddieViewGuestItemArrayList != null && caddieViewGuestItemArrayList.size() != 0) {
-            for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
-                View caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
 
-                TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
-                memberNameTextView.setText(Global.guestList.get(i).getGuestName());
+    private void setGuestItemView(CaddieViewGuestItem guestItemView, Guest guest) {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        guestItemView = (CaddieViewGuestItem) inflater.inflate(R.layout.item_caddie_view_guest, null, false);
 
-                EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
-                carNumberEditText.setText(Global.guestList.get(i).getCarNumber());
+        TextView memberNameTextView = guestItemView.findViewById(R.id.memberNameTextView);
+        memberNameTextView.setText(guest.getGuestName());
 
-                EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
-                phoneNumberEditText.setText(Global.guestList.get(i).getPhoneNumber());
+        EditText carNumberEditText = guestItemView.findViewById(R.id.carNumberEditText);
+        carNumberEditText.setText(guest.getCarNumber());
 
-                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-                guestMemoContentTextView.setText(Global.guestList.get(i).getMemo());
+        EditText phoneNumberEditText = guestItemView.findViewById(R.id.phoneNumberEditText);
+        phoneNumberEditText.setText(guest.getPhoneNumber());
 
-                if (guestList.get(i).getSignUrl() != null) {
+        TextView guestMemoContentTextView = guestItemView.findViewById(R.id.guestMemoContentTextView);
+        guestMemoContentTextView.setText(guest.getMemo());
 
-                    setSignImage(i, caddieViewGuestItem, Global.HOST_BASE_ADDRESS_AWS + guestList.get(i).getSignUrl());
-                }
+        if (guest.getSignUrl() != null) {
 
-                if (guestList.get(i).getClubUrl() != null) {
-                    setClubImage(i, caddieViewGuestItem, Global.HOST_BASE_ADDRESS_AWS + guestList.get(i).getClubUrl());
-                }
-            }
+            setSignImage(guestItemView, Global.HOST_BASE_ADDRESS_AWS + guest.getSignUrl());
         }
+
+        if (guest.getClubUrl() != null) {
+            setClubImage(guestItemView, Global.HOST_BASE_ADDRESS_AWS + guest.getClubUrl());
+        }
+
+        ImageView a = guestItemView.findViewById(R.id.clubImageCaddieView);
+        clubImageViewOnClick(a, 0);
+
     }
+
+
+    private void guestMemoLinearLayoutOnClick(final View guestMemoLinearLayout) {
+        guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //   closeKeyboard();
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
+                Guest guest = (Guest) view.getTag();
+                String guestId = guest.getId();
+                guestMemoEditorDialogFragment.setGuestId(guestId);
+                guestMemoEditorDialogFragment.setMemoContent(guest.getMemo());
+                guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
+                    @Override
+                    public void OnEditorInputFinished(String memoContent) {
+                        //  closeKeyboard();
+                        guest.setMemo(memoContent);
+                    }
+                });
+                showDialogFragment(guestMemoEditorDialogFragment);
+                systemUIHide();
+            }
+        });
+    }
+
+
+    private View createGuestItemView(Guest guest) {
+        CaddieViewGuestItem guestItemView = new CaddieViewGuestItem(getActivity(), guest);
+        guestItemView.setTag(guest);
+        TextView memberNameTextView = guestItemView.findViewById(R.id.memberNameTextView);
+        memberNameTextView.setText(guest.getGuestName());
+
+        EditText carNumberEditText = guestItemView.findViewById(R.id.carNumberEditText);
+        carNumberEditText.setText(guest.getCarNumber());
+        carNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                guest.setCarNumber(s.toString());
+            }
+        });
+
+        EditText phoneNumberEditText = guestItemView.findViewById(R.id.phoneNumberEditText);
+        phoneNumberEditText.setText(guest.getPhoneNumber());
+
+        LinearLayout guestMemoLinearLayout = guestItemView.findViewById(R.id.guestMemoLinearLayout);
+        guestMemoLinearLayoutOnClick(guestMemoLinearLayout);
+        TextView guestMemoContentTextView = guestItemView.findViewById(R.id.guestMemoContentTextView);
+
+        guestMemoContentTextView.setText(guest.getMemo());
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                guest.setPhoneNumber(s.toString());
+            }
+        });
+
+        if (guest.getSignUrl() != null) {
+
+            setSignImage(guestItemView, Global.HOST_BASE_ADDRESS_AWS + guest.getSignUrl());
+        }
+
+        if (guest.getClubUrl() != null) {
+            setClubImage(guestItemView, Global.HOST_BASE_ADDRESS_AWS + guest.getClubUrl());
+        }
+
+
+        return guestItemView;
+    }
+
+    private void createCaddieGuestViews() {
+        guestList = Global.guestList;
+        for (int i = 0; guestList.size() > i; i++) {
+            mGuestViewContainerLinearLayout.addView(createGuestItemView(guestList.get(i)));
+
+        }
+
+    }
+
 
     private int countOk() {
         int count = 0;
@@ -194,7 +289,7 @@ public class CaddieFragment2 extends BaseFragment {
                     hideProgress();
                 }
                 if (i == Global.guestList.size() - 1 && Global.guestList.size() - 1 > countOk()) {
-                    setReserveGuestInfo();
+                    //setReserveGuestInfo();
                 }
 
             }
@@ -240,58 +335,58 @@ public class CaddieFragment2 extends BaseFragment {
 //        }
 //    }
 
-    private void setReserveGuestInfo() {
-        showProgress("서버로 데이터를 전송중입니다....");
-        for (int i = 0; caddieViewGuestItemArrayList.size() > i; i++) {
-            Guest guest = Global.guestList.get(i);
-            File signatureImageFile = null;
-            File clubImageFile = null;
-
-            Bitmap signatureBitmap = null;
-            ImageView signImgView = caddieViewGuestItemArrayList.get(i).findViewById(R.id.signatureImageView);
-            signatureBitmap = ((BitmapDrawable) signImgView.getDrawable()).getBitmap();
-
-            //    if (signatureBitmapArrayList.get(i) != null) {
-            signatureImageFile = getResizedFilePNG(Objects.requireNonNull(getContext()), signatureBitmap, guestId + "_signature", 100);
-            //   }
-
-            Bitmap clubBitmap = null;
-            ImageView clubImgView = caddieViewGuestItemArrayList.get(i).findViewById(R.id.clubImageView);
-            clubBitmap = ((BitmapDrawable) clubImgView.getDrawable()).getBitmap();
-            //    if (clubBitmapArrayList.get(i) != null) {
-            clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmap, guestId + "_club", 10);
-            //   }
-
-            GuestInfo guestInfo = new GuestInfo();
-            guestInfo.setReserveGuestId(guest.getId());
-            guestInfo.setCarNo(guest.getCarNumber());
-            guestInfo.setHp(guest.getPhoneNumber());
-            guestInfo.setGuestMemo(guest.getMemo());
-            guestInfo.setTeamMemo(guest.getTeamMemo());
-            guestInfo.setSignImage(signatureImageFile);
-            guestInfo.setClubImage(clubImageFile);
-
-            setReserveGuestInfo(i, guestInfo);
-        }
-
-    }
+//    private void setReserveGuestInfo() {
+//        showProgress("서버로 데이터를 전송중입니다....");
+//        for (int i = 0; caddieViewGuestItemArrayList.size() > i; i++) {
+//            Guest guest = Global.guestList.get(i);
+//            File signatureImageFile = null;
+//            File clubImageFile = null;
+//
+//            Bitmap signatureBitmap = null;
+//            ImageView signImgView = caddieViewGuestItemArrayList.get(i).findViewById(R.id.signatureImageView);
+//            signatureBitmap = ((BitmapDrawable) signImgView.getDrawable()).getBitmap();
+//
+//            //    if (signatureBitmapArrayList.get(i) != null) {
+//            signatureImageFile = getResizedFilePNG(Objects.requireNonNull(getContext()), signatureBitmap, guestId + "_signature", 100);
+//            //   }
+//
+//            Bitmap clubBitmap = null;
+//            ImageView clubImgView = caddieViewGuestItemArrayList.get(i).findViewById(R.id.clubImageView);
+//            clubBitmap = ((BitmapDrawable) clubImgView.getDrawable()).getBitmap();
+//            //    if (clubBitmapArrayList.get(i) != null) {
+//            clubImageFile = getResizedFile(Objects.requireNonNull(getContext()), clubBitmap, guestId + "_club", 10);
+//            //   }
+//
+//            GuestInfo guestInfo = new GuestInfo();
+//            guestInfo.setReserveGuestId(guest.getId());
+//            guestInfo.setCarNo(guest.getCarNumber());
+//            guestInfo.setHp(guest.getPhoneNumber());
+//            guestInfo.setGuestMemo(guest.getMemo());
+//            guestInfo.setTeamMemo(guest.getTeamMemo());
+//            guestInfo.setSignImage(signatureImageFile);
+//            guestInfo.setClubImage(clubImageFile);
+//
+//            setReserveGuestInfo(i, guestInfo);
+//        }
+//
+//    }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        setDataTeamMemo();
-        setGuestData();
-        closeKeyboard();
+        //  closeKeyboard();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
-        memberLinearLayout = v.findViewById(R.id.memberLinearLayout);
+        mGuestViewContainerLinearLayout = v.findViewById(R.id.guestViewContainerLinearLayout);
+        mTeamMemoLinear = v.findViewById(R.id.teamMemoLinearLayout);
+        createCaddieGuestViews();
         mParentActivity.showMainBottomBar();
         setDataTeamMemo();
-        closeKeyboard();
+        //   closeKeyboard();
         return v;
     }
 
@@ -303,40 +398,25 @@ public class CaddieFragment2 extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createGuestList();
-        setDataTeamMemo();
-        teamMemoOnClick();
-        v.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
+
+        //최종 전송시 클릭버튼
+        v.findViewById(R.id.saveCadieTextView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setReserveGuestInfo();
+                //    setReserveGuestInfo();
             }
         });
 
     }
 
     private void showDialogFragment(DialogFragment dialogFragment) {
-        closeKeyboard();
+        //  closeKeyboard();
         FragmentManager supportFragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
         dialogFragment.show(transaction, TAG);
         assert dialogFragment.getFragmentManager() != null;
         dialogFragment.getFragmentManager().executePendingTransactions();
-
-        systemUIHide();
     }
-
-//    private void memoEditorDialogFragmentOnDismissListener(EditorDialogFragment editorDialogFragment) {
-////        setDataTeamMemo();
-////        setGuestData();
-//        editorDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-//            @Override
-//            public void onDismiss(DialogInterface dialogInterface) {
-//                setDataTeamMemo();
-//                setGuestData();
-//            }
-//        });
-//    }
 
 
     private void signatureDialogFragmentOnDismissListener(SignatureDialogFragment signatureDialogFragment) {
@@ -349,19 +429,19 @@ public class CaddieFragment2 extends BaseFragment {
         });
     }
 
-    private void closeKeyboard() {
-        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
-            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
-            closeKeyboard(caddieViewGuestItem.findViewById(R.id.carNumberEditText));
-            closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
-        }
-    }
+//    private void closeKeyboard() {
+//        for (int i = 0; i < caddieViewGuestItemArrayList.size(); i++) {
+//            CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(i);
+//            closeKeyboard(caddieViewGuestItem.findViewById(R.id.carNumberEditText));
+//            closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
+//        }
+//    }
 
     private void guestListOnClick(final CaddieViewGuestItem caddieViewGuestItem) {
         caddieViewGuestItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeKeyboard();
+                //   closeKeyboard();
             }
         });
     }
@@ -370,16 +450,15 @@ public class CaddieFragment2 extends BaseFragment {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeKeyboard();
+                //  closeKeyboard();
                 EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
                 guestMemoEditorDialogFragment.setGuestId(Global.guestList.get(i).getId());
                 guestMemoEditorDialogFragment.setMemoContent(Global.guestList.get(i).getMemo());
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String memoContent) {
-                        closeKeyboard();
-                        setDataTeamMemo();
-                        setGuestData();
+                        //  closeKeyboard();
+
                     }
                 });
                 showDialogFragment(guestMemoEditorDialogFragment);
@@ -394,7 +473,7 @@ public class CaddieFragment2 extends BaseFragment {
             public void onClick(View view) {
                 SignatureDialogFragment signatureDialogFragment = new SignatureDialogFragment();
                 signatureDialogFragment.setGuestId(guestList.get(position).getId());
-                signatureDialogFragment.setCaddieViewGuestItemArrayList(caddieViewGuestItemArrayList);
+                //      signatureDialogFragment.setCaddieViewGuestItemArrayList(caddieViewGuestItemArrayList);
                 showDialogFragment(signatureDialogFragment);
                 signatureDialogFragmentOnDismissListener(signatureDialogFragment);
                 systemUIHide();
@@ -417,6 +496,7 @@ public class CaddieFragment2 extends BaseFragment {
 
     private void sendTakePhotoIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra("guestId", "2000");
         if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             File photoFile = null;
             try {
@@ -461,95 +541,29 @@ public class CaddieFragment2 extends BaseFragment {
         });
     }
 
-    private void createGuestList() {
-        if (guestList != null && guestList.size() != 0) {
-            for (int i = 0; i < guestList.size(); i++) {
-                final int finalI = i;
-                final CaddieViewGuestItem caddieViewGuestItem = new CaddieViewGuestItem(mContext);
-
-                memberLinearLayout.addView(caddieViewGuestItem);
-                caddieViewGuestItemArrayList.add(i, caddieViewGuestItem);
-                retCodeArrayList.add(null);
-                guestListOnClick(caddieViewGuestItem);
-
-                TextView memberNameTextView = caddieViewGuestItem.findViewById(R.id.memberNameTextView);
-                memberNameTextView.setText(guestList.get(i).getGuestName());
-
-                final EditText carNumberEditText = caddieViewGuestItem.findViewById(R.id.carNumberEditText);
-                carNumberEditText.setText(guestList.get(i).getCarNumber());
-                carNumberEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Global.guestList.get(finalI).setCarNumber(s.toString());
-                    }
-                });
-
-                final EditText phoneNumberEditText = caddieViewGuestItem.findViewById(R.id.phoneNumberEditText);
-                phoneNumberEditText.setText(guestList.get(i).getPhoneNumber());
-                phoneNumberEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Global.guestList.get(finalI).setPhoneNumber(s.toString());
-                    }
-                });
-
-                View guestMemoLinearLayout = caddieViewGuestItem.findViewById(R.id.guestMemoLinearLayout);
-                guestMemoLinearLayoutOnClick(guestMemoLinearLayout, i);
-
-                TextView guestMemoContentTextView = caddieViewGuestItem.findViewById(R.id.guestMemoContentTextView);
-                guestMemoContentTextView.setText(guestList.get(i).getMemo());
-
-                View signatureRelativeLayout = caddieViewGuestItem.findViewById(R.id.signatureRelativeLayout);
-                signatureRelativeLayoutOnClick(signatureRelativeLayout, i);
-
-                ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
-                clubImageViewOnClick(clubImageView, i);
-            }
-
-        }
-
-    }
 
     private void setDataTeamMemo() {
-        TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
-        teamMemoContentTextView.setText(Global.guestList.get(0).getTeamMemo());
+        teamMemoOnClick(mTeamMemoLinear);
+
     }
 
-    private void teamMemoOnClick() {
-        View teamMemoLinearLayout = v.findViewById(R.id.teamMemoLinearLayout);
-        final TextView teamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
-        teamMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
+    private void teamMemoOnClick(LinearLayout teamMemoLinear) {
+
+        final TextView teamMemoContentTextView = teamMemoLinear.findViewById(R.id.teamMemoContentTextView);
+        teamMemoLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeKeyboard();
+                //   closeKeyboard();
                 EditorDialogFragment teamMemoEditorDialogFragment = new EditorDialogFragment();
                 teamMemoEditorDialogFragment.setMemoContent(teamMemoContentTextView.getText().toString());
                 showDialogFragment(teamMemoEditorDialogFragment);
                 teamMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String memoContent) {
-                        closeKeyboard();
-                        setDataTeamMemo();
-                        setGuestData();
+                        //        closeKeyboard();
+                        teamMemoContentTextView.setText(memoContent);
                     }
                 });
-              //  memoEditorDialogFragmentOnDismissListener(teamMemoEditorDialogFragment);
                 systemUIHide();
             }
         });
@@ -587,16 +601,27 @@ public class CaddieFragment2 extends BaseFragment {
         return index;
     }
 
+    private int traversalByGuestId(String guestId) {
+        int index = 0;
+        for (int i = 0; i < guestList.size(); i++) {
+            if (guestId.equals(guestList.get(i).getId())) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
+            //    String id = data.getStringExtra("guestId");
+            Bitmap bitmap = BitmapFactory.decodeFile(AppDef.imageFilePath);
             ExifInterface exif = null;
 
             try {
-                exif = new ExifInterface(imageFilePath);
+                exif = new ExifInterface(AppDef.imageFilePath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -610,19 +635,13 @@ public class CaddieFragment2 extends BaseFragment {
             } else {
                 exifDegree = 0;
             }
-
-            //    CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
-            CaddieViewGuestItem caddieViewGuestItem = (CaddieViewGuestItem) memberLinearLayout.getChildAt(traversalByGuestId());
-            ImageView clubImageView = caddieViewGuestItem.findViewById(R.id.clubImageView);
-
             Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
-            //        clubBitmapArrayList.set(traversalByGuestId(), clubImageBitmap);
-            //******
-            //     clubImageView.setImageBitmap(clubImageBitmap);
-            setImagewithBitmap(clubImageView, clubImageBitmap);
+
+            CaddieViewGuestItem guestItem = (CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
+            guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-         //   ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
+            //   ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
 
         }
     }

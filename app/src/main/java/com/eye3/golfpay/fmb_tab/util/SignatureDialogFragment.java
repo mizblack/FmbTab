@@ -1,19 +1,22 @@
 package com.eye3.golfpay.fmb_tab.util;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
+import com.eye3.golfpay.fmb_tab.listener.OnSignatureFinishListener;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -28,11 +31,12 @@ public class SignatureDialogFragment extends DialogFragment {
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
     private SignaturePad signaturePad;
+    OnSignatureFinishListener onSignatureFinishListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if( signatureBitmapArrayList.size() == 0){
+        if (signatureBitmapArrayList.size() == 0) {
             //signatureBitmapArrayList.add(new Bitmap());
         }
     }
@@ -69,15 +73,12 @@ public class SignatureDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
 
-                CaddieViewGuestItem caddieViewGuestItem = caddieViewGuestItemArrayList.get(traversalByGuestId());
-                TextView signatureTextView = caddieViewGuestItem.findViewById(R.id.signatureTextView);
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
-                   // signatureBitmapArrayList.set(traversalByGuestId(), signaturePad.getTransparentSignatureBitmap());
-                    ImageView imgView = caddieViewGuestItemArrayList.get(traversalByGuestId()).findViewById(R.id.signatureImageView);
-                    setImageWithGlide(imgView, signaturePad.getTransparentSignatureBitmap());
-                    signatureTextView.setVisibility(View.GONE);
+
+                    // setImageWithGlide(imgView, signaturePad.getTransparentSignatureBitmap());
+                    //  signatureTextView.setVisibility(View.GONE);
+                    dismiss();
                 }
-                dismiss();
             }
         });
 
@@ -91,15 +92,27 @@ public class SignatureDialogFragment extends DialogFragment {
 
         return view;
     }
+
     void setImageWithGlide(ImageView img, Bitmap bitmap) {
         if (img != null) {
             Glide.with(getActivity())
-                     .asBitmap()
-                    .load( bitmap)
-              //      .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .asBitmap()
+                    .load(bitmap)
+                    //      .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .placeholder(R.drawable.ic_noimage)
                     .into(img);
         }
+    }
+
+    public void setOnSignatureFinishListener(OnSignatureFinishListener listener) {
+        if (listener != null)
+            this.onSignatureFinishListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        onSignatureFinishListener.OnSignatureInputFinished(signaturePad.getSignatureBitmap());
     }
 
 }

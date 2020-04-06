@@ -39,7 +39,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 

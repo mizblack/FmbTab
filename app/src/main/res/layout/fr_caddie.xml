@@ -21,7 +21,7 @@
             android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/memberLinearLayout"
+                android:id="@+id/guestViewContainerLinearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 tools:ignore="Orientation" />
@@ -106,7 +106,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/saveTextView"
+                android:id="@+id/saveCadieTextView"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@color/white"

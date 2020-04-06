@@ -711,7 +711,7 @@ public class ViewMenuFragment extends BaseFragment {
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
-                    GoNativeScreen(new CaddieFragment(), null);
+                    GoNativeScreen(new CaddieFragment2(), null);
                     drawer_layout.closeDrawer(GravityCompat.END);
                     hideProgress();
                 }

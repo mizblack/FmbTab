@@ -244,7 +244,7 @@ public class ApplyFragment extends BaseFragment {
             v = mLinearPersonalBillContainer.getChildAt(i);
             tvTextName = v.findViewById(R.id.memberNameTextView);
             tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
-            memberOrderLinearLayout = v.findViewById(R.id.memberLinearLayout);
+            memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
             Objects.requireNonNull(tvTextName).setTextColor(Color.BLACK);
             Objects.requireNonNull(tvMemberPrice).setTextColor(Color.BLACK);
             Objects.requireNonNull(tvMemberPrice).setText(((OrderDetail) (v.getTag())).paid_total_amount);

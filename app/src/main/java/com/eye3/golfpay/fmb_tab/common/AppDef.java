@@ -56,4 +56,7 @@ public class AppDef {
     public static int  previousCntOfNotice = 0;
     public static boolean  nextMainActivityOnCreate = false;
 
+    public static String imageFilePath = "";
+    public static String guestid = "";
+
 }
