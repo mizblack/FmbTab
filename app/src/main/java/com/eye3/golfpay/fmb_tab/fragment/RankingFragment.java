@@ -119,7 +119,9 @@ public class RankingFragment extends BaseFragment {
         rightLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoNativeScreen(new ScoreFragment(), null);
+                Bundle  bundle = new Bundle();
+                bundle.putString("ani_direction", "down");
+                GoNativeScreen(new ScoreFragment(), bundle);
             }
         });
     }

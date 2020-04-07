@@ -39,13 +39,14 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
     RelativeLayout mContentRelativeLayout;
     LinearLayout mBottomBarLinearLayout;
+
     public void setOnKeyBackPressedListener(BaseFragment listener) {
         mOnKeyBackPressedListener = listener;
 
     }
 
     public DrawerLayout getDrawer() {
-        drawer = ((MainActivity)this).drawer_layout;
+        drawer = ((MainActivity) this).drawer_layout;
         return drawer;
     }
 
@@ -134,21 +135,26 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     // parameter1 : activity 내에서 fragment 를 삽입할 Layout id
     // parameter2 : 삽입할 fragment
     public void GoNativeScreen(BaseFragment fragment, Bundle bundle) {
+        String direction;
         if (fragment == null) {
             return;
         }
-
         mBaseFragment = fragment;
-        if (bundle != null) {
-            mBaseFragment.setArguments(bundle);
-        }
-
-        if (getVisibleFragment() instanceof ViewMenuFragment){
+        if (getVisibleFragment() instanceof ViewMenuFragment) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+        if (bundle != null) {
+            mBaseFragment.setArguments(bundle);
+            direction = bundle.getString("ani_direction");
+            if (direction.equals("up")) {
+                transaction.setCustomAnimations(R.anim.pull_in_top, R.anim.push_out_down);
+            } else if (direction.equals("down"))
+                transaction.setCustomAnimations(R.anim.slide_down_to_enter, R.anim.slide_down_to_enter);
+
+        } else {
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
         //replace시 새로운 fragment가 생성되면서 올라오면 , 현 fragment는 onDestroy를 호출한다.(메모리에서 사라지게됨)
         transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
 
@@ -449,7 +455,6 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         systemUIHide();
     }
-
 
 
     protected void onViewStateRestored(Bundle savedInstanceState) {
