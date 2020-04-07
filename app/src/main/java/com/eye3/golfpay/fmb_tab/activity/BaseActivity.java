@@ -12,11 +12,11 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -28,7 +28,7 @@ import com.eye3.golfpay.fmb_tab.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
 
 
-public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
+public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     private T mVd;
     protected BaseFragment mBaseFragment;
     protected String TAG = getClass().getSimpleName();

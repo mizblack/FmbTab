@@ -164,6 +164,9 @@ public class EditorDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
+        Util.hideSoftKey(memoEditText, getActivity());
         onEditorFinishListener.OnEditorInputFinished(memoContent);
     }
+
+
 }

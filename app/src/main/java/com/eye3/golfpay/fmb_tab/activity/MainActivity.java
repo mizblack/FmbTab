@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,10 +24,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment2;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
@@ -37,8 +42,10 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.Security;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +56,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private static final int REQUEST_IMAGE_CAPTURE = 672;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     NavigationView navigationView;
     public DrawerLayout drawer_layout;
     TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
@@ -101,7 +109,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
                     changeDrawerViewToMenuView();
                 } else {
-                    //   changeDrawerViewToMenuView();
                     Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
                     nameEditText.setText("");
                     phoneNumberEditText.setText("");
@@ -357,7 +364,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onResume();
         systemUIHide();
       //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-    }
+
+     }
 
 
     @Override
@@ -373,4 +381,79 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        if (savedInstanceState != null)
 //            Global.saveIdx = savedInstanceState.getInt("selected");
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            //    String id = data.getStringExtra("guestId");
+            Bitmap bitmap = BitmapFactory.decodeFile(AppDef.imageFilePath);
+            ExifInterface exif = null;
+
+            try {
+                exif = new ExifInterface(AppDef.imageFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            int exifOrientation;
+            int exifDegree;
+
+            if (exif != null) {
+                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                exifDegree = exifOrientationToDegrees(exifOrientation);
+            } else {
+                exifDegree = 0;
+            }
+            Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
+
+            CaddieViewGuestItem guestItem = (CaddieViewGuestItem) CaddieFragment2.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
+            guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
+
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
+            //   ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
+
+        }
+    }
+
+    private int exifOrientationToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
+
+    private Bitmap rotate(Bitmap bitmap, float degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private int traversalByGuestId(String guestId) {
+        int index = 0;
+        for (int i = 0; i < Global.guestList.size(); i++) {
+            if (guestId.equals(Global.guestList.get(i).getId())) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
+        @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               // sendTakePhotoIntent();
+            } else {
+                Toast.makeText(MainActivity.this, "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
 }

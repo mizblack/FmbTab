@@ -47,6 +47,7 @@ public class QRScanFragment extends BaseFragment {
     private BeepManager beepManager;
     private String lastText;
     TextView mTvCancel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +56,14 @@ public class QRScanFragment extends BaseFragment {
         if (bundle != null) {
         }
 
-       // Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        // Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-       View v = inflater.inflate(R.layout.fr_qr_scan, container, false);
-       barcodeView = v.findViewById(R.id.qr_image);
+        View v = inflater.inflate(R.layout.fr_qr_scan, container, false);
+        barcodeView = v.findViewById(R.id.qr_image);
         mTvCancel = v.findViewById(R.id.cancelTextView);
         mTvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +73,14 @@ public class QRScanFragment extends BaseFragment {
             }
         });
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
-           barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
-         barcodeView.initializeFromIntent(getActivity().getIntent());
+        barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
+        barcodeView.initializeFromIntent(getActivity().getIntent());
         barcodeView.decodeContinuous(callback);
 
         beepManager = new BeepManager(getActivity());
         return v;
     }
+
     public void pause(View view) {
         barcodeView.pause();
     }
@@ -86,18 +88,19 @@ public class QRScanFragment extends BaseFragment {
     public void resume(View view) {
         barcodeView.resume();
     }
+
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            if(result.getText() == null || result.getText().equals(lastText)) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
             //아래쪽 스캔된 텍스트를 보여준다.
-     //       barcodeView.setStatusText(result.getText());
+            //       barcodeView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
             lastText = result.getText();
-            if(! lastText.equals("")){
+            if (!lastText.equals("")) {
                 try {
                     login("test@test.test", Security.encrypt("@12345"));
                 } catch (NoSuchPaddingException e) {
@@ -130,7 +133,7 @@ public class QRScanFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 //        SetTitle("KT WMMS");
 //        SetDividerVisibility(false);
-     //   setDrawerLayoutEnable(true);
+        //   setDrawerLayoutEnable(true);
 
     }
 
@@ -143,7 +146,7 @@ public class QRScanFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-       barcodeView.resume();
+        barcodeView.resume();
     }
 
     @Override
@@ -164,7 +167,7 @@ public class QRScanFragment extends BaseFragment {
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
                     changeDrawerViewToMenuView();
-                    GoNativeScreen(new MainWorkFragment() , null);
+                    GoNativeScreen(new MainWorkFragment(), null);
 
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
@@ -222,7 +225,6 @@ public class QRScanFragment extends BaseFragment {
             }
         });
     }
-
 
 
 }
