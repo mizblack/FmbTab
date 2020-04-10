@@ -59,4 +59,7 @@ public class AppDef {
     public static String imageFilePath = "";
     public static String guestid = "";
 
+    public static final String NEAREST = "니어리스트";
+    public static final String LONGEST = "롱기스트";
+
 }

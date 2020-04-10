@@ -1,6 +1,7 @@
 
 package com.eye3.golfpay.fmb_tab.model.guest;
 
+import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 public class Guest implements Serializable {
 
     @SerializedName("arr_club_image")
-    private ArrayList<ArrClubImage> arrClubImage;
+    private ArrayList<GalleryPicture> arrClubImageList;
     @Expose
     private String carNumber;
     @SerializedName("cart_bill")
@@ -65,12 +66,12 @@ public class Guest implements Serializable {
     @SerializedName("total_price")
     private String totalPrice;
 
-    public ArrayList<ArrClubImage> getArrClubImage() {
-        return arrClubImage;
+    public ArrayList<GalleryPicture> getArrClubImageList() {
+        return arrClubImageList;
     }
 
-    public void setArrClubImage(ArrayList<ArrClubImage> arrClubImage) {
-        this.arrClubImage = arrClubImage;
+    public void setArrClubImage(ArrayList<GalleryPicture> arrClubImage) {
+        this.arrClubImageList = arrClubImage;
     }
 
     public String getCarNumber() {

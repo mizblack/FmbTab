@@ -53,7 +53,6 @@ public class RankingFragment extends BaseFragment {
     static int NUM_OF_HOLE = 10;
     RecyclerView mRankingRecyclerView;
     RankingAdapter mRankingAdapter;
-    FrRankingBinding binding;
     List<Course> mCourseList ;
     List<Player> mPlayerList;
     LinearLayout mLinearHoleNoContainer = null;

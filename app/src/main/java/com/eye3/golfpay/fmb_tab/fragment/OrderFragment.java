@@ -151,7 +151,8 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void initSelectedRestaurantTabColor() {
-        mRestaurantTabBarArr[0].setTextColor(Color.BLACK);
+
+         mRestaurantTabBarArr[0].setTextColor(Color.BLACK);
     }
 
     private void initFoodImage() {
@@ -164,7 +165,7 @@ public class OrderFragment extends BaseFragment {
             return;
         }
         if (mRestaurantList.get(0).categoryList.get(0).Menus == null || mRestaurantList.get(0).categoryList.get(0).Menus.size() == 0) {
-            Toast.makeText(getActivity(), " 식당 메뉴가 없습니다.", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getActivity(), " 식당 메뉴가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -368,6 +369,13 @@ public class OrderFragment extends BaseFragment {
             LinearLayoutManager mManager = new LinearLayoutManager(mContext);
             holder.mRecyclerMenu.setLayoutManager(mManager);
             holder.itemView.setTag(position);
+           //ontouch로 바꿀것
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Objects.requireNonNull(holder).mRecyclerMenu.setHasFixedSize(true);
+                }
+            });
         }
 
         @Override
@@ -475,13 +483,13 @@ public class OrderFragment extends BaseFragment {
                         CategoryAdapter.this.notifyDataSetChanged();
                         notifyDataSetChanged();
 //                        if (Global.mBeforeSelectedMenuIdx >= 0) {
-//                            mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx)).itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
-//                            MenuItemViewHolder a =  ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt()
-//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx))).tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
+//                          //  mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(mBeforeSelectedIdx)).itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
+//                            CategoryItemViewHolder categoryItemViewHolder =  ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt()
+//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(mBeforeSelectedIdx))).tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
 //
-//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx))).tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
+//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(mBeforeSelectedIdx))).tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
 //                        }
- //                       Global.mBeforeSelectedMenuIdx = idx;
+                        Global.mBeforeSelectedMenuIdx = idx;
                     }
                 });
             }

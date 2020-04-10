@@ -213,7 +213,7 @@ public class ScoreInserter extends RelativeLayout {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void createScoreInserter(String scoreType) {
-        //     LinearLayout aContainer = new LinearLayout(mContext);
+
         switch (scoreType) {
             case AppDef.ScoreType.Par:
                 mParScoreTextViewArr = new TextView[mParScoreIntegerArrayList.size()];

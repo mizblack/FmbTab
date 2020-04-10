@@ -89,7 +89,7 @@ public class DataInterface extends BasicDataInterface {
                 if (data != null) {
                     showDialog(context, null, data.getError());
                 } else {
-                    showDialog(context, null, "네트웍상태를 확인해주세요. " + "http code: " + response.code());
+                  //  showDialog(context, null, "네트웍상태를 확인해주세요. " + "http code: " + response.code());
                 }
             } else {
                 callback.onError(null);
@@ -169,7 +169,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Course>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    // callback.onFailure(t);
+                     callback.onFailure(t);
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
@@ -192,7 +192,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+               //     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
         } catch (Exception ex) {

@@ -26,11 +26,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.exifinterface.media.ExifInterface;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
-import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment2;
+import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
@@ -49,7 +51,6 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -74,7 +75,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
         hideMainBottomBar();
         startLocationService();
-      //  if (getVisibleFragment() == null)
            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
     }
@@ -269,13 +269,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void getAllCourseInfo(Context context) {
         showProgress("코스 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
 
             @Override
             public void onSuccess(ResponseData<Course> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    Global.courseInfoList = (ArrayList<Course>) response.getList();
+                    Global.courseInfoList = response.getList();
+
 
                 } else if (response.getResultCode().equals("fail")) {
                     // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -387,7 +388,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-            //    String id = data.getStringExtra("guestId");
             Bitmap bitmap = BitmapFactory.decodeFile(AppDef.imageFilePath);
             ExifInterface exif = null;
 
@@ -408,12 +408,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
             Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
 
-            CaddieViewGuestItem guestItem = (CaddieViewGuestItem) CaddieFragment2.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
-            guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
+            CaddieViewGuestItem guestItem = (CaddieViewGuestItem) CaddieFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
 
+             setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
+          //  guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-            //   ((MainActivity) mParentActivity).changeDrawerViewToMenuView();
+           ;
 
+        }
+    }
+
+    void setImagewithUri(ImageView img, String uri) {
+        if (img != null) {
+            Glide.with(MainActivity.this)
+                    .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .placeholder(R.drawable.ic_noimage)
+                    .into(img);
         }
     }
 

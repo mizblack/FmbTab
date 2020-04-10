@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +40,6 @@ public class ScoreDialog extends Dialog {
 
     private Button mLeftButton;
     private Button mRightButton;
-    //   private LinearLayout mLayoutButtons;
     private String mLeftTitle;
     private String mRightTitle;
     private ScoreDialog dialog = this;
@@ -49,7 +49,7 @@ public class ScoreDialog extends Dialog {
 
     RecyclerView recycler;
     List<Player> mPlayerList;
-    Course mCurrentCourse;
+    Course mCurrentCourseInfo;
     ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
     //선정된 코스텝 인덱스 반드시 있어야함.
@@ -66,7 +66,7 @@ public class ScoreDialog extends Dialog {
 
     @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // 다이얼로그 외부 화면 흐리게 표현
@@ -76,21 +76,21 @@ public class ScoreDialog extends Dialog {
         getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.score_dlg);
+       //코스정보만있고 스코어 정보는 없음
+        mCurrentCourseInfo = Global.courseInfoList.get(mTabIdx);
 
         mLeftButton = findViewById(R.id.btnLeft);
         mRightButton = findViewById(R.id.btnRight);
 
         tvHoleId = findViewById(R.id.hole_id);
-        tvHoleId.setText("Hole" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).hole_no);
+        tvHoleId.setText("Hole" + mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).hole_no);
         tvPar = findViewById(R.id.par_num);
-        tvPar.setText("Par" + mCurrentCourse.holes.get(mHoleScoreLayoutIdx).par);
+        tvPar.setText("Par" + mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).par);
         tvCourseName = findViewById(R.id.dlg_course_name);
-        tvCourseName.setText("    Course(" + mCurrentCourse.courseName + ")");
+        tvCourseName.setText("    Course(" + mCurrentCourseInfo.courseName + ")");
 
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {
-
-            //       mLayoutButtons.setVisibility(View.VISIBLE);
             mLeftButton.setOnClickListener(mLeftClickListener);
             mLeftButton.setText(mLeftTitle);
             mRightButton.setOnClickListener(mRightClickListener);
@@ -107,8 +107,6 @@ public class ScoreDialog extends Dialog {
             mRightButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    //  inputFinishListener.OnScoreInputFinished(mPlayerList);
                     dismiss();
                 }
             });
@@ -120,11 +118,11 @@ public class ScoreDialog extends Dialog {
         recycler.setHasFixedSize(true);
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         recycler.setLayoutManager(mManager);
-        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList, mCurrentCourse);
+        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList, mTabIdx, mHoleScoreLayoutIdx); //?
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList, mCurrentCourse, Global.reserveId, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
+        mReserveScore = new ReserveScore(mPlayerList,  Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
 
     }
 
@@ -136,7 +134,7 @@ public class ScoreDialog extends Dialog {
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public ScoreDialog(Context context, String leftBtnTitle, String rightBtnTitle,
                        View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, List<Player> mPlayerList, Course currentCourse, int mTabIdx, int mHoleScoreLayoutIdx) {
+                       View.OnClickListener rightListener, List<Player> mPlayerList, int mTabIdx, int mHoleScoreLayoutIdx) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         this.mContext = context;
         this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
@@ -146,32 +144,22 @@ public class ScoreDialog extends Dialog {
         this.mRightTitle = rightBtnTitle;
 
         this.mPlayerList = mPlayerList;
-        this.mCurrentCourse = currentCourse;
         this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
         this.mTabIdx = mTabIdx;
     }
 
-    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-//    public ScoreDialog(Context context, String 타이틀, String s, String 취소, String 확인, String title, Spanned content, String leftBtnTitle, String rightBtnTitle,
-//                       View.OnClickListener leftListener,
-//                       View.OnClickListener rightListener) {
-//        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-//
-//        this.mLeftClickListener = leftListener;
-//        this.mRightClickListener = rightListener;
-//        this.mLeftTitle = leftBtnTitle;
-//        this.mRightTitle = rightBtnTitle;
-//    }
 
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
         List<Player> mPlayerList;
-        Course mCurrentCourse;
+       int mTabIdx;
+       int mHoleLayoutIdx ;
 
-        public ScoreInputAdapter(Context context, List<Player> playerList, Course currentCourse) {
+        public ScoreInputAdapter(Context context, List<Player> playerList, int mTabIdx, int mHoleLayoutIdx) {
 
             this.mPlayerList = playerList;
-            this.mCurrentCourse = currentCourse;
+            this.mTabIdx = mTabIdx;
+            this.mHoleLayoutIdx = mHoleLayoutIdx;
 
 
         }
@@ -191,7 +179,8 @@ public class ScoreDialog extends Dialog {
             //*******
             holder.playerName.setText(mPlayerList.get(position).name);
             Score a_playerScore = mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore;
-            final Hole selected_hole = mCurrentCourse.holes.get(mHoleScoreLayoutIdx);
+            final Hole selected_hole =  mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx);
+
             //각홀 점수를 통해 inserter 배경을 지정하여 초기화한다.
             holder.inserter.initScoreBackgroundSelected(AppDef.Par_Tar(a_playerScore, AppDef.isTar), AppDef.isTar);
             holder.inserterPutt.initPuttScoreBackgroundSelected(a_playerScore.putting);
@@ -219,7 +208,7 @@ public class ScoreDialog extends Dialog {
                 }
                 int selectedIdx = holder.inserter.mSelectedStrokeScoreTvIdx;
 
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(a_playerScore, AppDef.isTar), selectedIdx);
 
             } else {
                 final TextView[] viewArr = holder.inserter.mParScoreTextViewArr;
@@ -244,11 +233,11 @@ public class ScoreDialog extends Dialog {
                     });
                 }
                 int selectedIdx = holder.inserter.mSelectedParScoreTvIdx;
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore, AppDef.isTar), selectedIdx);
+                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(a_playerScore, AppDef.isTar), selectedIdx);
 
             }
 
-            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr, mCurrentCourse.holes.get(mHoleScoreLayoutIdx).playedScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
+            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr,a_playerScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
             for (int i = 0; holder.inserterPutt.mPuttScoreTextViewArr.length > i; i++) {
                 holder.inserterPutt.mPuttScoreTextViewArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
