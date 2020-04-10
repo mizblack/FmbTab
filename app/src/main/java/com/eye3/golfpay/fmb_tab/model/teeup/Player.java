@@ -41,10 +41,14 @@ public class Player implements Serializable{
     @Expose
     public String Ranking;
 
+  //  @SerializedName("team_name")
+  //  @Expose
+    public String team_name = "A팀";
 
     @SerializedName("course")
     @Expose
     public List<Course> playingCourse ;
+
 
 //    @Override
 //    public int compareTo(Player o) {
