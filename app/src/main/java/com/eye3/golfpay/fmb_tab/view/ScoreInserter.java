@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,7 +20,8 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 
 import java.util.ArrayList;
-
+import java.util.List;
+//새로 구현할것
 public class ScoreInserter extends RelativeLayout {
     public static final int NUM_STROKE_SELLECTED_PREVIOUS_KEY = 1 + 2 << 24;
     public static final int NUM_PAR_SELLECTED_PREVIOUS_KEY = 1 + 3 << 24;
@@ -29,16 +31,19 @@ public class ScoreInserter extends RelativeLayout {
     public ArrayList mParScoreIntegerArrayList;
     public TextView[] mParScoreTextViewArr;
     public TextView mSelectedParInserterTv;
+    public TextView mPreVParInserterTv;
     public int mSelectedParScoreTvIdx = -1000;
 
     public ArrayList mStrokesScoreIntegerArrayList;
     public TextView[] mStrokeScoreTextViewArr;
     public TextView mSelectedStrokeInserterTv;
+    public TextView mPrevStrokeInserterTv;
     public int mSelectedStrokeScoreTvIdx = -1000;
 
     public ArrayList mPuttIntegerArrayList;
     public TextView[] mPuttScoreTextViewArr;
     public TextView mSelectedPuttInserterTv;
+    public TextView mPrevPuttInserterTv;
     public int mSelectedPuttScoreTvIdx = -1000;
 
     ArrayList mNearestIntegerArrayList;
@@ -218,79 +223,98 @@ public class ScoreInserter extends RelativeLayout {
             case AppDef.ScoreType.Par:
                 mParScoreTextViewArr = new TextView[mParScoreIntegerArrayList.size()];
                 for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mParScoreTextViewArr[idx] = new TextView(mContext);
-                    mParScoreTextViewArr[idx].setBackgroundResource(R.drawable.score_inserter_bg);
+                    final int idx_par = i;
+                    mParScoreTextViewArr[idx_par] = new TextView(mContext);
+                    mParScoreTextViewArr[idx_par].setBackgroundResource(R.drawable.score_inserter_bg);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        mParScoreTextViewArr[idx].setTextAppearance(R.style.ScoreInserterTextView);
+                        mParScoreTextViewArr[idx_par].setTextAppearance(R.style.ScoreInserterTextView);
                     }
-                    mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
-                    mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
-                    mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
-                    mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
-                    mParScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
+                    mParScoreTextViewArr[idx_par].setGravity(Gravity.CENTER);
+                    mParScoreTextViewArr[idx_par].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width),getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mParScoreTextViewArr[idx_par].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
+                    mParScoreTextViewArr[idx_par].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
+                    mParScoreTextViewArr[idx_par].setOnTouchListener(new OnTouchListener() {
                         @Override
-                        public void onClick(View v) {
-                            initAllBackGroundResources(mParScoreTextViewArr);
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if(mPreVParInserterTv != null){
+                                mPreVParInserterTv.getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN);
+                                mPreVParInserterTv.setBackgroundResource(R.drawable.score_inserter_bg);
+                                mSelectedParInserterTv.setTextColor(getResources().getColor(R.color.gray, null));
+                            }
+
+                            mPreVParInserterTv = (TextView)v;
+                       //     initAllBackGroundResources(mParScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedParInserterTv = (TextView) v;
+                            mSelectedParInserterTv.setTextColor(Color.WHITE);
                             v.setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
-                            mSelectedParScoreTvIdx = idx;
+                            mSelectedParScoreTvIdx = idx_par;
+
+                            return true;
                         }
                     });
-                    mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
+                    mLinearScoreInserterContainer.addView(mParScoreTextViewArr[idx_par]);
 
                 }
                 break;
             case AppDef.ScoreType.Tar:
                 mStrokeScoreTextViewArr = new TextView[mStrokesScoreIntegerArrayList.size()];
-                for (int i = 0; mStrokesScoreIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mStrokeScoreTextViewArr[i] = new TextView(mContext);
-                    mStrokeScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-                    mStrokeScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
-                    mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
-                    mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
-                    mStrokeScoreTextViewArr[i].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
-                    mStrokeScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
+                for (int j = 0; mStrokesScoreIntegerArrayList.size() > j; j++) {
+                    final int idx_stroke = j;
+                    mStrokeScoreTextViewArr[idx_stroke] = new TextView(mContext);
+                    mStrokeScoreTextViewArr[idx_stroke].setBackgroundResource(R.drawable.score_inserter_bg);
+                    mStrokeScoreTextViewArr[idx_stroke].setTextAppearance(R.style.ScoreInserterTextView);
+                    mStrokeScoreTextViewArr[idx_stroke].setGravity(Gravity.CENTER);
+                    mStrokeScoreTextViewArr[idx_stroke].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width),getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mStrokeScoreTextViewArr[idx_stroke].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(j)));
+                    mStrokeScoreTextViewArr[idx_stroke].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
+
+                    mStrokeScoreTextViewArr[idx_stroke].setOnTouchListener(new OnTouchListener() {
                         @Override
-                        public void onClick(View v) {
+                        public boolean onTouch(View v, MotionEvent event) {
                             initAllBackGroundResources(mStrokeScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedStrokeInserterTv = (TextView) v;
+                            mSelectedStrokeInserterTv.setTextColor(Color.WHITE);
                             v.setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, true);
-                            mSelectedStrokeScoreTvIdx = idx;
+                            mSelectedStrokeScoreTvIdx = idx_stroke;
+
+                            return true;
                         }
                     });
-                    mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
+
+                    mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[idx_stroke]);
 
                 }
                 break;
             case AppDef.ScoreType.Putt:
                 mPuttScoreTextViewArr = new TextView[mPuttIntegerArrayList.size()];
-                for (int i = 0; mPuttIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mPuttScoreTextViewArr[i] = new TextView(mContext);
-                    mPuttScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
+                for (int k = 0; mPuttIntegerArrayList.size() > k; k++) {
+                    final int idx_putt = k;
+                    mPuttScoreTextViewArr[idx_putt] = new TextView(mContext);
+                    mPuttScoreTextViewArr[idx_putt].setBackgroundResource(R.drawable.score_inserter_bg);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
+                        mPuttScoreTextViewArr[idx_putt].setTextAppearance(R.style.ScoreInserterTextView);
                     }
-                    mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
-                    mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
-                    mPuttScoreTextViewArr[i].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
-                    mPuttScoreTextViewArr[i].setOnClickListener(new OnClickListener() {
+                    mPuttScoreTextViewArr[idx_putt].setGravity(Gravity.CENTER);
+                    mPuttScoreTextViewArr[idx_putt].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width),getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mPuttScoreTextViewArr[idx_putt].setText(String.valueOf(mPuttIntegerArrayList.get(k)));
+                    mPuttScoreTextViewArr[idx_putt].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
+
+                    mPuttScoreTextViewArr[idx_putt].setOnTouchListener(new OnTouchListener() {
                         @Override
-                        public void onClick(View v) {
+                        public boolean onTouch(View v, MotionEvent event) {
                             initAllBackGroundResources(mPuttScoreTextViewArr);
                             v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
                             mSelectedPuttInserterTv = (TextView) v;
+                            mSelectedPuttInserterTv.setTextColor(Color.WHITE);
                             v.setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
-                            mSelectedPuttScoreTvIdx = idx;
+                            mSelectedPuttScoreTvIdx = idx_putt;
+
+                            return true;
                         }
                     });
-                    mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
+                    mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[idx_putt]);
 
                 }
                 break;

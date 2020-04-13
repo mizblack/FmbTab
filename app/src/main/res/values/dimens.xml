@@ -22,9 +22,9 @@
     <dimen name="course_tab_bar_width">120dp</dimen>
 
     <dimen name="ranking_linear_width">60dp</dimen>
-
-    <dimen name="score_inserter_width">50dp</dimen>
-    <dimen name="scorer_inserter_height">100dp</dimen>
+<!--    스코어 인서터 tv사이즈-->
+    <dimen name="score_inserter_width">60dp</dimen>
+    <dimen name="score_inserter_height">110dp</dimen>
 
     <dimen name="personal_bill_unit_width">250dp</dimen>
     <dimen name="personal_bill_unit_height">650dp</dimen>

@@ -222,6 +222,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 closeKeyboard(findViewById(R.id.nameEditText));
                 closeKeyboard(findViewById(R.id.phoneNumberEditText));
+                nameEditText.setEnabled(false);
+                phoneNumberEditText.setEnabled(false);
 
             }
         });

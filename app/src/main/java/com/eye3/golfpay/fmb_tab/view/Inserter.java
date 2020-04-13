@@ -24,6 +24,7 @@ public abstract class Inserter extends RelativeLayout {
     Context mContext;
     LinearLayout mLinearScoreInserterContainer;
     TextView mSelectedChildView ;
+    TextView mPrevChildView ;
     List<Integer> mIntInserterList;
     HorizontalScrollView mhorizontalScrollView;
 
@@ -104,6 +105,27 @@ public abstract class Inserter extends RelativeLayout {
             TextView tvInt = new TextView(new ContextThemeWrapper(mContext, R.style.InserterTextView), null, 0);
 
             LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(130, 150);
+            tvInt.setLayoutParams(lllp);
+            tvInt.setGravity(Gravity.CENTER);
+            tvInt.setTag(mIntInserterList.get(i));
+            tvInt.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    mSelectedChildView = (TextView)v;
+
+                    return false;
+                }
+            });
+            tvInt.setText(String.valueOf(mIntInserterList.get(i)));
+            mLinearScoreInserterContainer.addView(tvInt);
+        }
+    }
+
+    protected void createInserter(int width , int height) {
+        for (int i = 0; mIntInserterList.size() > i; i++) {
+            TextView tvInt = new TextView(new ContextThemeWrapper(mContext, R.style.InserterTextView), null, 0);
+
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(width, height);
             tvInt.setLayoutParams(lllp);
             tvInt.setGravity(Gravity.CENTER);
             tvInt.setTag(mIntInserterList.get(i));

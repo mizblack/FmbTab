@@ -520,9 +520,7 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void enableMenu() {
-//        if (mParentActivity.getDrawer() != null) {
-//            mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-//        }
+
         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
         gpsLinear.setEnabled(true);
         scoreBoardLinear.setEnabled(true);
