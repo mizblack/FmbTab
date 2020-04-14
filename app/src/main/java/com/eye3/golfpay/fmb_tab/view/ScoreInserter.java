@@ -228,16 +228,6 @@ public class ScoreInserter extends RelativeLayout {
                     mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(120, 200));
                     mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
                     mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
-                    mParScoreTextViewArr[idx].setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            initAllBackGroundResources(mParScoreTextViewArr);
-                            v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                            mSelectedParInserterTv = (TextView) v;
-                            v.setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
-                            mSelectedParScoreTvIdx = idx;
-                        }
-                    });
                     mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
 
                 }
