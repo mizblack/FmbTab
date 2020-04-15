@@ -51,7 +51,7 @@ public class TabCourseLinear extends LinearLayout {
     public ScoreDialog sDialog;
     ScoreInputFinishListener inputFinishListener;
     //ctype 에따라 정렬된 코스
-    Course mCtypeArrangedCourse;
+    Course mCtypeArrangedCourse ;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -121,6 +121,8 @@ public class TabCourseLinear extends LinearLayout {
         this.mTabIdx = tabIdx;
         this.mPlayerList = playerList;
         this.mCtypeArrangedCourse = ctyped;
+       //여기 수정할것*******************************************
+     //   this.mCtypeArrangedCourse = mPlayerList.get(0).playingCourse.get(mTabIdx);
         //스코어뷰를 재활용하므로 반드시 이전 뷰들을 모두 제거해야 현생성되는 뷰가 보여진다.
         this.removeAllViewsInLayout();
 
@@ -191,6 +193,7 @@ public class TabCourseLinear extends LinearLayout {
         int totalMeter = 0;
         for (int k = 0; holes.size() > k; k++) {
             holeInfoLinear[k] = new HoleInfoLinear(context, holes.get(k));
+            holeInfoLinear[k].setCourse(course);
             holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mHolderLinear.addView(holeInfoLinear[k]);
             if (holes.get(k).par != null && Util.isInteger(holes.get(k).par))
@@ -292,7 +295,7 @@ public class TabCourseLinear extends LinearLayout {
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
                             if (isPreviousHoleScoreFilledUp(playerList, mTabIdx, mHoleScoreLayoutIdx)) {
                                 notifyDataSetChanged();
-                                sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mCtypeArrangedCourse, mTabIdx, mHoleScoreLayoutIdx);
+                                sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mTabIdx, mHoleScoreLayoutIdx);
                                 sDialog.setOnScoreInputFinishListener(listener);
                                 sDialog.show();
                             } else {
@@ -351,8 +354,8 @@ public class TabCourseLinear extends LinearLayout {
             Course course = playerList.get(i).playingCourse.get(mTabIdx);
 
             if (playerList.get(i).Ranking.equals("1")) {
-                scoreItemViewHolder.tvRank.setTextColor(Color.CYAN);
-                scoreItemViewHolder.tvName.setTextColor(Color.CYAN);
+                scoreItemViewHolder.tvRank.setTextColor(Color.parseColor("#00abc5"));
+                scoreItemViewHolder.tvName.setTextColor(Color.parseColor("#00abc5"));
             }
             scoreItemViewHolder.tvRank.setText(playerList.get(i).Ranking);
             scoreItemViewHolder.tvName.setText(playerList.get(i).name);

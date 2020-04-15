@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +24,8 @@ import java.util.List;
 public abstract class Inserter extends RelativeLayout {
     Context mContext;
     LinearLayout mLinearScoreInserterContainer;
-    TextView mSelectedChildView ;
+    TextView mSelectedChildView;
+    TextView mPrevSelectChildView;
     List<Integer> mIntInserterList;
     HorizontalScrollView mhorizontalScrollView;
 
@@ -46,21 +48,6 @@ public abstract class Inserter extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.inserter_layout, this, false);
         mhorizontalScrollView = v.findViewById(R.id.linear_insert_sv);
-        mhorizontalScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                int[] tvlocation = new int[2];
-                int[] scrollViewlocation = new int[2];
-
-                ((HorizontalScrollView) v).getLocationOnScreen(scrollViewlocation);
-                mSelectedChildView.getLocationOnScreen(tvlocation);
-                if (tvlocation[0] < scrollViewlocation[0]+ 175 + 60 && tvlocation[0] > scrollViewlocation[0]+ 175 -60) {
-                    ((TextView) mSelectedChildView).setTextAppearance(R.style.InserterTextViewBold);
-                }else{
-                    ((TextView) mSelectedChildView).setTextAppearance(R.style.InserterTextView);
-                }
-            }
-        });
         mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
         addView(v);
     }
@@ -88,7 +75,7 @@ public abstract class Inserter extends RelativeLayout {
     }
 
     public void setSelectedChildViewText(String value) {
-            mSelectedChildView.setText(value);
+        mSelectedChildView.setText(value);
 //        for (int i = 0; mLinearScoreInserterContainer.getChildCount() > i; i++) {
 //            View v = mLinearScoreInserterContainer.getChildAt(i);
 //            if (((TextView) v.getTag()).getText().toString().trim().equals(value)) {
@@ -107,10 +94,62 @@ public abstract class Inserter extends RelativeLayout {
             tvInt.setLayoutParams(lllp);
             tvInt.setGravity(Gravity.CENTER);
             tvInt.setTag(mIntInserterList.get(i));
+//            tvInt.setOnTouchListener(new OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if(mPrevSelectChildView != null){
+//                        initTextViewBack(mPrevSelectChildView);
+//                    }
+//                    mSelectedChildView = (TextView)v;
+//                    mPrevSelectChildView =  mSelectedChildView;
+//                    setBackGroundColorSelected(mSelectedChildView);
+//                    return false;
+//                }
+//            });
+            tvInt.setText(String.valueOf(mIntInserterList.get(i)));
+            mLinearScoreInserterContainer.addView(tvInt);
+        }
+    }
+
+    public void initTextViewBack(TextView tv) {
+        tv.getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN);
+        tv.setBackgroundResource(R.drawable.score_inserter_bg);
+        // tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+        tv.setTextColor(Color.GRAY);
+        //  tv.getBackground().setColorFilter(Colo, PorterDuff.Mode.SRC);
+    }
+
+    public void setBackGroundColorSelected(TextView tv) {
+        tv.setBackgroundResource(R.drawable.score_inserter_bg);
+        tv.setTextColor(Color.WHITE);
+        tv.getBackground().setColorFilter(Color.parseColor("#00ABC5"), PorterDuff.Mode.SRC);
+
+    }
+
+    protected void createInserter(int width, int height) {
+        for (int i = 0; mIntInserterList.size() > i; i++) {
+            TextView tvInt = new TextView(new ContextThemeWrapper(mContext, R.style.InserterTextView), null, 0);
+            tvInt.setBackgroundResource(R.drawable.score_inserter_bg);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tvInt.setTextAppearance(R.style.ScoreInserterTextView);
+            }
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(width, height);
+            tvInt.setLayoutParams(lllp);
+            tvInt.setGravity(Gravity.CENTER);
+            tvInt.setTag(mIntInserterList.get(i));
             tvInt.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    mSelectedChildView = (TextView)v;
+                    if (mPrevSelectChildView != null) {
+                        initTextViewBack(mPrevSelectChildView);
+                    }
+                    mSelectedChildView = (TextView) v;
+                    // 같은 버튼 세번 눌럿을시 문제 발생
+                    if (mPrevSelectChildView == mSelectedChildView)
+                        initTextViewBack(mPrevSelectChildView);
+                      else
+                          setBackGroundColorSelected(mSelectedChildView);
+                    mPrevSelectChildView = mSelectedChildView;
 
                     return false;
                 }
@@ -121,9 +160,10 @@ public abstract class Inserter extends RelativeLayout {
     }
 
     public TextView getmSelectedChildView() {
-          return mSelectedChildView;
+        return mSelectedChildView;
     }
-    public void setmSelectedChildView(TextView view){
+
+    public void setmSelectedChildView(TextView view) {
         mSelectedChildView = view;
     }
 

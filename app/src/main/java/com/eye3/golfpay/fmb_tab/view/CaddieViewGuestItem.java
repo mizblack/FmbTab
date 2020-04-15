@@ -17,6 +17,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -42,11 +43,13 @@ import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.listener.OnSignatureFinishListener;
+import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
+import com.eye3.golfpay.fmb_tab.util.GollfClubDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -125,18 +128,15 @@ public class CaddieViewGuestItem extends RelativeLayout {
 
     private void sendTakePhotoIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //  takePictureIntent.putExtra("guestId", "2000");
+
         if (takePictureIntent.resolveActivity(Objects.requireNonNull(mContext).getPackageManager()) != null) {
             File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
+            photoFile = createImageFile();
 
             if (photoFile != null) {
                 Uri photoUri = FileProvider.getUriForFile(mContext, mContext.getPackageName(), photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                mGuest.getArrClubImageList().add(new GalleryPicture(mGuest.getId(), "", photoUri.toString(),""));
 //                takePictureIntent.putExtra("aspectX", 0.1);
 //                takePictureIntent.putExtra("aspectY", 0.1);
                 //   takePictureIntent.putExtra("scale", true);
@@ -145,15 +145,21 @@ public class CaddieViewGuestItem extends RelativeLayout {
         }
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile()  {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "TEST_" + timeStamp + "_";
+     //   String imageFileName = "Caddie_Pic" + timeStamp + "_";
+         String imageFileName = "Caddie_Pic_" + mGuest.getId() + "_";
         File storageDir = Objects.requireNonNull(mContext).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,      /* prefix */
-                ".jpg",         /* suffix */
-                storageDir          /* directory */
-        );
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,      /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir          /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         AppDef.imageFilePath = image.getAbsolutePath();
         AppDef.guestid = mGuest.getId();
         return image;
@@ -166,7 +172,7 @@ public class CaddieViewGuestItem extends RelativeLayout {
         View v = inflater.inflate(R.layout.item_caddie_view_guest, this, false);
 
         setTag(guest);
-        //여기 널에러
+
         mClubImageView = v.findViewById(R.id.clubImageCaddieView);
         if (mGuest.getClubUrl() != null)
             setImagewithUri(mClubImageView, Global.HOST_BASE_ADDRESS_AWS + mGuest.getClubUrl());
@@ -226,6 +232,16 @@ public class CaddieViewGuestItem extends RelativeLayout {
                         mSignatureImageView.setImageBitmap(bitmap);
                     }
                 });
+            }
+        });
+
+        v.findViewById(R.id.club_info_list).setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                GollfClubDialogFragment gollfClubDialogFragment = new GollfClubDialogFragment();
+              //  signatureDialogFragment.setGuestId(mGuest.getId());
+                showDialogFragment(gollfClubDialogFragment);
+                return false;
             }
         });
 
@@ -429,7 +445,7 @@ public class CaddieViewGuestItem extends RelativeLayout {
         }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 20 /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
         byte[] bitmapData = bos.toByteArray();
 
         try {

@@ -121,9 +121,9 @@ public class GalleryViewFragment extends DialogFragment {
 
             mIvMap = view.findViewById(R.id.iv_map);
 
-            if (mPictureList.get(position).url != null) {
+            if (mPictureList.get(position).uri != null) {
                 Glide.with(mContext)
-                       .load(mPictureList.get(position).url)
+                       .load(mPictureList.get(position).uri)
                         // .load(Uri.parse(mPictureList.get(position).url))
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);

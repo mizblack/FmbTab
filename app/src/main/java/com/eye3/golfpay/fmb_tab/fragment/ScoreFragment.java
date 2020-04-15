@@ -63,7 +63,8 @@ public class ScoreFragment extends BaseFragment {
             Toast.makeText(getActivity(), "진행할 코스가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-        mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, mCourseList.get(mTabIdx), mTabIdx);
+                                                                             //mPlayerList.get(i)가 아님
+        mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, Global.courseInfoList.get(mTabIdx), mTabIdx);
         mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
             @Override
             public void OnScoreInputFinished(List<Player> playerList) {
@@ -79,7 +80,7 @@ public class ScoreFragment extends BaseFragment {
         selectCourse(mPlayerList, 0);
     }
 
-    private List<Course> getCtypedCourse(List<Player> playerList) {
+    private List<Course> getCtypedCourseForPlayerList(List<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         //예약에서 inout 을 확인하고 코스순서를 다시 재정렬함
         if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
@@ -92,6 +93,22 @@ public class ScoreFragment extends BaseFragment {
             }
         }
         return playerList.get(0).playingCourse;
+
+    }
+
+    private List<Course> getCtypedCourseforCourseList(List<Course> courseList) {
+
+        //예약에서 inout 을 확인하고 코스순서를 다시 재정렬함
+        if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
+            if (!AppDef.CType.OUT.equals(courseList.get(0).ctype)) {
+                swapList(courseList.get(0), courseList.get(1), courseList);
+            }
+        } else if (AppDef.CType.IN.equals(Global.selectedReservation.getInoutCourse())) {
+            if (!AppDef.CType.IN.equals(courseList.get(0).ctype)) {
+                swapList(courseList.get(0), courseList.get(1), courseList);
+            }
+        }
+        return courseList;
 
     }
 
@@ -211,14 +228,16 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
-                    mCourseList = getCtypedCourse(mPlayerList);
+               //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+                     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+                     Global.courseInfoList =  getCtypedCourseforCourseList(Global.courseInfoList);
 
                     Global.CurrentCourse = mCourseList.get(0);
                     Global.CurrentHole = Global.CurrentCourse.holes.get(0);
                     NUM_OF_COURSE = mCourseList.size();
                     CourseTabBar = new TextView[NUM_OF_COURSE];
 
-                    createTabBar(CourseTabBar, mCourseList);
+                    createTabBar(CourseTabBar,   Global.courseInfoList);
                     initScoreBoard();
 
                 } else if (response.getResultCode().equals("fail")) {
@@ -234,6 +253,7 @@ public class ScoreFragment extends BaseFragment {
 
             @Override
             public void onFailure(Throwable t) {
+                getReserveScore();
                 hideProgress();
             }
         });
@@ -248,7 +268,6 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
-          //          reArrangeOrder(mPlayerList);
                     createScoreTab(mPlayerList, mTabIdx);
 
                 } else if (response.getResultCode().equals("fail")) {

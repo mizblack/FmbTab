@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -90,7 +91,7 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView galleryTextView01;
     private View galleryDivider;
     private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
-            orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear;
+            orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear , caddieCancelLinearLayout;
 
     Timer timer;
 
@@ -125,6 +126,7 @@ public class ViewMenuFragment extends BaseFragment {
         controlLinear = v.findViewById(R.id.controlLinearLayout);
         closeLinear = v.findViewById(R.id.closeLinearLayoutViewMenu);
         caddieNameTextView = v.findViewById(R.id.caddieNameTextView);
+        caddieCancelLinearLayout = v.findViewById(R.id.caddieCancelLinearLayout);
         init(v);
         return v;
     }
@@ -211,7 +213,14 @@ public class ViewMenuFragment extends BaseFragment {
         selectBottomDivider.setVisibility(View.VISIBLE);
         teeUpRecyclerView.setVisibility(View.VISIBLE);
         roundingLinearLayout.setVisibility(View.GONE);
-
+//        caddieCancelLinearLayout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                fmbDialog = new FmbCustomDialog(getActivity(), "Logout", "로그아웃 하시겠습니까?", "아니오", "네", leftListener, rightListener, true);
+//                fmbDialog.show();
+//                return false;
+//            }
+//        });
 
         controlTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,12 +238,13 @@ public class ViewMenuFragment extends BaseFragment {
 //            }
 //        });
 
-        v.findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.btn_logout).setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-
+            public boolean onTouch(View v, MotionEvent event) {
                 fmbDialog = new FmbCustomDialog(getActivity(), "Logout", "로그아웃 하시겠습니까?", "아니오", "네", leftListener, rightListener, true);
                 fmbDialog.show();
+
+                return false;
             }
         });
 
@@ -243,7 +253,8 @@ public class ViewMenuFragment extends BaseFragment {
         v.findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
+                GoNativeScreen(new CaddieFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -321,12 +332,13 @@ public class ViewMenuFragment extends BaseFragment {
         v.findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ScoreFragment(), null);
-                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
-                assert getFragmentManager() != null;
-                nearestLongestDialogFragment.show(getFragmentManager(), TAG);
-                drawer_layout.closeDrawer(GravityCompat.END);
-                systemUIHide();
+                Toast.makeText(mContext, "개발중입니다. ", Toast.LENGTH_SHORT).show();
+//                GoNativeScreen(new ScoreFragment(), null);
+//                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
+//                assert getFragmentManager() != null;
+//                nearestLongestDialogFragment.show(getFragmentManager(), TAG);
+//                drawer_layout.closeDrawer(GravityCompat.END);
+//                systemUIHide();
             }
         });
 
@@ -417,7 +429,8 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님!\n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    if(getActivity().getPackageName() != null)
+                           Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
@@ -507,10 +520,8 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void enableMenu() {
-//        if (mParentActivity.getDrawer() != null) {
-//            mParentActivity.getDrawer().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-//        }
 
+        getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
         gpsLinear.setEnabled(true);
         scoreBoardLinear.setEnabled(true);
         nearstLongestLinear.setEnabled(true);
@@ -704,15 +715,15 @@ public class ViewMenuFragment extends BaseFragment {
 
     }
 
-    private void getReserveGuestList(int reserveId) {
-        showProgress("플레이어의 정보를 받아오는 중입니다....");
+    public void getReserveGuestList(int reserveId) {
+        showProgress("게스트의 정보를 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
             @Override
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
-                    GoNativeScreen(new CaddieFragment2(), null);
-                    drawer_layout.closeDrawer(GravityCompat.END);
+                 //   GoNativeScreen(new CaddieFragment(), null);
+                   // drawer_layout.closeDrawer(GravityCompat.END);
                     hideProgress();
                 }
             }

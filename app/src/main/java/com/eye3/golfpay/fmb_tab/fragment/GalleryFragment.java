@@ -41,6 +41,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
+import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -73,12 +74,16 @@ public class GalleryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPictureList = new ArrayList<>();
-        GalleryPicture picture1 = new GalleryPicture("0", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3555_club_103457.jpg", "");
-        mPictureList.add(picture1);
-        GalleryPicture picture2 = new GalleryPicture("1", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3556_club_103415.jpg", "");
-        mPictureList.add(picture2);
-        GalleryPicture picture3 = new GalleryPicture("2", "1234", Global.HOST_BASE_ADDRESS_AWS + "storage/reserve_guests/club/1/3557_club_103458.jpg", "");
-        mPictureList.add(picture3);
+        if(Global.guestList != null) {
+            for (int i = 0; Global.guestList.size() > i; i++) {
+                Guest a_guest = Global.guestList.get(i);
+                for (int j = 0; a_guest.getArrClubImageList().size() > j; j++)
+                    if(a_guest.getArrClubImageList().get(j).uri == null && a_guest.getArrClubImageList().get(j).file_url != null )
+                        mPictureList.add(new GalleryPicture("0", "1234", Global.HOST_BASE_ADDRESS_AWS + a_guest.getArrClubImageList().get(j).file_url, ""));
+                    else
+                        mPictureList.add(new GalleryPicture("0", "1234", a_guest.getArrClubImageList().get(j).uri, ""));
+            }
+        }
     }
 
 
@@ -200,7 +205,7 @@ public class GalleryFragment extends BaseFragment {
 
                 }
             });
-            setClubImage(viewHolder.imageView, mPictureList.get(position).url);
+            setClubImage(viewHolder.imageView, mPictureList.get(position).uri);
         }
 
         @Override
@@ -285,6 +290,7 @@ public class GalleryFragment extends BaseFragment {
             } else {
                 exifDegree = 0;
             }
+            Bitmap bitmap1 = rotate(bitmap, exifDegree);
 
             mPictureList.add(0, new GalleryPicture("567", "1234", imageFilePath, ""));
             mGalleryAdatper.notifyDataSetChanged();

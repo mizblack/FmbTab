@@ -53,7 +53,6 @@ public class RankingFragment extends BaseFragment {
     static int NUM_OF_HOLE = 10;
     RecyclerView mRankingRecyclerView;
     RankingAdapter mRankingAdapter;
-    FrRankingBinding binding;
     List<Course> mCourseList ;
     List<Player> mPlayerList;
     LinearLayout mLinearHoleNoContainer = null;
@@ -291,7 +290,8 @@ public class RankingFragment extends BaseFragment {
 
                 }
                 holder1.tvRank.setText(playerList.get(position).Ranking);
-                holder1.tvName.setText(playerList.get(position).name);
+                //팀명을 api로부터 받아야함
+                   holder1.tvName.setText(playerList.get(position).name +"(" + playerList.get(position).team_name +")");
 
                 //동적 코스점수뷰 생성
                 for (int i = 0; holder1.mHoleScoreView.length > i; i++) {

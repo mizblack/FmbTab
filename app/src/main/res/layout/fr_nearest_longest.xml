@@ -7,8 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/translucentBlack"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="1160dp"
@@ -58,6 +57,7 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        android:id="@+id/long_near_hole_no"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -76,6 +76,7 @@
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        android:id="@+id/long_near_par"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -85,6 +86,7 @@
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        android:id="@+id/long_near_course"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
@@ -128,6 +130,7 @@
                         tools:ignore="HardcodedText,RtlSymmetry" />
 
                     <TextView
+                        android:id="@+id/measurement_unit"
                         style="@style/MainColumnInOrOutTextView"
                         android:paddingStart="0dp"
                         android:text="Meters"

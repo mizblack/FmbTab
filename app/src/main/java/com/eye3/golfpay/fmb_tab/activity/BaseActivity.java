@@ -29,9 +29,10 @@ import com.eye3.golfpay.fmb_tab.util.BackPressCloseHandler;
 
 
 public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
+    protected String TAG = getClass().getSimpleName();
     private T mVd;
     protected BaseFragment mBaseFragment;
-    protected String TAG = getClass().getSimpleName();
+    protected BaseFragment mPreviousBaseFragment;
     private ProgressDialog pd; // 프로그레스바 선언
     protected BackPressCloseHandler backPressCloseHandler;
     public DrawerLayout drawer;
@@ -139,7 +140,14 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         if (fragment == null) {
             return;
         }
+        //동일한 fragment를 replace할경우 skip!
+        if (mPreviousBaseFragment != null) {
+            if (fragment.getClass().getName().equals(mPreviousBaseFragment.getClass().getName()))
+                return;
+        }
+
         mBaseFragment = fragment;
+        mPreviousBaseFragment = fragment;
         if (getVisibleFragment() instanceof ViewMenuFragment) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
@@ -155,6 +163,33 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         } else {
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+        //replace시 새로운 fragment가 생성되면서 올라오면 , 현 fragment는 onDestroy를 호출한다.(메모리에서 사라지게됨)
+        transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
+
+    }
+
+    public void GoNativeScreenBetweenParTar(BaseFragment fragment, Bundle bundle) {
+        String direction;
+        if (fragment == null) {
+            return;
+        }
+
+        mBaseFragment = fragment;
+        if (getVisibleFragment() instanceof ViewMenuFragment) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        if (bundle != null) {
+//            mBaseFragment.setArguments(bundle);
+//            direction = bundle.getString("ani_direction");
+//            if (direction.equals("up")) {
+//                transaction.setCustomAnimations(R.anim.pull_in_top, R.anim.push_out_down);
+//            } else if (direction.equals("down"))
+//                transaction.setCustomAnimations(R.anim.slide_down_to_enter, R.anim.slide_down_to_enter);
+//
+//        } else {
+//            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+//        }
         //replace시 새로운 fragment가 생성되면서 올라오면 , 현 fragment는 onDestroy를 호출한다.(메모리에서 사라지게됨)
         transaction.replace(R.id.vw_NativeContent, mBaseFragment).commitAllowingStateLoss();
 

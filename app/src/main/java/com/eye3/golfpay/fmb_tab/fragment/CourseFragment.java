@@ -206,8 +206,7 @@ public class CourseFragment extends BaseFragment {
 
             if (mHoleList.get(position).img_1_file_url != null) {
                 Glide.with(mContext)
-                    //    .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_1_file_url)
-                        .load(   "http://testerp.golfpay.co.kr/" + mHoleList.get(position).img_1_file_url)
+                        .load(Global.HOST_BASE_ADDRESS_AWS + mHoleList.get(position).img_1_file_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(mIvMap);
             } else {

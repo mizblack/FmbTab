@@ -14,8 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
@@ -26,8 +29,7 @@ import com.eye3.golfpay.fmb_tab.view.NearestInserter;
 import java.util.ArrayList;
 
 public class NearestLongestDialogFragment extends DialogFragment {
-    private static final String NEAREST = "니어스트";
-    private static final String LONGEST = "롱기스트";
+
     protected ProgressDialog pd; // 프로그레스바 선언
 
     protected String TAG = getClass().getSimpleName();
@@ -36,7 +38,9 @@ public class NearestLongestDialogFragment extends DialogFragment {
     private View cancelLinearLayout;
     private TextView mTabLongest, mTabNearest;
 
-    private String mNearestOrLongest = NEAREST;
+    private String mNearestOrLongest = AppDef.NEAREST;
+    private  Course mCourse;
+    private Hole mHole;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +58,12 @@ public class NearestLongestDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                if (mNearestOrLongest.equals(NEAREST)) {
+                if (mNearestOrLongest.equals(AppDef.NEAREST)) {
                     mTabNearest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
                 }
-                mNearestOrLongest = LONGEST;
+                mNearestOrLongest = AppDef.LONGEST;
                 ((TextView) v).setTextAppearance(R.style.MainTabTitleTextViewBold);
-                changeScreenTo(LONGEST);
+                changeScreenTo(AppDef.LONGEST);
 
             }
         });
@@ -67,15 +71,23 @@ public class NearestLongestDialogFragment extends DialogFragment {
         mTabNearest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mNearestOrLongest.equals(LONGEST)) {
+                if (mNearestOrLongest.equals(AppDef.LONGEST)) {
                     mTabLongest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
                 }
-                mNearestOrLongest = NEAREST;
+                mNearestOrLongest = AppDef.NEAREST;
                 ((TextView) v).setTextAppearance(R.style.MainTabTitleTextViewBold);
-                changeScreenTo(NEAREST);
+                changeScreenTo(AppDef.NEAREST);
             }
         });
+        ( (TextView)view.findViewById(R.id.long_near_hole_no)).setText("Hole "+ mHole.hole_no);
+        ( (TextView)view.findViewById(R.id.long_near_par)).setText("Par" + mHole.par);
+        ( (TextView)view.findViewById(R.id.long_near_course)).setText("Course(" + mCourse.courseName + ")");
+
         return view;
+    }
+
+    public void setmNearestOrLongest(String NearestLongest) {
+        mNearestOrLongest = NearestLongest;
     }
 
 
@@ -87,18 +99,18 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
     private void makeNearest() {
         guestItemLinearLayout.removeAllViewsInLayout();
+        ( (TextView)getView().findViewById(R.id.measurement_unit)).setText("Centimeters");
         if (guestArrayList.size() != 0) {
             for (int i = 0; i < guestArrayList.size(); i++) {
 
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.item_nearest_longest_input, null, false);
-                final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
                 final LinearLayout selectorInputLayout = v.findViewById(R.id.selectorItemRelativeLayout);
 
                 final NearestInserter nearestInserter = new NearestInserter(getActivity());
                 selectorInputLayout.addView(nearestInserter, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
+                final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 TextView nameTextView = v.findViewById(R.id.nameTextView);
                 nameTextView.setText(guestArrayList.get(i).getGuestName());
 
@@ -124,7 +136,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(View v) {
                                 //클릭시 거리값이 결정된다.
-                                if(nearestInserter.getmSelectedChildView() != null) {
+                                if (nearestInserter.getmSelectedChildView() != null) {
                                     String strDistance = nearestInserter.getmSelectedChildView().getTag().toString().trim();
                                     tvMeters.setText(strDistance);
                                 }
@@ -144,6 +156,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
     private void makeLongest() {
         guestItemLinearLayout.removeAllViewsInLayout();
+        ( (TextView)getView().findViewById(R.id.measurement_unit)).setText("Meters");
         if (guestArrayList.size() != 0) {
             for (int i = 0; i < guestArrayList.size(); i++) {
 
@@ -181,10 +194,10 @@ public class NearestLongestDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(View v) {
                                 //클릭시 거리값이 결정된다.
-                                 if(longestInserter.getmSelectedChildView() != null) {
-                                     String strDistance = longestInserter.getmSelectedChildView().getTag().toString().trim();
-                                     tvMeters.setText(strDistance);
-                                 }
+                                if (longestInserter.getmSelectedChildView() != null) {
+                                    String strDistance = longestInserter.getmSelectedChildView().getTag().toString().trim();
+                                    tvMeters.setText(strDistance);
+                                }
 
                             }
                         });
@@ -201,16 +214,29 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
 
     private void changeScreenTo(String nearestOrLongest) {
-        if (nearestOrLongest.equals(NEAREST))
+        if (nearestOrLongest.equals(AppDef.NEAREST))
+
             makeNearest();
         else
             makeLongest();
     }
 
+    public void setHole(Hole hole){
+        this.mHole = hole;
+    }
+    public void setCourse(Course course){
+        this.mCourse = course;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mTabNearest.performClick();
+        if(mNearestOrLongest.equals(AppDef.NEAREST)){
+            mTabNearest.performClick();
+            ( (TextView)getView().findViewById(R.id.measurement_unit)).setText("Centimeters");
+        } else {
+            mTabLongest.performClick();
+        }
 
         cancelLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

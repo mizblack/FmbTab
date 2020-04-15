@@ -57,7 +57,7 @@ public interface HttpService {
 
     @POST("orderShade")
     Call<ResponseData<Object>> sendShadeOrder(@Body ShadeOrder shadeOrder);
-
+    //캐디수첩 저장 api
     @Multipart
     @POST("setReserveGuestInfo")
     Call<GuestInfoResponse> setReserveGuestInfo(@Part("reserve_guest_id") RequestBody reserveGuestId,

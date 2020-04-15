@@ -166,7 +166,7 @@
     <style name="ScoreInserterTextView">
 
         <item name="android:textColor">@color/gray</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:gravity">center</item>
 <!--        <item name="android:textStyle">bold</item>-->
         <item name="android:background">@drawable/shape_gray_edge</item>
@@ -213,7 +213,11 @@
         <item name="android:text">-</item>
         <item name="android:textSize">13sp</item>
         <item name="android:gravity">center_vertical</item>
-
+    </style>
+    <style name="GolfClubListTextStyle">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

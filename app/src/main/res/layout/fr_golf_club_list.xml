@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/translucentBlack"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="1160dp"
+        android:layout_height="650dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <!--타이틀 relative-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="클럽정보"
+                android:textColor="@color/irisBlue"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:id="@+id/pllayer_linear"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/tv_cancel"
+                android:gravity="center"
+                android:text="저장"
+                android:textColor="@color/irisBlue"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="취소"
+                android:textColor="@color/gray"
+                android:textSize="22sp" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/mll_club_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_wood"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:id="@+id/ll_wood_header"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_wood"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="우드" />
+
+                        <TextView
+                            android:id="@+id/tv_wood_qty"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="2"
+                            android:text="2" />
+                    </LinearLayout>
+
+                    <com.eye3.golfpay.fmb_tab.view.WoodInserter
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_utility"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:id="@+id/ll_utility_header"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_utility"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="유틸리티" />
+
+                        <TextView
+                            android:id="@+id/tv_utility_qty"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="2"
+                            android:text="2" />
+                    </LinearLayout>
+
+                    <com.eye3.golfpay.fmb_tab.view.UtilityInserter
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_iron"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:id="@+id/ll_iron_header"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_iron"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="유틸리티" />
+
+                        <TextView
+                            android:id="@+id/tv_iron_qty"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="2"
+                            android:text="2" />
+                    </LinearLayout>
+
+                    <com.eye3.golfpay.fmb_tab.view.IronInserter
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_wedge"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:id="@+id/ll_wedge_header"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_wedge"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:text="웨지" />
+
+                        <TextView
+                            android:id="@+id/tv_wedge_qty"
+                            style="@style/GolfClubListTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_weight="2"
+                            android:text="2" />
+                    </LinearLayout>
+
+                    <com.eye3.golfpay.fmb_tab.view.WedgeInserter
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:id="@+id/ll_putter"
+                        android:layout_width="500dp"
+                        android:layout_height="100dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:id="@+id/ll_putter_header"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_putter"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text="퍼터" />
+
+                            <TextView
+                                android:id="@+id/tv_putter_qty"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_weight="2"
+                                android:text="2" />
+                        </LinearLayout>
+
+                        <com.eye3.golfpay.fmb_tab.view.PutterInserter
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_putter_cover"
+                        android:layout_width="500dp"
+                        android:layout_height="100dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:id="@+id/ll_putter_cover_header"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_putter_cover"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text="퍼터커버" />
+
+                            <TextView
+                                android:id="@+id/tv_putter_cover_qty"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_weight="2"
+                                android:text="2" />
+                        </LinearLayout>
+
+                        <com.eye3.golfpay.fmb_tab.view.PutterCoverInserter
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="8" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

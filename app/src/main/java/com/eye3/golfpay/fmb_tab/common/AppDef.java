@@ -1,6 +1,10 @@
 package com.eye3.golfpay.fmb_tab.common;
 
+import com.eye3.golfpay.fmb_tab.model.field.Club;
 import com.eye3.golfpay.fmb_tab.model.score.Score;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppDef {
     //    public final static int ACTIVITY_CLOSE = 9000;
@@ -58,5 +62,11 @@ public class AppDef {
 
     public static String imageFilePath = "";
     public static String guestid = "";
+
+    public static final String NEAREST = "니어리스트";
+    public static final String LONGEST = "롱기스트";
+
+    public static List<Club> clubList = new ArrayList<>();
+
 
 }

@@ -55,7 +55,7 @@ public class OrderFragment extends BaseFragment {
     public String TAG = getClass().getSimpleName();
     private Button orderOrApplyBtn;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
-    private RecyclerView mRecyclerCategory;
+    private RecyclerView mRecyclerCategory ;
     private CategoryAdapter mCateAdapter;
     private TextView[] mRestaurantTabBarArr;
     private ImageView mFoodImage;
@@ -72,8 +72,7 @@ public class OrderFragment extends BaseFragment {
     private Button mResetButton;
     ArrayList<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
     private ImageView mArrowToApply;
-    static int mBeforeSelectedIdx = -1;
-
+    static TextView preSelectedGuestView ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,7 +150,8 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void initSelectedRestaurantTabColor() {
-        mRestaurantTabBarArr[0].setTextColor(Color.BLACK);
+
+         mRestaurantTabBarArr[0].setTextColor(Color.BLACK);
     }
 
     private void initFoodImage() {
@@ -164,7 +164,7 @@ public class OrderFragment extends BaseFragment {
             return;
         }
         if (mRestaurantList.get(0).categoryList.get(0).Menus == null || mRestaurantList.get(0).categoryList.get(0).Menus.size() == 0) {
-            Toast.makeText(getActivity(), " 식당 메뉴가 없습니다.", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getActivity(), " 식당 메뉴가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -281,9 +281,6 @@ public class OrderFragment extends BaseFragment {
 
     private void refreshCategory() {
         mCateAdapter.setAllRestaurantMenuUnSelected();
-        for (int i = 0; mRestaurantList.size() > i; i++)
-            mCateAdapter.notifyDataSetChanged();
-
         mCateAdapter.notifyDataSetChanged();
     }
 
@@ -340,7 +337,8 @@ public class OrderFragment extends BaseFragment {
 
         ArrayList<Category> mCategoryList;
         MenuAdapter mMenuAdapter;
-
+        int mCateCurrentPosition ;
+        public MenuAdapter.MenuItemViewHolder preViewHolder;
         CategoryAdapter(Context context, ArrayList<Category> categoryList) {
 
             mContext = context;
@@ -356,18 +354,21 @@ public class OrderFragment extends BaseFragment {
             return new CategoryItemViewHolder(view);
         }
 
+
         @Override
         public void onBindViewHolder(@NonNull final CategoryItemViewHolder holder,
-                                     int position) {
-            ArrayList<RestaurantMenu> menuList = mCategoryList.get(position).Menus;
+                                     int position_category) {
+
+            ArrayList<RestaurantMenu> menuList = mCategoryList.get(position_category).Menus;
             //    mTVCateName.setText(mCategoryList.get(position).catergory_name);
-            Log.d(TAG, "onBindViewHolder    " + mCategoryList.get(position).catergory_name);
-            mMenuAdapter = new MenuAdapter(mContext, menuList);
+            Log.d(TAG, "onBindViewHolder    " + mCategoryList.get(position_category).catergory_name);
+            mMenuAdapter = new MenuAdapter(mContext, menuList, position_category);
             holder.mRecyclerMenu.setAdapter(mMenuAdapter);
             holder.mRecyclerMenu.setHasFixedSize(true);
             LinearLayoutManager mManager = new LinearLayoutManager(mContext);
             holder.mRecyclerMenu.setLayoutManager(mManager);
-            holder.itemView.setTag(position);
+            holder.itemView.setTag(position_category);
+
         }
 
         @Override
@@ -390,7 +391,7 @@ public class OrderFragment extends BaseFragment {
         }
 
         class CategoryItemViewHolder extends RecyclerView.ViewHolder {
-            RecyclerView mRecyclerMenu;
+           public  RecyclerView mRecyclerMenu;
 
             //onCreateViewHolder 의 mMenuView 임()
             CategoryItemViewHolder(@NonNull final View itemView) {
@@ -410,16 +411,20 @@ public class OrderFragment extends BaseFragment {
 
                 }
             }
-            //  notifyDataSetChanged();
+
         }
 
         private class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuItemViewHolder> {
             Context mContext;
             ArrayList<RestaurantMenu> mMenuList;
+            int mCategoryPosition;
+            public  MenuItemViewHolder preSelectedViewHolder;
 
-            MenuAdapter(Context context, ArrayList<RestaurantMenu> menuList) {
+            MenuAdapter(Context context, ArrayList<RestaurantMenu> menuList, int categoryPosition) {
                 mContext = context;
                 mMenuList = menuList;
+                mCategoryPosition = categoryPosition;
+
             }
 
             @NonNull
@@ -445,7 +450,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onBindViewHolder(@NonNull final MenuAdapter.MenuItemViewHolder holder, int position) {
                 final int idx = position;
-                Log.d(TAG, "onBindViewHolder    " + mMenuList.get(idx).name + "MenuItemViewHolder");
+           //     Log.d(TAG, "onBindViewHolder    " + mMenuList.get(idx).name + "MenuItemViewHolder");
                 if (mMenuList.get(idx).isSelected) {
                     holder.itemView.setBackgroundResource(R.drawable.shape_gray_edge);
                     holder.tvMenuName.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
@@ -463,27 +468,25 @@ public class OrderFragment extends BaseFragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setAllRestaurantMenuUnSelected();
+                        if ( preSelectedViewHolder != null) {
+                            preSelectedViewHolder.itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
+                            preSelectedViewHolder.tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
+                            preSelectedViewHolder.tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
+
+                        }
+
+                        preSelectedViewHolder = holder;
                         holder.itemView.setBackgroundResource(R.drawable.shape_gray_edge);
                         holder.tvMenuName.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
                         holder.tvPrice.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
-                        resetGuestList();
                         mMenuList.get(idx).isSelected = true;
+                        resetGuestList();
                         setFoodImage(mFoodImage, mMenuList.get(idx).image);
                         mOrderedMenuItem = new OrderedMenuItem(holder.tvMenuId.getText().toString().trim(), "1", mMenuList.get(idx).price.trim(), mMenuList.get(idx).name);
-                        //                        //category  전체를 refresh 해야한다.
-                        CategoryAdapter.this.notifyDataSetChanged();
-                        notifyDataSetChanged();
-//                        if (Global.mBeforeSelectedMenuIdx >= 0) {
-//                            mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx)).itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
-//                            MenuItemViewHolder a =  ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt()
-//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx))).tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-//
-//                            ((CategoryItemViewHolder) mRecyclerCategory.getChildViewHolder(mRecyclerCategory.getChildAt(Global.mBeforeSelectedMenuIdx))).tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-//                        }
- //                       Global.mBeforeSelectedMenuIdx = idx;
                     }
                 });
+
+
             }
 
 
@@ -493,7 +496,7 @@ public class OrderFragment extends BaseFragment {
             }
 
             class MenuItemViewHolder extends RecyclerView.ViewHolder {
-                TextView tvMenuName, tvPrice, tvMenuId;
+                 TextView tvMenuName, tvPrice, tvMenuId;
 
                 //onCreateViewHolder 의 mMenuView 임()
                 MenuItemViewHolder(@NonNull final View itemView) {
@@ -530,6 +533,8 @@ public class OrderFragment extends BaseFragment {
 
 
     private void createGuestList(LinearLayout container) {
+
+
         initOrderDetailList();
         for (int i = 0; Global.orderDetailList.size() > i; i++) {
             final int idx = i;
@@ -546,11 +551,15 @@ public class OrderFragment extends BaseFragment {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onClick(View v) {
-
+                    //이미선택된 게스트가 있다면 초기화하자
+                    if(preSelectedGuestView != null){
+                        preSelectedGuestView.setBackgroundResource(R.drawable.shape_gray_edge);
+                        preSelectedGuestView.setTextAppearance(R.style.ShadeGuestNameTextView);
+                    }
+                    preSelectedGuestView = (TextView) v;
                     mOrderedGuestId = (String) v.getTag();
                     //주문된 음식이 있다면
                     if (mOrderedMenuItem != null) {
-                        mOrderBrowserLinearLayout.removeAllViewsInLayout();
                         if (v.getTag().equals(Global.orderDetailList.get(idx).reserve_guest_id)) {
                             infoTextView.setVisibility(View.GONE);
                             ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
@@ -560,8 +569,6 @@ public class OrderFragment extends BaseFragment {
                             makeOrderItems();
                             makeOrderItemInvoiceArrViews();
                             setTheTotalInvoice();
-                            mOrderedMenuItem = null;
-                            refreshCategory();
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();
                             mOrderedMenuItem = null;
