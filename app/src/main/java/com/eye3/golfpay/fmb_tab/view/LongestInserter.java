@@ -23,13 +23,8 @@ public class LongestInserter extends Inserter implements BoldScroll {
 
     private void init(){
         createIntegerArrayList();
-        createInserter();
+        createInserterForSingleChoice();
         setBoldScroll(mhorizontalScrollView);
-    }
-
-    public void createInserter(){
-       super.createInserter();
-
     }
 
     @Override

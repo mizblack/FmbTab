@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class Guest implements Serializable {
-
+    //새로 추가됨
     @SerializedName("arr_club_image")
     private ArrayList<GalleryPicture> arrClubImageList;
     @Expose
@@ -67,7 +67,7 @@ public class Guest implements Serializable {
     private String teamMemo;
     @SerializedName("total_price")
     private String totalPrice;
-
+   //새로 추가됨
     @SerializedName("club_set")
     public List<Club> clubList;
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
+import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
 import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ViewMenuFragment;
@@ -61,7 +63,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     NavigationView navigationView;
     public DrawerLayout drawer_layout;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, startTextView, nameEditText, phoneNumberEditText, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
+
     ImageView markView, cancelView;
     LinearLayout ll_login;
 
@@ -72,11 +75,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         systemUIHide();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
+        getAllCourseInfo(MainActivity.this);
         init();
         hideMainBottomBar();
         startLocationService();
-           drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
 
@@ -96,40 +99,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    private void login(String id, String pwd) {
-        //   showProgress("로그인 중입니다....");
-
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).login(id, pwd, new DataInterface.ResponseCallback<Login>() {
-            @Override
-            public void onSuccess(Login response) {
-                hideProgress();
-                systemUIHide();
-
-                if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    Global.CaddyNo = String.valueOf(response.getCaddyNo());
-                    changeDrawerViewToMenuView();
-                } else {
-                    Toast.makeText(MainActivity.this, "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
-                    nameEditText.setText("");
-                    phoneNumberEditText.setText("");
-                }
-
-            }
-
-            @Override
-            public void onError(Login response) {
-                hideProgress();
-                systemUIHide();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideProgress();
-                systemUIHide();
-            }
-        });
-    }
-
     public void openDrawerLayout() {
         if (drawer_layout != null)
             drawer_layout.openDrawer(GravityCompat.END);
@@ -146,27 +115,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         drawer_layout = findViewById(R.id.drawer_layout);
         openDrawerLayout();
-
-        startTextView = findViewById(R.id.startTextView);
-        nameEditText = findViewById(R.id.nameEditText);
-        phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
-        ll_login = findViewById(R.id.login_view_include);
-
-        startTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        cancelView = findViewById(R.id.cancelIcon);
-        cancelView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closeDrawerLayout();
-
-            }
-        });
+        drawer_layout.setScrimColor(Color.TRANSPARENT);
+        //최초 로그인fragment를 호출한다.
+        GoNavigationDrawer(new LoginFragment(), null);
         gpsTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.gpsTextView);
         gpsTxtView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,70 +155,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        // 메뉴뷰 이벤트처리
-        findViewById(R.id.startTextView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                try {
-                    login(nameEditText.getText().toString().trim(), Security.encrypt(phoneNumberEditText.getText().toString()));
-                } catch (NoSuchPaddingException
-                        | NoSuchAlgorithmException
-                        | InvalidAlgorithmParameterException
-                        | InvalidKeyException
-                        | BadPaddingException
-                        | IllegalBlockSizeException e) {
-                    e.printStackTrace();
-                }
-
-                closeKeyboard(findViewById(R.id.nameEditText));
-                closeKeyboard(findViewById(R.id.phoneNumberEditText));
-                nameEditText.setEnabled(false);
-                phoneNumberEditText.setEnabled(false);
-
-            }
-        });
-
-        findViewById(R.id.startQRLinearLayout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoNativeScreen(new QRScanFragment(), null);
-                closeDrawerLayout();
-            }
-        });
-
         groupNameTextView = findViewById(R.id.groupNameTextView);
         reservationPersonNameTextView = findViewById(R.id.reservationPersonNameTextView);
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
         inOutTextView00 = findViewById(R.id.inOutTextView00);
         inOutTextView01 = findViewById(R.id.inOutTextView01);
 
-        findViewById(R.id.login_view_include).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyboard(findViewById(R.id.nameEditText));
-                closeKeyboard(findViewById(R.id.phoneNumberEditText));
-            }
-        });
-
-        findViewById(R.id.content_main_inc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeKeyboard(findViewById(R.id.nameEditText));
-                closeKeyboard(findViewById(R.id.phoneNumberEditText));
-            }
-        });
+//        findViewById(R.id.content_main_inc).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                closeKeyboard(findViewById(R.id.nameEditText));
+//                closeKeyboard(findViewById(R.id.phoneNumberEditText));
+//            }
+//        });
 
     }
 
-    public void changeDrawerViewToMenuView() {
-
-        // ll_login.setVisibility(View.GONE);
-        getAllCourseInfo(MainActivity.this);
-
-        GoNavigationDrawer(new ViewMenuFragment(), null);
-
-    }
 
     private void getAllCourseInfo(Context context) {
         showProgress("코스 정보를 가져오는 중입니다.");
@@ -366,9 +269,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onResume() {
         super.onResume();
         systemUIHide();
-      //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
-     }
+    }
 
 
     @Override
@@ -412,10 +315,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             CaddieViewGuestItem guestItem = (CaddieViewGuestItem) CaddieFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
 
-             setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
-          //  guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
+            setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
+            //  guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-           ;
+            ;
 
         }
     }
@@ -457,11 +360,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return index;
     }
 
-        @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-               // sendTakePhotoIntent();
+                // sendTakePhotoIntent();
             } else {
                 Toast.makeText(MainActivity.this, "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
             }

@@ -134,14 +134,9 @@ public class GalleryFragment extends BaseFragment {
     private void initRecyclerView(List<GalleryPicture> pictureList) {
         GridLayoutManager mManager = new GridLayoutManager(getActivity(), 2);
         mManager.setOrientation(RecyclerView.HORIZONTAL);
-//        LinearLayoutManager horizonalLayoutManager
-//                = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
         if (pictureList == null)
             return;
-        //    mManager = new LinearLayoutManager(mContext);
-        // mGalleryRecycler.setHasFixedSize(true);
         mGalleryRecycler.setLayoutManager(mManager);
-
         mGalleryAdatper = new GalleryAdapter(mContext, pictureList);
         mGalleryRecycler.setAdapter(mGalleryAdatper);
         mGalleryAdatper.notifyDataSetChanged();

@@ -83,6 +83,9 @@ public class ScoreFragment extends BaseFragment {
     private List<Course> getCtypedCourseForPlayerList(List<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         //예약에서 inout 을 확인하고 코스순서를 다시 재정렬함
+        if(playerList.size() == 0){
+            return null;
+        }
         if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
             if (!AppDef.CType.OUT.equals(playerList.get(0).playingCourse.get(0).ctype)) {
                 swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse);

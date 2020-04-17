@@ -5,10 +5,13 @@ import android.util.AttributeSet;
 
 import com.eye3.golfpay.fmb_tab.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WedgeInserter extends Inserter {
     List<String> mWedgeList;
+    List<Object> mWedgeClubSeries ;
 
     public WedgeInserter(Context context) {
         super(context);
@@ -25,16 +28,33 @@ public class WedgeInserter extends Inserter {
         init(context);
     }
 
+    public void setmWedgeClubSeries(){
+        mWedgeClubSeries = new ArrayList<>() ;
+        mWedgeClubSeries.add("Pw");
+        mWedgeClubSeries.add("Sw");
+        mWedgeClubSeries.add("PSw");
+        mWedgeClubSeries.add("52w");
+        mWedgeClubSeries.add("53w");
+        mWedgeClubSeries.add("54w");
+        mWedgeClubSeries.add("55w");
+        mWedgeClubSeries.add("56w");
+        mWedgeClubSeries.add("57w");
+        mWedgeClubSeries.add("58w");
+        mWedgeClubSeries.add("60w");
+
+    }
+
     @Override
     public void createIntegerArrayList() {
-        mIntInserterList =  incrementsLoop(1, 9, 1);
+         mIntInserterList = mWedgeClubSeries;
     }
 
     @Override
     public void init(Context context) {
         super.init(context);
+        setmWedgeClubSeries();
         createIntegerArrayList();
-        createInserter(getResources().getDimensionPixelSize(R.dimen.club_inserter_width), getResources().getDimensionPixelSize(R.dimen.club_inserter_height));
+        createInserterForMultiChoice(getResources().getDimensionPixelSize(R.dimen.club_inserter_width), getResources().getDimensionPixelSize(R.dimen.club_inserter_height));
 
     }
 }

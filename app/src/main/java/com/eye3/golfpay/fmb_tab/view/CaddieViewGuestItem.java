@@ -49,7 +49,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
-import com.eye3.golfpay.fmb_tab.util.GollfClubDialogFragment;
+import com.eye3.golfpay.fmb_tab.util.GolfClubDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -238,13 +238,12 @@ public class CaddieViewGuestItem extends RelativeLayout {
         v.findViewById(R.id.club_info_list).setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                GollfClubDialogFragment gollfClubDialogFragment = new GollfClubDialogFragment();
-              //  signatureDialogFragment.setGuestId(mGuest.getId());
-                showDialogFragment(gollfClubDialogFragment);
+                GolfClubDialogFragment golfClubDialogFragment = new GolfClubDialogFragment();
+                golfClubDialogFragment.setGuest(mGuest);
+                showDialogFragment(golfClubDialogFragment);
                 return false;
             }
         });
-
 
         addView(v);
     }

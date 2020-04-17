@@ -27,14 +27,14 @@ public class IronInserter extends Inserter {
 
     @Override
     public void createIntegerArrayList() {
-        mIntInserterList =  incrementsLoop(1, 9, 1);
+        mIntInserterList =  incrementsLoop(3, 11, 1);
     }
 
     @Override
     public void init(Context context) {
         super.init(context);
         createIntegerArrayList();
-        createInserter(getResources().getDimensionPixelSize(R.dimen.club_inserter_width), getResources().getDimensionPixelSize(R.dimen.club_inserter_height));
+        createInserterForMultiChoice(getResources().getDimensionPixelSize(R.dimen.club_inserter_width), getResources().getDimensionPixelSize(R.dimen.club_inserter_height));
 
     }
 }

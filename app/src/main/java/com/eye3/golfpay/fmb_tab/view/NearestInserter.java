@@ -23,7 +23,7 @@ public class NearestInserter extends Inserter implements BoldScroll {
 
     private void init() {
         createIntegerArrayList();
-        createInserter();
+        createInserterForSingleChoice();
         setBoldScroll(mhorizontalScrollView);
     }
 

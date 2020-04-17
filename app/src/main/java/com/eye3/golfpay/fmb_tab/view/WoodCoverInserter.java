@@ -7,19 +7,19 @@ import com.eye3.golfpay.fmb_tab.R;
 
 import java.util.List;
 
-public class WoodInserter extends Inserter {
-    List<String> mWoodList;
+public class WoodCoverInserter extends Inserter {
+    List<String> mWoodCoverList;
 
-    public WoodInserter(Context context) {
+    public WoodCoverInserter(Context context) {
         super(context);
     }
 
-    public WoodInserter(Context context, List<String> woodList) {
+    public WoodCoverInserter(Context context, List<String> woodList) {
         super(context);
-        this.mWoodList = woodList;
+        this.mWoodCoverList = woodList;
     }
 
-    public WoodInserter(Context context, AttributeSet attrs) {
+    public WoodCoverInserter(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
@@ -27,7 +27,7 @@ public class WoodInserter extends Inserter {
 
     @Override
     public void createIntegerArrayList() {
-        mIntInserterList =  incrementsLoop(1, 9, 1);
+        mIntInserterList =  incrementsLoop(0, 7, 1);
     }
 
     @Override

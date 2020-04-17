@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:background="@color/white">
 
     <HorizontalScrollView
         android:id="@+id/linear_insert_sv"
@@ -12,8 +13,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:scrollbars="none"
-        tools:ignore="UselessParent"
-        >
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:id="@+id/linear_score_insert_container"

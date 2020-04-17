@@ -29,12 +29,12 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
 //우선순위가 차후로 연기됨 키오스크가 되면 구현될것임.
 public class RankingFragment extends BaseFragment {
-
 
     protected String TAG = getClass().getSimpleName();
 
@@ -401,7 +401,9 @@ public class RankingFragment extends BaseFragment {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList =  response.getList();
-                    mCourseList = getCourse(mPlayerList);
+                    mPlayerList.sort(Comparator.naturalOrder());
+                  //  mCourseList = getCourse(mPlayerList);
+                    mCourseList = Global.courseInfoList;
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
 

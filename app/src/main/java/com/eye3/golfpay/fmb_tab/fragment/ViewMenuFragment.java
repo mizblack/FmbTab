@@ -429,8 +429,6 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    if(getActivity().getPackageName() != null)
-                           Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
@@ -440,6 +438,8 @@ public class ViewMenuFragment extends BaseFragment {
                     teeUpRecyclerView.setLayoutManager(manager);
                     teeUpRecyclerView.setAdapter(teeUpAdapter);
                     teeUpAdapter.notifyDataSetChanged();
+                    if(mContext.getPackageName() != null)
+                        Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
 
 
                 }

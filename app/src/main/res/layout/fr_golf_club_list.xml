@@ -16,9 +16,11 @@
         <!--타이틀 relative-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tv_golf_info"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -27,10 +29,14 @@
                 android:textSize="22sp" />
 
             <LinearLayout
-                android:id="@+id/pllayer_linear"
-                android:layout_width="400dp"
+                android:id="@+id/guest_container_linear"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/tv_golf_info"
+                android:gravity="center_vertical"
+                />
 
             <TextView
                 android:id="@+id/tv_save"
@@ -55,14 +61,15 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"
+            >
 
             <LinearLayout
                 android:id="@+id/mll_club_type"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="40dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -78,7 +85,7 @@
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_wood"
@@ -97,6 +104,7 @@
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.WoodInserter
+                        android:id="@+id/wood_inserter"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
@@ -114,7 +122,7 @@
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_utility"
@@ -133,6 +141,7 @@
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.UtilityInserter
+                        android:id="@+id/utility_inserter"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
@@ -150,14 +159,14 @@
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_iron"
                             style="@style/GolfClubListTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:text="유틸리티" />
+                            android:text="아이언" />
 
                         <TextView
                             android:id="@+id/tv_iron_qty"
@@ -169,6 +178,7 @@
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.IronInserter
+                        android:id="@+id/iron_inserter"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
@@ -186,7 +196,7 @@
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="2"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_wedge"
@@ -205,6 +215,7 @@
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.WedgeInserter
+                        android:id="@+id/wedge_inserter"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
@@ -225,8 +236,8 @@
                             android:id="@+id/ll_putter_header"
                             android:layout_width="0dp"
                             android:layout_height="80dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal">
+                            android:layout_weight="4.5"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_putter"
@@ -245,9 +256,10 @@
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.PutterInserter
+                            android:id="@+id/putter_inserter"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="8" />
+                            android:layout_weight="5.5" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/ll_putter_cover"
@@ -261,8 +273,8 @@
                             android:id="@+id/ll_putter_cover_header"
                             android:layout_width="0dp"
                             android:layout_height="80dp"
-                            android:layout_weight="2"
-                            android:orientation="horizontal">
+                            android:layout_weight="4.5"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_putter_cover"
@@ -281,9 +293,90 @@
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.PutterCoverInserter
+                            android:id="@+id/putter_cover_inserter"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="8" />
+                            android:layout_weight="5.5" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:id="@+id/ll_wood_cover"
+                        android:layout_width="500dp"
+                        android:layout_height="100dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:id="@+id/ll_wood_cover_header"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="4.5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_wood_cover"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text="우드커버" />
+
+                            <TextView
+                                android:id="@+id/tv_wood_cover_qty"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_weight="2"
+                                android:text="2" />
+                        </LinearLayout>
+
+                        <com.eye3.golfpay.fmb_tab.view.WoodCoverInserter
+                            android:id="@+id/wood_cover_inserter"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5.5" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_micell_cover"
+                        android:layout_width="500dp"
+                        android:layout_height="100dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:id="@+id/ll_micell_cover_header"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="4.5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_micell_cover"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text="기타커버" />
+
+                            <TextView
+                                android:id="@+id/tv_micell_cover_qty"
+                                style="@style/GolfClubListTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_weight="2"
+                                android:text="2" />
+                        </LinearLayout>
+
+                        <com.eye3.golfpay.fmb_tab.view.MicellCoverInserter
+                            android:id="@+id/micell_cover_inserter"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5.5" />
                     </LinearLayout>
                 </LinearLayout>
 

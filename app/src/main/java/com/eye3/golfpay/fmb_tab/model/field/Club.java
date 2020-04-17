@@ -24,5 +24,4 @@ public class Club implements Serializable {
     @Expose
     public List<String> wedgeCoverList;
 
-
 }
