@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/translucentBlack"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="350dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="320dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@color/irisBlue"
+            android:textColor="@color/white"
+            android:text="확인"
+            android:textSize="20sp"
+            />
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="320dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:background="@color/gray50"
+            android:textColor="@color/white"
+            android:text="닫기"
+            android:textSize="20sp"
+            android:layout_below="@id/btn_confirm"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
+
+

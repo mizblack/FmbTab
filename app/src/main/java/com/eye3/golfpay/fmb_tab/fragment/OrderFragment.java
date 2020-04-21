@@ -61,7 +61,8 @@ public class OrderFragment extends BaseFragment {
     private ImageView mFoodImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mTabLinear, mGuestContainer, mOrderBrowserLinearLayout;
+    private LinearLayout mTabLinear, mOrderBrowserLinearLayout;
+    LinearLayout mGuestContainer;
     public static LinearLayout mTabsRootLinear;
     private ShadeOrder mShadeOrders;
     private OrderedMenuItem mOrderedMenuItem = null;
@@ -462,6 +463,7 @@ public class OrderFragment extends BaseFragment {
                 }
 
                 holder.tvMenuName.setText(mMenuList.get(idx).name);
+                if(mMenuList.get(idx).price != null)
                 holder.tvPrice.setText(priceMapper(Integer.parseInt(mMenuList.get(idx).price)));
                 holder.tvMenuId.setText(mMenuList.get(idx).id);
 
@@ -656,7 +658,7 @@ public class OrderFragment extends BaseFragment {
             a_NameOrderview.deleteLinear.setTag(NUM_NAMEORDER_KEY, orderItemInvoice.mNameOrders.get(i));
             a_NameOrderview.mNameTv.setText(((NameOrder) a_NameOrderview.getTag()).name);
 
-            a_NameOrderview.mQtyTv.setText(String.valueOf(((NameOrder) a_NameOrderview.getTag()).qty));
+            a_NameOrderview.mQtyTv.setText(String.valueOf(((NameOrder) a_NameOrderview.getTag()).qty) + "개");
             a_NameOrderview.deleteLinear.setOnClickListener(listener);
             a_InvoiceView.mLinearNameOrder.addView(a_NameOrderview);
         }
