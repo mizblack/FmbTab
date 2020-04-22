@@ -5,8 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+//각 guest당 주문내역 (기본 4개 리스트로)
 public class OrderDetail implements Serializable {
+
 
     @SerializedName("reserve_guest_id")
     @Expose

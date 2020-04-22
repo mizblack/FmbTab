@@ -26,7 +26,7 @@ import java.util.Objects;
 
 import static com.eye3.golfpay.fmb_tab.fragment.OrderFragment.mTabsRootLinear;
 
-public class ApplyFragment extends BaseFragment {
+public class OrderApplyFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
     LinearLayout mDutchPayLInear, mOneOverNLinear, mLinearPersonalBillContainer;
@@ -67,7 +67,7 @@ public class ApplyFragment extends BaseFragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("payType", "dutch");
-                GoOrderLeftBoard(new ApplyFragment(), bundle);
+                GoOrderLeftBoard(new OrderApplyFragment(), bundle);
             }
         });
         mOneOverNLinear = v.findViewById(R.id.oneOverN);
@@ -76,7 +76,7 @@ public class ApplyFragment extends BaseFragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("payType", "one_over_n");
-                GoOrderLeftBoard(new ApplyFragment(), bundle);
+                GoOrderLeftBoard(new OrderApplyFragment(), bundle);
             }
         });
         mLinearPersonalBillContainer = v.findViewById(R.id.linear_personal_bill_container);
@@ -89,7 +89,7 @@ public class ApplyFragment extends BaseFragment {
         mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mParentActivity.removeFragment(ApplyFragment.this);
+                mParentActivity.removeFragment(OrderApplyFragment.this);
                 mTabsRootLinear.setVisibility(View.VISIBLE);
             }
         });

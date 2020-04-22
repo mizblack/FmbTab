@@ -43,7 +43,7 @@ public class Player implements Serializable, Comparable<Player>{
 
   //  @SerializedName("team_name")
   //  @Expose
-    public String team_name = "A팀";
+    public String team_name = "";
 
     @SerializedName("course")
     @Expose

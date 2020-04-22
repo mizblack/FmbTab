@@ -148,12 +148,13 @@ public class CourseFragment extends BaseFragment {
                     mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
-
-                    tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
-                    regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
-                    ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
-                    championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
-                    frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
+                    if (Global.CurrentCourse.holes != null && Global.CurrentCourse.holes.get(0).tBox != null) {
+                        tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
+                        regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
+                        ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
+                        championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
+                        frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
+                    }
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }

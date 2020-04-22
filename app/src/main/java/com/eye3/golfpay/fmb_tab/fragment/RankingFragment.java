@@ -296,6 +296,9 @@ public class RankingFragment extends BaseFragment {
                 //동적 코스점수뷰 생성
                 for (int i = 0; holder1.mHoleScoreView.length > i; i++) {
                     List<Hole> holes = playerList.get(position).playingCourse.get(i).holes;
+                    //해당 코스의 홀정보가 없으면 바로 리턴
+                    if(holes.size() == 0)
+                        return;
                     int eachCourseTotal = 0;
                     for (int j = 0; holder1.mHoleScoreView[i].length - 1 > j; j++) {
                         holder1.mHoleScoreView[i][j].setGravity(Gravity.CENTER);
@@ -402,7 +405,6 @@ public class RankingFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList =  response.getList();
                     mPlayerList.sort(Comparator.naturalOrder());
-                  //  mCourseList = getCourse(mPlayerList);
                     mCourseList = Global.courseInfoList;
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
@@ -426,11 +428,6 @@ public class RankingFragment extends BaseFragment {
             }
         });
 
-    }
-
-    private List<Course> getCourse(List<Player> playerList) {
-        //첫번째 플레이어 코스가 전체코스임.
-        return playerList.get(0).playingCourse;
     }
 
 }

@@ -231,6 +231,10 @@ public class CartLocationService extends Service {
            // Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
             mLastLocation.set(location);
+           if(Global.courseFragment== null)
+               return;
+            if( Global.courseFragment.mCoursePagerAdapter.mLocation == null)
+               return;
             if (Global.courseFragment != null && Global.courseFragment.isVisible()) {
                 Global.courseFragment.mMapPager.setCurrentItem(Global.viewPagerPosition);
                 if (Global.courseFragment.mCoursePagerAdapter.mLocation != null &&

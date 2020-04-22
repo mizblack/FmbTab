@@ -25,6 +25,7 @@ import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
+import com.eye3.golfpay.fmb_tab.model.score.Score;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
@@ -233,7 +234,7 @@ public class TabCourseLinear extends LinearLayout {
             TextView tvRank, tvName;
             LinearLayout[] holeScoreLayout = new LinearLayout[9];
             LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
-            TextView wholeTotal;
+            LinearLayout wholeTotalLinear ;
             LinearLayout ll_score_row;
 
             ScoreItemViewHolder(View view) {
@@ -252,9 +253,9 @@ public class TabCourseLinear extends LinearLayout {
                 holeScoreLayout[7] = view.findViewById(R.id.hole8_ll);
                 holeScoreLayout[8] = view.findViewById(R.id.hole9_ll);
                 courseTotal[0] = view.findViewById(R.id.ll_course0_total);
+                courseTotal[1] = view.findViewById(R.id.ll_course1_total);
 
-
-                wholeTotal = view.findViewById(R.id.whole_totalColumn);
+                wholeTotalLinear = view.findViewById(R.id.whole_total_linear);
 
                 for (int i = 0; NUM_OF_HOLES > i; i++) {
                     holeScoreLayout[i].setOnClickListener(new View.OnClickListener() {
@@ -423,15 +424,23 @@ public class TabCourseLinear extends LinearLayout {
             ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes.get(8).playedScore.putting);
             setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)), course.holes.get(8));
 
-            //코스토탈
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
-
-//            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
-//            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(course));
-            //동적생성시 3개이상도 할수있게할것
-
+            //코스토탈
+            if(mTabIdx == 0 ) {
+                Course theOtherCourse =  playerList.get(i).playingCourse.get(1);
+                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(theOtherCourse));
+            }else if(mTabIdx == 1){
+                Course theOtherCourse =  playerList.get(i).playingCourse.get(0);
+                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
+                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(theOtherCourse));
+            }
             //전체토탈
+           // playerList.get(i).totalRankingPutting을 totalPutt으로
+            Score wholeTotalScore = new Score(playerList.get(i).totalPar, playerList.get(i).totalRankingPutting, playerList.get(i).totalTar);
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText( playerList.get(i).totalRankingPutting);
 
         }
 
@@ -440,6 +449,8 @@ public class TabCourseLinear extends LinearLayout {
             return playerList.size();
         }
     }
+
+
 
     private void setBadge(TextView tv, Hole playedHole) {
 

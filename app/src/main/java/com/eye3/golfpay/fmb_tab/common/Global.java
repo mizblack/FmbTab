@@ -11,6 +11,7 @@ import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
+import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 
@@ -85,6 +86,8 @@ public class Global {
     public static Hole CurrentHole;
     public static List<NoticeItem> noticeItemArrayList = new ArrayList<>();
     public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
+    public static ArrayList<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
+
     //    public static Location CurrentLocation ;
     @SuppressLint("StaticFieldLeak")
     public static CourseFragment courseFragment;

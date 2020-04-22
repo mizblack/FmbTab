@@ -236,12 +236,17 @@ public class ScoreFragment extends BaseFragment {
                      Global.courseInfoList =  getCtypedCourseforCourseList(Global.courseInfoList);
 
                     Global.CurrentCourse = mCourseList.get(0);
-                    Global.CurrentHole = Global.CurrentCourse.holes.get(0);
-                    NUM_OF_COURSE = mCourseList.size();
-                    CourseTabBar = new TextView[NUM_OF_COURSE];
+                    if(Global.CurrentCourse.holes.size() > 0 ) {
+                        Global.CurrentHole = Global.CurrentCourse.holes.get(0);
 
-                    createTabBar(CourseTabBar,   Global.courseInfoList);
-                    initScoreBoard();
+                        NUM_OF_COURSE = mCourseList.size();
+                        CourseTabBar = new TextView[NUM_OF_COURSE];
+
+                        createTabBar(CourseTabBar, Global.courseInfoList);
+                        initScoreBoard();
+                    }else{
+                        Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
+                    }
 
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();

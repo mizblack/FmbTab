@@ -341,7 +341,7 @@ public class ScoreDialog extends Dialog {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {
-                    Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                     mReserveScore = null; //다음 입력을 위해 clear한다.
                     inputFinishListener.OnScoreInputFinished(mPlayerList);
                     dismiss();

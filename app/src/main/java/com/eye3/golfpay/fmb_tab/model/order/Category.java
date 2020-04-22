@@ -9,17 +9,17 @@ import java.util.ArrayList;
 public class Category implements Serializable {
 
 
-    @SerializedName("category_id")
+    @SerializedName("category1_id")
     @Expose
-    public String catergory_id;
+    public String catergory1_id;
 
-    @SerializedName("category_name")
+    @SerializedName("category1_name")
     @Expose
-    public String catergory_name;
 
-    @SerializedName("menu")
+    public String catergory1_name;
+
+    @SerializedName("category1_list")
     @Expose
-    public ArrayList<RestaurantMenu> Menus = new ArrayList<>();
-
+    public ArrayList<Category2> category1_list = new ArrayList<>();
 
 }
