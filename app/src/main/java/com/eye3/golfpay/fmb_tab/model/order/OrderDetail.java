@@ -8,7 +8,6 @@ import java.util.ArrayList;
 //각 guest당 주문내역 (기본 4개 리스트로)
 public class OrderDetail implements Serializable {
 
-
     @SerializedName("reserve_guest_id")
     @Expose
     public String reserve_guest_id;
@@ -25,9 +24,12 @@ public class OrderDetail implements Serializable {
         return mOrderedMenuItemList;
     }
 
-    public OrderDetail() {
-
+    public OrderDetail(String reserve_guest_id, String paid_total_amount, ArrayList<OrderedMenuItem>  mOrderedMenuItemList ) {
+       this.reserve_guest_id = reserve_guest_id;
+       this.paid_total_amount = paid_total_amount;
+       this.mOrderedMenuItemList = mOrderedMenuItemList;
     }
+
     public OrderDetail(String reserve_guest_id) {
         this.reserve_guest_id = reserve_guest_id;
         this.paid_total_amount = "0";

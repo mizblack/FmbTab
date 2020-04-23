@@ -126,6 +126,7 @@ public class NoticeFragment extends BaseFragment {
         }
 
 
+
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (noticeList == null)

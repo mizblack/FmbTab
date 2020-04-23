@@ -8,21 +8,34 @@ import java.util.List;
 
 public class RestaurantOrder {
     //서버에서 assgin받아야함.
-    @SerializedName("receipt_id")
-    @Expose
-    String receipt_no;//영수증아이디
+//    @SerializedName("order_id")
+//    @Expose
+    public String order_id="xxxxxxx";//영수증아이디
 
     @SerializedName("restaurant_id")
     @Expose
-    String restaurant_id;
+    public String restaurant_id = "01234";
 
     @SerializedName("restaurant_name")
     @Expose
-    String restaurant_name;
+    public String restaurant_name="대식당";
     //주문 일시
     @SerializedName("ordered_at")
     @Expose
-    String ordered_at;
+    public String ordered_at="20200422445";
 
-    List<OrderDetail> mOrderDetailList = new ArrayList<OrderDetail>();
+    @SerializedName("whole_total_amount")
+    @Expose
+    public String wholeTotalAmount = "0";
+
+    //주문완료, 주문예약, 주문취소
+//    @SerializedName("order_state")
+//    @Expose
+    public String orderState="" ;
+
+    @SerializedName("order_detail_list")
+    @Expose
+    public List<OrderDetail> mOrderDetailList = new ArrayList<OrderDetail>();
+
+
 }

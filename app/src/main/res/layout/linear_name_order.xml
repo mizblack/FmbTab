@@ -4,15 +4,16 @@
     android:id="@+id/member01Order"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    >
 
     <View
         android:id="@+id/divider01"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/black"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/NameTextView"
@@ -27,13 +28,32 @@
         tools:ignore="HardcodedText,SpUsage" />
 
     <TextView
+        android:id="@+id/tv_plus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="+"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        />
+
+    <TextView
+        android:id="@+id/tv_minus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:text="-" />
+
+    <TextView
         android:id="@+id/MenuQuantityTextView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="-개"
         android:textColor="@color/gray"
-        android:textSize="17dp"
+        android:textSize="17sp"
         tools:ignore="HardcodedText,SpUsage" />
 
     <View

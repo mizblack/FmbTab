@@ -35,4 +35,5 @@
     <color name="pattensBlue">#e6ebed</color>
     <color name="pattensBlue01">#d9e1e4</color>
     <color name="black">#000000</color>
+    <color name="order_history_bg">#E4EBED</color>
 </resources>

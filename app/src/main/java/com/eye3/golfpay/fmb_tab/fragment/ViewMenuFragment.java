@@ -438,7 +438,7 @@ public class ViewMenuFragment extends BaseFragment {
                     teeUpRecyclerView.setLayoutManager(manager);
                     teeUpRecyclerView.setAdapter(teeUpAdapter);
                     teeUpAdapter.notifyDataSetChanged();
-                    if(mContext.getPackageName() != null)
+                    if(mContext != null)
                         Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
 
 

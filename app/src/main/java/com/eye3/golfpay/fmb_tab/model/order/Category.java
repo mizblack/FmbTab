@@ -15,11 +15,10 @@ public class Category implements Serializable {
 
     @SerializedName("category1_name")
     @Expose
-
     public String catergory1_name;
 
     @SerializedName("category1_list")
     @Expose
-    public ArrayList<Category2> category1_list = new ArrayList<>();
+    public ArrayList<Category2> subCategoryList = new ArrayList<>();
 
 }

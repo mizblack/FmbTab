@@ -9,18 +9,28 @@ import java.io.Serializable;
 public class OrderedMenuItem implements Serializable {
     @SerializedName("id")
     @Expose
-    public String id;
+    public String id = "";
+
     @SerializedName("qty")
     @Expose
-    public String qty;
+    public String qty = "";
+
     @SerializedName("price")
     @Expose
-    public String price;
+    public String price = "";
+
     @SerializedName("total")
     @Expose
-    public String total;
+    public String total = "";
+
     //메뉴이름
-    public String name;
+    @SerializedName("name")
+    @Expose
+    public String name = "";
+
+    @SerializedName("caddy_id")
+    @Expose
+    public String caddy_id = "";
 
     public OrderedMenuItem(){
          this.id ="";

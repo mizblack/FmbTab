@@ -46,9 +46,9 @@ public class OrderApplyFragment extends BaseFragment {
         if (bundle != null) {
             mPayType = bundle.get("payType").toString();
         }
-        TOTAL_PAY_MEMBER = Global.orderDetailList.size();
+        TOTAL_PAY_MEMBER = AppDef.orderDetailList.size();
         mPayPersonList = new String[TOTAL_PAY_MEMBER];
-        mTotalAmount = getTheTotalInvoice(Global.orderDetailList);
+        mTotalAmount = getTheTotalInvoice(AppDef.orderDetailList);
     }
 
     private int getTheTotalInvoice(ArrayList<OrderDetail> orderDetailList) {
@@ -82,9 +82,9 @@ public class OrderApplyFragment extends BaseFragment {
         mLinearPersonalBillContainer = v.findViewById(R.id.linear_personal_bill_container);
 
         if (mPayType.equals("dutch"))
-            createPersonalDutchPayBillViewList(Global.orderDetailList);
+            createPersonalDutchPayBillViewList(AppDef.orderDetailList);
         else
-            createOneOverNBillViewList(Global.orderDetailList);
+            createOneOverNBillViewList(AppDef.orderDetailList);
         mArrow = v.findViewById(R.id.arrow);
         mArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +129,11 @@ public class OrderApplyFragment extends BaseFragment {
                     TOTAL_PAY_MEMBER = mPayPersonList.length;
                     switch (mPayType) {
                         case "dutch":
-                            createPersonalDutchPayBillViewList(Global.orderDetailList);
+                            createPersonalDutchPayBillViewList(AppDef.orderDetailList);
                             disablePersonalBillofSelectedGuest(mPayPersonList);
                             break;
                         case "one_over_n":
-                            createOneOverNBillViewList(Global.orderDetailList);
+                            createOneOverNBillViewList(AppDef.orderDetailList);
                             disablePersonalBillofSelectedGuest(mPayPersonList);
                             break;
 
@@ -158,8 +158,8 @@ public class OrderApplyFragment extends BaseFragment {
 
     ArrayList<String> getGuestList() {
         ArrayList<String> ArrList = new ArrayList<>();
-        for (int i = 0; Global.orderDetailList.size() > i; i++) {
-            ArrList.add(OrderFragment.getGuestName(Global.orderDetailList.get(i).reserve_guest_id));
+        for (int i = 0; AppDef.orderDetailList.size() > i; i++) {
+            ArrList.add(OrderFragment.getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
         }
         return ArrList;
     }
