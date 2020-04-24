@@ -7,6 +7,7 @@ import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
+import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -48,6 +49,9 @@ public interface HttpService {
 
     @GET("shadeMenu")
     Call<ResponseData<Restaurant>> getRestaurantMenu(@Query("caddy_id") String caddyId, @Query("reserve_no") String reserveNo);
+
+    @GET("orderShadeHistory")
+    Call<ResponseData<StoreOrder>> getStoreOrder(@Query("reserve_no") String reserveNo);
 
     @FormUrlEncoded
     @POST("getReserveList")

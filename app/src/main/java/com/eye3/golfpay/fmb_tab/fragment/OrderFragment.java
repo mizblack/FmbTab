@@ -37,12 +37,14 @@ import com.eye3.golfpay.fmb_tab.model.order.OrderItemInvoice;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.RestaurantMenu;
+import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.NameOrderView;
 import com.eye3.golfpay.fmb_tab.view.OrderItemInvoiceView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,16 +80,18 @@ public class OrderFragment extends BaseFragment {
     private Button mCancelButton;
     private Button mTempSaveButton;
     List<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
-    ArrayList<OrderDetail> mOrderDetailList = new ArrayList<>();
+    List<OrderDetail> mOrderDetailList = new ArrayList<>();
     private ImageView mArrowToApply;
     static TextView preSelectedGuestView;
     RelativeLayout mRelOrderHistory, mRelSendOrder;
-    Button mBtnHistory;
+    Button mBtnHistory, mBtnAdd;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOrderItemInvoiceArrayList = AppDef.orderItemInvoiceArrayList;
         mOrderDetailList = AppDef.orderDetailList;
+
         getRestaurantMenu();
     }
 
@@ -117,6 +121,7 @@ public class OrderFragment extends BaseFragment {
         mRelOrderHistory = v.findViewById(R.id.rel_order_history);
         mRelSendOrder = v.findViewById(R.id.rel_send_order);
         mBtnHistory = v.findViewById(R.id.btn_order_history);
+        mBtnAdd = v.findViewById(R.id.btn_add);
         initOrderItemInvoiceView();
         mParentActivity.showMainBottomBar();
         return v;
@@ -225,7 +230,7 @@ public class OrderFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyTextView);
+        orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyBtn);
         mCancelButton = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
         mTempSaveButton = Objects.requireNonNull(getView()).findViewById(R.id.btnTempSave);
         mArrowToApply.setOnClickListener(new View.OnClickListener() {
@@ -240,17 +245,24 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 sendShadeOrders();
+
             }
         });
 
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                refresh();
-                AppDef.orderDetailList.clear();
+                if(AppDef.restaurantOrderArrayList.size() > 0){
+                    mBtnHistory.setVisibility(View.VISIBLE);
+                    orderOrApplyBtn.setVisibility(View.INVISIBLE);
+                }else {
+                    refresh();
+                    AppDef.orderDetailList.clear();
+                }
             }
         });
+
+
         //임시저장
         mTempSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,8 +291,16 @@ public class OrderFragment extends BaseFragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("restaurantList", mRestaurantList);
+                bundle.putSerializable("orderdetailList", (Serializable)mOrderDetailList);
                 bundle.putString("ani_direction", "down");
                 GoNativeScreen(new OrderDetailHistoryFragment(), bundle);
+            }
+        });
+
+        mBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendShadeOrders();
             }
         });
     }
@@ -908,7 +928,11 @@ public class OrderFragment extends BaseFragment {
                     mRelSendOrder.setVisibility(View.INVISIBLE);
                     mRelOrderHistory.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    //  GoOrderLeftBoard(new OrderApplyFragment(), null);
+                    //전송한 retaurant order가 로컬에는 저장되지않음  임시처리
+                    RestaurantOrder restaurantOrder = new RestaurantOrder();
+                    restaurantOrder.setOrderDetailList(mOrderDetailList);
+                    AppDef.restaurantOrderArrayList.add(restaurantOrder);
+                    //refresh();
 
                 }
             }

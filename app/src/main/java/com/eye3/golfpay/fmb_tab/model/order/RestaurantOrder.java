@@ -8,8 +8,8 @@ import java.util.List;
 
 public class RestaurantOrder {
     //서버에서 assgin받아야함.
-//    @SerializedName("order_id")
-//    @Expose
+    @SerializedName("order_id")
+    @Expose
     public String order_id="xxxxxxx";//영수증아이디
 
     @SerializedName("restaurant_id")
@@ -37,5 +37,7 @@ public class RestaurantOrder {
     @Expose
     public List<OrderDetail> mOrderDetailList = new ArrayList<OrderDetail>();
 
-
+    public void setOrderDetailList( List<OrderDetail> orderDetailList){
+        this.mOrderDetailList = orderDetailList;
+    }
 }

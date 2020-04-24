@@ -3,6 +3,8 @@ package com.eye3.golfpay.fmb_tab.common;
 import com.eye3.golfpay.fmb_tab.model.field.Club;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderItemInvoice;
+import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
+import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.model.score.Score;
 
 import java.util.ArrayList;
@@ -70,6 +72,8 @@ public class AppDef {
 
     public static List<Club> clubList = new ArrayList<>();
     public static  List<OrderItemInvoice> orderItemInvoiceArrayList = new  ArrayList<>();
-    public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
+    public static List<OrderDetail> orderDetailList = new ArrayList<>();
+    public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
+    public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();
 
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -19,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
+import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +36,15 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     TextView mTvTheRestaurant;
     int mSelectedRestaurantTabIdx = 0;
     private TextView[] mRestaurantTabBarArr ;
-
+    Restaurant mSelectedRestaurant;
     LinearLayout mTabLinearOrderDetail;
     private RecyclerView mOrderHistoryRecyclerView;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     //해당 아이디를 가진 전표만 리스트에 나옴
     String mSelectedRestaurantId = "";
+    ArrayList<OrderDetail> mOrderDetailList = new ArrayList<>();
+    List<RestaurantOrder>  mRestaurantOrderDetailList = new ArrayList<>();
+     Button mBtnTopAdd;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,17 +52,68 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             mRestaurantList = (ArrayList<Restaurant>) bundle.getSerializable("restaurantList");
+            mOrderDetailList = (ArrayList<OrderDetail>) bundle.getSerializable("orderdetailList");
             NUM_OF_RESTAURANT = mRestaurantList.size();
             mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
         }
 
+       // storeOrderArrayList
+        getStoreOrder();
+    }
+
+    private void getStoreOrder() {
+        showProgress("주문내역 정보를 가져오는 중입니다.");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(), Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
+            @Override
+            public void onSuccess(ResponseData<StoreOrder> response) {
+                hideProgress();
+                systemUIHide();
+                if (response.getResultCode().equals("ok")) {
+
+                    AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
+//                    NUM_OF_RESTAURANT = mRestaurantList.size();
+//                    mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
+//                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
+//                    mCateAdapter = new OrderFragment.CategoryAdapter(mContext, mRestaurantList.get(0).categoryList);
+//                    mRecyclerCategory.setAdapter(mCateAdapter);
+//                    mRecyclerCategory.setHasFixedSize(true);
+//                    LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+//                    mRecyclerCategory.setLayoutManager(mManager);
+//                    mCateAdapter.notifyDataSetChanged();
+                } else if (response.getResultCode().equals("fail")) {
+                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<StoreOrder> response) {
+                hideProgress();
+                systemUIHide();
+                response.getError();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+                systemUIHide();
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_order_history, container, false);
         mOrderHistoryRecyclerView = v.findViewById(R.id.orderHistoryRecycleView);
-        mTabLinearOrderDetail = v.findViewById(R.id.tabLinearLayout);
+        mTabLinearOrderDetail = v.findViewById(R.id.restaurantTabLinearLayout);
+        mTvTheRestaurant = v.findViewById(R.id.tvTheRestaurantOrderHistory);
+        mBtnTopAdd = v.findViewById(R.id.topAddButton);
+        mBtnTopAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new OrderFragment(), null);
+            }
+        });
+
         init();
         createTabBar(mRestaurantTabBarArr, mRestaurantList);
         mParentActivity.showMainBottomBar();
@@ -86,6 +143,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
                 tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 tvRestTabBar[i].setText(mRestaurantList.get(i).name);
+                tvRestTabBar[i].setTag(mRestaurantList.get(i));
                 tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,10 +160,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
     //레스토랑바 선택시 보여주는 함수
     private void selectRestaurant(int selectedTabIdx) {
-        init();
+
 
         mTvTheRestaurant.setTextColor(Color.GRAY);
-        for (int i = 0; mRestaurantTabBarArr.length - 1 > i; i++) {
+        for (int i = 0; mRestaurantTabBarArr.length  > i; i++) {
             TextView textView = mRestaurantTabBarArr[i];
             textView.setTextColor(Color.GRAY);
         }
@@ -117,7 +175,9 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
         }
         setSelectedRestaurant(selectedTabIdx);
+        initRecyclerView(selectedTabIdx, AppDef.restaurantOrderArrayList);
     }
+
 
     private void initSelectedRestaurantTabColor() {
 
@@ -126,17 +186,23 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
     private void setSelectedRestaurant(int mSelectedRestaurantIdx) {
         //각 식당에 따른 전표 내역을 보여준다.
-    Restaurant  mSelectedRestaurant =  (Restaurant)mRestaurantTabBarArr[mSelectedRestaurantIdx].getTag();
+      mSelectedRestaurant =  (Restaurant) mRestaurantTabBarArr[mSelectedRestaurantIdx].getTag();
        mSelectedRestaurantId =  mSelectedRestaurant.id;
     }
 
     private void init() {
-        initRecyclerView();
+//        RestaurantOrder restaurantOrder = new RestaurantOrder();
+//        restaurantOrder.setOrderDetailList(mOrderDetailList);
+//        mRestaurantOrderDetailList.add(restaurantOrder);
+        initRecyclerView(0, AppDef.restaurantOrderArrayList);
     }
 
-    private void initRecyclerView() {
 
-        OrderHistoryAdapter  historyAdapter = new OrderHistoryAdapter(getActivity(), Global.restaurantOrderArrayList);
+
+
+    private void initRecyclerView(int mSelectedRestaurantTabIdx , List<RestaurantOrder> restaurantOrderArrayList) {
+
+        OrderHistoryAdapter  historyAdapter = new OrderHistoryAdapter(getActivity(), restaurantOrderArrayList);
         mOrderHistoryRecyclerView.setAdapter(historyAdapter);
         mOrderHistoryRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
@@ -145,12 +211,13 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 
+
     private class OrderHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         Context context;
-        ArrayList<RestaurantOrder> restaurantOrderArrayList;
+        List<RestaurantOrder> restaurantOrderArrayList;
 
-        OrderHistoryAdapter(Context context, ArrayList<RestaurantOrder> restaurantOrderArrayList) {
+        public OrderHistoryAdapter(Context context, List<RestaurantOrder> restaurantOrderArrayList) {
             this.context = context;
             this.restaurantOrderArrayList = restaurantOrderArrayList;
 
@@ -168,19 +235,19 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             OrderHistoryViewHolder viewHolder = (OrderHistoryViewHolder) holder;
-           if(! mSelectedRestaurantId.equals(restaurantOrderArrayList.get(position).restaurant_id )){
-               return;
-            }
+//           if(! mSelectedRestaurantId.equals(restaurantOrderArrayList.get(position).restaurant_id )){
+//               return;
+//            }
             viewHolder.tvTotal.setText(restaurantOrderArrayList.get(position).wholeTotalAmount);
             viewHolder.tvOrderComplete.setText(restaurantOrderArrayList.get(position).orderState);
             //주문번호 전시
             viewHolder.tvOderNum.setText(restaurantOrderArrayList.get(position).order_id);
-            viewHolder.btnExtraOrder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GoNativeScreen(new OrderFragment(), null);
-                }
-            });
+//            viewHolder.btnExtraOrder.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    GoNativeScreen(new OrderFragment(), null);
+//                }
+//            });
 
             viewHolder.btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -213,7 +280,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 tvOderNum = view.findViewById(R.id.tv_order_num);
                 tvOrderComplete = view.findViewById(R.id.tv_order_complete);
                 linearOrderDetail = view.findViewById(R.id.linear_order_detail);
-                btnExtraOrder = view.findViewById(R.id.btn_extra_order);
                 btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
 
             }
@@ -237,9 +303,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         for (int i = 0; orderDetail.mOrderedMenuItemList.size() > i; i++) {
             OrderedMenuItem a_item = orderDetail.mOrderedMenuItemList.get(i);
             TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(250, 50);
-            lllp.gravity = Gravity.CENTER_VERTICAL;
-            lllp.leftMargin = 10;
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+
             tvOrderItem.setLayoutParams(lllp);
             tvOrderItem.setPadding(8, 0, 0, 0);
             String str = a_item.name + "x" + a_item.qty;

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShadeOrder implements Serializable {
     @SerializedName("shade_id")
@@ -16,9 +17,9 @@ public class ShadeOrder implements Serializable {
     public String reserve_id ;
     @SerializedName("order_detail")
     @Expose
-    ArrayList<OrderDetail> orderDetailArrayList = new ArrayList<>();
+    List<OrderDetail> orderDetailArrayList = new ArrayList<>();
 
-    public ShadeOrder(String shade_id, String reserve_id, ArrayList<OrderDetail> orderDetailArrayList){
+    public ShadeOrder(String shade_id, String reserve_id, List<OrderDetail> orderDetailArrayList){
         this.shade_id = shade_id;
         this.reserve_id = reserve_id;
         this.orderDetailArrayList = orderDetailArrayList;

@@ -86,7 +86,7 @@ public class Global {
     public static Hole CurrentHole;
     public static List<NoticeItem> noticeItemArrayList = new ArrayList<>();
   //  public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
-    public static ArrayList<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
+  //  public static ArrayList<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
 
     //    public static Location CurrentLocation ;
     @SuppressLint("StaticFieldLeak")

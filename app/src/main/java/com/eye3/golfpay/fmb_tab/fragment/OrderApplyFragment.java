@@ -22,6 +22,7 @@ import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.eye3.golfpay.fmb_tab.fragment.OrderFragment.mTabsRootLinear;
@@ -51,7 +52,7 @@ public class OrderApplyFragment extends BaseFragment {
         mTotalAmount = getTheTotalInvoice(AppDef.orderDetailList);
     }
 
-    private int getTheTotalInvoice(ArrayList<OrderDetail> orderDetailList) {
+    private int getTheTotalInvoice(List<OrderDetail> orderDetailList) {
         int theTotal = 0;
         for (int i = 0; orderDetailList.size() > i; i++)
             theTotal += Integer.parseInt(orderDetailList.get(i).getPaid_total_amount());
@@ -218,7 +219,7 @@ public class OrderApplyFragment extends BaseFragment {
 
     }
 
-    private void createPersonalDutchPayBillViewList(ArrayList<OrderDetail> orderDetailArrayList) {
+    private void createPersonalDutchPayBillViewList(List<OrderDetail> orderDetailArrayList) {
 
         for (int i = 0; orderDetailArrayList.size() > i; i++) {
             View orderbillView = createPersonalDutchPayBillView(orderDetailArrayList.get(i));
@@ -227,7 +228,7 @@ public class OrderApplyFragment extends BaseFragment {
         }
     }
 
-    private void createOneOverNBillViewList(ArrayList<OrderDetail> orderDetailArrayList) {
+    private void createOneOverNBillViewList(List<OrderDetail> orderDetailArrayList) {
         mLinearPersonalBillContainer.removeAllViewsInLayout();
         for (int i = 0; orderDetailArrayList.size() > i; i++) {
             View orderbillView = createOneOverNBillView(orderDetailArrayList.get(i));
