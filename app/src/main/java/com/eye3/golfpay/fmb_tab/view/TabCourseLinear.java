@@ -131,7 +131,8 @@ public class TabCourseLinear extends LinearLayout {
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
         mDistanceSpinner = v.findViewById(R.id.spinn_distance);
-        arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.spinn_array));
+        arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.spinn_array)) ;
+
         mDistanceSpinner.setAdapter(arrayAdapter);
         mDistanceSpinner.setSelection(0);
         //거리 환산 적용

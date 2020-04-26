@@ -14,10 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.common.AdapterDataProvider;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.BasicSpinnerAdapter;
-import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
@@ -96,9 +94,9 @@ public class OrderApplyFragment extends BaseFragment {
         });
         mSpinn_Pay_Person = v.findViewById(R.id.spinn_pay_person);
         //    mSpinnAdapter = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_multichoice, getResources().getStringArray(R.array.spinn_array));
-        mSpinnAdapter = new BasicSpinnerAdapter(getActivity(),
-                R.layout.simple_multiple_choice_single_line_item, AdapterDataProvider.getGuestList());
-        //  mSpinnAdapter.setDropDownViewResource( R.layout.simple_multiple_choice_single_line_item);
+//        mSpinnAdapter = new BasicSpinnerAdapter(getActivity(),
+//                R.layout.simple_multiple_choice_single_line_item, AdapterDataProvider.getGuestList());
+          mSpinnAdapter.setDropDownViewResource( R.layout.simple_multiple_choice_single_line_item);
         mSpinn_Pay_Person.setAdapter(mSpinnAdapter);
         mSpinn_Pay_Person.setSelection(0);
         mSpinn_Pay_Person.setText("결제인원 선택");

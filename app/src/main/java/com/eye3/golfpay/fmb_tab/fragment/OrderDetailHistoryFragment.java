@@ -3,7 +3,6 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -316,3 +315,31 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 }
+
+//        private View createPersonalDutchPayBillView2(PersonalOrder personalOrder) {
+//            LayoutInflater inflater = (LayoutInflater)
+//                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            View v = inflater.inflate(R.layout.history_personal_bill, null, false);
+//
+//            TextView tvName = v.findViewById(R.id.memberNameTextView);
+//            tvName.setText(OrderFragment.getGuestName(personalOrder.));
+//            TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
+//
+//            String strPrice = AppDef.priceMapper(Integer.valueOf(personalOrder.paid_total_amount));
+//            tvPrice.setText(strPrice + "원");
+//            LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
+//
+//            for (int i = 0; personalOrder.mOrderedMenuItemList.size() > i; i++) {
+//                OrderedMenuItem a_item = personalOrder.mOrderedMenuItemList.get(i);
+//                TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
+//                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+//
+//                tvOrderItem.setLayoutParams(lllp);
+//                tvOrderItem.setPadding(8, 0, 0, 0);
+//                String str = a_item.name + "x" + a_item.qty;
+//                tvOrderItem.setText(str);
+//                memberOrderLinearLayout.addView(tvOrderItem);
+//            }
+//            return v;
+//
+//        }
