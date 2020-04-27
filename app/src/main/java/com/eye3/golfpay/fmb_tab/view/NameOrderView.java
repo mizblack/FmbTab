@@ -11,7 +11,7 @@ import com.eye3.golfpay.fmb_tab.model.order.NameOrder;
 import com.eye3.golfpay.fmb_tab.model.order.OrderItemInvoice;
 
 public class NameOrderView extends LinearLayout {
-    public TextView mNameTv, mQtyTv;
+    public TextView mNameTv, mQtyTv, mPlusTv, mMinusTv;
     public LinearLayout deleteLinear;
 
     public NameOrderView(Context context) {
@@ -26,8 +26,11 @@ public class NameOrderView extends LinearLayout {
         View v = inflater.inflate(R.layout.linear_name_order, this, false);
         mNameTv =  v.findViewById(R.id.NameTextView);
         mQtyTv = v.findViewById(R.id.MenuQuantityTextView);
+        mPlusTv= v.findViewById(R.id.tv_plus) ;
 
+        mMinusTv= v.findViewById(R.id.tv_minus) ;
         deleteLinear = v.findViewById(R.id.deleteLinearLayout);
+
         addView(v);
 
     }

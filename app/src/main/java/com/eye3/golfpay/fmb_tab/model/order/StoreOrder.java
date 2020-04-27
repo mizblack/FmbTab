@@ -13,6 +13,10 @@ public class StoreOrder implements Serializable {
     @Expose
     public String store_no;
 
+//    @SerializedName("order_state")
+//    @Expose
+//    public String order_state = "주문완료";
+
     @SerializedName("store_name")
     @Expose
     public String store_name;

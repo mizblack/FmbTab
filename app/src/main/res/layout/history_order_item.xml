@@ -24,52 +24,24 @@
             android:text="주문예약" />
 
     </LinearLayout>
-
+<!--    내장객들의 1회주문 내역 컨테이너(기본4인)-->
     <LinearLayout
+        android:id="@+id/linear_recept_unit_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/order_history_bg"
+        android:weightSum="10">
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_pos_unit"
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_bill_unit_height"
         android:orientation="horizontal"
         android:background="@color/order_history_bg"
         android:weightSum="10">
 
-        <LinearLayout
-            android:id="@+id/linear_order_detail"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/personal_bill_unit_height"
-            android:layout_weight="8"
-            android:orientation="horizontal" />
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/personal_bill_unit_height"
-            android:layout_weight="2"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="총계 92,000원"
-                style="@style/ItemOrderBillTextStyle"
-                android:gravity="center"
-                android:textColor="@color/irisBlue" />
-
-
-            <Button
-                android:layout_marginTop="5dp"
-                android:id='@+id/btn_extra_order_cancel'
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="#FF5353"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:text="주문취소하기"
-                android:layout_alignParentBottom="true"
-                />
-
-        </RelativeLayout>
-
     </LinearLayout>
+
 </LinearLayout>

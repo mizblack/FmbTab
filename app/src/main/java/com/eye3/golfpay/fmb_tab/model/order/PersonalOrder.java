@@ -9,6 +9,10 @@ import java.util.List;
 
 public class PersonalOrder implements Serializable {
 
+    @SerializedName("order_name")
+    @Expose
+    public String guest_name ="홍길동";
+
     @SerializedName("pos_bill_id")
     @Expose
     public String pos_bill_id;
@@ -21,8 +25,12 @@ public class PersonalOrder implements Serializable {
     @Expose
     public String total_price;
 
+    @SerializedName("order_status")
+    @Expose
+    public String order_status = "";
+
     @SerializedName("menu")
     @Expose
-    List<Menu> menuList = new ArrayList<>();
+    public List<Menu> menuList = new ArrayList<>();
 
 }

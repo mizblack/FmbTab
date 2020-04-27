@@ -29,19 +29,19 @@
 
     <TextView
         android:id="@+id/tv_plus"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:text="+"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:gravity="center"
         android:textColor="@color/gray"
         />
 
     <TextView
         android:id="@+id/tv_minus"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textSize="30sp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:textSize="28sp"
         android:gravity="center"
         android:textColor="@color/gray"
         android:text="-" />

@@ -19,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.model.order.Menu;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
+import com.eye3.golfpay.fmb_tab.model.order.PersonalOrder;
+import com.eye3.golfpay.fmb_tab.model.order.ReceiptUnit;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
@@ -70,15 +73,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
-//                    NUM_OF_RESTAURANT = mRestaurantList.size();
-//                    mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
-//                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
-//                    mCateAdapter = new OrderFragment.CategoryAdapter(mContext, mRestaurantList.get(0).categoryList);
-//                    mRecyclerCategory.setAdapter(mCateAdapter);
-//                    mRecyclerCategory.setHasFixedSize(true);
-//                    LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-//                    mRecyclerCategory.setLayoutManager(mManager);
-//                    mCateAdapter.notifyDataSetChanged();
+                    initRecyclerView(0, AppDef.storeOrderArrayList);
+
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -115,7 +111,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
         init();
         createTabBar(mRestaurantTabBarArr, mRestaurantList);
-        mParentActivity.showMainBottomBar();
+        mParentActivity.hideMainBottomBar();
         return v;
     }
 
@@ -174,7 +170,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
         }
         setSelectedRestaurant(selectedTabIdx);
-        initRecyclerView(selectedTabIdx, AppDef.restaurantOrderArrayList);
+        initRecyclerView(selectedTabIdx, AppDef.storeOrderArrayList);
     }
 
 
@@ -193,15 +189,15 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 //        RestaurantOrder restaurantOrder = new RestaurantOrder();
 //        restaurantOrder.setOrderDetailList(mOrderDetailList);
 //        mRestaurantOrderDetailList.add(restaurantOrder);
-        initRecyclerView(0, AppDef.restaurantOrderArrayList);
+        initRecyclerView(0, AppDef.storeOrderArrayList);
     }
 
 
 
 
-    private void initRecyclerView(int mSelectedRestaurantTabIdx , List<RestaurantOrder> restaurantOrderArrayList) {
+    private void initRecyclerView(int mSelectedRestaurantTabIdx , List<StoreOrder> storeOrderArrayList) {
 
-        OrderHistoryAdapter  historyAdapter = new OrderHistoryAdapter(getActivity(), restaurantOrderArrayList);
+        OrderHistoryAdapter  historyAdapter = new OrderHistoryAdapter(getActivity(), storeOrderArrayList);
         mOrderHistoryRecyclerView.setAdapter(historyAdapter);
         mOrderHistoryRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
@@ -214,12 +210,29 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     private class OrderHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         Context context;
-        List<RestaurantOrder> restaurantOrderArrayList;
+ //       List<RestaurantOrder> restaurantOrderArrayList;
+         List<StoreOrder> storeOrderArrayList;
 
-        public OrderHistoryAdapter(Context context, List<RestaurantOrder> restaurantOrderArrayList) {
+//        public OrderHistoryAdapter(Context context, List<RestaurantOrder> restaurantOrderArrayList) {
+//            this.context = context;
+//            this.restaurantOrderArrayList = restaurantOrderArrayList;
+//
+//        }
+
+        public OrderHistoryAdapter(Context context, List<StoreOrder> storeOrderArrayList) {
             this.context = context;
-            this.restaurantOrderArrayList = restaurantOrderArrayList;
+            this.storeOrderArrayList = storeOrderArrayList;
 
+        }
+
+
+        private int getTotalReceptUnit( List<PersonalOrder> personalOrderList){
+            //4personal total
+            int total_price = 0;
+               for(int i =0; personalOrderList.size() > i ; i++){
+                   total_price +=  Integer.valueOf(personalOrderList.get(i).total_price);
+               }
+               return total_price;
         }
 
         @NonNull
@@ -227,7 +240,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.history_order_item, parent, false);
             OrderHistoryViewHolder viewHolder = new OrderHistoryViewHolder(view);
-
             return viewHolder;
         }
 
@@ -237,10 +249,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 //           if(! mSelectedRestaurantId.equals(restaurantOrderArrayList.get(position).restaurant_id )){
 //               return;
 //            }
-            viewHolder.tvTotal.setText(restaurantOrderArrayList.get(position).wholeTotalAmount);
-            viewHolder.tvOrderComplete.setText(restaurantOrderArrayList.get(position).orderState);
+//            viewHolder.tvTotal.setText(storeOrderArrayList.get(position).wholeTotalAmount);
+//            viewHolder.tvOrderComplete.setText(storeOrderArrayList.get(position).order_state);
             //주문번호 전시
-            viewHolder.tvOderNum.setText(restaurantOrderArrayList.get(position).order_id);
+            viewHolder.tvOderNum.setText(storeOrderArrayList.get(position).store_no);
 //            viewHolder.btnExtraOrder.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -248,29 +260,47 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 //                }
 //            });
 
-            viewHolder.btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    restaurantOrderArrayList.get(position).orderState = "주문취소";
-                }
-            });
 
-            List<OrderDetail> orderDetailList = restaurantOrderArrayList.get(position).mOrderDetailList;
-            for (int i = 0; orderDetailList.size() > i; i++) {
-                View personalOrderDetailView = createPersonalDutchPayBillView(orderDetailList.get(i));
-                viewHolder.linearOrderDetail.addView(personalOrderDetailView);
+
+            List<ReceiptUnit> tabletOrderList = storeOrderArrayList.get(position).tablet_order_list;
+            for (int i = 0; tabletOrderList.size() > i; i++) {
+                List<PersonalOrder> personalOrderList =  tabletOrderList.get(i).recept_list;
+
+                LinearLayout receptUnitLinear= (LinearLayout) LayoutInflater.from(context).inflate(R.layout.recept_order_item, null, false);
+                Button btnExtraOrderCancel = receptUnitLinear.findViewById(R.id.btn_extra_order_cancel);
+                TextView total = receptUnitLinear.findViewById(R.id.tvTotal);
+
+                total.setText("총계" +"   " + getTotalReceptUnit(personalOrderList));
+
+                btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                      //  storeOrderArrayList.get(position).order_state = "주문취소";
+                        Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                for(int j =0; personalOrderList.size() > j ;j++ ) {
+                    View personalOrderDetailView = createPersonalDutchPayBillView2(personalOrderList.get(j));
+                     LinearLayout linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_personal_order_container);
+                    linearPersonalOrderContainer.addView(personalOrderDetailView);
+                }
+                viewHolder.tabletOrderLinear.addView(receptUnitLinear);
+
             }
+
+
         }
 
         @Override
         public int getItemCount() {
-            return restaurantOrderArrayList.size();
+            return storeOrderArrayList.size();
         }
 
 
         class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
             TextView tvTotal, tvOderNum, tvOrderComplete;
-            LinearLayout linearOrderDetail;
+            LinearLayout tabletOrderLinear, posOrderLinear ;
             Button btnExtraOrder, btnExtraOrderCancel;
 
             OrderHistoryViewHolder(View view) {
@@ -278,8 +308,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 tvTotal = view.findViewById(R.id.tvTotal);
                 tvOderNum = view.findViewById(R.id.tv_order_num);
                 tvOrderComplete = view.findViewById(R.id.tv_order_complete);
-                linearOrderDetail = view.findViewById(R.id.linear_order_detail);
-                btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
+               //recept unit저장장소
+                tabletOrderLinear = view.findViewById(R.id.linear_recept_unit_container);
+                posOrderLinear = view.findViewById(R.id.linear_pos_unit);
+              //  btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
 
             }
 
@@ -306,7 +338,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
             tvOrderItem.setLayoutParams(lllp);
             tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_item.name + "x" + a_item.qty;
+            String str = a_item.name  + "     " + a_item.qty +"개";
             tvOrderItem.setText(str);
             memberOrderLinearLayout.addView(tvOrderItem);
         }
@@ -314,32 +346,32 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
     }
 
+    private View createPersonalDutchPayBillView2(PersonalOrder personalOrder) {
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.history_personal_bill, null, false);
+
+        TextView tvName = v.findViewById(R.id.memberNameTextView);
+        TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
+        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
+
+        tvName.setText(personalOrder.guest_name);
+        for (int i = 0; personalOrder.menuList.size()  > i; i++) {
+            Menu a_menu = personalOrder.menuList.get(i);
+            TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+            tvOrderItem.setLayoutParams(lllp);
+            tvOrderItem.setPadding(8, 0, 0, 0);
+            String str = a_menu.item_name + "       " + a_menu.qty +"개";
+            tvOrderItem.setText(str);
+            memberOrderLinearLayout.addView(tvOrderItem);
+        }
+        String strPrice = AppDef.priceMapper(Integer.valueOf(personalOrder.total_price));
+        tvPrice.setText(strPrice + "원");
+        return v;
+
+    }
+
+
 }
 
-//        private View createPersonalDutchPayBillView2(PersonalOrder personalOrder) {
-//            LayoutInflater inflater = (LayoutInflater)
-//                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            View v = inflater.inflate(R.layout.history_personal_bill, null, false);
-//
-//            TextView tvName = v.findViewById(R.id.memberNameTextView);
-//            tvName.setText(OrderFragment.getGuestName(personalOrder.));
-//            TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
-//
-//            String strPrice = AppDef.priceMapper(Integer.valueOf(personalOrder.paid_total_amount));
-//            tvPrice.setText(strPrice + "원");
-//            LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
-//
-//            for (int i = 0; personalOrder.mOrderedMenuItemList.size() > i; i++) {
-//                OrderedMenuItem a_item = personalOrder.mOrderedMenuItemList.get(i);
-//                TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
-//                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
-//
-//                tvOrderItem.setLayoutParams(lllp);
-//                tvOrderItem.setPadding(8, 0, 0, 0);
-//                String str = a_item.name + "x" + a_item.qty;
-//                tvOrderItem.setText(str);
-//                memberOrderLinearLayout.addView(tvOrderItem);
-//            }
-//            return v;
-//
-//        }

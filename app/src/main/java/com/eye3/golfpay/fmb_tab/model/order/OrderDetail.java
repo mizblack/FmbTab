@@ -1,5 +1,9 @@
 package com.eye3.golfpay.fmb_tab.model.order;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 //각 guest당 주문내역 (기본 4개 리스트로)
 public class OrderDetail implements Serializable {
-
+    public String TAG = getClass().getSimpleName();
     @SerializedName("reserve_guest_id")
     @Expose
     public String reserve_guest_id;
@@ -39,11 +43,21 @@ public class OrderDetail implements Serializable {
     public void addOrPlusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
         if (isOrderedMenuItemExist(mOrderedMenuItem.id)) {
             //중복 메뉴 추가시 qty 를 더한다.
-            plusQty(mOrderedMenuItem.id);
+            plusQty(mOrderedMenuItem);
         } else {  //중복 메뉴가 아니면 추가
             mOrderedMenuItemList.add(mOrderedMenuItem);
         }
     }
+
+//    public void addOrMinusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
+//        if (isOrderedMenuItemExist(mOrderedMenuItem.id)) {
+//            //중복 메뉴 추가시 qty 를 더한다.
+//            minusQty(mOrderedMenuItem.id);
+//        } else {  //중복 메뉴가 아니면 삭제
+//            //현재 이로직 실행안됨
+//            mOrderedMenuItemList.remove(mOrderedMenuItem);
+//        }
+//    }
 
     public boolean isOrderedMenuItemExist(String id) {
 
@@ -60,12 +74,29 @@ public class OrderDetail implements Serializable {
         return false;
     }
 
-    private void plusQty(String id) {
+    private void plusQty(OrderedMenuItem item) {
+        // if (Integer.valueOf(id) < 0)
+        //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
+        for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
+            if (item.id.equals(mOrderedMenuItemList.get(i).id)) {
+                if(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty) < 0){
+                    Log.i(TAG, "orderMenuItem 수량 한도 미만");
+                    return;
+                }
+                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty));
+                //중복 메뉴일경우 qty 추가후 total 을 다시계산
+                mOrderedMenuItemList.get(i).setTotal();
+                return;
+            }
+        }
+    }
+
+    private void minusQty(String id) {
         // if (Integer.valueOf(id) < 0)
         //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
         for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
             if (id.equals(mOrderedMenuItemList.get(i).id)) {
-                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + 1);
+                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) - 1);
                 //중복 메뉴일경우 qty 추가후 total 을 다시계산
                 mOrderedMenuItemList.get(i).setTotal();
                 return;
