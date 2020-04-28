@@ -25,13 +25,10 @@ public class StoreOrder implements Serializable {
     @Expose
     public List<ReceiptUnit>  tablet_order_list = new ArrayList<ReceiptUnit>();
 
-//    @SerializedName("tablet_order_list")
-//    @Expose
-//    public List<ArrayList<PersonalOrder>>  tablet_order_list = new ArrayList<ArrayList<PersonalOrder>>();
+    @SerializedName("pos_order_list")
+    @Expose
+    public List<PosPersonalOrder>  pos_order_list = new ArrayList<PosPersonalOrder>();
 
-//    @SerializedName("pos_order_list")
-//    @Expose
-//    public List<ArrayList<PersonalOrder>>  tablet_order_list = new ArrayList<ArrayList<PersonalOrder>>();
 
 
 }

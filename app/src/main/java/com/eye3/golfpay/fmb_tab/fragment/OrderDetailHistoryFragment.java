@@ -23,6 +23,7 @@ import com.eye3.golfpay.fmb_tab.model.order.Menu;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import com.eye3.golfpay.fmb_tab.model.order.PersonalOrder;
+import com.eye3.golfpay.fmb_tab.model.order.PosPersonalOrder;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
@@ -238,6 +239,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         @NonNull
         @Override
         public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
             if (storeOrder == null || storeOrder.tablet_order_list == null || storeOrder.tablet_order_list.size() == 0) {
                 Toast.makeText(mContext, "해당 주문 내역이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                 return null;
@@ -287,6 +289,18 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 }
 
             }
+           //*****************************************************************************************************************************
+            LinearLayout receptUnitLinear = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.pos_order_item_linear, null, false);
+            LinearLayout linearPersonalOrderContainer =null;
+            for (int j = 0; storeOrder.pos_order_list.size() > j; j++) {
+
+                    View personalOrderDetailView = createPosPersonalPayBillView(storeOrder.pos_order_list.get(j));
+                    linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_pos__personal_order_container);
+                    linearPersonalOrderContainer.addView(personalOrderDetailView);
+            }
+            if(linearPersonalOrderContainer != null)
+                  viewHolder.tabletOrderLinear.addView(linearPersonalOrderContainer);
+
         }
 
         @Override
@@ -366,6 +380,33 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         return v;
 
     }
+
+    private View createPosPersonalPayBillView(PosPersonalOrder posPersonalOrder) {
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.history_personal_bill, null, false);
+
+        TextView tvName = v.findViewById(R.id.memberNameTextView);
+        TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
+        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
+
+        tvName.setText(posPersonalOrder.order_name);
+        for (int i = 0; posPersonalOrder.menuList.size() > i; i++) {
+            Menu a_menu = posPersonalOrder.menuList.get(i);
+            TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
+            tvOrderItem.setLayoutParams(lllp);
+            tvOrderItem.setPadding(8, 0, 0, 0);
+            String str = a_menu.item_name + "       " + a_menu.qty + "개";
+            tvOrderItem.setText(str);
+            memberOrderLinearLayout.addView(tvOrderItem);
+        }
+        String strPrice = AppDef.priceMapper(Integer.valueOf(posPersonalOrder.total_price));
+        tvPrice.setText(strPrice + "원");
+        return v;
+
+    }
+
 
 
 }
