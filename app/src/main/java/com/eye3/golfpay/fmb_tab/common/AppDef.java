@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.common;
 
+import com.eye3.golfpay.fmb_tab.fragment.OrderFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Club;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderItemInvoice;
@@ -50,16 +51,6 @@ public class AppDef {
         String Putt = "putt";
     }
 
-    public static String priceMapper(int price) {
-        String priceToString = "" + price;
-        if (price >= 1000) {
-            int length = priceToString.length();
-            String string00 = priceToString.substring(0, priceToString.length() - 3);
-            String string01 = priceToString.substring(priceToString.length() - 3, length);
-            priceToString = string00 + "," + string01;
-        }
-        return priceToString;
-    }
 
     public static int  previousCntOfNotice = 0;
     public static boolean  nextMainActivityOnCreate = false;
@@ -75,5 +66,24 @@ public class AppDef {
     public static List<OrderDetail> orderDetailList = new ArrayList<>();
     public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
     public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();
+
+    public static List<String> getGuestList(){
+        List<String> ArrList = new ArrayList<>();
+        for(int i=0; AppDef.orderDetailList.size() > i ;i++){
+            ArrList.add(OrderFragment.getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
+        }
+        return ArrList;
+    }
+
+    public static String priceMapper(int price) {
+        String priceToString = "" + price;
+        if (price >= 1000) {
+            int length = priceToString.length();
+            String string00 = priceToString.substring(0, priceToString.length() - 3);
+            String string01 = priceToString.substring(priceToString.length() - 3, length);
+            priceToString = string00 + "," + string01;
+        }
+        return priceToString;
+    }
 
 }

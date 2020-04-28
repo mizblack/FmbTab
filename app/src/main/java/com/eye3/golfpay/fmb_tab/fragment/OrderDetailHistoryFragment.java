@@ -23,9 +23,7 @@ import com.eye3.golfpay.fmb_tab.model.order.Menu;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import com.eye3.golfpay.fmb_tab.model.order.PersonalOrder;
-import com.eye3.golfpay.fmb_tab.model.order.ReceiptUnit;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
-import com.eye3.golfpay.fmb_tab.model.order.RestaurantOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
@@ -37,31 +35,37 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     private static int NUM_OF_RESTAURANT;
     TextView mTvTheRestaurant;
     int mSelectedRestaurantTabIdx = 0;
-    private TextView[] mRestaurantTabBarArr ;
+    private TextView[] mRestaurantTabBarArr;
     Restaurant mSelectedRestaurant;
     LinearLayout mTabLinearOrderDetail;
     private RecyclerView mOrderHistoryRecyclerView;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     //해당 아이디를 가진 전표만 리스트에 나옴
     String mSelectedRestaurantId = "";
-    ArrayList<OrderDetail> mOrderDetailList = new ArrayList<>();
-    List<RestaurantOrder>  mRestaurantOrderDetailList = new ArrayList<>();
-     Button mBtnTopAdd;
+    Button mBtnTopAdd;
+    static  StoreOrder mTheRestaurantStoreOrder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  Global.orderDetailList로 초기화할것
         Bundle bundle = getArguments();
+
         if (bundle != null) {
             mRestaurantList = (ArrayList<Restaurant>) bundle.getSerializable("restaurantList");
-            mOrderDetailList = (ArrayList<OrderDetail>) bundle.getSerializable("orderdetailList");
             NUM_OF_RESTAURANT = mRestaurantList.size();
             mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
         }
-
-       // storeOrderArrayList
         getStoreOrder();
     }
+
+    private StoreOrder findStoreOrderByRestaurantName(List<StoreOrder> storeOrderList, String targetRestaurantName){
+        for(int i = 0; storeOrderList.size() >i ;i++){
+            if(storeOrderList.get(i).store_name.equals(targetRestaurantName))
+                return storeOrderList.get(i) ;
+        }
+        return null;
+    }
+
+
 
     private void getStoreOrder() {
         showProgress("주문내역 정보를 가져오는 중입니다.");
@@ -73,7 +77,11 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
-                    initRecyclerView(0, AppDef.storeOrderArrayList);
+                //    mTheRestaurantStoreOrder =   findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당");
+                    //여기서 실행해야함.
+                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
+                    setTagTheRestaurant();
+                    initRecyclerView(0, AppDef.storeOrderArrayList.get(0));
 
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -94,6 +102,16 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             }
         });
     }
+    private void setTagTheRestaurant() {
+        mTvTheRestaurant.setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당"));
+        mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSelectedRestaurantTabIdx = -1;
+                selectRestaurant(-1);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -108,9 +126,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 GoNativeScreen(new OrderFragment(), null);
             }
         });
-
-        init();
-        createTabBar(mRestaurantTabBarArr, mRestaurantList);
         mParentActivity.hideMainBottomBar();
         return v;
     }
@@ -122,7 +137,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         for (int i = 0; mRestaurantList.size() > i; i++) {
             if (mRestaurantList.get(i).store_type.equals("대식당") && !isTheRestaurant) {
                 mTvTheRestaurant.setText((mRestaurantList.get(i).name));
-                mTvTheRestaurant.setTag(mRestaurantList.get(i));
+                mTvTheRestaurant.setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(i).name));
                 mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -138,7 +153,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
                 tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 tvRestTabBar[i].setText(mRestaurantList.get(i).name);
-                tvRestTabBar[i].setTag(mRestaurantList.get(i));
+                tvRestTabBar[i].setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(i).name));
                 tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -156,9 +171,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     //레스토랑바 선택시 보여주는 함수
     private void selectRestaurant(int selectedTabIdx) {
 
-
         mTvTheRestaurant.setTextColor(Color.GRAY);
-        for (int i = 0; mRestaurantTabBarArr.length  > i; i++) {
+        for (int i = 0; mRestaurantTabBarArr.length > i; i++) {
             TextView textView = mRestaurantTabBarArr[i];
             textView.setTextColor(Color.GRAY);
         }
@@ -169,8 +183,12 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
             mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
         }
-        setSelectedRestaurant(selectedTabIdx);
-        initRecyclerView(selectedTabIdx, AppDef.storeOrderArrayList);
+        //retaurantlist와 storeArraylist의 식당 인덱스가 대식당으로 일치하지 않다
+        if (selectedTabIdx >= 0)
+            initRecyclerView(selectedTabIdx, (StoreOrder) mRestaurantTabBarArr[selectedTabIdx].getTag());
+        else    //selectedTabIdx == -1 대식당일경우
+            initRecyclerView(-1, (StoreOrder) mTvTheRestaurant.getTag());
+
     }
 
 
@@ -181,23 +199,13 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
     private void setSelectedRestaurant(int mSelectedRestaurantIdx) {
         //각 식당에 따른 전표 내역을 보여준다.
-      mSelectedRestaurant =  (Restaurant) mRestaurantTabBarArr[mSelectedRestaurantIdx].getTag();
-       mSelectedRestaurantId =  mSelectedRestaurant.id;
-    }
-
-    private void init() {
-//        RestaurantOrder restaurantOrder = new RestaurantOrder();
-//        restaurantOrder.setOrderDetailList(mOrderDetailList);
-//        mRestaurantOrderDetailList.add(restaurantOrder);
-        initRecyclerView(0, AppDef.storeOrderArrayList);
+        mSelectedRestaurant = (Restaurant) mRestaurantTabBarArr[mSelectedRestaurantIdx].getTag();
+        mSelectedRestaurantId = mSelectedRestaurant.id;
     }
 
 
-
-
-    private void initRecyclerView(int mSelectedRestaurantTabIdx , List<StoreOrder> storeOrderArrayList) {
-
-        OrderHistoryAdapter  historyAdapter = new OrderHistoryAdapter(getActivity(), storeOrderArrayList);
+    private void initRecyclerView(int mSelectedRestaurantTabIdx, StoreOrder selectedStoreOrder) {
+        OrderHistoryAdapter historyAdapter = new OrderHistoryAdapter(getActivity(), selectedStoreOrder);
         mOrderHistoryRecyclerView.setAdapter(historyAdapter);
         mOrderHistoryRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
@@ -206,112 +214,99 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 
-
-    private class OrderHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder> {
 
         Context context;
- //       List<RestaurantOrder> restaurantOrderArrayList;
-         List<StoreOrder> storeOrderArrayList;
+        StoreOrder storeOrder;
 
-//        public OrderHistoryAdapter(Context context, List<RestaurantOrder> restaurantOrderArrayList) {
-//            this.context = context;
-//            this.restaurantOrderArrayList = restaurantOrderArrayList;
-//
-//        }
-
-        public OrderHistoryAdapter(Context context, List<StoreOrder> storeOrderArrayList) {
+        public OrderHistoryAdapter(Context context, StoreOrder storeOrder) {
             this.context = context;
-            this.storeOrderArrayList = storeOrderArrayList;
+            this.storeOrder = storeOrder;
 
         }
 
 
-        private int getTotalReceptUnit( List<PersonalOrder> personalOrderList){
+        private int getTotalReceptUnit(List<PersonalOrder> personalOrderList) {
             //4personal total
             int total_price = 0;
-               for(int i =0; personalOrderList.size() > i ; i++){
-                   total_price +=  Integer.valueOf(personalOrderList.get(i).total_price);
-               }
-               return total_price;
+            for (int i = 0; personalOrderList.size() > i; i++) {
+                total_price += Integer.valueOf(personalOrderList.get(i).total_price);
+            }
+            return total_price;
         }
 
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (storeOrder == null || storeOrder.tablet_order_list == null || storeOrder.tablet_order_list.size() == 0) {
+                Toast.makeText(mContext, "해당 주문 내역이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
             View view = LayoutInflater.from(context).inflate(R.layout.history_order_item, parent, false);
             OrderHistoryViewHolder viewHolder = new OrderHistoryViewHolder(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            OrderHistoryViewHolder viewHolder = (OrderHistoryViewHolder) holder;
-//           if(! mSelectedRestaurantId.equals(restaurantOrderArrayList.get(position).restaurant_id )){
-//               return;
-//            }
-//            viewHolder.tvTotal.setText(storeOrderArrayList.get(position).wholeTotalAmount);
-//            viewHolder.tvOrderComplete.setText(storeOrderArrayList.get(position).order_state);
-            //주문번호 전시
-            viewHolder.tvOderNum.setText(storeOrderArrayList.get(position).store_no);
-//            viewHolder.btnExtraOrder.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    GoNativeScreen(new OrderFragment(), null);
-//                }
-//            });
+        public void onBindViewHolder(@NonNull OrderHistoryViewHolder viewHolder, int position) {
+            //  OrderHistoryViewHolder viewHolder = (OrderHistoryViewHolder) holder;
 
+            if (position < storeOrder.tablet_order_list.size()) {
 
+                for (int i = 0; storeOrder.tablet_order_list.size() > i; i++) {
+                    List<PersonalOrder> personalOrderList = storeOrder.tablet_order_list.get(i).recept_list;
 
-            List<ReceiptUnit> tabletOrderList = storeOrderArrayList.get(position).tablet_order_list;
-            for (int i = 0; tabletOrderList.size() > i; i++) {
-                List<PersonalOrder> personalOrderList =  tabletOrderList.get(i).recept_list;
+                    LinearLayout receptUnitLinear = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.recept_order_item, null, false);
+                    Button btnExtraOrderCancel = receptUnitLinear.findViewById(R.id.btn_extra_order_cancel);
 
-                LinearLayout receptUnitLinear= (LinearLayout) LayoutInflater.from(context).inflate(R.layout.recept_order_item, null, false);
-                Button btnExtraOrderCancel = receptUnitLinear.findViewById(R.id.btn_extra_order_cancel);
-                TextView total = receptUnitLinear.findViewById(R.id.tvTotal);
+                    TextView total = receptUnitLinear.findViewById(R.id.tvTotal);
+                    TextView tvTime = receptUnitLinear.findViewById(R.id.order_time);
+                    TextView tvStatus = receptUnitLinear.findViewById(R.id.order_status);
 
-                total.setText("총계" +"   " + getTotalReceptUnit(personalOrderList));
+                    total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(personalOrderList)));
+                    tvTime.setText(storeOrder.tablet_order_list.get(i).order_time);
+                    //게스트중 한명만이라도 주문완료면 주문완료로 표시
+                    tvStatus.setText(storeOrder.tablet_order_list.get(i).recept_list.get(0).order_status);
 
-                btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                      //  storeOrderArrayList.get(position).order_state = "주문취소";
-                        Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            tvStatus.setText("주문취소");
+                            tvStatus.setTextColor(Color.RED);
+                            Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    for (int j = 0; personalOrderList.size() > j; j++) {
+                        View personalOrderDetailView = createPersonalDutchPayBillView2(personalOrderList.get(j));
+                        LinearLayout linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_personal_order_container);
+                        linearPersonalOrderContainer.addView(personalOrderDetailView);
                     }
-                });
+                    viewHolder.tabletOrderLinear.addView(receptUnitLinear);
 
-                for(int j =0; personalOrderList.size() > j ;j++ ) {
-                    View personalOrderDetailView = createPersonalDutchPayBillView2(personalOrderList.get(j));
-                     LinearLayout linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_personal_order_container);
-                    linearPersonalOrderContainer.addView(personalOrderDetailView);
                 }
-                viewHolder.tabletOrderLinear.addView(receptUnitLinear);
 
             }
-
-
         }
 
         @Override
         public int getItemCount() {
-            return storeOrderArrayList.size();
+            if (storeOrder ==null ||  storeOrder.tablet_order_list == null)
+                return 0;
+            else
+                return storeOrder.tablet_order_list.size();
         }
 
 
         class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
-            TextView tvTotal, tvOderNum, tvOrderComplete;
-            LinearLayout tabletOrderLinear, posOrderLinear ;
-            Button btnExtraOrder, btnExtraOrderCancel;
+            LinearLayout tabletOrderLinear, posOrderLinear;
 
             OrderHistoryViewHolder(View view) {
                 super(view);
-                tvTotal = view.findViewById(R.id.tvTotal);
-                tvOderNum = view.findViewById(R.id.tv_order_num);
-                tvOrderComplete = view.findViewById(R.id.tv_order_complete);
-               //recept unit저장장소
+                //recept unit저장장소
                 tabletOrderLinear = view.findViewById(R.id.linear_recept_unit_container);
-                posOrderLinear = view.findViewById(R.id.linear_pos_unit);
-              //  btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
+                //  posOrderLinear = view.findViewById(R.id.linear_pos_unit);
+                //  btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
 
             }
 
@@ -338,7 +333,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
             tvOrderItem.setLayoutParams(lllp);
             tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_item.name  + "     " + a_item.qty +"개";
+            String str = a_item.name + "     " + a_item.qty + "개";
             tvOrderItem.setText(str);
             memberOrderLinearLayout.addView(tvOrderItem);
         }
@@ -356,13 +351,13 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
 
         tvName.setText(personalOrder.guest_name);
-        for (int i = 0; personalOrder.menuList.size()  > i; i++) {
+        for (int i = 0; personalOrder.menuList.size() > i; i++) {
             Menu a_menu = personalOrder.menuList.get(i);
             TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
             LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
             tvOrderItem.setLayoutParams(lllp);
             tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_menu.item_name + "       " + a_menu.qty +"개";
+            String str = a_menu.item_name + "       " + a_menu.qty + "개";
             tvOrderItem.setText(str);
             memberOrderLinearLayout.addView(tvOrderItem);
         }

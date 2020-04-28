@@ -33,7 +33,6 @@ import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.Category2;
-import com.eye3.golfpay.fmb_tab.model.order.Menu;
 import com.eye3.golfpay.fmb_tab.model.order.NameOrder;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderItemInvoice;
@@ -139,6 +138,8 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (mOrderedMenuItem != null) {
+                    //캐디주문을 표기한다.
+                    mOrderedMenuItem.caddy_id = Global.CaddyNo;
                     //  if (v.getTag().equals(mOrderDetailList.get(0).reserve_guest_id)) {
                     infoTextView.setVisibility(View.GONE);
                     ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
@@ -302,6 +303,8 @@ public class OrderFragment extends BaseFragment {
                 } else {
                     refresh();
                     AppDef.orderDetailList.clear();
+                    initOrderDetailList();
+
                 }
             }
         });
@@ -682,7 +685,7 @@ public class OrderFragment extends BaseFragment {
                 // recyclerView 가 parent 임
                 public MenuItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                     View view = LayoutInflater.from(mContext).inflate(R.layout.restaurant_menu_row, parent, false);
-                    Log.d(TAG, "onCreateViewHolder    " + "MenuItemViewHolder");
+                    //    Log.d(TAG, "onCreateViewHolder    " + "MenuItemViewHolder");
                     return new MenuItemViewHolder(view);
                 }
 
@@ -867,7 +870,10 @@ public class OrderFragment extends BaseFragment {
             a_ItemInvoice = new OrderItemInvoice();
             a_ItemInvoice.mMenunName = mOrderedMenuItem.name;
             a_ItemInvoice.mQty = 1;
-            a_ItemInvoice.mNameOrders.add((new NameOrder(getGuestName(mOrderDetailList.get(0).reserve_guest_id) + STRING_CADDY, NUM_OF_SINGLE_ORDERED_ITEM)));
+            NameOrder nameOrder = new NameOrder(getGuestName(mOrderDetailList.get(0).reserve_guest_id) + STRING_CADDY, NUM_OF_SINGLE_ORDERED_ITEM);
+            nameOrder.caddy_id = Global.CaddyNo;
+            a_ItemInvoice.mNameOrders.add(nameOrder);
+
             mOrderItemInvoiceArrayList.add(a_ItemInvoice);
 
         } else {
@@ -879,7 +885,8 @@ public class OrderFragment extends BaseFragment {
                     //메뉴이름이 같을때
                     a_ItemInvoice.mQty += NUM_OF_SINGLE_ORDERED_ITEM;
                     //여기에선  mOrderedMenuItem qty가이 항상 1이어야 한다..
-                    putNameOrder(a_ItemInvoice, getGuestName(mOrderDetailList.get(0).reserve_guest_id) + STRING_CADDY, NUM_OF_SINGLE_ORDERED_ITEM);
+
+                    putNameOrderForCaddy(a_ItemInvoice, getGuestName(mOrderDetailList.get(0).reserve_guest_id) + STRING_CADDY, NUM_OF_SINGLE_ORDERED_ITEM);
 
                     return;
                 }
@@ -935,6 +942,21 @@ public class OrderFragment extends BaseFragment {
         }
     }
 
+    private void putNameOrderForCaddy(OrderItemInvoice a_iteminvoice, String guestName, int OrderedMenuItemQty) {
+        if (a_iteminvoice.mNameOrders.size() < 0)
+            return;
+        for (int i = 0; a_iteminvoice.mNameOrders.size() > i; i++) {
+            if (a_iteminvoice.mNameOrders.get(i).name.equals(guestName)) {
+                int newQty = a_iteminvoice.mNameOrders.get(i).qty + OrderedMenuItemQty;
+                a_iteminvoice.mNameOrders.set(i, new NameOrder(guestName, newQty));
+                return;
+            }
+        }
+        // a_iteminvoice.mNameOrders.add(new NameOrder(guestName, OrderedMenuItemQty));
+        NameOrder nameOrder = new NameOrder(getGuestName(mOrderDetailList.get(0).reserve_guest_id) + STRING_CADDY, NUM_OF_SINGLE_ORDERED_ITEM);
+        nameOrder.caddy_id = Global.CaddyNo;
+        a_iteminvoice.mNameOrders.add(nameOrder);
+    }
 
     private void putNameOrder(OrderItemInvoice a_iteminvoice, String guestName, int OrderedMenuItemQty) {
         if (a_iteminvoice.mNameOrders.size() < 0)
@@ -1028,12 +1050,16 @@ public class OrderFragment extends BaseFragment {
             RestaurantMenu restaurantMenu = findMenuByName(plusOrderItemInvoice.mMenunName);
             if (restaurantMenu != null) {
                 mOrderedMenuItem = new OrderedMenuItem(restaurantMenu.id, String.valueOf(NUM_OF_SINGLE_ORDERED_ITEM), restaurantMenu.price, restaurantMenu.name);
-                mOrderDetailList.get(getIndexByName(plusNameOrder.name)).addOrPlusOrderedMenuItem(mOrderedMenuItem);
-                mOrderDetailList.get(getIndexByName(plusNameOrder.name)).setTotalPaidAmount(mOrderDetailList.get(getIndexByName(plusNameOrder.name)).getPaid_total_amount());
+                if (getIndexByName(plusNameOrder.name) > 0) {
 
-                makeOrderItems();
-                makeOrderItemInvoiceArrViews();
-                setTheTotalInvoice();
+                    mOrderDetailList.get(getIndexByName(plusNameOrder.name)).addOrPlusOrderedMenuItem(mOrderedMenuItem);
+                    mOrderDetailList.get(getIndexByName(plusNameOrder.name)).setTotalPaidAmount(mOrderDetailList.get(getIndexByName(plusNameOrder.name)).getPaid_total_amount());
+
+                    makeOrderItems();
+                    makeOrderItemInvoiceArrViews();
+                    setTheTotalInvoice();
+                }
+
             }
 
         }
@@ -1049,14 +1075,16 @@ public class OrderFragment extends BaseFragment {
             RestaurantMenu restaurantMenu = findMenuByName(minusOrderItemInvoice.mMenunName);
             if (restaurantMenu != null) {
                 mOrderedMenuItem = new OrderedMenuItem(restaurantMenu.id, "-1", restaurantMenu.price, restaurantMenu.name);
-                mOrderDetailList.get(getIndexByName(minusNameOrder.name)).addOrPlusOrderedMenuItem(mOrderedMenuItem);
-                mOrderDetailList.get(getIndexByName(minusNameOrder.name)).setTotalPaidAmount(mOrderDetailList.get(getIndexByName(minusNameOrder.name)).getPaid_total_amount());
+                if (getIndexByName(minusNameOrder.name) > 0) {
+                    mOrderDetailList.get(getIndexByName(minusNameOrder.name)).addOrPlusOrderedMenuItem(mOrderedMenuItem);
+                    mOrderDetailList.get(getIndexByName(minusNameOrder.name)).setTotalPaidAmount(mOrderDetailList.get(getIndexByName(minusNameOrder.name)).getPaid_total_amount());
 
-                makeOrderItems();
-                makeOrderItemInvoiceArrViews();
-                setTheTotalInvoice();
+                    makeOrderItems();
+                    makeOrderItemInvoiceArrViews();
+                    setTheTotalInvoice();
+
+                }
             }
-
         }
     };
 
@@ -1098,7 +1126,12 @@ public class OrderFragment extends BaseFragment {
     }
 
     private RestaurantMenu findMenuByName(String targetMenuName) {
-        List<Category> categoryList = mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList;
+        List<Category> categoryList;
+        if (mSelectedRestaurantTabIdx < 0)
+            categoryList = ((Restaurant) mTvTheRestaurant.getTag()).categoryList;
+        else
+            categoryList = mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList;
+
         if (categoryList == null)
             return null;
         for (int i = 0; categoryList.size() > i; i++) {
