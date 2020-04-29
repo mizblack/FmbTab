@@ -53,6 +53,7 @@ public interface HttpService {
     @GET("orderShadeHistory")
     Call<ResponseData<StoreOrder>> getStoreOrder(@Query("reserve_no") String reserveNo);
 
+
     @FormUrlEncoded
     @POST("getReserveList")
     Call<ReserveGuestList> getReserveGuestList(@Field("reserve_id") int reserveId);

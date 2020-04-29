@@ -224,6 +224,7 @@ public class DataInterface extends BasicDataInterface {
 
     public void getStoreOrder(final Context context, String reserve_no, final ResponseCallback<ResponseData<StoreOrder>> callback) {
         try {
+
             Call<ResponseData<StoreOrder>> call = service.getStoreOrder( reserve_no);
             call.enqueue(new Callback<ResponseData<StoreOrder>>() {
                 @Override

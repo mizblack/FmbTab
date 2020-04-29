@@ -44,7 +44,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     //해당 아이디를 가진 전표만 리스트에 나옴
     String mSelectedRestaurantId = "";
     Button mBtnTopAdd;
-    static  StoreOrder mTheRestaurantStoreOrder;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,31 +58,30 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         getStoreOrder();
     }
 
-    private StoreOrder findStoreOrderByRestaurantName(List<StoreOrder> storeOrderList, String targetRestaurantName){
-        for(int i = 0; storeOrderList.size() >i ;i++){
-            if(storeOrderList.get(i).store_name.equals(targetRestaurantName))
-                return storeOrderList.get(i) ;
+    private StoreOrder findStoreOrderByRestaurantName(List<StoreOrder> storeOrderList, String targetRestaurantName) {
+        for (int i = 0; storeOrderList.size() > i; i++) {
+            if (storeOrderList.get(i).store_name.equals(targetRestaurantName))
+                return storeOrderList.get(i);
         }
         return null;
     }
 
 
-
     private void getStoreOrder() {
         showProgress("주문내역 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(), Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
-            @Override
+        @Override
             public void onSuccess(ResponseData<StoreOrder> response) {
                 hideProgress();
                 systemUIHide();
                 if (response.getResultCode().equals("ok")) {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
-                //    mTheRestaurantStoreOrder =   findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당");
+                    //    mTheRestaurantStoreOrder =   findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당");
                     //여기서 실행해야함.
                     createTabBar(mRestaurantTabBarArr, mRestaurantList);
                     setTagTheRestaurant();
-                    initRecyclerView(0, AppDef.storeOrderArrayList.get(0));
+                    selectRestaurant(0);
 
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -103,6 +102,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             }
         });
     }
+
     private void setTagTheRestaurant() {
         mTvTheRestaurant.setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당"));
         mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
@@ -185,10 +185,14 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
         }
         //retaurantlist와 storeArraylist의 식당 인덱스가 대식당으로 일치하지 않다
-        if (selectedTabIdx >= 0)
-            initRecyclerView(selectedTabIdx, (StoreOrder) mRestaurantTabBarArr[selectedTabIdx].getTag());
-        else    //selectedTabIdx == -1 대식당일경우
-            initRecyclerView(-1, (StoreOrder) mTvTheRestaurant.getTag());
+        if (selectedTabIdx >= 0) {
+            StoreOrder storeOrder = (StoreOrder) mRestaurantTabBarArr[selectedTabIdx].getTag();
+            initRecyclerView(storeOrder);
+        }
+        else {   //selectedTabIdx == -1 대식당일경우
+            StoreOrder storeOrder = (StoreOrder) mTvTheRestaurant.getTag();
+            initRecyclerView(storeOrder);
+        }
 
     }
 
@@ -205,13 +209,21 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 
-    private void initRecyclerView(int mSelectedRestaurantTabIdx, StoreOrder selectedStoreOrder) {
-        OrderHistoryAdapter historyAdapter = new OrderHistoryAdapter(getActivity(), selectedStoreOrder);
-        mOrderHistoryRecyclerView.setAdapter(historyAdapter);
-        mOrderHistoryRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-        mOrderHistoryRecyclerView.setLayoutManager(mManager);
-        historyAdapter.notifyDataSetChanged();
+    private void initRecyclerView( StoreOrder selectedStoreOrder) {
+        if (selectedStoreOrder.tablet_order_list.size() > 0) {
+
+            //*****************************
+            LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+            mOrderHistoryRecyclerView.setHasFixedSize(true);
+            mOrderHistoryRecyclerView.setLayoutManager(mManager);
+
+            OrderHistoryAdapter historyAdapter = new OrderHistoryAdapter(getActivity(), selectedStoreOrder);
+            mOrderHistoryRecyclerView.setAdapter(historyAdapter);
+            historyAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getActivity(), "주문내역이 없습니다.", Toast.LENGTH_SHORT).show();
+             mOrderHistoryRecyclerView.setAdapter(null);
+        }
     }
 
 
@@ -240,18 +252,17 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         @Override
         public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            if (storeOrder == null || storeOrder.tablet_order_list == null || storeOrder.tablet_order_list.size() == 0) {
-                Toast.makeText(mContext, "해당 주문 내역이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                return null;
-            }
+//            if (storeOrder == null || storeOrder.tablet_order_list == null || storeOrder.tablet_order_list.size() == 0) {
+//                Toast.makeText(mContext, "해당 주문 내역이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+//                return null;
+//            }
             View view = LayoutInflater.from(context).inflate(R.layout.history_order_item, parent, false);
-            OrderHistoryViewHolder viewHolder = new OrderHistoryViewHolder(view);
-            return viewHolder;
+            return new OrderHistoryAdapter.OrderHistoryViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull OrderHistoryViewHolder viewHolder, int position) {
-            //  OrderHistoryViewHolder viewHolder = (OrderHistoryViewHolder) holder;
+           //   OrderHistoryViewHolder viewHolder = (OrderHistoryViewHolder) viewHolder;
 
             if (position < storeOrder.tablet_order_list.size()) {
 
@@ -280,7 +291,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                     });
 
                     for (int j = 0; personalOrderList.size() > j; j++) {
-                        View personalOrderDetailView = createPersonalDutchPayBillView2(personalOrderList.get(j));
+                        View personalOrderDetailView = createPersonalPayBillView(personalOrderList.get(j));
                         LinearLayout linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_personal_order_container);
                         linearPersonalOrderContainer.addView(personalOrderDetailView);
                     }
@@ -289,25 +300,25 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 }
 
             }
-           //*****************************************************************************************************************************
+            //*****************************************************************************************************************************
             LinearLayout receptUnitLinear = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.pos_order_item_linear, null, false);
-            LinearLayout linearPersonalOrderContainer =null;
+            LinearLayout linearPersonalOrderContainer = null;
             for (int j = 0; storeOrder.pos_order_list.size() > j; j++) {
 
-                    View personalOrderDetailView = createPosPersonalPayBillView(storeOrder.pos_order_list.get(j));
-                    linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_pos__personal_order_container);
-                    linearPersonalOrderContainer.addView(personalOrderDetailView);
+                View personalOrderDetailView = createPosPersonalPayBillView(storeOrder.pos_order_list.get(j));
+                linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_pos__personal_order_container);
+                linearPersonalOrderContainer.addView(personalOrderDetailView);
             }
-            if(linearPersonalOrderContainer != null)
-                  viewHolder.tabletOrderLinear.addView(linearPersonalOrderContainer);
+            if (linearPersonalOrderContainer != null)
+                viewHolder.tabletOrderLinear.addView(linearPersonalOrderContainer);
 
         }
 
         @Override
         public int getItemCount() {
-            if (storeOrder ==null ||  storeOrder.tablet_order_list == null)
-                return 0;
-            else
+//            if (storeOrder == null || storeOrder.tablet_order_list == null)
+//                return 0;
+//            else
                 return storeOrder.tablet_order_list.size();
         }
 
@@ -327,35 +338,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         }
     }
 
-    private View createPersonalDutchPayBillView(OrderDetail orderDetail) {
-        LayoutInflater inflater = (LayoutInflater)
-                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.history_personal_bill, null, false);
-
-        TextView tvName = v.findViewById(R.id.memberNameTextView);
-        tvName.setText(OrderFragment.getGuestName(orderDetail.reserve_guest_id));
-        TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
-
-        String strPrice = AppDef.priceMapper(Integer.valueOf(orderDetail.paid_total_amount));
-        tvPrice.setText(strPrice + "원");
-        LinearLayout memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
-
-        for (int i = 0; orderDetail.mOrderedMenuItemList.size() > i; i++) {
-            OrderedMenuItem a_item = orderDetail.mOrderedMenuItemList.get(i);
-            TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
-
-            tvOrderItem.setLayoutParams(lllp);
-            tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_item.name + "     " + a_item.qty + "개";
-            tvOrderItem.setText(str);
-            memberOrderLinearLayout.addView(tvOrderItem);
-        }
-        return v;
-
-    }
-
-    private View createPersonalDutchPayBillView2(PersonalOrder personalOrder) {
+    private View createPersonalPayBillView(PersonalOrder personalOrder) {
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.history_personal_bill, null, false);
@@ -406,7 +389,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         return v;
 
     }
-
 
 
 }

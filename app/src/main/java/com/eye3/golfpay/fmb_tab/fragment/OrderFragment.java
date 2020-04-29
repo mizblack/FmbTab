@@ -291,6 +291,7 @@ public class OrderFragment extends BaseFragment {
             public void onClick(View view) {
                 sendShadeOrders();
 
+
             }
         });
 
@@ -298,12 +299,13 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppDef.restaurantOrderArrayList.size() > 0) {
-                    mBtnHistory.setVisibility(View.VISIBLE);
-                    orderOrApplyBtn.setVisibility(View.INVISIBLE);
+                  //  mBtnHistory.setVisibility(View.VISIBLE);
+                    orderOrApplyBtn.setVisibility(View.VISIBLE);
                 } else {
                     refresh();
                     AppDef.orderDetailList.clear();
                     initOrderDetailList();
+                    orderOrApplyBtn.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -347,14 +349,18 @@ public class OrderFragment extends BaseFragment {
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendShadeOrders();
+                if (AppDef.orderDetailList.size() > 0)
+                    sendShadeOrders();
+                else
+                    Toast.makeText(getActivity(), "먼저 주문을 해주십시요.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
+    //orderdetail과 주문내역데이리스트도 같이 삭제한다.
     void initOrderDetailList() {
         mOrderDetailList.clear();
+        mOrderItemInvoiceArrayList.clear();
         int Size = Global.selectedReservation.getGuestData().size();
         //최초주문시 사이즈가 0이면
         if (mOrderDetailList.size() == 0) {
@@ -580,10 +586,10 @@ public class OrderFragment extends BaseFragment {
 //                mTVCateName.setText(categoryList.get(idx - 1).catergory1_name);
 //            }
 
-            //수정할것
-            //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag() - 1).catergory1_name);
-            //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag()).catergory1_name + "/" + categoryList.get((int) holder.itemView.getTag()).subCategoryList.get(0).catergory2_name);
-    //    }
+        //수정할것
+        //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag() - 1).catergory1_name);
+        //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag()).catergory1_name + "/" + categoryList.get((int) holder.itemView.getTag()).subCategoryList.get(0).catergory2_name);
+        //    }
 
         @Override
         public int getItemCount() {
@@ -666,7 +672,7 @@ public class OrderFragment extends BaseFragment {
 
 
             private class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuItemViewHolder> {
-                public static final int NUM_CATEGORY_NAME= 1 + 2 << 24;
+                public static final int NUM_CATEGORY_NAME = 1 + 2 << 24;
                 public static final int NUM_SUB_CATEGORY_NAME = 2 + 2 << 24;
                 Context mContext;
                 List<RestaurantMenu> mMenuList;
@@ -675,9 +681,9 @@ public class OrderFragment extends BaseFragment {
                 public MenuItemViewHolder preSelectedViewHolder;
 
                 MenuAdapter(Context context, String categoryName, List<RestaurantMenu> menuList, int subCategoryPosition) {
-                    Log.d(TAG,  "  메뉴 사이즈   " + String.valueOf(menuList.size()));
-                    if(mSubCategoryList != null && mSubCategoryList.get(subCategoryPosition) != null && menuList != null)
-                        Log.d(TAG,  mSubCategoryList.get(subCategoryPosition).catergory2_name + "  메뉴 사이즈"+ menuList.size());
+                    Log.d(TAG, "  메뉴 사이즈   " + String.valueOf(menuList.size()));
+                    if (mSubCategoryList != null && mSubCategoryList.get(subCategoryPosition) != null && menuList != null)
+                        Log.d(TAG, mSubCategoryList.get(subCategoryPosition).catergory2_name + "  메뉴 사이즈" + menuList.size());
                     mContext = context;
                     mMenuList = menuList;
                     mSubCategoryPosition = subCategoryPosition;
@@ -710,7 +716,7 @@ public class OrderFragment extends BaseFragment {
                 @Override
                 public void onBindViewHolder(@NonNull final MenuAdapter.MenuItemViewHolder holder, int position) {
                     final int idx = position;
-                         Log.d(TAG, "onBindViewHolder    " + "메뉴명: " + mMenuList.get(idx).name + "MenuItemViewHolder");
+                    Log.d(TAG, "onBindViewHolder    " + "메뉴명: " + mMenuList.get(idx).name + "MenuItemViewHolder");
 
                     if (mMenuList.get(idx).isSelected) {
                         holder.itemView.setBackgroundResource(R.drawable.shape_gray_edge);
@@ -788,7 +794,7 @@ public class OrderFragment extends BaseFragment {
 
                 @Override
                 public int getItemCount() {
-                   // Toast.makeText(mContext, "메뉴 사이즈" +mMenuList.size(), Toast.LENGTH_SHORT ).show();
+                    // Toast.makeText(mContext, "메뉴 사이즈" +mMenuList.size(), Toast.LENGTH_SHORT ).show();
                     return mMenuList.size();
                 }
 
@@ -1198,10 +1204,10 @@ public class OrderFragment extends BaseFragment {
                     mRelOrderHistory.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
                     //전송한 retaurant order가 로컬에는 저장되지않음  임시처리
-                    RestaurantOrder restaurantOrder = new RestaurantOrder();
-                    restaurantOrder.setOrderDetailList(mOrderDetailList);
-                    AppDef.restaurantOrderArrayList.add(restaurantOrder);
-                    //refresh();
+//                    RestaurantOrder restaurantOrder = new RestaurantOrder();
+//                    restaurantOrder.setOrderDetailList(mOrderDetailList);
+//                    AppDef.restaurantOrderArrayList.add(restaurantOrder);
+                    refresh();
 
                 }
             }
