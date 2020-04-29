@@ -299,7 +299,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 if (AppDef.restaurantOrderArrayList.size() > 0) {
-                  //  mBtnHistory.setVisibility(View.VISIBLE);
+                    //  mBtnHistory.setVisibility(View.VISIBLE);
                     orderOrApplyBtn.setVisibility(View.VISIBLE);
                 } else {
                     refresh();
@@ -560,36 +560,6 @@ public class OrderFragment extends BaseFragment {
 
         }
 
-
-//        @Override
-//        public void onViewAttachedToWindow(@NonNull CategoryItemViewHolder holder) {
-//            super.onViewAttachedToWindow(holder);
-//
-//            if (categoryList == null)
-//                return;                                                                                                                               //index0 수정할것
-//
-//            //     mTVCateName.setText(categoryList.get((int) holder.itemView.getTag()).catergory1_name + "/" + categoryList.get((int) holder.itemView.getTag()).subCategoryList.get(0).catergory2_name);
-//            //Category cate = (Category) holder.itemView.getTag();
-//            int idx = (int) holder.itemView.getTag();
-//            mTVCateName.setText(categoryList.get(idx).catergory1_name);
-//
-//        }
-//
-//        @Override
-//        public void onViewDetachedFromWindow(@NonNull CategoryItemViewHolder holder) {
-//            super.onViewDetachedFromWindow(holder);
-//            if (categoryList == null)
-//                return;
-//            int idx = (int) holder.itemView.getTag();
-//            if (idx > 0) {
-//
-//                mTVCateName.setText(categoryList.get(idx - 1).catergory1_name);
-//            }
-
-        //수정할것
-        //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag() - 1).catergory1_name);
-        //   mTVCateName.setText(categoryList.get((int) holder.itemView.getTag()).catergory1_name + "/" + categoryList.get((int) holder.itemView.getTag()).subCategoryList.get(0).catergory2_name);
-        //    }
 
         @Override
         public int getItemCount() {
@@ -862,10 +832,6 @@ public class OrderFragment extends BaseFragment {
                     mOrderedGuestId = (String) v.getTag();
                     //주문된 음식이 있다면
                     if (mOrderedMenuItem != null) {
-//                        if (mOrderDetailList.size() == 0) {
-//                            Toast.makeText(mContext, "주문오더가 없습니다.", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
                         if (v.getTag().equals(mOrderDetailList.get(idx).reserve_guest_id)) {
                             infoTextView.setVisibility(View.GONE);
                             ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
@@ -875,6 +841,10 @@ public class OrderFragment extends BaseFragment {
                             makeOrderItems();
                             makeOrderItemInvoiceArrViews();
                             setTheTotalInvoice();
+                            //********** 이부분 수정할것 중복 메뉴 추가
+                            mOrderedMenuItem = null;
+                            refreshCategory();
+                            //***********
                         } else {
                             Toast.makeText(mContext, "주문상세 주문자가 불일치합니다.", Toast.LENGTH_SHORT).show();
                             mOrderedMenuItem = null;
@@ -954,9 +924,8 @@ public class OrderFragment extends BaseFragment {
                 if (a_ItemInvoice.mMenunName.equals(mOrderedMenuItem.name)) {
                     //메뉴이름이 같을때
                     a_ItemInvoice.mQty += Integer.valueOf(mOrderedMenuItem.qty);
-                    //여기에선  mOrderedMenuItem qty가이 항상 1이어야 한다..
+                    //여기에선  mOrderedMenuItem qty가 항상 1이어야 한다..
                     putNameOrder(a_ItemInvoice, getGuestName(mOrderedGuestId), Integer.valueOf(mOrderedMenuItem.qty));
-
                     return;
                 }
             }
@@ -1105,6 +1074,10 @@ public class OrderFragment extends BaseFragment {
             int idx = getIndexByName(minusNameOrder.name);
             RestaurantMenu restaurantMenu = findMenuByName(minusOrderItemInvoice.mMenunName);
             if (restaurantMenu != null) {
+                if (minusNameOrder.qty == 0) {
+                    Toast.makeText(getActivity(), "수량이 0 입니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mOrderedMenuItem = new OrderedMenuItem(restaurantMenu.id, "-1", restaurantMenu.price, restaurantMenu.name);
                 if (getIndexByName(minusNameOrder.name) > 0) {
                     mOrderDetailList.get(getIndexByName(minusNameOrder.name)).addOrPlusOrderedMenuItem(mOrderedMenuItem);

@@ -84,6 +84,7 @@ public class OrderDetail implements Serializable {
                     return;
                 }
                 mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty));
+                Log.i(TAG,   " 메뉴오더: "  + mOrderedMenuItemList.get(i).name + mOrderedMenuItemList.get(i).qty + "더하기 " + Integer.valueOf(item.qty));
                 //중복 메뉴일경우 qty 추가후 total 을 다시계산
                 mOrderedMenuItemList.get(i).setTotal();
                 return;

@@ -20,10 +20,9 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.Menu;
-import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
-import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 import com.eye3.golfpay.fmb_tab.model.order.PersonalOrder;
 import com.eye3.golfpay.fmb_tab.model.order.PosPersonalOrder;
+import com.eye3.golfpay.fmb_tab.model.order.ReceiptUnit;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
@@ -238,24 +237,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
         }
 
-
-        private int getTotalReceptUnit(List<PersonalOrder> personalOrderList) {
-            //4personal total
-            int total_price = 0;
-            for (int i = 0; personalOrderList.size() > i; i++) {
-                total_price += Integer.valueOf(personalOrderList.get(i).total_price);
-            }
-            return total_price;
-        }
-
         @NonNull
         @Override
         public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-//            if (storeOrder == null || storeOrder.tablet_order_list == null || storeOrder.tablet_order_list.size() == 0) {
-//                Toast.makeText(mContext, "해당 주문 내역이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-//                return null;
-//            }
             View view = LayoutInflater.from(context).inflate(R.layout.history_order_item, parent, false);
             return new OrderHistoryAdapter.OrderHistoryViewHolder(view);
         }
@@ -267,36 +252,13 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             if (position < storeOrder.tablet_order_list.size()) {
 
                 for (int i = 0; storeOrder.tablet_order_list.size() > i; i++) {
-                    List<PersonalOrder> personalOrderList = storeOrder.tablet_order_list.get(i).recept_list;
 
-                    LinearLayout receptUnitLinear = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.recept_order_item, null, false);
-                    Button btnExtraOrderCancel = receptUnitLinear.findViewById(R.id.btn_extra_order_cancel);
-
-                    TextView total = receptUnitLinear.findViewById(R.id.tvTotal);
-                    TextView tvTime = receptUnitLinear.findViewById(R.id.order_time);
-                    TextView tvStatus = receptUnitLinear.findViewById(R.id.order_status);
-
-                    total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(personalOrderList)));
-                    tvTime.setText(storeOrder.tablet_order_list.get(i).order_time);
-                    //게스트중 한명만이라도 주문완료면 주문완료로 표시
-                    tvStatus.setText(storeOrder.tablet_order_list.get(i).recept_list.get(0).order_status);
-
-                    btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            tvStatus.setText("주문취소");
-                            tvStatus.setTextColor(Color.RED);
-                            Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    for (int j = 0; personalOrderList.size() > j; j++) {
-                        View personalOrderDetailView = createPersonalPayBillView(personalOrderList.get(j));
-                        LinearLayout linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_personal_order_container);
-                        linearPersonalOrderContainer.addView(personalOrderDetailView);
-                    }
-                    viewHolder.tabletOrderLinear.addView(receptUnitLinear);
-
+                    ReceptUnitAdapter receptUnitAdapter = new ReceptUnitAdapter(mContext, (List<ReceiptUnit>) storeOrder.tablet_order_list);
+                    viewHolder.receptunitRecyclerView.setAdapter(receptUnitAdapter);
+                    viewHolder.receptunitRecyclerView.setHasFixedSize(true);
+                    LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+                    viewHolder.receptunitRecyclerView.setLayoutManager(mManager);
+                    viewHolder.itemView.setTag(position);
                 }
 
             }
@@ -309,8 +271,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 linearPersonalOrderContainer = receptUnitLinear.findViewById(R.id.linear_pos__personal_order_container);
                 linearPersonalOrderContainer.addView(personalOrderDetailView);
             }
-            if (linearPersonalOrderContainer != null)
-                viewHolder.tabletOrderLinear.addView(linearPersonalOrderContainer);
+           // if (linearPersonalOrderContainer != null)
+              //  viewHolder.tabletOrderLinear.addView(linearPersonalOrderContainer);
 
         }
 
@@ -324,18 +286,94 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
 
         class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
-            LinearLayout tabletOrderLinear, posOrderLinear;
-
+         //  LinearLayout tabletOrderLinear, posOrderLinear;
+            RecyclerView receptunitRecyclerView;
             OrderHistoryViewHolder(View view) {
                 super(view);
                 //recept unit저장장소
-                tabletOrderLinear = view.findViewById(R.id.linear_recept_unit_container);
+              //  tabletOrderLinear = view.findViewById(R.id.linear_recept_unit_container);
+                receptunitRecyclerView = view.findViewById(R.id.recept_unit_recyclerView);
                 //  posOrderLinear = view.findViewById(R.id.linear_pos_unit);
                 //  btnExtraOrderCancel = view.findViewById(R.id.btn_extra_order_cancel);
 
             }
 
         }
+    }
+
+    private int getTotalReceptUnit(List<PersonalOrder> personalOrderList) {
+        //4personal total
+        int total_price = 0;
+        for (int i = 0; personalOrderList.size() > i; i++) {
+            total_price += Integer.valueOf(personalOrderList.get(i).total_price);
+        }
+        return total_price;
+    }
+
+    public class ReceptUnitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        Context mContext;
+        List<ReceiptUnit> mReceiptUnitOrderList;
+
+        public ReceptUnitAdapter(Context context, List<ReceiptUnit> mReceiptUnitOrderList) {
+            mContext = context;
+            this.mReceiptUnitOrderList = mReceiptUnitOrderList;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view;
+            //  RecyclerView.ViewHolder viewHolder = null;
+            view = LayoutInflater.from(mContext).inflate(R.layout.recept_order_item, parent, false);
+            return new ReceptUnitViewHolder(view);
+        }
+
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+            ReceptUnitViewHolder viewHolder = (ReceptUnitViewHolder) holder;
+            viewHolder.total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(mReceiptUnitOrderList.get(position).recept_list)));
+            viewHolder.tvTime.setText(mReceiptUnitOrderList.get(position).order_time);
+            //게스트중 한명만이라도 주문완료면 주문완료로 표시
+            viewHolder.tvStatus.setText(mReceiptUnitOrderList.get(position).recept_list.get(0).order_status);
+
+            ReceiptUnit receiptUnit =  mReceiptUnitOrderList.get(position);
+            for(int i=0; receiptUnit.recept_list.size() >i ;i++) {
+                PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(i);
+                viewHolder.linearPersonalOrderContainer.addView(createPersonalPayBillView(personalReceiptsOrder));
+            }
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mReceiptUnitOrderList.size();
+        }
+
+        public class ReceptUnitViewHolder extends RecyclerView.ViewHolder {
+            TextView total, tvTime, tvStatus;
+            Button btnExtraOrderCancel;
+            LinearLayout linearPersonalOrderContainer;
+            public ReceptUnitViewHolder(@NonNull View itemView) {
+                super(itemView);
+                total = itemView.findViewById(R.id.tvTotal);
+                tvTime = itemView.findViewById(R.id.order_time);
+                tvStatus = itemView.findViewById(R.id.order_status);
+                linearPersonalOrderContainer = itemView.findViewById(R.id.linear_personal_order_container);
+                btnExtraOrderCancel = itemView.findViewById(R.id.btn_extra_order_cancel);
+                btnExtraOrderCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tvStatus.setText("주문취소");
+                        tvStatus.setTextColor(Color.RED);
+                        Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
     }
 
     private View createPersonalPayBillView(PersonalOrder personalOrder) {
