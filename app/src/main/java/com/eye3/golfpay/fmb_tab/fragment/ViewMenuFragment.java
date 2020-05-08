@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -93,7 +94,7 @@ public class ViewMenuFragment extends BaseFragment {
     private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
             orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear , caddieCancelLinearLayout;
 
-    Timer timer;
+    Timer todayReserveTimer;
 
     TextView mTvRoundStartfinish;
 
@@ -414,6 +415,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void setLogout() {
 
+        todayReserveTimer.cancel();
         Objects.requireNonNull(getActivity()).stopService((new Intent(getActivity(), CartLocationService.class)));
         getActivity().finish();
     }
@@ -438,10 +440,12 @@ public class ViewMenuFragment extends BaseFragment {
                     teeUpRecyclerView.setLayoutManager(manager);
                     teeUpRecyclerView.setAdapter(teeUpAdapter);
                     teeUpAdapter.notifyDataSetChanged();
-                    if(mContext != null)
-                        Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    if(mContext != null) {
 
-
+                        if (getActivity() != null || getActivity().isFinishing() == false) {
+                            Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
 
@@ -461,9 +465,8 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void startTimer() {
 
-        timer = new Timer();
-
-        timer.schedule(new TimerTask() {
+        todayReserveTimer = new Timer();
+        todayReserveTimer.schedule(new TimerTask() {
 
             @Override
 
@@ -477,46 +480,48 @@ public class ViewMenuFragment extends BaseFragment {
             }
 
         }, 10 * 1000, 1000 * 5);
-
     }
 
 
     private void setEnableColor() {
-        gpsTextView00.setTextColor(0xff7e8181);
-        gpsTextView01.setTextColor(0xff7e8181);
-        courseDivider.setBackgroundColor(0xff7e8181);
 
-        scoreBoardTextView00.setTextColor(0xff7e8181);
-        scoreBoardTextView01.setTextColor(0xff7e8181);
-        scoreBoardDivider.setBackgroundColor(0xff7e8181);
+        int color = ContextCompat.getColor(getContext(), R.color.FMB_Color_FF7E8181);
 
-        nearestLongestTextView00.setTextColor(0xff7e8181);
-        nearestLongestTextView01.setTextColor(0xff7e8181);
-        nearestLongestDivider.setBackgroundColor(0xff7e8181);
+        gpsTextView00.setTextColor(color);
+        gpsTextView01.setTextColor(color);
+        courseDivider.setBackgroundColor(color);
 
-        rankingTextView00.setTextColor(0xff7e8181);
-        rankingTextView01.setTextColor(0xff7e8181);
-        rankingDivider.setBackgroundColor(0xff7e8181);
+        scoreBoardTextView00.setTextColor(color);
+        scoreBoardTextView01.setTextColor(color);
+        scoreBoardDivider.setBackgroundColor(color);
 
-        caddieTextView00.setTextColor(0xff7e8181);
-        caddieTextView01.setTextColor(0xff7e8181);
-        caddieDivider.setBackgroundColor(0xff7e8181);
+        nearestLongestTextView00.setTextColor(color);
+        nearestLongestTextView01.setTextColor(color);
+        nearestLongestDivider.setBackgroundColor(color);
 
-        orderTextView00.setTextColor(0xff7e8181);
-        orderTextView01.setTextColor(0xff7e8181);
-        orderDivider.setBackgroundColor(0xff7e8181);
+        rankingTextView00.setTextColor(color);
+        rankingTextView01.setTextColor(color);
+        rankingDivider.setBackgroundColor(color);
 
-        paymentTextView00.setTextColor(0xff7e8181);
-        paymentTextView01.setTextColor(0xff7e8181);
-        paymentDivider.setBackgroundColor(0xff7e8181);
+        caddieTextView00.setTextColor(color);
+        caddieTextView01.setTextColor(color);
+        caddieDivider.setBackgroundColor(color);
 
-        topdressingTextView00.setTextColor(0xff7e8181);
-        topdressingTextView01.setTextColor(0xff7e8181);
-        topdressingDivider.setBackgroundColor(0xff7e8181);
+        orderTextView00.setTextColor(color);
+        orderTextView01.setTextColor(color);
+        orderDivider.setBackgroundColor(color);
 
-        galleryTextView00.setTextColor(0xff7e8181);
-        galleryTextView01.setTextColor(0xff7e8181);
-        galleryDivider.setBackgroundColor(0xff7e8181);
+        paymentTextView00.setTextColor(color);
+        paymentTextView01.setTextColor(color);
+        paymentDivider.setBackgroundColor(color);
+
+        topdressingTextView00.setTextColor(color);
+        topdressingTextView01.setTextColor(color);
+        topdressingDivider.setBackgroundColor(color);
+
+        galleryTextView00.setTextColor(color);
+        galleryTextView01.setTextColor(color);
+        galleryDivider.setBackgroundColor(color);
     }
 
     private void enableMenu() {
@@ -538,41 +543,44 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void setDisableColor() {
-        gpsTextView00.setTextColor(0x88999999);
-        gpsTextView01.setTextColor(0x88999999);
-        courseDivider.setBackgroundColor(0x88999999);
 
-        scoreBoardTextView00.setTextColor(0x88999999);
-        scoreBoardTextView01.setTextColor(0x88999999);
-        scoreBoardDivider.setBackgroundColor(0x88999999);
+        int color = ContextCompat.getColor(getContext(), R.color.FMB_Color_88999999);
+        
+        gpsTextView00.setTextColor(color);
+        gpsTextView01.setTextColor(color);
+        courseDivider.setBackgroundColor(color);
 
-        nearestLongestTextView00.setTextColor(0x88999999);
-        nearestLongestTextView01.setTextColor(0x88999999);
-        nearestLongestDivider.setBackgroundColor(0x88999999);
+        scoreBoardTextView00.setTextColor(color);
+        scoreBoardTextView01.setTextColor(color);
+        scoreBoardDivider.setBackgroundColor(color);
 
-        rankingTextView00.setTextColor(0x88999999);
-        rankingTextView01.setTextColor(0x88999999);
-        rankingDivider.setBackgroundColor(0x88999999);
+        nearestLongestTextView00.setTextColor(color);
+        nearestLongestTextView01.setTextColor(color);
+        nearestLongestDivider.setBackgroundColor(color);
 
-        caddieTextView00.setTextColor(0x88999999);
-        caddieTextView01.setTextColor(0x88999999);
-        caddieDivider.setBackgroundColor(0x88999999);
+        rankingTextView00.setTextColor(color);
+        rankingTextView01.setTextColor(color);
+        rankingDivider.setBackgroundColor(color);
 
-        orderTextView00.setTextColor(0x88999999);
-        orderTextView01.setTextColor(0x88999999);
-        orderDivider.setBackgroundColor(0x88999999);
+        caddieTextView00.setTextColor(color);
+        caddieTextView01.setTextColor(color);
+        caddieDivider.setBackgroundColor(color);
 
-        paymentTextView00.setTextColor(0x88999999);
-        paymentTextView01.setTextColor(0x88999999);
-        paymentDivider.setBackgroundColor(0x88999999);
+        orderTextView00.setTextColor(color);
+        orderTextView01.setTextColor(color);
+        orderDivider.setBackgroundColor(color);
 
-        topdressingTextView00.setTextColor(0x88999999);
-        topdressingTextView01.setTextColor(0x88999999);
-        topdressingDivider.setBackgroundColor(0x88999999);
+        paymentTextView00.setTextColor(color);
+        paymentTextView01.setTextColor(color);
+        paymentDivider.setBackgroundColor(color);
 
-        galleryTextView00.setTextColor(0x88999999);
-        galleryTextView01.setTextColor(0x88999999);
-        galleryDivider.setBackgroundColor(0x88999999);
+        topdressingTextView00.setTextColor(color);
+        topdressingTextView01.setTextColor(color);
+        topdressingDivider.setBackgroundColor(color);
+
+        galleryTextView00.setTextColor(color);
+        galleryTextView01.setTextColor(color);
+        galleryDivider.setBackgroundColor(color);
     }
 
     private void disableMenu() {
@@ -622,7 +630,7 @@ public class ViewMenuFragment extends BaseFragment {
                 startTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        timer.cancel();
+                        todayReserveTimer.cancel();
                         selectTobDivider.setVisibility(View.GONE);
                         selectBottomDivider.setVisibility(View.GONE);
                         teeUpRecyclerView.setVisibility(View.GONE);

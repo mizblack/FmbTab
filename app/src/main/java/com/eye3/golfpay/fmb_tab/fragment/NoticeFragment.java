@@ -168,7 +168,6 @@ public class NoticeFragment extends BaseFragment {
 
 
             }
-
         }
     }
 

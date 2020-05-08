@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,33 +36,23 @@ import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
-import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
-import com.eye3.golfpay.fmb_tab.fragment.ViewMenuFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
-import com.eye3.golfpay.fmb_tab.util.Security;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     NavigationView navigationView;
     public DrawerLayout drawer_layout;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView;
+    TextView reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
 
     ImageView markView, cancelView;
     LinearLayout ll_login;
@@ -73,7 +62,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         super.onCreate(savedInstanceState);
         systemUIHide();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         getAllCourseInfo(MainActivity.this);
         init();
@@ -268,7 +257,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
-        systemUIHide();
+        // systemUIHide();
         //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
     }

@@ -36,4 +36,11 @@
     <color name="pattensBlue01">#d9e1e4</color>
     <color name="black">#000000</color>
     <color name="order_history_bg">#E4EBED</color>
+
+    <color name="FMB_Color_FF7E8181">#ff7e8181</color>
+    <color name="FMB_Color_88999999">#88999999</color>
+
+
+
+
 </resources>
