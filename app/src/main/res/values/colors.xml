@@ -4,16 +4,16 @@
     <color name="colorPrimaryDark" >#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="control_background">#cc4285f4</color>
-    <color name="bg"> #3dd6df</color>
-    <color name="txtColorWhite"> #FFFFFF</color>
-    <color name="bgColorWhite"> #FFFFFF</color>
-    <color name="txtRed"> #FF0000</color>
-    <color name="txtPink"> #FF1C74</color>
-    <color name="txtGray"> #E2E2E2</color>
-    <color name="txtBlack"> #000000</color>
-    <color name="lightPink">  #f97dad</color>
+    <color name="bg">#3dd6df</color>
+    <color name="txtColorWhite">#FFFFFF</color>
+    <color name="bgColorWhite">#FFFFFF</color>
+    <color name="txtRed">#FF0000</color>
+    <color name="txtPink">#FF1C74</color>
+    <color name="txtGray">#E2E2E2</color>
+    <color name="txtBlack">#000000</color>
+    <color name="lightPink">#f97dad</color>
     <color name="text">  #f97dad</color>
-    <color name="wmmsRed">   #ec2028</color>
+    <color name="wmmsRed">#ec2028</color>
     <color name="wmmsTextGrey">#666666</color>
     <!--                                   -->
     <color name="ebonyBlack">#2d2e31</color>
@@ -39,6 +39,7 @@
 
     <color name="FMB_Color_FF7E8181">#ff7e8181</color>
     <color name="FMB_Color_88999999">#88999999</color>
+    <color name="FMB_Color_F05D6C">#f05d6c</color>
 
 
 
