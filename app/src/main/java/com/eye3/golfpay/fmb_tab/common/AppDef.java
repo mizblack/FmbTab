@@ -67,6 +67,8 @@ public class AppDef {
     public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
     public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();
 
+    public static int mTempSaveRestaurantIdx ;
+
     public static List<String> getGuestList(){
         List<String> ArrList = new ArrayList<>();
         for(int i=0; AppDef.orderDetailList.size() > i ;i++){

@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -96,14 +95,12 @@ public class OrderFragment2 extends BaseFragment {
     ArrayAdapter mSpinnAdapter;
     TextView mTvCaddy;
 
-    List<RestaurantMenu> mWholeMenuList ;
+    List<RestaurantMenu> mWholeMenuList;
     MenuAdapter mMenuAdapter;
-    LinearLayoutManager mManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOrderItemInvoiceArrayList = AppDef.orderItemInvoiceArrayList;
-        mOrderDetailList = AppDef.orderDetailList;
 
         getRestaurantMenu();
     }
@@ -244,7 +241,6 @@ public class OrderFragment2 extends BaseFragment {
     //레스토랑바 선택시 보여주는 함수
     private void selectRestaurant(int selectedTabIdx) {
         refresh();
-
         mTvTheRestaurant.setTextColor(Color.GRAY);
         for (int i = 0; mRestaurantTabBarArr.length - 1 > i; i++) {
             TextView textView = mRestaurantTabBarArr[i];
@@ -278,16 +274,22 @@ public class OrderFragment2 extends BaseFragment {
 
     }
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if(mOrderItemInvoiceArrayList.size() >0 ) {
-            Toast.makeText(mContext, "임시저장 메뉴정보가 존재합니다.",  Toast.LENGTH_SHORT).show();
+    private void openTempSavedOrderList(){
+        //임시저장정보가 있다면
+        if (AppDef.orderItemInvoiceArrayList.size() > 0) {
+            Toast.makeText(mContext, "임시저장 메뉴정보가 존재합니다.", Toast.LENGTH_SHORT).show();
+            selectRestaurant(AppDef.mTempSaveRestaurantIdx);
+            //초기화로 인해 clear되지않게 할것
+            mOrderItemInvoiceArrayList = AppDef.orderItemInvoiceArrayList;
+            mOrderDetailList = AppDef.orderDetailList;
+         //   makeOrderItems();
             makeOrderItemInvoiceArrViews();
             setTheTotalInvoice();
         }
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         orderOrApplyBtn = Objects.requireNonNull(getView()).findViewById(R.id.orderOrApplyBtn);
         mCancelButton = Objects.requireNonNull(getView()).findViewById(R.id.resetButton);
@@ -332,11 +334,9 @@ public class OrderFragment2 extends BaseFragment {
             public void onClick(View v) {
                 AppDef.orderItemInvoiceArrayList = mOrderItemInvoiceArrayList;
                 AppDef.orderDetailList = mOrderDetailList;
+                AppDef.mTempSaveRestaurantIdx = mSelectedRestaurantTabIdx;
                 //임시저장시 RestaurantOrder에 식당별로 add시키고
                 Toast.makeText(getActivity(), "임시저장이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("restaurantList", mRestaurantList);
-//                GoNativeScreen(new OrderDetailHistoryFragment(), bundle);
             }
         });
 
@@ -366,7 +366,7 @@ public class OrderFragment2 extends BaseFragment {
             public void onClick(View v) {
                 int selectedItem = -1;
                 List<Category2> spinnSubCate2MenuList = getSubMenuList("", mTVCateName.getText().toString().trim());
-                if(spinnSubCate2MenuList == null){
+                if (spinnSubCate2MenuList == null) {
                     Toast.makeText(mContext, "서브카테고리가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -375,7 +375,6 @@ public class OrderFragment2 extends BaseFragment {
 
                 if (mSpinnAdapter != null)
                     mSpinnAdapter.clear();
-                spinnSubMenuList.add(mTVCateName.getText().toString());
 
                 for (int i = 0; spinnSubCate2MenuList.size() > i; i++) {
                     spinnSubMenuList.add(spinnSubCate2MenuList.get(i).catergory2_name);
@@ -411,7 +410,7 @@ public class OrderFragment2 extends BaseFragment {
                         if (position > 0) {
                             int subMenuZeroIdx = getPositionForSubMenuZeroItem(mTVCateName.getText().toString().trim(), spinnSubMenuList.get(position).toString());
                             mTvSubCateName.setText(spinnSubMenuList.get(position));
-                            if(subMenuZeroIdx != -1) {
+                            if (subMenuZeroIdx != -1) {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -419,8 +418,7 @@ public class OrderFragment2 extends BaseFragment {
                                     }
                                 }, 100);
 
-                            }
-                            else
+                            } else
                                 Toast.makeText(mContext, "해당 서브카테고리에 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
 
                         }
@@ -437,7 +435,6 @@ public class OrderFragment2 extends BaseFragment {
 
         });
     }
-
 
 
     //orderdetail과 주문내역데이리스트도 같이 삭제한다.
@@ -505,7 +502,8 @@ public class OrderFragment2 extends BaseFragment {
 
     private void refreshCategory() {
         //   mMenuAdapter.setAllRestaurantMenuUnSelected();
-        mMenuAdapter.notifyDataSetChanged();
+        if (mMenuAdapter != null)
+            mMenuAdapter.notifyDataSetChanged();
     }
 
     private void initRecyclerView(RecyclerView recycler, Restaurant selectedRestaurant) {
@@ -551,6 +549,7 @@ public class OrderFragment2 extends BaseFragment {
 
                     mRecyclerCategory.setLayoutManager(new SnappingLinearLayoutManager(mContext, 1, false));
                     mMenuAdapter.notifyDataSetChanged();
+                    openTempSavedOrderList();
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
