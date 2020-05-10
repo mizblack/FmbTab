@@ -22,7 +22,7 @@
     <string name="failover_inspection">장애점검</string>
     <string name="repair_maintenance">수리/정비</string>
     <string name="nms_compare">NMS비교\n현황</string>
-    <!--<string name="stats">통계</string>-->
+    <!--<string GuestName="stats">통계</string>-->
     <string name="manual">업무메뉴얼</string>
     <string name="network">네트워크단</string>
     <string name="kakao_app_key">c74d93584d22fbf8a2fcc9f83a59e529</string>

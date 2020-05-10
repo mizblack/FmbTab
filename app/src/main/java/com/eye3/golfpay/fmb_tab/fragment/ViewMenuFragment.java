@@ -263,7 +263,7 @@ public class ViewMenuFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new OrderFragment(), null);
+                GoNativeScreen(new OrderFragment2(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
