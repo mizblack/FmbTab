@@ -10,9 +10,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-<!--    <uses-feature android:GuestName="android.hardware.camera" />-->
+<!--    <uses-feature android:name="android.hardware.camera" />-->
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:GuestName="android.permission.READ_PHONE_STATE" /> -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
@@ -36,14 +36,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".service.CartLocationService"
-            android:enabled="true" >
+            android:enabled="true">
 
 <!--            <intent-filter >-->
-<!--                <action android:GuestName="pe.sbk.OnTop"/>-->
+<!--                <action android:name="pe.sbk.OnTop"/>-->
 <!--            </intent-filter>-->
         </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.eye3.golfpay.fmb_tab"

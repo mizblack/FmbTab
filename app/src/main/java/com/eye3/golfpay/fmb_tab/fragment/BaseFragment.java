@@ -272,8 +272,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         if (Objects.requireNonNull(getActivity()).getWindow().getDecorView() == null)
             return;
         View decorView = Objects.requireNonNull(getActivity()).getWindow().getDecorView();
-        final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN

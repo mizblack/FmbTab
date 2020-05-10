@@ -34,7 +34,9 @@ ext {
 dependencies {
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     implementation "org.permissionsdispatcher:permissionsdispatcher:${dispatcher_version}"
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${dispatcher_version}"
 
     implementation "com.android.support:appcompat-v7:${supportVersion}"

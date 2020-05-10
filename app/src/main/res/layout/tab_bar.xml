@@ -25,17 +25,20 @@
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/nearest_longest"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/pinkNearestOrLongest"
-            style="@style/MainTabTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_bold"
+            android:textSize="20sp"
             android:layout_marginStart="10dp"
             android:text="Nearest"
-            android:textColor="@color/mandy"
+            android:textColor="@color/FMB_Color_F05D6C"
             tools:ignore="HardcodedText" />
 
     </LinearLayout>
@@ -105,13 +108,19 @@
 
         <TextView
             android:id="@+id/rightButton"
-            style="@style/MainTabTitleTextView"
-            android:text="" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ranking"
+            android:fontFamily="@font/notosans_bold"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/ebonyBlack"
+            tools:ignore="HardcodedText"/>
 
         <ImageView
             android:id="@+id/rightButtonIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/score_up"
             tools:ignore="ContentDescription" />
