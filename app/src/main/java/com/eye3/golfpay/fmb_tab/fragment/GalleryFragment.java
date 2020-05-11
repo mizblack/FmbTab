@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,6 +144,11 @@ public class GalleryFragment extends BaseFragment {
     }
 
     private void createGuestList(LinearLayout container) {
+
+        if (Global.selectedReservation == null) {
+            Log.e(TAG, "Global.selectedReservation is null");
+            return;
+        }
 
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
             final int idx = i;

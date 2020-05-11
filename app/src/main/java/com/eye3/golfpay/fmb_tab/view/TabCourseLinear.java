@@ -236,8 +236,8 @@ public class TabCourseLinear extends LinearLayout {
         class ScoreItemViewHolder extends RecyclerView.ViewHolder {
             TextView tvRank, tvName;
             RelativeLayout[] holeScoreLayout = new RelativeLayout[9];
-            LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
-            LinearLayout wholeTotalLinear;
+            RelativeLayout[] courseTotal = new RelativeLayout[2]; //동적생성전 임시처리
+            RelativeLayout wholeTotalLinear;
             LinearLayout ll_score_row;
 
             ScoreItemViewHolder(View view) {
