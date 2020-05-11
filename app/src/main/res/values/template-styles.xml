@@ -22,8 +22,6 @@
 
     <style name="Theme.Sample" parent="Theme.Base" />
 
-    <!--<style mGuestName="AppTheme" parent="Theme.Sample" />-->
-    <!-- Widget styling -->
 
     <style name="Widget" />
 

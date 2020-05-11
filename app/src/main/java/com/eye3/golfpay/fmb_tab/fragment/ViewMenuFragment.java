@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -91,9 +92,9 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView galleryTextView01;
     private View galleryDivider;
     private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
-            orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear , caddieCancelLinearLayout;
+            orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear, caddieCancelLinearLayout;
 
-    Timer timer;
+    Timer todayReserveTimer;
 
     TextView mTvRoundStartfinish;
 
@@ -414,6 +415,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void setLogout() {
 
+        todayReserveTimer.cancel();
         Objects.requireNonNull(getActivity()).stopService((new Intent(getActivity(), CartLocationService.class)));
         getActivity().finish();
     }
@@ -432,16 +434,19 @@ public class ViewMenuFragment extends BaseFragment {
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
+                    //*****************
                     teeUpAdapter = new TeeUpAdapter(Global.teeUpTime.getTodayReserveList());
                     teeUpRecyclerView.setHasFixedSize(true);
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity());
                     teeUpRecyclerView.setLayoutManager(manager);
                     teeUpRecyclerView.setAdapter(teeUpAdapter);
                     teeUpAdapter.notifyDataSetChanged();
-                    if(mContext != null)
-                        Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    if (mContext != null) {
 
-
+                        if (getActivity() != null || getActivity().isFinishing() == false) {
+                            Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
 
@@ -461,9 +466,8 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void startTimer() {
 
-        timer = new Timer();
-
-        timer.schedule(new TimerTask() {
+        todayReserveTimer = new Timer();
+        todayReserveTimer.schedule(new TimerTask() {
 
             @Override
 
@@ -477,46 +481,48 @@ public class ViewMenuFragment extends BaseFragment {
             }
 
         }, 10 * 1000, 1000 * 5);
-
     }
 
 
     private void setEnableColor() {
-        gpsTextView00.setTextColor(0xff7e8181);
-        gpsTextView01.setTextColor(0xff7e8181);
-        courseDivider.setBackgroundColor(0xff7e8181);
 
-        scoreBoardTextView00.setTextColor(0xff7e8181);
-        scoreBoardTextView01.setTextColor(0xff7e8181);
-        scoreBoardDivider.setBackgroundColor(0xff7e8181);
+        int color = ContextCompat.getColor(getContext(), R.color.FMB_Color_FF7E8181);
 
-        nearestLongestTextView00.setTextColor(0xff7e8181);
-        nearestLongestTextView01.setTextColor(0xff7e8181);
-        nearestLongestDivider.setBackgroundColor(0xff7e8181);
+        gpsTextView00.setTextColor(color);
+        gpsTextView01.setTextColor(color);
+        courseDivider.setBackgroundColor(color);
 
-        rankingTextView00.setTextColor(0xff7e8181);
-        rankingTextView01.setTextColor(0xff7e8181);
-        rankingDivider.setBackgroundColor(0xff7e8181);
+        scoreBoardTextView00.setTextColor(color);
+        scoreBoardTextView01.setTextColor(color);
+        scoreBoardDivider.setBackgroundColor(color);
 
-        caddieTextView00.setTextColor(0xff7e8181);
-        caddieTextView01.setTextColor(0xff7e8181);
-        caddieDivider.setBackgroundColor(0xff7e8181);
+        nearestLongestTextView00.setTextColor(color);
+        nearestLongestTextView01.setTextColor(color);
+        nearestLongestDivider.setBackgroundColor(color);
 
-        orderTextView00.setTextColor(0xff7e8181);
-        orderTextView01.setTextColor(0xff7e8181);
-        orderDivider.setBackgroundColor(0xff7e8181);
+        rankingTextView00.setTextColor(color);
+        rankingTextView01.setTextColor(color);
+        rankingDivider.setBackgroundColor(color);
 
-        paymentTextView00.setTextColor(0xff7e8181);
-        paymentTextView01.setTextColor(0xff7e8181);
-        paymentDivider.setBackgroundColor(0xff7e8181);
+        caddieTextView00.setTextColor(color);
+        caddieTextView01.setTextColor(color);
+        caddieDivider.setBackgroundColor(color);
 
-        topdressingTextView00.setTextColor(0xff7e8181);
-        topdressingTextView01.setTextColor(0xff7e8181);
-        topdressingDivider.setBackgroundColor(0xff7e8181);
+        orderTextView00.setTextColor(color);
+        orderTextView01.setTextColor(color);
+        orderDivider.setBackgroundColor(color);
 
-        galleryTextView00.setTextColor(0xff7e8181);
-        galleryTextView01.setTextColor(0xff7e8181);
-        galleryDivider.setBackgroundColor(0xff7e8181);
+        paymentTextView00.setTextColor(color);
+        paymentTextView01.setTextColor(color);
+        paymentDivider.setBackgroundColor(color);
+
+        topdressingTextView00.setTextColor(color);
+        topdressingTextView01.setTextColor(color);
+        topdressingDivider.setBackgroundColor(color);
+
+        galleryTextView00.setTextColor(color);
+        galleryTextView01.setTextColor(color);
+        galleryDivider.setBackgroundColor(color);
     }
 
     private void enableMenu() {
@@ -538,41 +544,44 @@ public class ViewMenuFragment extends BaseFragment {
     }
 
     private void setDisableColor() {
-        gpsTextView00.setTextColor(0x88999999);
-        gpsTextView01.setTextColor(0x88999999);
-        courseDivider.setBackgroundColor(0x88999999);
 
-        scoreBoardTextView00.setTextColor(0x88999999);
-        scoreBoardTextView01.setTextColor(0x88999999);
-        scoreBoardDivider.setBackgroundColor(0x88999999);
+        int color = ContextCompat.getColor(getContext(), R.color.FMB_Color_88999999);
 
-        nearestLongestTextView00.setTextColor(0x88999999);
-        nearestLongestTextView01.setTextColor(0x88999999);
-        nearestLongestDivider.setBackgroundColor(0x88999999);
+        gpsTextView00.setTextColor(color);
+        gpsTextView01.setTextColor(color);
+        courseDivider.setBackgroundColor(color);
 
-        rankingTextView00.setTextColor(0x88999999);
-        rankingTextView01.setTextColor(0x88999999);
-        rankingDivider.setBackgroundColor(0x88999999);
+        scoreBoardTextView00.setTextColor(color);
+        scoreBoardTextView01.setTextColor(color);
+        scoreBoardDivider.setBackgroundColor(color);
 
-        caddieTextView00.setTextColor(0x88999999);
-        caddieTextView01.setTextColor(0x88999999);
-        caddieDivider.setBackgroundColor(0x88999999);
+        nearestLongestTextView00.setTextColor(color);
+        nearestLongestTextView01.setTextColor(color);
+        nearestLongestDivider.setBackgroundColor(color);
 
-        orderTextView00.setTextColor(0x88999999);
-        orderTextView01.setTextColor(0x88999999);
-        orderDivider.setBackgroundColor(0x88999999);
+        rankingTextView00.setTextColor(color);
+        rankingTextView01.setTextColor(color);
+        rankingDivider.setBackgroundColor(color);
 
-        paymentTextView00.setTextColor(0x88999999);
-        paymentTextView01.setTextColor(0x88999999);
-        paymentDivider.setBackgroundColor(0x88999999);
+        caddieTextView00.setTextColor(color);
+        caddieTextView01.setTextColor(color);
+        caddieDivider.setBackgroundColor(color);
 
-        topdressingTextView00.setTextColor(0x88999999);
-        topdressingTextView01.setTextColor(0x88999999);
-        topdressingDivider.setBackgroundColor(0x88999999);
+        orderTextView00.setTextColor(color);
+        orderTextView01.setTextColor(color);
+        orderDivider.setBackgroundColor(color);
 
-        galleryTextView00.setTextColor(0x88999999);
-        galleryTextView01.setTextColor(0x88999999);
-        galleryDivider.setBackgroundColor(0x88999999);
+        paymentTextView00.setTextColor(color);
+        paymentTextView01.setTextColor(color);
+        paymentDivider.setBackgroundColor(color);
+
+        topdressingTextView00.setTextColor(color);
+        topdressingTextView01.setTextColor(color);
+        topdressingDivider.setBackgroundColor(color);
+
+        galleryTextView00.setTextColor(color);
+        galleryTextView01.setTextColor(color);
+        galleryDivider.setBackgroundColor(color);
     }
 
     private void disableMenu() {
@@ -618,11 +627,11 @@ public class ViewMenuFragment extends BaseFragment {
                 visitorsGuestItemLinearLayout = v.findViewById(R.id.visitorsGuestItemLinearLayout);
                 divider = v.findViewById(R.id.divider);
                 startTextView = v.findViewById(R.id.startTextView);
-                //    mCurrentItemView = itemView;
-                startTextView.setOnClickListener(new View.OnClickListener() {
+
+                startTextView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
-                        timer.cancel();
+                    public boolean onTouch(View v, MotionEvent event) {
+                        todayReserveTimer.cancel();
                         selectTobDivider.setVisibility(View.GONE);
                         selectBottomDivider.setVisibility(View.GONE);
                         teeUpRecyclerView.setVisibility(View.GONE);
@@ -638,6 +647,8 @@ public class ViewMenuFragment extends BaseFragment {
                         setInOutTextView(todayReserveList.get(position).getInoutCourse());
 
                         enableMenu();
+
+                        return false;
                     }
                 });
 
@@ -655,12 +666,12 @@ public class ViewMenuFragment extends BaseFragment {
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull TeeUpAdapter.TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
-       //     if (position == 0) {
-                mMenuView.setBackgroundResource(R.drawable.shape_black_edge);
+            //     if (position == 0) {
+            mMenuView.setBackgroundResource(R.drawable.shape_black_edge);
 //                divider.setVisibility(View.VISIBLE);
-                startTextView.setText("시작");
-                startTextView.setTextColor(0xff00abc5);
-      //      }
+            startTextView.setText("대기");
+            startTextView.setTextColor(0xff00abc5);
+            //      }
             teeUpTimeTextView.setText(todayReserveList.get(position).getInoutCourse() + " " + timeMapper(todayReserveList.get(position).getTeeoff()));
             reservationGuestNameTextView.setText(todayReserveList.get(position).getGuestName());
             for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
@@ -669,15 +680,28 @@ public class ViewMenuFragment extends BaseFragment {
                 ImageView ivCheckin = visitorsGuestItem.findViewById(R.id.iv_checkin);
                 memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
                 if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
-                    //내장객이 입장을 안했을때
+                    //내장객이 전원 입장을 안했을때
                     //  ivCheckin.setImageAlpha(50);
                     ivCheckin.setVisibility(View.INVISIBLE);
                     startTextView.setEnabled(false);
+                } else if (areAllGuestsEnteredToPlay(position)) {
+                    startTextView.setEnabled(true);
+                    startTextView.setText("시작");
                 }
                 visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
 
             }
 
+        }
+
+        private boolean areAllGuestsEnteredToPlay(int position) {
+            for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
+
+                if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
@@ -722,8 +746,8 @@ public class ViewMenuFragment extends BaseFragment {
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
-                 //   GoNativeScreen(new CaddieFragment(), null);
-                   // drawer_layout.closeDrawer(GravityCompat.END);
+                    //   GoNativeScreen(new CaddieFragment(), null);
+                    // drawer_layout.closeDrawer(GravityCompat.END);
                     hideProgress();
                 }
             }

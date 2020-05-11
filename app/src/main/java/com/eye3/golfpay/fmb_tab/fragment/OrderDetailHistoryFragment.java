@@ -69,9 +69,9 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 
-    private void getStoreOrder() { // Global.selectedReservation.getReserveNo()
+    private void getStoreOrder() { 
         showProgress("주문내역 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(), "JHp1UA7T", new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(),Global.selectedReservation.getReserveNo() , new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
             @Override
             public void onSuccess(ResponseData<StoreOrder> response) {
                 hideProgress();

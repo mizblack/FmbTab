@@ -116,6 +116,11 @@ public class CourseFragment extends BaseFragment {
                     Global.courseInfoList = mCourseInfoList;
                     //여기서 초기화
                     Global.CurrentCourse = mCourseInfoList.get(0);
+                    if (mCourseInfoList == null || mCourseInfoList.size() == 0) {
+                        Toast.makeText(mContext, "코스 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     mCoursePagerAdapter = new CoursePagerAdapter(getActivity(), Global.CurrentCourse.holes);
                     mMapPager.setAdapter(mCoursePagerAdapter);
                     mMapPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -130,13 +135,14 @@ public class CourseFragment extends BaseFragment {
                             mTvCourseName.setText(Global.CurrentCourse.courseName);
                             mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
 
-                            if (Global.CurrentCourse.holes.get(position).tBox != null) {
+                            if (Global.CurrentCourse.holes != null &&  Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
                                 tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
                                 regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
                                 ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
                                 championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
                                 frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
                             }
+
                         }
 
                         @Override
@@ -148,12 +154,15 @@ public class CourseFragment extends BaseFragment {
                     mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
-                    if (Global.CurrentCourse.holes != null && Global.CurrentCourse.holes.get(0).tBox != null) {
+
+                    if (Global.CurrentCourse.holes != null && Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
                         tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
                         regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
                         ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
                         championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
                         frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
+                    }else{
+                        Toast.makeText(mContext, "Tbox 정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();

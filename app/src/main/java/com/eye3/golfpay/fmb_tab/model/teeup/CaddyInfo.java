@@ -8,7 +8,8 @@ import java.io.Serializable;
 public class CaddyInfo implements Serializable {
     @SerializedName("admins_id")
     private String admins_id;
-    @SerializedName("mGuestName")
+
+    @SerializedName("name")
     private String name;
 
     @SerializedName("cart_no")

@@ -53,7 +53,7 @@ public class RankingFragment extends BaseFragment {
     static int NUM_OF_HOLE = 10;
     RecyclerView mRankingRecyclerView;
     RankingAdapter mRankingAdapter;
-    List<Course> mCourseList ;
+    List<Course> mCourseList;
     List<Player> mPlayerList;
     LinearLayout mLinearHoleNoContainer = null;
     //홀정보레이아웃 어레이
@@ -118,7 +118,7 @@ public class RankingFragment extends BaseFragment {
         rightLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle  bundle = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("ani_direction", "down");
                 GoNativeScreen(new ScoreFragment(), bundle);
             }
@@ -291,13 +291,16 @@ public class RankingFragment extends BaseFragment {
                 }
                 holder1.tvRank.setText(playerList.get(position).Ranking);
                 //팀명을 api로부터 받아야함
-                   holder1.tvName.setText(playerList.get(position).name +"(" + playerList.get(position).team_name +")");
+                if (playerList.get(position).team_name != null || playerList.get(position).team_name == "")
+                    holder1.tvName.setText(playerList.get(position).name + "(" + playerList.get(position).team_name + ")");
+                else
+                    holder1.tvName.setText(playerList.get(position).name);
 
                 //동적 코스점수뷰 생성
                 for (int i = 0; holder1.mHoleScoreView.length > i; i++) {
                     List<Hole> holes = playerList.get(position).playingCourse.get(i).holes;
                     //해당 코스의 홀정보가 없으면 바로 리턴
-                    if(holes.size() == 0)
+                    if (holes.size() == 0)
                         return;
                     int eachCourseTotal = 0;
                     for (int j = 0; holder1.mHoleScoreView[i].length - 1 > j; j++) {
@@ -403,7 +406,7 @@ public class RankingFragment extends BaseFragment {
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    mPlayerList =  response.getList();
+                    mPlayerList = response.getList();
                     mPlayerList.sort(Comparator.naturalOrder());
                     mCourseList = Global.courseInfoList;
                     NUM_OF_COURSE = response.getList().get(0).playingCourse.size(); //코스수를 지정한다. courseNum 을 요청할것

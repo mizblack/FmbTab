@@ -228,7 +228,7 @@ public class CartLocationService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-           // Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
+         //   Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
             mLastLocation.set(location);
            if(Global.courseFragment== null)

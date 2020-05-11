@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -203,6 +205,7 @@ public class TabCourseLinear extends LinearLayout {
             if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
                 totalMeter = totalMeter + Integer.parseInt(holes.get(k).hole_total_size);
         }
+
         //홀인포 전체를 나타내는 마지막 셀정보 입력
         Hole totalHole = new Hole();
         totalHole.par = String.valueOf(totalPar);
@@ -215,7 +218,6 @@ public class TabCourseLinear extends LinearLayout {
 
         tvCourseName.setText(course.courseName);
         mHolderLinear.addView(holeInfoLinear[holeInfoLinear.length - 1]);
-
     }
 
 
@@ -233,9 +235,9 @@ public class TabCourseLinear extends LinearLayout {
 
         class ScoreItemViewHolder extends RecyclerView.ViewHolder {
             TextView tvRank, tvName;
-            LinearLayout[] holeScoreLayout = new LinearLayout[9];
+            RelativeLayout[] holeScoreLayout = new RelativeLayout[9];
             LinearLayout[] courseTotal = new LinearLayout[2]; //동적생성전 임시처리
-            LinearLayout wholeTotalLinear ;
+            LinearLayout wholeTotalLinear;
             LinearLayout ll_score_row;
 
             ScoreItemViewHolder(View view) {
@@ -378,10 +380,10 @@ public class TabCourseLinear extends LinearLayout {
 
                     if (i % 2 == 0) {
                         scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#EBEFF1"));
-                        scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
+                        //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
                     } else {
                         scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#F5F7F8"));
-                        scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
+                        //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
 
                     }
 
@@ -391,39 +393,39 @@ public class TabCourseLinear extends LinearLayout {
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes.get(0).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes.get(0).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)), course.holes.get(0));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.iv_badge1)), course.holes.get(0));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(AppDef.Par_Tar(course.holes.get(1).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_putt)).setText(course.holes.get(1).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)), course.holes.get(1));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.iv_badge2)), course.holes.get(1));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(AppDef.Par_Tar(course.holes.get(2).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_putt)).setText(course.holes.get(2).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)), course.holes.get(2));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.iv_badge3)), course.holes.get(2));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(AppDef.Par_Tar(course.holes.get(3).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_putt)).setText(course.holes.get(3).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)), course.holes.get(3));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.iv_badge4)), course.holes.get(3));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(AppDef.Par_Tar(course.holes.get(4).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_putt)).setText(course.holes.get(4).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)), course.holes.get(4));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.iv_badge5)), course.holes.get(4));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(AppDef.Par_Tar(course.holes.get(5).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_putt)).setText(course.holes.get(5).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)), course.holes.get(5));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.iv_badge6)), course.holes.get(5));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(AppDef.Par_Tar(course.holes.get(6).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_putt)).setText(course.holes.get(6).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)), course.holes.get(6));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.iv_badge7)), course.holes.get(6));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(AppDef.Par_Tar(course.holes.get(7).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_putt)).setText(course.holes.get(7).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)), course.holes.get(7));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.iv_badge8)), course.holes.get(7));
 
             ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(AppDef.Par_Tar(course.holes.get(8).playedScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes.get(8).playedScore.putting);
-            setBadge(((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)), course.holes.get(8));
+            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.iv_badge9)), course.holes.get(8));
 
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
@@ -453,7 +455,7 @@ public class TabCourseLinear extends LinearLayout {
 
 
 
-    private void setBadge(TextView tv, Hole playedHole) {
+    private void setBadge(ImageView iv, Hole playedHole) {
 
         if (!Util.isInteger(playedHole.playedScore.tar) || "-".equals(playedHole.playedScore.tar)) {
             return;
@@ -463,23 +465,23 @@ public class TabCourseLinear extends LinearLayout {
             case "3":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
                 }
                 break;
             case "4":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
                         break;
                     case 3:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
                 }
                 break;
@@ -487,16 +489,16 @@ public class TabCourseLinear extends LinearLayout {
             case "5":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
                         break;
                     case 3:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
                         break;
                     case 4:
-                        tv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
 
                 }

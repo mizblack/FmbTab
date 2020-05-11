@@ -29,11 +29,13 @@
         <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
-    <style name="Widget.SampleMessageTile">
-        <!--<item mGuestName="android:background">@drawable/tile</item>-->
-        <item name="android:shadowColor">#7F000000</item>
-        <item name="android:shadowDy">-3.5</item>
-        <item name="android:shadowRadius">2</item>
-    </style>
+<!--    <style name="Widget.SampleMessageTile">-->
+<!--        <item GuestName="android:background" >@drawable/tile</item>-->
+<!--        <item GuestName="android:background">@drawable/tile</item>-->
+<!--    -->
+<!--        <item name="android:shadowColor">#7F000000</item>-->
+<!--        <item name="android:shadowDy">-3.5</item>-->
+<!--        <item name="android:shadowRadius">2</item>-->
+<!--    </style>-->
 
 </resources>

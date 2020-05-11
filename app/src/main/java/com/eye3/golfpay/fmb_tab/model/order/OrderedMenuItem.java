@@ -32,7 +32,7 @@ public class OrderedMenuItem implements Serializable {
     @Expose
     public String caddy_id = "";
 
-    public OrderedMenuItem() {
+    public OrderedMenuItem(String trim, String s, String trim1, String name) {
         this.id = "";
         this.qty = "0";
         this.price = "0";

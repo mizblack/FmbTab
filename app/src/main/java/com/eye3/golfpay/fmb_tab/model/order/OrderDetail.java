@@ -37,7 +37,8 @@ public class OrderDetail implements Serializable {
 
     public OrderDetail(String reserve_guest_id) {
         this.reserve_guest_id = reserve_guest_id;
-        this.paid_total_amount = "0";
+        this.paid_total_amount = getPaid_total_amount();
+
         //    this.mOrderedMenuItemList = new ArrayList<>();
     }
 
@@ -60,12 +61,14 @@ public class OrderDetail implements Serializable {
             }
         }else
             Log.d(TAG, "게스트가 주문한 메뉴가 아닙니다.");
+
+        this.paid_total_amount=  getPaid_total_amount();
     }
 
 
     public boolean isOrderedMenuItemExist(String id) {
 
-        if (mOrderedMenuItemList == null || Integer.parseInt(id) < 0) {
+        if (mOrderedMenuItemList == null || id == "" || Integer.parseInt(id) < 0) {
             //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
             return false;
         }

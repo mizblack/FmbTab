@@ -31,6 +31,10 @@ public class RestaurantMenuOrder {
         mOrderedGuestId = id;
     }
 
+    public List<OrderItemInvoice> getmOrderItemInvoiceArrayList(){
+        return mOrderItemInvoiceArrayList;
+    }
+
     public void setmCurrentOrderedMenuItem(OrderedMenuItem orderedMenuItem) {
         this.mCurrentOrderedMenuItem = orderedMenuItem;
     }

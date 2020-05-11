@@ -51,9 +51,9 @@
 
                         <ImageView
                             android:id="@+id/btn_logout"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="20dp"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginStart="12dp"
                             android:background="@drawable/menu_cancel"
                             tools:ignore="ContentDescription" />
 

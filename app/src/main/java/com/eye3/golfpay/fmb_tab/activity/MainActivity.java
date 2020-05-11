@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,33 +37,23 @@ import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
-import com.eye3.golfpay.fmb_tab.fragment.QRScanFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
-import com.eye3.golfpay.fmb_tab.fragment.ViewMenuFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
-import com.eye3.golfpay.fmb_tab.util.Security;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     NavigationView navigationView;
     public DrawerLayout drawer_layout;
-    TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView, reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
+    TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView;
+    TextView reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
 
     ImageView markView, cancelView;
     LinearLayout ll_login;
@@ -73,30 +63,33 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         super.onCreate(savedInstanceState);
         systemUIHide();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         getAllCourseInfo(MainActivity.this);
         init();
         hideMainBottomBar();
+        requestPermission();
         startLocationService();
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
-
-    @SuppressLint("ObsoleteSdkInt")
-    private void startLocationService() {
+    private void requestPermission(){
+       //permission 추가할경우 new String[]에  android.Manifest.permission.XXX 추가
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.CAMERA},
                     0);
-        } else {
+        }
+
+    }
+
+    private void startLocationService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
             } else {
                 startService(new Intent(getApplicationContext(), CartLocationService.class));
             }
-        }
     }
 
     public void openDrawerLayout() {
@@ -268,7 +261,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
-        systemUIHide();
+        // systemUIHide();
         //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
     }
@@ -359,17 +352,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         return index;
     }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // sendTakePhotoIntent();
-            } else {
-                Toast.makeText(MainActivity.this, "카메라 사용 권한이 없습니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 
 }
