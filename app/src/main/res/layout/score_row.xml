@@ -39,8 +39,8 @@
             <TextView
                 android:id="@+id/putt"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="19dp"
                 android:text="Putt" />
 
         </RelativeLayout>
@@ -57,54 +57,55 @@
 
             <TextView
                 android:id="@+id/hole1_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole1_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole2_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole2_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole2_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
@@ -112,293 +113,303 @@
             android:id="@+id/hole3_ll"
             android:layout_width="87dp"
             android:layout_height="match_parent"
-            android:background="#ff0000">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole3_hit"
-                android:paddingTop="6dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole3_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole4_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole4_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole4_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole5_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole5_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole5_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole6_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole6_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole6_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole7_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole7_hit"
-                android:paddingTop="6dp"
-                android:layout_marginLeft="16dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
                 android:text="4"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole7_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge7"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole8_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole8_hit"
-                android:paddingTop="6dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
-                android:text="4"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_height="wrap_content" />
+                android:paddingTop="6dp"
+                android:text="4"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole8_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge8"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/hole9_ll"
             android:layout_width="87dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/hole9_hit"
-                android:paddingTop="6dp"
                 style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
-                android:textColor="@color/black"
-                android:text="4"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_height="wrap_content" />
+                android:paddingTop="6dp"
+                android:text="4"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/hole9_putt"
-                android:text="1/2"
                 style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
-                android:layout_marginBottom="19dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
             <ImageView
                 android:id="@+id/iv_badge9"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 
 
-
-
-
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
-<!--          코스토탈 첫 컬럼-->
-        <LinearLayout
+        <!--          코스토탈 첫 컬럼-->
+
+        <RelativeLayout
             android:id="@+id/ll_course0_total"
-            android:layout_width="82dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="87dp"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/course0_total_tar"
-                style="@style/MainHoleTextView" />
+                style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
+                android:text="28"
+                android:textColor="@color/black"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/course0_toatal_putt"
-                style="@style/MainPuttTextView" />
+                style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_course1_total"
-            android:layout_width="82dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_width="87dp"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/course1_total_tar"
-                style="@style/MainHoleTextView" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights" />
+                style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
+                android:text="28"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/course1_total_putt"
-                style="@style/MainPuttTextView" />
+                style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/lightGray" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/whole_total_linear"
-            android:layout_width="82dp"
+            android:layout_width="87dp"
             android:layout_height="match_parent"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/whole_total_tar"
-                style="@style/MainHoleTextView"
+                style="@style/GlobalTextView.32SP.white.NotoSans.Medium"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:paddingTop="6dp"
+                android:text="28"/>
 
-                android:textColor="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/whole_total_put"
-                style="@style/MainPuttTextView" />
+                style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="19dp"
+                android:text="1/2" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
