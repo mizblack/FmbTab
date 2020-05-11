@@ -25,4 +25,20 @@ public class RestaurantMenu implements Serializable {
     //ui용 변수
     public boolean isSelected = false;
 
+    public String category1 ;
+    public String category2 ;
+    public int SubCateZeroIndex ;
+
+    public RestaurantMenu(String id, String name, String price, String image, String category1, String category2, int SubCateZeroIndex){
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.category1 = category1;
+        this.category2 = category2;
+        this.SubCateZeroIndex = SubCateZeroIndex;
+    }
+
+
+
 }

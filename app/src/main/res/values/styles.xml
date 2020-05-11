@@ -176,7 +176,7 @@
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">22sp</item>
         <item name="android:gravity">center</item>
-<!--        <item name="android:textStyle">bold</item>-->
+<!--        <item GuestName="android:textStyle">bold</item>-->
         <item name="android:background">@drawable/shape_gray_edge</item>
     </style>
 
