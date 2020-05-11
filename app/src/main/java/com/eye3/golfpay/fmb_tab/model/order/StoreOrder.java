@@ -23,7 +23,7 @@ public class StoreOrder implements Serializable {
 
     @SerializedName("pos_order_list")
     @Expose
-    public List<PosPersonalOrder>  pos_order_list = new ArrayList<PosPersonalOrder>();
+    public List<PosPersonalOrder>  pos_order_list ;
 
 
 

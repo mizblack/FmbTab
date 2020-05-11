@@ -155,11 +155,12 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         if (bundle != null) {
             mBaseFragment.setArguments(bundle);
             direction = bundle.getString("ani_direction");
-            if (direction.equals("up")) {
-                transaction.setCustomAnimations(R.anim.pull_in_top, R.anim.push_out_down);
-            } else if (direction.equals("down"))
-                transaction.setCustomAnimations(R.anim.slide_down_to_enter, R.anim.slide_down_to_enter);
-
+            if (direction != null) {
+                if (direction.equals("up")) {
+                    transaction.setCustomAnimations(R.anim.pull_in_top, R.anim.push_out_down);
+                } else if (direction.equals("down"))
+                    transaction.setCustomAnimations(R.anim.slide_down_to_enter, R.anim.slide_down_to_enter);
+            }
         } else {
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         }

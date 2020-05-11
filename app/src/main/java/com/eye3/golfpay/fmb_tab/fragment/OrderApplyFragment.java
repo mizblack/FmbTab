@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.BasicSpinnerAdapter;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.OrderDetail;
 import com.eye3.golfpay.fmb_tab.model.order.OrderedMenuItem;
 
@@ -154,11 +155,19 @@ public class OrderApplyFragment extends BaseFragment {
 
     }
 
+    public  String getGuestName(String reserveId) {
+        for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
+            if (Global.selectedReservation.getGuestData().get(i).getId().equals(reserveId)) {
+                return Global.selectedReservation.getGuestData().get(i).getGuestName();
+            }
+        }
+        return "";
+    }
 
     ArrayList<String> getGuestList() {
         ArrayList<String> ArrList = new ArrayList<>();
         for (int i = 0; AppDef.orderDetailList.size() > i; i++) {
-            ArrList.add(OrderFragment.getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
+            ArrList.add(getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
         }
         return ArrList;
     }
@@ -169,7 +178,7 @@ public class OrderApplyFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.personal_bill, null, false);
 
         TextView tvName = v.findViewById(R.id.memberNameTextView);
-        tvName.setText(OrderFragment.getGuestName(orderDetail.reserve_guest_id));
+        tvName.setText(getGuestName(orderDetail.reserve_guest_id));
         TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
 
         String strPrice = AppDef.priceMapper(Integer.valueOf(orderDetail.paid_total_amount));
@@ -184,7 +193,7 @@ public class OrderApplyFragment extends BaseFragment {
             lllp.leftMargin = 10;
             tvOrderItem.setLayoutParams(lllp);
             tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_item.name + "x" + a_item.qty;
+            String str = a_item.menuName + "x" + a_item.qty;
             tvOrderItem.setText(str);
             memberOrderLinearLayout.addView(tvOrderItem);
         }
@@ -198,7 +207,7 @@ public class OrderApplyFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.personal_bill, null, false);
 
         TextView tvName = v.findViewById(R.id.memberNameTextView);
-        tvName.setText(OrderFragment.getGuestName(orderDetail.reserve_guest_id));
+        tvName.setText(getGuestName(orderDetail.reserve_guest_id));
         TextView tvPrice = v.findViewById(R.id.memberPriceTextView);
         String strAmount = String.valueOf(mTotalAmount / TOTAL_PAY_MEMBER);
         tvPrice.setText(strAmount + "원");
@@ -274,7 +283,7 @@ public class OrderApplyFragment extends BaseFragment {
             OrderDetail a_order = (OrderDetail) v.getTag();
             switch (mPayType) {
                 case "dutch":
-                    if (!isExist(OrderFragment.getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
+                    if (!isExist(getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
                         tvTextName = v.findViewById(R.id.memberNameTextView);
                         tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
                         memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);
@@ -290,7 +299,7 @@ public class OrderApplyFragment extends BaseFragment {
 
                     break;
                 case "one_over_n":
-                    if (!isExist(OrderFragment.getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
+                    if (!isExist(getGuestName(a_order.reserve_guest_id), selectedGuestArr)) {
                         tvTextName = v.findViewById(R.id.memberNameTextView);
                         tvMemberPrice = v.findViewById(R.id.memberPriceTextView);
                         memberOrderLinearLayout = v.findViewById(R.id.personalOrderLinearLayout);

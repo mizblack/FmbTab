@@ -9,13 +9,14 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 //각 guest당 주문내역 (기본 4개 리스트로)
 public class OrderDetail implements Serializable {
     public String TAG = getClass().getSimpleName();
     @SerializedName("reserve_guest_id")
     @Expose
     public String reserve_guest_id;
-
+    //자동 계산됨
     @SerializedName("paid_total_amount")
     @Expose
     public String paid_total_amount = "0";
@@ -28,10 +29,10 @@ public class OrderDetail implements Serializable {
         return mOrderedMenuItemList;
     }
 
-    public OrderDetail(String reserve_guest_id, String paid_total_amount, ArrayList<OrderedMenuItem>  mOrderedMenuItemList ) {
-       this.reserve_guest_id = reserve_guest_id;
-       this.paid_total_amount = paid_total_amount;
-       this.mOrderedMenuItemList = mOrderedMenuItemList;
+    public OrderDetail(String reserve_guest_id, String paid_total_amount, ArrayList<OrderedMenuItem> mOrderedMenuItemList) {
+        this.reserve_guest_id = reserve_guest_id;
+        this.paid_total_amount = paid_total_amount;
+        this.mOrderedMenuItemList = mOrderedMenuItemList;
     }
 
     public OrderDetail(String reserve_guest_id) {
@@ -40,24 +41,27 @@ public class OrderDetail implements Serializable {
         //    this.mOrderedMenuItemList = new ArrayList<>();
     }
 
-    public void addOrPlusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
-        if (isOrderedMenuItemExist(mOrderedMenuItem.id)) {
-            //중복 메뉴 추가시 qty 를 더한다.
-            plusQty(mOrderedMenuItem);
-        } else {  //중복 메뉴가 아니면 추가
-            mOrderedMenuItemList.add(mOrderedMenuItem);
-        }
-    }
-
-//    public void addOrMinusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
+//    public void addOrPlusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
 //        if (isOrderedMenuItemExist(mOrderedMenuItem.id)) {
 //            //중복 메뉴 추가시 qty 를 더한다.
-//            minusQty(mOrderedMenuItem.id);
-//        } else {  //중복 메뉴가 아니면 삭제
-//            //현재 이로직 실행안됨
-//            mOrderedMenuItemList.remove(mOrderedMenuItem);
+//            plusQty(mOrderedMenuItem);
+//        } else {  //중복 메뉴가 아니면 추가
+//            mOrderedMenuItemList.add(mOrderedMenuItem);
 //        }
 //    }
+
+    public void addOrPlusSelectedOrderedMenuItem(OrderedMenuItem orderedMenuItem, String guestId){
+        if(reserve_guest_id.equals(guestId)){
+            if (isOrderedMenuItemExist(orderedMenuItem.id)) {
+                //중복 메뉴 추가시 qty 를 더한다.
+                plusQty(orderedMenuItem);
+            } else {  //중복 메뉴가 아니면 추가
+                mOrderedMenuItemList.add(orderedMenuItem);
+            }
+        }else
+            Log.d(TAG, "게스트가 주문한 메뉴가 아닙니다.");
+    }
+
 
     public boolean isOrderedMenuItemExist(String id) {
 
@@ -75,16 +79,18 @@ public class OrderDetail implements Serializable {
     }
 
     private void plusQty(OrderedMenuItem item) {
+      //  int mAddQty = Integer.valueOf(item.qty);
         // if (Integer.valueOf(id) < 0)
         //  Log.d(TAG, "존재하지 않는 메뉴 아이디 입니다.");
         for (int i = 0; mOrderedMenuItemList.size() > i; i++) {
             if (item.id.equals(mOrderedMenuItemList.get(i).id)) {
-                if(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty) < 0){
+                if (Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty) < 0) {
                     Log.i(TAG, "orderMenuItem 수량 한도 미만");
                     return;
                 }
-                mOrderedMenuItemList.get(i).qty = String.valueOf(Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty));
-                Log.i(TAG,   " 메뉴오더: "  + mOrderedMenuItemList.get(i).name + mOrderedMenuItemList.get(i).qty + "더하기 " + Integer.valueOf(item.qty));
+               int addQty = Integer.valueOf(mOrderedMenuItemList.get(i).qty) + Integer.valueOf(item.qty);
+                mOrderedMenuItemList.get(i).qty = String.valueOf(addQty);
+
                 //중복 메뉴일경우 qty 추가후 total 을 다시계산
                 mOrderedMenuItemList.get(i).setTotal();
                 return;

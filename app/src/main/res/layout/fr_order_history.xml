@@ -10,7 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
 
         <TextView
             android:id="@+id/tvTheRestaurantOrderHistory"
@@ -45,10 +47,9 @@
         <Button
             android:id="@+id/topAddButton"
             style="@style/SubMenuTextView"
-            android:layout_width="120dp"
+            android:layout_width="130dp"
             android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/irisBlue"
+            android:background="@drawable/button_round"
             android:gravity="center"
             android:text="추가주문"
             android:textSize="20sp"
@@ -69,8 +70,18 @@
         android:textSize="22dp"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/orderHistoryRecycleView"
+<!--    여기에 history_order_item을 추가한다.-->
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:id="@+id/order_history_sv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:id="@+id/order_history_linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            />
+    </ScrollView>
 </LinearLayout>

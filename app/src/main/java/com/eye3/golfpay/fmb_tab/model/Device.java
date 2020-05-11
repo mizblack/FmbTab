@@ -145,9 +145,9 @@ public class Device  implements Serializable {
 //        this.center = "";
 //    }
 //
-//    public Device(String id, String name, String  addressDetail, String category, String type, String serial, String manufacturer, String mainMaintenanceCompany, String uniqueNo) {
+//    public Device(String id, String mGuestName, String  addressDetail, String category, String type, String serial, String manufacturer, String mainMaintenanceCompany, String uniqueNo) {
 //        this.deviceId = id;
-//        this.deviceName = name;
+//        this.deviceName = mGuestName;
 //        this.addressDetail = addressDetail;
 //        this.deviceCategoryCode = category;
 //        this.deviceTypeCode = type;

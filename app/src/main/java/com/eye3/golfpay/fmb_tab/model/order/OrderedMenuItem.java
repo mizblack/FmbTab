@@ -26,28 +26,29 @@ public class OrderedMenuItem implements Serializable {
     //메뉴이름
     @SerializedName("name")
     @Expose
-    public String name = "";
+    public String menuName = "";
 
     @SerializedName("caddy_id")
     @Expose
     public String caddy_id = "";
 
-    public OrderedMenuItem(){
-         this.id ="";
-         this.qty = "0";
-         this.price = "0";
-         this.total = "0";
-         this.name = "";
+    public OrderedMenuItem() {
+        this.id = "";
+        this.qty = "0";
+        this.price = "0";
+        this.total = "0";
+        this.menuName = "";
 
-     }
+    }
 
-    public OrderedMenuItem(String id, String qty, String price, String name) {
+    public OrderedMenuItem(String id, String qty, String price, String name, String caddyId) {
         super();
-         this.id = id;
+        this.id = id;
         this.qty = qty;
         this.price = price;
         setTotal();
-        this.name = name;
+        this.menuName = name;
+        this.caddy_id = caddyId;
     }
 
     public String getId() {
@@ -83,10 +84,10 @@ public class OrderedMenuItem implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return menuName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.menuName = name;
     }
 }

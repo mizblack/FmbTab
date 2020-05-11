@@ -22,6 +22,6 @@ public class Restaurant implements Serializable {
 
     @SerializedName("category")
     @Expose
-   public  ArrayList<Category> categoryList = new ArrayList<Category>();
+    public  ArrayList<Category> categoryList = new ArrayList<Category>();
 
 }

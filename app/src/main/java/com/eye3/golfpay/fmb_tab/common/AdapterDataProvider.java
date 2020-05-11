@@ -59,12 +59,12 @@ public class AdapterDataProvider {
 //    }
 
 
-    public static List<String> getGuestList(){
-        List<String> ArrList = new ArrayList<>();
-        for(int i=0; AppDef.orderDetailList.size() > i ;i++){
-            ArrList.add(OrderFragment.getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
-        }
-        return ArrList;
-    }
+//    public static List<String> getGuestList(){
+//        List<String> ArrList = new ArrayList<>();
+//        for(int i=0; AppDef.orderDetailList.size() > i ;i++){
+//            ArrList.add(OrderFragment.getGuestName(AppDef.orderDetailList.get(i).reserve_guest_id));
+//        }
+//        return ArrList;
+//    }
 
 }

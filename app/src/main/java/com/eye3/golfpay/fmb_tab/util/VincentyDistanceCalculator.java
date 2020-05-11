@@ -117,7 +117,7 @@ public class VincentyDistanceCalculator {
             flat = f;
         }
 
-        /** User-visible name of this ellipsoid. */
+        /** User-visible mGuestName of this ellipsoid. */
         public final String name;
 
         /** Equatorial semimajor axis of this ellipsoid (in metres). */

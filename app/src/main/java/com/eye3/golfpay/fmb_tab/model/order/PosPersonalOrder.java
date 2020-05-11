@@ -10,7 +10,7 @@ import java.util.List;
 public class PosPersonalOrder implements Serializable {
     @SerializedName("order_name")
     @Expose
-    public String order_name ="홍길동";
+    public String order_name ="";
 
     @SerializedName("guest_id")
     @Expose

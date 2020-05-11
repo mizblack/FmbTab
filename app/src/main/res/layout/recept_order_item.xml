@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/order_history_bg">
+    android:background="@color/order_history_bg"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,38 +14,41 @@
             android:id="@+id/order_time"
             android:layout_width="300dp"
             android:layout_height="40dp"
-            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:text="오전 06시20분"
             android:textColor="@color/ebonyBlack"
             android:textSize="20dp"
-            android:text="오전 06시20분"
-            android:gravity="center_vertical"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/order_status"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:textColor="@color/gray"
-            android:textSize="20sp"
             android:gravity="center_vertical"
-            />
+            android:textColor="@color/gray"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_bill_unit_height"
-        android:orientation="horizontal"
         android:background="@color/order_history_bg"
+        android:orientation="horizontal"
         android:weightSum="10">
 
-        <LinearLayout
-            android:id="@+id/linear_personal_order_container"
+        <HorizontalScrollView
             android:layout_width="0dp"
             android:layout_height="@dimen/personal_bill_unit_height"
             android:layout_weight="8"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            />
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/linear_personal_order_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -55,29 +58,27 @@
 
             <TextView
                 android:id="@+id/tvTotal"
+                style="@style/ItemOrderBillTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="총계 "
-                style="@style/ItemOrderBillTextStyle"
-                android:textSize="22sp"
                 android:gravity="center"
-                android:textColor="@color/irisBlue" />
+                android:text="총계 "
+                android:textColor="@color/irisBlue"
+                android:textSize="22sp" />
 
 
             <Button
                 android:id='@+id/btn_extra_order_cancel'
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
                 android:background="#FF5353"
                 android:gravity="center"
+                android:padding="1dp"
+                android:text="주문취소하기"
                 android:textColor="@color/white"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:text="주문취소하기"
-                android:layout_alignParentBottom="true"
-                android:padding="1dp"
-                android:layout_marginBottom="10dp"
-                />
+                android:textStyle="bold" />
 
         </RelativeLayout>
     </LinearLayout>
