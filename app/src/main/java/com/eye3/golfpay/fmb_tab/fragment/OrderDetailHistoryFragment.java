@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -81,7 +83,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
                     //여기서 실행해야함.
-                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
+                    //createTabBar(mRestaurantTabBarArr, mRestaurantList);
                     setTagTheRestaurant();
                     selectRestaurant(mSelectedRestaurantTabIdx);
                 } else if (response.getResultCode().equals("fail")) {
@@ -219,8 +221,11 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 i--;
             } else {
                 final int idx = i;
-                tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeTabTitleTextView), null, 0);
-                tvRestTabBar[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.GlobalTextView_18SP_C9D7DC_NotoSans_Bold), null, 0);
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                param.rightMargin = 80;
+                tvRestTabBar[i].setLayoutParams(param);
+                tvRestTabBar[i].setGravity(Gravity.CENTER);
                 tvRestTabBar[i].setText(mRestaurantList.get(i).name);
                 tvRestTabBar[i].setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(i).name));
                 tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
@@ -300,13 +305,19 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         tvName.setText(personalOrder.guest_name);
         for (int i = 0; personalOrder.menuList.size() > i; i++) {
             Menu a_menu = personalOrder.menuList.get(i);
-            TextView tvOrderItem = new TextView(getActivity(), null, 0, R.style.ItemOrderBillTextStyle);
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50);
-            tvOrderItem.setLayoutParams(lllp);
-            tvOrderItem.setPadding(8, 0, 0, 0);
-            String str = a_menu.item_name + "       " + a_menu.qty + "개";
-            tvOrderItem.setText(str);
-            memberOrderLinearLayout.addView(tvOrderItem);
+            LayoutInflater inflater2 = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View childView = inflater2.inflate(R.layout.view_history_personal_bill_item, null, false);
+
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            params.topMargin = 30;
+            childView.setLayoutParams(params);
+
+            TextView tvBillItemName = childView.findViewById(R.id.tv_bill_item_name);
+            TextView tvBillItemCount = childView.findViewById(R.id.tv_bill_item_count);
+            tvBillItemName.setText(a_menu.item_name);
+            tvBillItemCount.setText(a_menu.qty + "개");
+
+            memberOrderLinearLayout.addView(childView);
         }
         String strPrice = AppDef.priceMapper(Integer.valueOf(personalOrder.total_price));
         tvPrice.setText(strPrice + "원");

@@ -30,7 +30,7 @@
             android:layout_weight="7"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingEnd="40dp"
+            android:paddingEnd="20dp"
             android:paddingBottom="40dp"
             android:visibility="visible">
 
@@ -47,7 +47,6 @@
                 android:layout_height="70dp"
                 android:orientation="horizontal"
                 android:weightSum="10">
-
 
                 <TextView
                     android:id="@+id/tvTheRestaurant"
@@ -70,7 +69,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        tools:ignore="ScrollViewSize,UselessLeaf"></LinearLayout>
+                        tools:ignore="ScrollViewSize,UselessLeaf">
+
+                    </LinearLayout>
 
                 </HorizontalScrollView>
 
@@ -118,49 +119,89 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="28dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/img_food"
-                    android:layout_width="500dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_noimage"
-                    tools:ignore="ContentDescription" />
+                <FrameLayout
+                    android:layout_width="485dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/img_food"
+                        android:layout_width="485dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/order_menu_temp"
+                        android:scaleType="centerCrop"
+                        tools:ignore="ContentDescription" />
+                    <ImageView
+                        android:id="@+id/img_no_img"
+                        android:layout_width="485dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/zumthor"
+                        android:src="@drawable/ic_noimage"
+                        android:scaleType="center"
+                        tools:ignore="ContentDescription"
+                        android:visibility="gone"/>
+                </FrameLayout>
+
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_category"
-                    android:layout_width="200dp"
+                    android:layout_width="228dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/shape_gray_edge" />
+                    android:padding="1dp"
+                    android:background="@drawable/shape_order_list" />
 
-                <ScrollView
-                    android:layout_width="80dp"
-                    android:layout_height="500dp"
-                    android:scrollbars="none">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    <ScrollView
+                        android:id="@+id/guest_scrollview"
+                        android:layout_width="92dp"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
 
-                        <LinearLayout
-                            android:id="@+id/guest_container"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="420dp"
-                            android:orientation="vertical" />
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:background="@color/zumthor">
 
-                        <TextView
-                            android:id="@+id/tvCaddy"
-                            android:layout_width="59dp"
-                            android:layout_height="80dp"
-                            android:layout_gravity="bottom"
-                            android:background="@color/ebonyBlack"
-                            android:gravity="center"
-                            android:text="캐디"
-                            android:textColor="@color/white"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-                </ScrollView>
+                            <LinearLayout
+                                android:id="@+id/guest_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintStart_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </ScrollView>
+
+                    <View
+                        android:layout_width="92dp"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/guest_scrollview"
+                        android:background="@color/zumthor"/>
+
+                    <TextView
+                        android:id="@+id/tvCaddy"
+                        android:layout_width="90dp"
+                        android:layout_height="94dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/ebonyBlack"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center"
+                        android:text="캐디"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+
+
 
             </LinearLayout>
 
@@ -277,46 +318,63 @@
                      android:layout_above="@id/btn_order_history"
                      />
              </RelativeLayout>
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/rel_send_order"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
+                android:background="@color/irisBlue"
                 android:visibility="visible">
 
-                <Button
+                <TextView
                     android:id="@+id/btnTempSave"
                     android:layout_width="200dp"
                     android:layout_height="70dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/shape_blue_edge"
+                    android:background="@color/white"
                     android:gravity="center"
                     android:text="임시저장"
                     android:textColor="@color/irisBlue"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
 
-                <Button
+                <TextView
                     android:id="@+id/resetButton"
-                    android:layout_width="110dp"
+                    android:layout_width="0dp"
                     android:layout_height="70dp"
-                    android:layout_toRightOf="@id/btnTempSave"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_blue_edge"
+                    android:layout_margin="1dp"
+                    android:layout_toRightOf="@+id/btnTempSave"
+                    android:background="@color/white"
                     android:gravity="center"
                     android:text="취소"
                     android:textColor="@color/gray"
                     android:textSize="18dp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnTempSave"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
 
+                <View
+                    android:id="@+id/bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_below="@+id/resetButton"
+                    android:background="@color/white"
+                    app:layout_constraintTop_toBottomOf="@+id/btnTempSave"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
                     android:id="@+id/orderOrApplyBtn"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginTop="5dp"
                     android:layout_weight="2"
                     android:background="@color/irisBlue"
                     android:gravity="center"
@@ -324,9 +382,12 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/bar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
 
     </LinearLayout>

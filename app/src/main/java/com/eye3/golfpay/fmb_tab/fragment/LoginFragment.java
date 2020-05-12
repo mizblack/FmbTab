@@ -12,8 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.eye3.golfpay.fmb_tab.BuildConfig;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.Security;
@@ -50,6 +52,17 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void init(View v){
+
+        //매번 로그인 하기 귀찮아서 자동 로그인
+        if(BuildConfig.DEBUG == true) {
+            UIThread.executeInUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    mStartTextView.performClick();
+                }
+            });
+        }
+
         // 메뉴뷰 이벤트처리
         mStartTextView.setOnClickListener(new View.OnClickListener() {
             @Override
