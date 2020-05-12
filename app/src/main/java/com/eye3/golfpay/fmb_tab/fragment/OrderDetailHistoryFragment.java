@@ -56,11 +56,12 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             NUM_OF_RESTAURANT = mRestaurantList.size();
             mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
             mSelectedRestaurantTabIdx = bundle.getInt("selectedRestaurantTabIdx");
+
         }
         getStoreOrder();
     }
 
-    private StoreOrder findStoreOrderByRestaurantName(List<StoreOrder> storeOrderList, String targetRestaurantName) {
+    public static StoreOrder findStoreOrderByRestaurantName(List<StoreOrder> storeOrderList, String targetRestaurantName) {
         for (int i = 0; storeOrderList.size() > i; i++) {
             if (storeOrderList.get(i).store_name.equals(targetRestaurantName))
                 return storeOrderList.get(i);
@@ -69,9 +70,9 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     }
 
 
-    private void getStoreOrder() { 
+    private void getStoreOrder() {
         showProgress("주문내역 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(),Global.selectedReservation.getReserveNo() , new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(), Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
             @Override
             public void onSuccess(ResponseData<StoreOrder> response) {
                 hideProgress();
@@ -83,7 +84,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                     createTabBar(mRestaurantTabBarArr, mRestaurantList);
                     setTagTheRestaurant();
                     selectRestaurant(mSelectedRestaurantTabIdx);
-
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -119,10 +119,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_order_history, container, false);
 
-
         mOrderHistorySv = v.findViewById(R.id.order_history_sv);
         mOrderHistoryLinear = v.findViewById(R.id.order_history_linear);
-
         mTabLinearOrderDetail = v.findViewById(R.id.restaurantTabLinearLayout);
         mTvTheRestaurant = v.findViewById(R.id.tvTheRestaurantOrderHistory);
         mBtnTopAdd = v.findViewById(R.id.topAddButton);
@@ -132,6 +130,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 GoNativeScreen(new OrderFragment(), null);
             }
         });
+        createTabBar(mRestaurantTabBarArr, mRestaurantList);
+        setTagTheRestaurant();
+        selectRestaurant(mSelectedRestaurantTabIdx);
+        showStoreOrderHistory(mSelectedRestaurantTabIdx);
         mParentActivity.hideMainBottomBar();
         return v;
     }
@@ -209,6 +211,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                     public void onClick(View v) {
                         mSelectedRestaurantTabIdx = -1;
                         selectRestaurant(-1);
+                        showStoreOrderHistory(-1);
                     }
                 });
                 isTheRestaurant = true;
@@ -225,6 +228,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                     public void onClick(View v) {
                         mSelectedRestaurantTabIdx = idx;
                         selectRestaurant(idx);
+                        showStoreOrderHistory(idx);
                     }
                 });
                 mTabLinearOrderDetail.addView(tvRestTabBar[i]);
@@ -248,15 +252,18 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
             mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
         }
+
+    }
+
+    private void showStoreOrderHistory(int selectedRestaurantTabIdx) {
         //retaurantlist와 storeArraylist의 식당 인덱스가 대식당으로 일치하지 않다
-        if (selectedTabIdx >= 0) {
-            StoreOrder storeOrder = (StoreOrder) mRestaurantTabBarArr[selectedTabIdx].getTag();
+        if (selectedRestaurantTabIdx >= 0) {
+            StoreOrder storeOrder = (StoreOrder) mRestaurantTabBarArr[selectedRestaurantTabIdx].getTag();
             setOrderHistory(storeOrder);
         } else {   //selectedTabIdx == -1 대식당일경우
             StoreOrder storeOrder = (StoreOrder) mTvTheRestaurant.getTag();
             setOrderHistory(storeOrder);
         }
-
     }
 
 

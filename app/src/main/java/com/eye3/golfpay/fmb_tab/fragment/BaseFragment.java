@@ -242,6 +242,10 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 
     }
 
+    protected void setProgressMessage(String msg){
+        pd.setMessage(msg);
+    }
+
 
     // 프로그레스 다이얼로그 숨기기
     protected void hideProgress() {

@@ -51,6 +51,11 @@ public class AppDef {
         String Putt = "putt";
     }
 
+    public interface PlayStatus{
+        String Playing = "게임중";
+        String Finish = "게임종료";
+        String PaymentComplete = "정산완료";
+    }
 
     public static int  previousCntOfNotice = 0;
     public static boolean  nextMainActivityOnCreate = false;

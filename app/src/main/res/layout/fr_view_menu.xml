@@ -933,7 +933,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:background="@drawable/menu_close"
+                    android:src="@drawable/menu_close"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>

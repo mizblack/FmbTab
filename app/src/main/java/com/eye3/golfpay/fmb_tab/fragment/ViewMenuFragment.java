@@ -95,8 +95,8 @@ public class ViewMenuFragment extends BaseFragment {
             orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear, caddieCancelLinearLayout;
 
     Timer todayReserveTimer;
-
     TextView mTvRoundStartfinish;
+
 
     public ViewMenuFragment() {
         // Required empty public constructor
@@ -187,6 +187,8 @@ public class ViewMenuFragment extends BaseFragment {
         mTvRoundStartfinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //api 적용시킬것
                 ((TextView) v).setText("전반종료");
             }
         });

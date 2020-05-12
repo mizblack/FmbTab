@@ -43,6 +43,7 @@ import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.RestaurantMenu;
 import com.eye3.golfpay.fmb_tab.model.order.RestaurantMenuOrder;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
+import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.view.NameOrderView;
@@ -71,7 +72,7 @@ public class OrderFragment extends BaseFragment {
     private RecyclerView mRecyclerCategory;
     private TextView[] mRestaurantTabBarArr;
     private ImageView mFoodImage;
-    private int mSelectedRestaurantTabIdx = 0;
+    private int mSelectedRestaurantTabIdx = -1;
     //탭홀더
     private LinearLayout mTabLinear, mOrderBrowserLinearLayout, mLinearSubMenu;
     LinearLayout mGuestContainer;
@@ -85,6 +86,7 @@ public class OrderFragment extends BaseFragment {
     private Button mCancelButton;
     private Button mTempSaveButton;
     //**********************************************************
+    //임시저장을 제외한 주문은 mOrderDetailList으로 처리함 (AppDef.mOrderDetailList 사용안함)
     List<OrderDetail> mOrderDetailList = new ArrayList<>();//먼저 생성해야 아래리스트에 renew됨.
     List<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
     //**********************************************************
@@ -100,6 +102,7 @@ public class OrderFragment extends BaseFragment {
 
     List<RestaurantMenu> mWholeMenuList;
     MenuAdapter mMenuAdapter;
+    int mNumOfOrderHistoryOfSelectedRestaurant = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -159,11 +162,12 @@ public class OrderFragment extends BaseFragment {
                     Toast.makeText(mContext, "주문한 음식이 없습니다. 먼저 음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
             }
         });
-
         initOrderItemInvoiceView();
         mParentActivity.showMainBottomBar();
         return v;
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -205,14 +209,10 @@ public class OrderFragment extends BaseFragment {
                 mTabLinear.addView(tvRestTabBar[i]);
             }
         }
-        initSelectedRestaurantTabColor();
+
         initFoodImage();
     }
 
-    private void initSelectedRestaurantTabColor() {
-
-        mRestaurantTabBarArr[0].setTextColor(Color.BLACK);
-    }
 
     private void initFoodImage() {
         if (mRestaurantList == null) {
@@ -348,6 +348,7 @@ public class OrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("restaurantList", mRestaurantList);
                 bundle.putSerializable("orderdetailList", (Serializable) mOrderDetailList);
+                bundle.putSerializable("selectedRestaurantTabIdx", mSelectedRestaurantTabIdx);
                 bundle.putString("ani_direction", "down");
                 GoNativeScreen(new OrderDetailHistoryFragment(), bundle);
             }
@@ -356,7 +357,7 @@ public class OrderFragment extends BaseFragment {
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AppDef.orderDetailList.size() > 0)
+                if (mOrderDetailList.size() > 0)
                     sendShadeOrders();
                 else
                     Toast.makeText(getActivity(), "먼저 주문을 해주십시요.", Toast.LENGTH_SHORT).show();
@@ -954,7 +955,7 @@ public class OrderFragment extends BaseFragment {
 //                    restaurantOrder.setOrderDetailList(mOrderDetailList);
 //                    AppDef.restaurantOrderArrayList.add(restaurantOrder);
                     refresh();
-
+                    mNumOfOrderHistoryOfSelectedRestaurant++;
                 }
             }
 
@@ -1011,10 +1012,12 @@ public class OrderFragment extends BaseFragment {
                     mMenuAdapter = new MenuAdapter(mContext, makeTotalMenuList(mRestaurantList.get(0)));
                     mRecyclerCategory.setAdapter(mMenuAdapter);
                     mRecyclerCategory.setHasFixedSize(true);
-
                     mRecyclerCategory.setLayoutManager(new SnappingLinearLayoutManager(mContext, 1, false));
                     mMenuAdapter.notifyDataSetChanged();
+                    //레스토랑 선택 초기화
+                    selectRestaurant(mSelectedRestaurantTabIdx);
                     openTempSavedOrderList();
+                    getStoreOrder();
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -1066,6 +1069,48 @@ public class OrderFragment extends BaseFragment {
             }
         }
         return -1;
+    }
+
+    private void getStoreOrder() {
+        setProgressMessage("주문내역 정보를 가져오는 중입니다.");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreOrder(getActivity(), Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<StoreOrder>>() {
+            @Override
+            public void onSuccess(ResponseData<StoreOrder> response) {
+                hideProgress();
+                systemUIHide();
+                if (response.getResultCode().equals("ok")) {
+
+                    AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
+                    if (mSelectedRestaurantTabIdx > 0)
+                        mNumOfOrderHistoryOfSelectedRestaurant = AppDef.storeOrderArrayList.get(mSelectedRestaurantTabIdx).tablet_order_list.size();
+                    else //대식당 주문내역 찾기
+                        mNumOfOrderHistoryOfSelectedRestaurant =  OrderDetailHistoryFragment.findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당").tablet_order_list.size();
+             //       ((Restaurant) mTvTheRestaurant.getTag()
+                    if (mNumOfOrderHistoryOfSelectedRestaurant > 0) {
+                        mRelSendOrder.setVisibility(View.INVISIBLE);
+                        mRelOrderHistory.setVisibility(View.VISIBLE);
+                        mBtnHistory.setText(mNumOfOrderHistoryOfSelectedRestaurant + "건 주문내역 보기");
+                    }
+
+
+                } else if (response.getResultCode().equals("fail")) {
+                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<StoreOrder> response) {
+                hideProgress();
+                systemUIHide();
+                response.getError();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+                systemUIHide();
+            }
+        });
     }
 
 
