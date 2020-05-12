@@ -24,7 +24,7 @@
     <dimen name="ranking_linear_width">60dp</dimen>
 <!--    스코어 인서터 tv사이즈-->
     <dimen name="score_inserter_width">60dp</dimen>
-    <dimen name="score_inserter_height">110dp</dimen>
+    <dimen name="score_inserter_height">104dp</dimen>
 
     <dimen name="club_inserter_width">80dp</dimen>
     <dimen name="club_inserter_height">80dp</dimen>

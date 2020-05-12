@@ -182,8 +182,8 @@
                         android:paddingEnd="42dp">
 
                         <ImageView
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:background="@drawable/nearest_longest_close"
                             tools:ignore="ContentDescription" />
 

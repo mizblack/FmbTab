@@ -159,8 +159,6 @@ public class ScoreDialog extends Dialog {
             this.mPlayerList = playerList;
             this.mTabIdx = mTabIdx;
             this.mHoleLayoutIdx = mHoleLayoutIdx;
-
-
         }
 
         @NonNull

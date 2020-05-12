@@ -320,16 +320,17 @@
         </RelativeLayout>
 
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lightGray" />
-        <!--          코스토탈 첫 컬럼-->
+
 
         <RelativeLayout
             android:id="@+id/ll_course0_total"
             android:layout_width="87dp"
             android:layout_height="match_parent">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/lightGray"/>
 
             <TextView
                 android:id="@+id/course0_total_tar"
@@ -379,11 +380,6 @@
                 android:text="1/2" />
 
         </RelativeLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/lightGray" />
 
         <RelativeLayout
             android:id="@+id/whole_total_linear"

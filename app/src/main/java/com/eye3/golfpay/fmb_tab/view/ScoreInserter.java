@@ -226,6 +226,7 @@ public class ScoreInserter extends RelativeLayout {
                     }
                     mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
                     mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mParScoreTextViewArr[i].setLeft(mParScoreTextViewArr[i].getLeft()-1);
                     mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
                     mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
                     mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
@@ -241,6 +242,7 @@ public class ScoreInserter extends RelativeLayout {
                     mStrokeScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
                     mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
                     mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mStrokeScoreTextViewArr[i].setLeft(mStrokeScoreTextViewArr[i].getLeft()-1);
                     mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
                     mStrokeScoreTextViewArr[i].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
                     mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
@@ -258,6 +260,7 @@ public class ScoreInserter extends RelativeLayout {
                     }
                     mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
                     mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
+                    mPuttScoreTextViewArr[i].setLeft(mPuttScoreTextViewArr[i].getLeft()-1);
                     mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
                     mPuttScoreTextViewArr[i].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
                     mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);

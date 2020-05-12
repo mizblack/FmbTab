@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:weightSum="10">
+    android:orientation="horizontal">
 
     <TextView
+        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
         android:id="@+id/playerName"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="40dp"
-        android:layout_weight="2"
-        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
         android:textColor="@color/ebonyBlack"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
+        android:text="유정"/>
 
     <com.eye3.golfpay.fmb_tab.view.ScoreInserter
         android:id="@+id/inserter"
-        android:layout_width="0dp"
+        android:layout_width="600dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="40dp"
-        android:layout_weight="5"
+        android:layout_marginLeft="114dp"
         android:gravity="center" />
 
     <com.eye3.golfpay.fmb_tab.view.ScoreInserter
         android:id="@+id/inserter_putt"
-        android:layout_width="0dp"
+        android:layout_width="360dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_toRightOf="@+id/inserter"
+        android:layout_marginLeft="30dp"
         android:gravity="center" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -67,7 +67,7 @@
 
     <RelativeLayout
         android:id="@+id/inOrOutLinearLayout00"
-        android:layout_width="82dp"
+        android:layout_width="87dp"
         android:layout_height="match_parent"
         android:paddingLeft="10dp">
 
@@ -92,9 +92,31 @@
 
     </RelativeLayout>
 
-    <View
-        android:layout_width="1dp"
+    <RelativeLayout
+        android:id="@+id/inOrOutLinearLayoutTotal"
+        android:layout_width="87dp"
         android:layout_height="match_parent"
-        android:background="@color/lightGray" />
+        android:paddingLeft="10dp"
+        android:background="@color/ebonyBlack">
+
+        <TextView
+            android:id="@+id/inOrOutColumnTotal"
+            style="@style/GlobalTextView.14SP.White.NotoSans.Bold"
+            android:layout_marginTop="14dp"
+            android:text="Total"/>
+
+        <TextView
+            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            android:id="@+id/inOrOutTotal"
+            android:layout_below="@+id/inOrOutColumnTotal"
+            android:text="72"/>
+
+        <TextView
+            android:id="@+id/inOrOutTotalMetersTotal"
+            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            android:layout_marginBottom="13dp"
+            android:layout_alignParentBottom="true"
+            android:text="6,530" />
+    </RelativeLayout>
 
 </LinearLayout>
