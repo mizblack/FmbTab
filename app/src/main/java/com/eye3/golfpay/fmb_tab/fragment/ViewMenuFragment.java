@@ -22,8 +22,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eye3.golfpay.fmb_tab.BuildConfig;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -653,9 +655,7 @@ public class ViewMenuFragment extends BaseFragment {
                         return false;
                     }
                 });
-
             }
-
         }
 
         @NonNull

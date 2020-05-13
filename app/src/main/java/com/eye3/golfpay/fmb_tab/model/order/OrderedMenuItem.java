@@ -38,7 +38,6 @@ public class OrderedMenuItem implements Serializable {
         this.price = "0";
         this.total = "0";
         this.menuName = "";
-
     }
 
     public OrderedMenuItem(String id, String qty, String price, String name, String caddyId) {

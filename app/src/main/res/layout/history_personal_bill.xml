@@ -4,71 +4,85 @@
     android:id="@+id/personal_bill_root"
     android:layout_width="@dimen/personal_bill_unit_width"
     android:layout_height="@dimen/personal_bill_unit_height"
+    android:background="@color/zumthor"
     android:orientation="vertical"
-    android:background="@color/order_history_bg"
-    android:paddingRight="5dp">
-    <LinearLayout
+    android:padding="1dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
-    <View
-        android:layout_width="@dimen/personal_bill_unit_width"
-        android:layout_height="1dp"
-        android:alpha="0.5"
-        android:background="@color/white" />
+        android:background="@color/white"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/memberNameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center_vertical"
-        android:text="홍길동"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        <View
+            android:layout_width="@dimen/personal_bill_unit_width"
+            android:layout_height="1dp"
+            android:alpha="0.5"
+            android:background="@color/white" />
 
+        <TextView
+            android:id="@+id/memberNameTextView"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:text="홍길동" />
 
-
-    <TextView
-        android:id="@+id/member01OneOverNTextView"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center_vertical"
-        android:text="1/-"
-        android:textColor="@color/gray"
-        android:textSize="20dp"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/memberOrderScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="320dp">
-
-        <LinearLayout
-            android:id="@+id/personalOrderLinearLayout"
+        <TextView
+            android:id="@+id/member01OneOverNTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:ignore="UselessLeaf" />
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
+            android:text="1/-"
+            android:textColor="@color/gray"
+            android:textSize="20dp"
+            android:visibility="gone" />
 
-    </ScrollView>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-    <TextView
-        android:id="@+id/memberPriceTextView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center_vertical|right"
-        android:text="0000"
-        android:paddingRight="5dp"
-        android:textColor="@color/black"
-        android:textSize="20dp" />
+        <ScrollView
+            android:id="@+id/memberOrderScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_below="@+id/memberNameTextView"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-</LinearLayout>
+            <LinearLayout
+                android:id="@+id/personalOrderLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf" />
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingRight="5dp"
+                android:text="계" />
+
+            <TextView
+                android:id="@+id/memberPriceTextView"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|right"
+                android:paddingRight="5dp"
+                android:text="0000" />
+        </RelativeLayout>
+    </RelativeLayout>
 </LinearLayout>

@@ -11,27 +11,27 @@
         android:orientation="horizontal">
 
         <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:id="@+id/order_time"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:text="오전 06시20분"
-            android:textColor="@color/ebonyBlack"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="오전 06시20분" />
 
         <TextView
+            style="@style/GlobalTextView.17SP.gray.NotoSans.Medium"
             android:id="@+id/order_status"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/gray"
-            android:textSize="20sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/personal_bill_unit_height"
+        android:layout_marginTop="16dp"
         android:background="@color/order_history_bg"
         android:orientation="horizontal"
         android:weightSum="10">
