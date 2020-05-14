@@ -3,6 +3,8 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +85,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
                     //여기서 실행해야함.
-                    //createTabBar(mRestaurantTabBarArr, mRestaurantList);
+                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
                     setTagTheRestaurant();
                     selectRestaurantAndShowHistory(mSelectedRestaurantTabIdx);
                 } else if (response.getResultCode().equals("fail")) {
@@ -163,7 +165,14 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
         for (int i = 0; receiptUnit.recept_list.size() > i; i++) {
             PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(i);
-            linearPersonalOrderContainer.addView(createPersonalPayBillView(personalReceiptsOrder));
+
+            View view = createPersonalPayBillView(personalReceiptsOrder);
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 230, getResources().getDisplayMetrics());
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            params.rightMargin = 20;
+            view.setLayoutParams(params);
+            linearPersonalOrderContainer.addView(view);
         }
         return receptUnitView;
     }
@@ -178,6 +187,12 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         for (int i = 0; posPersonalOrderList.size() > i; i++) {
             total += Integer.valueOf(posPersonalOrderList.get(i).total_price);
             View personalOrderDetailView = createPosPersonalPayBillView(posPersonalOrderList.get(i));
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 230, getResources().getDisplayMetrics());
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            params.rightMargin = 100;
+            personalOrderDetailView.setLayoutParams(params);
+
             linearPersonalOrderContainer = posUnitLinear.findViewById(R.id.linear_pos__personal_order_container);
             linearPersonalOrderContainer.addView(personalOrderDetailView);
         }

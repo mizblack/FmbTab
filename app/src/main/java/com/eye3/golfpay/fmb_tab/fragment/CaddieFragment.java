@@ -86,11 +86,8 @@ public class CaddieFragment extends BaseFragment {
         guestList = Global.guestList;
         for (int i = 0; guestList.size() > i; i++) {
             mGuestViewContainerLinearLayout.addView(createGuestItemView(guestList.get(i)));
-
         }
-
     }
-
 
     @Override
     public void onResume() {

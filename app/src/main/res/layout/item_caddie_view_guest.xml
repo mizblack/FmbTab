@@ -2,24 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
-    android:layout_width="250dp"
+    android:layout_width="212dp"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingTop="10dp"
     tools:ignore="DisableBaselineAlignment"
-    tools:context=".fragment.CaddieFragment"
-    >
+    tools:context=".fragment.CaddieFragment">
 
     <TextView
+        style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
         android:id="@+id/memberNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="-"
+        android:text="강도식"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold"
+        android:layout_marginBottom="30dp"
         tools:ignore="HardcodedText,SpUsage" />
 
     <ScrollView
@@ -33,32 +34,86 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/clubImageCaddieView"
+                android:layout_width="match_parent"
+                android:layout_height="134dp"
+                android:scaleType="fitCenter"
+                android:background="@color/aliceBlue"
+                tools:ignore="ContentDescription" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="86dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="14dp"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="서명"
+                    android:textColor="@color/black"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/caddie_memo"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/signatureImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/GlobalTextView.14SP.E6E6E6.NotoSans.Regular"
+                    android:id="@+id/signatureTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:text="클럽확인 및 정보수집 동의"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/ebonyBlack"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/carNumberEditText"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:autofillHints=""
                     android:background="@null"
-                    android:gravity="center_vertical"
                     android:hint="차량번호"
                     android:inputType="textShortMessage"
                     android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
+                    android:textColor="@color/ebonyBlack"
+                    android:textSize="18sp"
                     tools:ignore="HardcodedText,SpUsage,TextFields" />
 
                 <ImageView
                     android:id="@+id/carNumberImageView"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/caddie_memo"
                     tools:ignore="ContentDescription" />
 
@@ -73,22 +128,21 @@
                 <EditText
                     android:id="@+id/phoneNumberEditText"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:autofillHints=""
                     android:background="@null"
                     android:gravity="center_vertical"
                     android:hint="전화번호"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
+                    android:textColor="@color/ebonyBlack"
+                    android:textSize="18sp"
                     tools:ignore="HardcodedText,SpUsage,TextFields" />
 
                 <ImageView
                     android:id="@+id/phoneNumberImageView"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@drawable/caddie_memo"
                     tools:ignore="ContentDescription" />
 
@@ -97,7 +151,7 @@
             <LinearLayout
                 android:id="@+id/guestMemoLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
@@ -108,12 +162,11 @@
                     tools:ignore="UselessParent">
 
                     <TextView
+                        style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="개인메모"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <View
@@ -123,44 +176,36 @@
 
                     <ImageView
                         android:id="@+id/personalImageView"
-                        android:layout_width="26dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/caddie_memo"
                         tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
-<!--                <ScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:scrollbars="none"-->
-<!--                    tools:ignore="NestedScrolling">-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/guestMemoContentTextView"
+                        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:maxLength="255"/>
 
-                        <TextView
-                            android:id="@+id/guestMemoContentTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="xxxxx"
-                            android:textColor="@color/black"
-                            android:textSize="20dp"
-                            tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        android:id="@+id/guestMemoTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:visibility="gone"
+                        tools:ignore="SpUsage" />
 
-                        <TextView
-                            android:id="@+id/guestMemoTimeTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="16dp"
-                            tools:ignore="SpUsage" />
-
-                    </LinearLayout>
+                </LinearLayout>
 
 <!--                </ScrollView>-->
 
@@ -170,6 +215,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -180,12 +226,11 @@
                     tools:ignore="UselessParent">
 
                     <TextView
+                        style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="클럽정보"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <View
@@ -194,134 +239,98 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/caddie_memo"
                         tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="우드"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="유틸리티"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="아이언"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="퍼터"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="웨지"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="커버"
-                    android:textColor="@color/lightGray"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/clubImageCaddieView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="32dp"
-                android:background="@color/aliceBlue"
-                tools:ignore="ContentDescription" />
-
-            <RelativeLayout
-                android:id="@+id/signatureRelativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="32dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
-                    android:orientation="horizontal"
-                    tools:ignore="UselessParent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="서명"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        tools:ignore="HardcodedText,SpUsage" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/caddie_memo"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/signatureImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/signatureTextView"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center_vertical"
-                    android:text="클럽확인 및 정보수집 동의"
-                    android:textColor="@color/lightGray"
-                    android:textSize="18dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="우드"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
 
-            </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="유틸리티"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="아이언"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="퍼터"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="웨지"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="커버"
+                        tools:ignore="HardcodedText,SpUsage" />
+                    <TextView
+                        style="@style/GlobalTextView.17SP.lightGray.NotoSans.Regular"
+                        android:text="4개"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

@@ -319,6 +319,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Glide.with(MainActivity.this)
                     .load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
                     .placeholder(R.drawable.ic_noimage)
                     .into(img);
         }

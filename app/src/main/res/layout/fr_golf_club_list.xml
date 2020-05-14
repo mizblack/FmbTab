@@ -5,14 +5,18 @@
     android:background="@color/translucentBlack"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp">
 
     <LinearLayout
         android:layout_width="1160dp"
         android:layout_height="650dp"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
         <!--타이틀 relative-->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,69 +79,69 @@
                 <LinearLayout
                     android:id="@+id/ll_wood"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/ll_wood_header"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="2"
+                        android:layout_width="140dp"
+                        android:layout_height="100dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_wood"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="50dp"
+                            android:gravity="bottom"
+                            android:paddingBottom="3dp"
                             android:text="우드" />
 
                         <TextView
                             android:id="@+id/tv_wood_qty"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_weight="2"
-                            android:text="2" />
+                            android:layout_height="50dp"
+                            android:paddingTop="3dp"
+                            android:text="2개" />
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.WoodInserter
                         android:id="@+id/wood_inserter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_utility"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:layout_marginTop="12dp">
 
                     <LinearLayout
                         android:id="@+id/ll_utility_header"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="2"
+                        android:layout_width="140dp"
+                        android:layout_height="100dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_utility"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="50dp"
+                            android:gravity="bottom"
+                            android:paddingBottom="3dp"
                             android:text="유틸리티" />
 
                         <TextView
                             android:id="@+id/tv_utility_qty"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_weight="2"
-                            android:text="2" />
+                            android:layout_height="50dp"
+                            android:paddingTop="3dp"
+                            android:text="2개" />
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.UtilityInserter
@@ -146,35 +150,37 @@
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_iron"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:layout_marginTop="12dp">
 
                     <LinearLayout
                         android:id="@+id/ll_iron_header"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="2"
+                        android:layout_width="140dp"
+                        android:layout_height="100dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_iron"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="50dp"
+                            android:gravity="bottom"
+                            android:paddingBottom="3dp"
                             android:text="아이언" />
 
                         <TextView
                             android:id="@+id/tv_iron_qty"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_weight="2"
-                            android:text="2" />
+                            android:layout_height="50dp"
+                            android:paddingTop="3dp"
+                            android:text="2개" />
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.IronInserter
@@ -186,32 +192,33 @@
                 <LinearLayout
                     android:id="@+id/ll_wedge"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:layout_marginTop="12dp">
 
                     <LinearLayout
                         android:id="@+id/ll_wedge_header"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="2"
+                        android:layout_width="140dp"
+                        android:layout_height="100dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_wedge"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="50dp"
+                            android:gravity="bottom"
+                            android:paddingBottom="3dp"
                             android:text="웨지" />
 
                         <TextView
                             android:id="@+id/tv_wedge_qty"
-                            style="@style/GolfClubListTextStyle"
+                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_weight="2"
-                            android:text="2" />
+                            android:layout_height="50dp"
+                            android:paddingTop="3dp"
+                            android:text="2개" />
                     </LinearLayout>
 
                     <com.eye3.golfpay.fmb_tab.view.WedgeInserter
@@ -220,76 +227,80 @@
                         android:layout_height="match_parent"
                         android:layout_weight="8" />
                 </LinearLayout>
-                <LinearLayout
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal" >
+                    android:layout_height="110dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
                     <LinearLayout
                         android:id="@+id/ll_putter"
-                        android:layout_width="500dp"
-                        android:layout_height="100dp"
-                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="110dp"
                         android:orientation="horizontal"
-                        android:weightSum="10">
+                        android:gravity="center_vertical">
 
                         <LinearLayout
                             android:id="@+id/ll_putter_header"
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="4.5"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_putter"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
                                 android:text="퍼터" />
 
                             <TextView
                                 android:id="@+id/tv_putter_qty"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_weight="2"
-                                android:text="2" />
+                                android:layout_height="50dp"
+                                android:paddingTop="3dp"
+                                android:text="2개" />
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.PutterInserter
                             android:id="@+id/putter_inserter"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5.5" />
+                            android:layout_width="400dp"
+                            android:layout_height="match_parent" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/ll_putter_cover"
-                        android:layout_width="500dp"
-                        android:layout_height="100dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
+                        android:layout_width="wrap_content"
+                        android:layout_height="110dp"
+                        android:layout_toRightOf="@+id/ll_putter"
+                        android:gravity="center_vertical">
 
                         <LinearLayout
                             android:id="@+id/ll_putter_cover_header"
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="4.5"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="60dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_putter_cover"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
                                 android:text="퍼터커버" />
 
                             <TextView
                                 android:id="@+id/tv_putter_cover_qty"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_weight="2"
-                                android:text="2" />
+                                android:layout_height="50dp"
+                                android:paddingTop="3dp"
+                                android:text="2개" />
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.PutterCoverInserter
@@ -298,87 +309,91 @@
                             android:layout_height="match_parent"
                             android:layout_weight="5.5" />
                     </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:orientation="horizontal" >
+                    android:layout_height="110dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="50dp">
                     <LinearLayout
                         android:id="@+id/ll_wood_cover"
-                        android:layout_width="500dp"
-                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="110dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:id="@+id/ll_wood_cover_header"
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="4.5"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_wood_cover"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
                                 android:text="우드커버" />
 
                             <TextView
                                 android:id="@+id/tv_wood_cover_qty"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_weight="2"
-                                android:text="2" />
+                                android:layout_height="50dp"
+                                android:paddingTop="3dp"
+                                android:text="2개" />
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.WoodCoverInserter
                             android:id="@+id/wood_cover_inserter"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="5.5" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/ll_micell_cover"
-                        android:layout_width="500dp"
-                        android:layout_height="100dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10dp"
-                        android:weightSum="10">
+                        android:layout_width="wrap_content"
+                        android:layout_height="110dp"
+                        android:layout_toRightOf="@+id/ll_wood_cover"
+                        android:gravity="center_vertical">
 
                         <LinearLayout
                             android:id="@+id/ll_micell_cover_header"
-                            android:layout_width="0dp"
-                            android:layout_height="80dp"
-                            android:layout_weight="4.5"
+                            android:layout_width="140dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="60dp"
+                            android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/tv_micell_cover"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="50dp"
+                                android:gravity="bottom"
+                                android:paddingBottom="3dp"
                                 android:text="기타커버" />
 
                             <TextView
                                 android:id="@+id/tv_micell_cover_qty"
-                                style="@style/GolfClubListTextStyle"
+                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:layout_weight="2"
-                                android:text="2" />
+                                android:layout_height="50dp"
+                                android:paddingTop="3dp"
+                                android:text="2개"  />
                         </LinearLayout>
 
                         <com.eye3.golfpay.fmb_tab.view.MicellCoverInserter
                             android:id="@+id/micell_cover_inserter"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="5.5" />
+                            android:layout_weight="5.5"/>
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
         </ScrollView>
