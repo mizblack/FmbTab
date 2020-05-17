@@ -461,7 +461,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
-                        android:text="GPS"
+                        android:text="코스정보"
                         android:textColor="@color/gray50"
                         android:textSize="22dp"
                         tools:ignore="HardcodedText,SpUsage" />

@@ -62,7 +62,7 @@ public class GalleryFragment extends BaseFragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private String imageFilePath;
-    Button mBtnTakePicture;
+    TextView mBtnTakePicture;
     List<GalleryPicture> mPictureList;
     ImageView mPictureImage;
     ImageView mPictureClose;
@@ -85,6 +85,8 @@ public class GalleryFragment extends BaseFragment {
                         mPictureList.add(new GalleryPicture("0", "1234", a_guest.getArrClubImageList().get(j).uri, ""));
             }
         }
+
+
     }
 
 
@@ -152,7 +154,7 @@ public class GalleryFragment extends BaseFragment {
 
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
             final int idx = i;
-            TextView tv = new TextView(new ContextThemeWrapper(getActivity(), R.style.ShadeGuestNameTextView), null, 0);
+            TextView tv = new TextView(new ContextThemeWrapper(getActivity(), R.style.GlobalTextView_18SP_zumthor_NotoSans_Bold), null, 0);
             final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
             final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, height);

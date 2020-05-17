@@ -255,6 +255,7 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
                 if (pd != null && pd.isShowing()) {
                     // 닫는다 : 객체가 존재하고, 보일때만
                     pd.dismiss();
+                    systemUIHide();
                 }
             }
         });

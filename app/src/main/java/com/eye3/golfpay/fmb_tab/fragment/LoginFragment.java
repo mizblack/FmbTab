@@ -48,6 +48,12 @@ public class LoginFragment extends BaseFragment {
         mStartTextView = v.findViewById(R.id.startTextView);
         mCancelIcon = v.findViewById(R.id.cancelIcon);
         init(v);
+
+        if (BuildConfig.DEBUG == true) {
+            mNameEditText.setText("roidcaddy@aaa.aaa");
+            mPhoneNumberEditText.setText("111!!!qqq");
+        }
+
         return v;
     }
 

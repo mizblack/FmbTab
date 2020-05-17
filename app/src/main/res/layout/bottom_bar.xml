@@ -65,6 +65,28 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/dlgtest1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="팝업 테스트"
+                android:fontFamily="@font/notosans_medium"
+                android:textColor="@color/white"
+                android:layout_marginRight="16dp"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/dlgtest2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="그늘집 팝업 테스트"
+                android:fontFamily="@font/notosans_medium"
+                android:textColor="@color/white"
+                android:layout_marginRight="16dp"
+                android:textSize="20dp" />
+
+            <TextView
                 android:id="@+id/gpsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

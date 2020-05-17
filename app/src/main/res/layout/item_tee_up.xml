@@ -14,33 +14,30 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:id="@+id/reservationPersonNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:gravity="center_vertical"
-            android:text="-"
-            android:textColor="@color/black"
-            android:textSize="26dp"
+            android:text="김판수 (정회원)"
             tools:ignore="HardcodedText,SpUsage" />
 
         <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:id="@+id/teeUpTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:gravity="center_vertical"
-            android:text="-"
-            android:textColor="@color/black"
-            android:textSize="26dp"
+            android:text="OUT 08:22"
             tools:ignore="HardcodedText,SpUsage" />
 
         <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:id="@+id/groupNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:gravity="center_vertical"
-            android:text="-"
-            android:textColor="@color/black"
-            android:textSize="26dp"
+            android:text="호랑이회"
             tools:ignore="HardcodedText,SpUsage" />
 
     </LinearLayout>
@@ -52,6 +49,7 @@
 
     <LinearLayout
         android:id="@+id/visitorsGuestItemLinearLayout"
+        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

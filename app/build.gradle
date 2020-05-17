@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 android {
@@ -24,6 +26,16 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    applicationVariants.all { variant ->
+        if (!variant.buildType.name.equals("debug")) {
+            def df = new SimpleDateFormat("yyMMddhhmmss")
+            df.setTimeZone(TimeZone.getDefault())
+            variant.outputs.all { output ->
+                outputFileName = new File("../../output/", "FmbTab" + "_v" + defaultConfig.versionName + "_" + df.format(new Date()) + ".apk")
+            }
+        }
     }
 }
 ext {

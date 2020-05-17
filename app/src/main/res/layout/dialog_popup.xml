@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_container"
+    android:layout_width="1040dp"
+    android:layout_height="265dp"
+    android:layout_marginTop="0dp"
+    android:background="@drawable/popup_dlg"
+    android:elevation="20dp"
+    android:padding="0dp">
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/GlobalTextView.40SP.irisBlue.NotoSans.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="82dp"
+        android:layout_marginBottom="20dp"
+        android:text="라운딩이\n배정되었습니다."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_reserve_info"
+        style="@style/GlobalTextView.40SP.White.NotoSans.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="82dp"
+        android:layout_marginBottom="20dp"
+        android:text="09:26 AM\n예약자 강도식"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

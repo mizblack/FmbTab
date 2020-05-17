@@ -10,9 +10,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +34,8 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.dialog.PopupDialog;
+import com.eye3.golfpay.fmb_tab.dialog.RestaurantsPopupDialog;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
@@ -40,6 +45,7 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
+import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.google.android.material.navigation.NavigationView;
 
@@ -109,6 +115,58 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer_layout.setScrimColor(Color.TRANSPARENT);
         //최초 로그인fragment를 호출한다.
         GoNavigationDrawer(new LoginFragment(), null);
+
+
+        findViewById(R.id.main_bottom_bar).findViewById(R.id.dlgtest1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Flags for full-screen mode:
+                int ui_flags =
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+                PopupDialog dlg = new PopupDialog(MainActivity.this, R.style.DialogTheme);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                wmlp.x = 0;   //x position
+                wmlp.y = 0;   //y position
+
+                // Set alertDialog "not focusable" so nav bar still hiding:
+                dlg.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+
+                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+
+                dlg.show();
+            }
+        });
+
+        findViewById(R.id.main_bottom_bar).findViewById(R.id.dlgtest2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Flags for full-screen mode:
+                int ui_flags =
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+                RestaurantsPopupDialog dlg = new RestaurantsPopupDialog(MainActivity.this, android.R.style.Theme_Holo_Light);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+
+                dlg.show();
+            }
+        });
+
         gpsTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.gpsTextView);
         gpsTxtView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -61,12 +61,12 @@ public class SettingsCustomDialog extends Dialog {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     AppDef.isTar = true;
-                    Toast.makeText(mContext, "타수식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "타수식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
                     ((BaseActivity)mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
 
                 }else {
                     AppDef.isTar = false;
-                    Toast.makeText(mContext, "Par식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Par식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
                     ((BaseActivity)mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
                 }
             }

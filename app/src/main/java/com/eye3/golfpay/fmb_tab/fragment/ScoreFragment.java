@@ -52,7 +52,6 @@ public class ScoreFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         getReserveScore();
-
     }
 
     //스코어 보드를 생성한다.
@@ -73,7 +72,6 @@ public class ScoreFragment extends BaseFragment {
         });
 
         hideProgress();
-
     }
 
     private void initScoreBoard() {

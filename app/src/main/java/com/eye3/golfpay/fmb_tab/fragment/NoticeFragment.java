@@ -136,10 +136,14 @@ public class NoticeFragment extends BaseFragment {
             viewHolder.tvContent.setText(Html.fromHtml(noticeList.get(position).mContents));
             viewHolder.tvDateTime.setText(noticeList.get(position).mCreatedAt);
             viewHolder.itemView.setTag(noticeList.get(position));
-            if(noticeList.get(position).mUseYn.equals("y"))
-                viewHolder.imgNew.setVisibility(View.INVISIBLE);
-            else
+            if(noticeList.get(position).mUseYn.equals("y")) {
+                viewHolder.imgNew.setVisibility(View.GONE);
+                viewHolder.imgArrow.setVisibility(View.VISIBLE);
+            }
+            else {
                 viewHolder.imgNew.setVisibility(View.VISIBLE);
+                viewHolder.imgArrow.setVisibility(View.GONE);
+            }
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,7 +161,7 @@ public class NoticeFragment extends BaseFragment {
 
         class NoticeItemViewHolder extends ViewHolder {
             TextView tvTitle, tvContent, tvDateTime;
-            ImageView imgNew;
+            ImageView imgNew, imgArrow;
 
             NoticeItemViewHolder(View view) {
                 super(view);
@@ -165,6 +169,7 @@ public class NoticeFragment extends BaseFragment {
                 tvContent = view.findViewById(R.id.tvNoticeContent);
                 tvDateTime = view.findViewById(R.id.tvNoticeDateTime);
                 imgNew = view.findViewById(R.id.imgNew);
+                imgArrow = view.findViewById(R.id.iv_arrow);
 
 
             }

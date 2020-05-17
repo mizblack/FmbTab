@@ -7,3 +7,5 @@ app/app.iml
 golfpay_tablet.iml
 local.properties
 gradle.properties
+output/
+build/
