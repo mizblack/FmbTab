@@ -3,6 +3,8 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.NearestLongestAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
@@ -42,6 +47,10 @@ public class NearestLongestDialogFragment extends DialogFragment {
     private  Course mCourse;
     private Hole mHole;
 
+    private RecyclerView recyclerView;
+    LinearLayoutManager learingLayout;
+    NearestLongestAdapter adapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +68,10 @@ public class NearestLongestDialogFragment extends DialogFragment {
             public void onClick(View v) {
 
                 if (mNearestOrLongest.equals(AppDef.NEAREST)) {
-                    mTabNearest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
+                    mTabNearest.setTextAppearance(R.style.GlobalTextView_32SP_gray_NotoSans_Medium);
                 }
                 mNearestOrLongest = AppDef.LONGEST;
-                ((TextView) v).setTextAppearance(R.style.MainTabTitleTextViewBold);
+                ((TextView) v).setTextAppearance(R.style.GlobalTextView_32SP_ebonyBlack_NotoSans_Medium);
                 changeScreenTo(AppDef.LONGEST);
 
             }
@@ -72,10 +81,10 @@ public class NearestLongestDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mNearestOrLongest.equals(AppDef.LONGEST)) {
-                    mTabLongest.setTextAppearance(R.style.MainTabTitleTextViewNormal);
+                    mTabLongest.setTextAppearance(R.style.GlobalTextView_32SP_gray_NotoSans_Medium);
                 }
                 mNearestOrLongest = AppDef.NEAREST;
-                ((TextView) v).setTextAppearance(R.style.MainTabTitleTextViewBold);
+                ((TextView) v).setTextAppearance(R.style.GlobalTextView_32SP_ebonyBlack_NotoSans_Medium);
                 changeScreenTo(AppDef.NEAREST);
             }
         });
@@ -105,50 +114,29 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.item_nearest_longest_input, null, false);
-                final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
-                final LinearLayout selectorInputLayout = v.findViewById(R.id.selectorItemRelativeLayout);
 
-                final NearestInserter nearestInserter = new NearestInserter(getActivity());
-                selectorInputLayout.addView(nearestInserter, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                v.setLayoutParams(lllp);
+
+                final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
+                recyclerView = selectorLinearLayout.findViewById(R.id.reyclerview);
+                learingLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(learingLayout);
+
                 final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 TextView nameTextView = v.findViewById(R.id.nameTextView);
-                nameTextView.setText(guestArrayList.get(i).getGuestName());
 
-                selectorLinearLayout.setOnClickListener(new View.OnClickListener() {
+                adapter = new NearestLongestAdapter(getContext(), new NearestLongestAdapter.IOnClickAdapter() {
                     @Override
-                    public void onClick(View v) {
-
-                        for (int i = 0; guestItemLinearLayout.getChildCount() > i; i++) {
-                            View selectorLinearLayoutTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.selectorLinearLayout);
-                            selectorLinearLayoutTemp.setBackgroundColor(0xffffffff);
-                            View modifyDividerTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.modifyDivider);
-                            modifyDividerTemp.setVisibility(View.GONE);
-                            TextView modifyTextViewTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.modifyTextView);
-                            modifyTextViewTemp.setText("수정");
-                            modifyTextViewTemp.setTextColor(0xffcccccc);
-                        }
-
-                        selectorLinearLayout.setBackgroundResource(R.drawable.shape_black_edge);
-                        View modifyDivider = v.findViewById(R.id.modifyDivider);
-                        modifyDivider.setVisibility(View.VISIBLE);
-                        TextView modifyTextView = v.findViewById(R.id.modifyTextView);
-                        modifyTextView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //클릭시 거리값이 결정된다.
-                                if (nearestInserter.getmSelectedChildView() != null) {
-                                    String strDistance = nearestInserter.getmSelectedChildView().getTag().toString().trim();
-                                    tvMeters.setText(strDistance);
-                                }
-
-                            }
-                        });
-                        modifyTextView.setText("입력");
-                        modifyTextView.setTextColor(0xff000000);
-
-
+                    public void onAdapterItemClicked(final Integer id) {
+                        tvMeters.setText(adapter.getItem(id) + "CM");
                     }
                 });
+
+                recyclerView.setAdapter(adapter);
+                nameTextView.setText(guestArrayList.get(i).getGuestName());
                 guestItemLinearLayout.addView(v);
             }
         }
@@ -162,51 +150,29 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.item_nearest_longest_input, null, false);
-                final TextView tvMeters = v.findViewById(R.id.metersTextView);
+
+                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                v.setLayoutParams(lllp);
+
                 final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
-                final LinearLayout selectorInputLayout = v.findViewById(R.id.selectorItemRelativeLayout);
+                recyclerView = selectorLinearLayout.findViewById(R.id.reyclerview);
+                learingLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-                final LongestInserter longestInserter = new LongestInserter(getActivity());
-                selectorInputLayout.addView(longestInserter, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(learingLayout);
 
+                final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 TextView nameTextView = v.findViewById(R.id.nameTextView);
-                nameTextView.setText(guestArrayList.get(i).getGuestName());
 
-                selectorLinearLayout.setOnClickListener(new View.OnClickListener() {
+                adapter = new NearestLongestAdapter(getContext(), new NearestLongestAdapter.IOnClickAdapter() {
                     @Override
-                    public void onClick(View v) {
-
-                        for (int i = 0; guestItemLinearLayout.getChildCount() > i; i++) {
-                            View selectorLinearLayoutTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.selectorLinearLayout);
-                            selectorLinearLayoutTemp.setBackgroundColor(0xffffffff);
-                            View modifyDividerTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.modifyDivider);
-                            modifyDividerTemp.setVisibility(View.GONE);
-                            TextView modifyTextViewTemp = guestItemLinearLayout.getChildAt(i).findViewById(R.id.modifyTextView);
-                            modifyTextViewTemp.setText("수정");
-                            modifyTextViewTemp.setTextColor(0xffcccccc);
-                        }
-
-                        selectorLinearLayout.setBackgroundResource(R.drawable.shape_black_edge);
-                        View modifyDivider = v.findViewById(R.id.modifyDivider);
-                        modifyDivider.setVisibility(View.VISIBLE);
-                        TextView modifyTextView = v.findViewById(R.id.modifyTextView);
-                        modifyTextView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //클릭시 거리값이 결정된다.
-                                if (longestInserter.getmSelectedChildView() != null) {
-                                    String strDistance = longestInserter.getmSelectedChildView().getTag().toString().trim();
-                                    tvMeters.setText(strDistance);
-                                }
-
-                            }
-                        });
-                        modifyTextView.setText("입력");
-                        modifyTextView.setTextColor(0xff000000);
-
-
+                    public void onAdapterItemClicked(final Integer id) {
+                        tvMeters.setText(adapter.getItem(id) + "M");
                     }
                 });
+
+                recyclerView.setAdapter(adapter);
+                nameTextView.setText(guestArrayList.get(i).getGuestName());
                 guestItemLinearLayout.addView(v);
             }
         }

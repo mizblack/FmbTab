@@ -31,16 +31,16 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/GlobalTextView.32SP.gray.NotoSans.Medium"
                         android:id="@+id/nearestTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="Nearest"
-                        android:textColor="@color/gray"
-                        android:textSize="30dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        style="@style/GlobalTextView.32SP.ebonyBlack.NotoSans.Medium"
                         android:id="@+id/longestTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -57,93 +57,79 @@
                         android:layout_weight="1" />
 
                     <TextView
+                        style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                         android:id="@+id/long_near_hole_no"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="Hole -"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text=" / "
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                         android:id="@+id/long_near_par"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="Par-"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                     <TextView
+                        style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
                         android:id="@+id/long_near_course"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="10dp"
                         android:gravity="center"
                         android:text="- Course (-)"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
                         tools:ignore="HardcodedText,SpUsage" />
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     tools:ignore="DisableBaselineAlignment">
 
                     <TextView
-                        style="@style/MainColumnInOrOutTextView"
+                        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
                         android:layout_width="100dp"
                         android:paddingStart="0dp"
                         android:text="Rank"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
                         tools:ignore="HardcodedText,RtlSymmetry" />
 
                     <TextView
-                        style="@style/MainColumnInOrOutTextView"
+                        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
                         android:layout_width="150dp"
                         android:paddingStart="0dp"
                         android:text="Player"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
                         tools:ignore="HardcodedText,RtlSymmetry" />
 
                     <TextView
                         android:id="@+id/measurement_unit"
-                        style="@style/MainColumnInOrOutTextView"
+                        style="@style/GlobalTextView.16SP.irisBlue.NotoSans.Medium"
                         android:paddingStart="0dp"
                         android:text="Meters"
-                        android:textColor="@color/irisBlue"
-                        android:textStyle="normal"
                         tools:ignore="HardcodedText,RtlSymmetry" />
 
                 </LinearLayout>
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="24dp">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:id="@+id/guestItemLinearLayout"
