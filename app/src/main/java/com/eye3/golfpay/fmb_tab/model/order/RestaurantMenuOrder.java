@@ -11,8 +11,8 @@ import java.util.List;
 public class RestaurantMenuOrder {
     private static String STRING_CADDY = "(캐디)";
 
-    private List<OrderDetail> mOrderDetailList = new ArrayList<>();//먼저 생성해야 아래리스트에 renew됨.
-    private List<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
+    private List<OrderDetail> mOrderDetailList;
+    private List<OrderItemInvoice> mOrderItemInvoiceArrayList;
     public OrderedMenuItem mCurrentOrderedMenuItem;
     //주문자 아이디
     public String mOrderedGuestId;

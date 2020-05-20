@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.RestaurantListAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.order.Menu;
@@ -38,9 +39,8 @@ import java.util.List;
 
 public class OrderDetailHistoryFragment extends BaseFragment {
     private static int NUM_OF_RESTAURANT;
-    TextView mTvTheRestaurant;
     int mSelectedRestaurantTabIdx = 0;
-    private TextView[] mRestaurantTabBarArr;
+
     Restaurant mSelectedRestaurant;
     LinearLayout mTabLinearOrderDetail;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
@@ -49,7 +49,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     Button mBtnTopAdd;
     ScrollView mOrderHistorySv;
     LinearLayout mOrderHistoryLinear;
-
+    private RecyclerView rv_restaurant;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +57,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
         if (bundle != null) {
             mRestaurantList = (ArrayList<Restaurant>) bundle.getSerializable("restaurantList");
-            NUM_OF_RESTAURANT = mRestaurantList.size();
-            mRestaurantTabBarArr = new TextView[NUM_OF_RESTAURANT];
             mSelectedRestaurantTabIdx = bundle.getInt("selectedRestaurantTabIdx");
-
         }
 
     }
@@ -85,9 +82,9 @@ public class OrderDetailHistoryFragment extends BaseFragment {
 
                     AppDef.storeOrderArrayList = (ArrayList<StoreOrder>) response.getList();
                     //여기서 실행해야함.
-                    createTabBar(mRestaurantTabBarArr, mRestaurantList);
-                    setTagTheRestaurant();
-                    selectRestaurantAndShowHistory(mSelectedRestaurantTabIdx);
+                    initRestaurantRecyclerView();
+
+                    selectRestaurantAndShowHistory();
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -108,25 +105,31 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         });
     }
 
-    private void setTagTheRestaurant() {
-        mTvTheRestaurant.setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, "대식당"));
-        mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
+    private void initRestaurantRecyclerView() {
+        LinearLayoutManager mManager;
+
+        mManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        rv_restaurant.setLayoutManager(mManager);
+
+        RestaurantListAdapter adapter = new RestaurantListAdapter(mContext, new RestaurantListAdapter.IOnClickAdapter() {
             @Override
-            public void onClick(View v) {
-                mSelectedRestaurantTabIdx = -1;
-                selectRestaurantAndShowHistory(mSelectedRestaurantTabIdx);
+            public void onAdapterItemClicked(Integer id) {
+                mSelectedRestaurantTabIdx = id;
+                selectRestaurantAndShowHistory();
             }
         });
+
+        rv_restaurant.setAdapter(adapter);
+        adapter.setData(mRestaurantList);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_order_history, container, false);
 
+        rv_restaurant = v.findViewById(R.id.rv_restaurant);
         mOrderHistorySv = v.findViewById(R.id.order_history_sv);
         mOrderHistoryLinear = v.findViewById(R.id.order_history_linear);
-        mTabLinearOrderDetail = v.findViewById(R.id.restaurantTabLinearLayout);
-        mTvTheRestaurant = v.findViewById(R.id.tvTheRestaurantOrderHistory);
         mBtnTopAdd = v.findViewById(R.id.topAddButton);
         mBtnTopAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,73 +216,11 @@ public class OrderDetailHistoryFragment extends BaseFragment {
             mOrderHistoryLinear.addView(createPosOrderView(storeOrder.pos_order_list));
     }
 
-    //최상위 레스토랑 선택바
-    private void createTabBar(final TextView[] tvRestTabBar, ArrayList<Restaurant> mRestaurantList) {
-
-        boolean isTheRestaurant = false;
-        for (int i = 0; mRestaurantList.size() > i; i++) {
-            if (mRestaurantList.get(i).store_type.equals("대식당") && !isTheRestaurant) {
-                mTvTheRestaurant.setText((mRestaurantList.get(i).name));
-                mTvTheRestaurant.setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(i).name));
-                mTvTheRestaurant.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mSelectedRestaurantTabIdx = -1;
-                        selectRestaurantAndShowHistory(mSelectedRestaurantTabIdx);
-                    }
-                });
-                isTheRestaurant = true;
-                mRestaurantList.remove(i);
-                i--;
-            } else {
-                final int idx = i;
-                tvRestTabBar[i] = new TextView(new ContextThemeWrapper(getActivity(), R.style.GlobalTextView_18SP_C9D7DC_NotoSans_Bold), null, 0);
-                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                param.rightMargin = 80;
-                tvRestTabBar[i].setLayoutParams(param);
-                tvRestTabBar[i].setGravity(Gravity.CENTER);
-                tvRestTabBar[i].setText(mRestaurantList.get(i).name);
-                tvRestTabBar[i].setTag(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(i).name));
-                tvRestTabBar[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mSelectedRestaurantTabIdx = idx;
-                        selectRestaurantAndShowHistory(mSelectedRestaurantTabIdx);
-                    }
-                });
-                mTabLinearOrderDetail.addView(tvRestTabBar[i]);
-            }
-        }
-    }
-
     //레스토랑바 선택시 보여주는 함수
-    private void selectRestaurantAndShowHistory(int selectedTabIdx) {
+    private void selectRestaurantAndShowHistory() {
         showProgress("주문 내역을 조회중입니다.");
-        mTvTheRestaurant.setTextColor(Color.GRAY);
-        for (int i = 0; mRestaurantTabBarArr.length > i; i++) {
-            TextView textView = mRestaurantTabBarArr[i];
-            textView.setTextColor(Color.GRAY);
-        }
-        if (selectedTabIdx != -1) {
-            mRestaurantTabBarArr[selectedTabIdx].setTextColor(Color.BLACK);
-            mRestaurantTabBarArr[selectedTabIdx].setVisibility(View.VISIBLE);
-        } else {
-            mTvTheRestaurant.setTextColor(Color.BLACK);
-            mTvTheRestaurant.setVisibility(View.VISIBLE);
-        }
-        showStoreOrderHistory(selectedTabIdx);
+        setOrderHistory(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(mSelectedRestaurantTabIdx).name) );
         hideProgress();
-    }
-
-    private void showStoreOrderHistory(int selectedRestaurantTabIdx) {
-        //retaurantlist와 storeArraylist의 식당 인덱스가 대식당으로 일치하지 않다
-        if (selectedRestaurantTabIdx != -1) {
-          //  StoreOrder storeOrder = (StoreOrder) mRestaurantTabBarArr[selectedRestaurantTabIdx].getTag();
-            setOrderHistory(findStoreOrderByRestaurantName(AppDef.storeOrderArrayList, mRestaurantList.get(mSelectedRestaurantTabIdx).name) );
-        } else {   //selectedTabIdx == -1 대식당일경우
-            StoreOrder storeOrder = (StoreOrder) mTvTheRestaurant.getTag();
-            setOrderHistory(storeOrder);
-        }
     }
 
     private int getTotalReceptUnit(List<PersonalOrder> personalOrderList) {
@@ -320,7 +261,6 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         String strPrice = AppDef.priceMapper(Integer.valueOf(personalOrder.total_price));
         tvPrice.setText(strPrice + "원");
         return v;
-
     }
 
     private View createPosPersonalPayBillView(PosPersonalOrder posPersonalOrder) {

@@ -24,4 +24,5 @@ public class Restaurant implements Serializable {
     @Expose
     public  ArrayList<Category> categoryList = new ArrayList<Category>();
 
+    public boolean select = false;
 }

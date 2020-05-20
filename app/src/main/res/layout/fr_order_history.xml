@@ -15,31 +15,11 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
 
-        <TextView
-            android:id="@+id/tvTheRestaurantOrderHistory"
-            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
-            android:layout_marginLeft="10dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_restaurant"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="대식당"/>
-
-        <HorizontalScrollView
-            android:id="@+id/tabScrollView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_marginLeft="50dp"
-            android:visibility="visible">
-
-            <LinearLayout
-                android:id="@+id/restaurantTabLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                tools:ignore="ScrollViewSize,UselessLeaf" />
-
-        </HorizontalScrollView>
+            android:layout_marginStart="20dp"
+            android:layout_height="match_parent"/>
 
         <View
             android:layout_width="0dp"

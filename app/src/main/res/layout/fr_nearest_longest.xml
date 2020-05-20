@@ -113,7 +113,7 @@
 
                     <TextView
                         style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
-                        android:layout_width="150dp"
+                        android:layout_width="140dp"
                         android:paddingStart="0dp"
                         android:text="Player"
                         tools:ignore="HardcodedText,RtlSymmetry" />
