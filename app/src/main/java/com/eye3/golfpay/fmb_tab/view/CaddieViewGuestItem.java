@@ -18,10 +18,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,6 +51,7 @@ import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
+import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.listener.OnSignatureFinishListener;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
@@ -57,7 +60,6 @@ import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
-import com.eye3.golfpay.fmb_tab.util.GolfClubDialogFragment;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -271,9 +273,20 @@ public class CaddieViewGuestItem extends RelativeLayout {
         v.findViewById(R.id.club_info_list).setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                GolfClubDialogFragment golfClubDialogFragment = new GolfClubDialogFragment();
-                golfClubDialogFragment.setGuest(mGuest);
-                showDialogFragment(golfClubDialogFragment);
+                // Flags for full-screen mode:
+                int ui_flags =
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+                ClubInfoDialog dlg = new ClubInfoDialog(context);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.show();
                 return false;
             }
         });

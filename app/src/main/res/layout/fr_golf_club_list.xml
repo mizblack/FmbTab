@@ -1,402 +1,441 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/translucentBlack"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_height="650dp"
+    android:layout_width="1160dp">
 
-    <LinearLayout
-        android:layout_width="1160dp"
-        android:layout_height="650dp"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
-        <!--타이틀 relative-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center_vertical">
+    <RelativeLayout
+        android:id="@+id/view_header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_golf_info"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="클럽정보"
-                android:textColor="@color/irisBlue"
-                android:textSize="22sp" />
-
-            <LinearLayout
-                android:id="@+id/guest_container_linear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@id/tv_golf_info"
-                android:gravity="center_vertical"
-                />
-
-            <TextView
-                android:id="@+id/tv_save"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/tv_cancel"
-                android:gravity="center"
-                android:text="저장"
-                android:textColor="@color/irisBlue"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/tv_cancel"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="취소"
-                android:textColor="@color/gray"
-                android:textSize="22sp" />
-        </RelativeLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
+        <TextView
+            style="@style/GlobalTextView.22SP.irisBlue.NotoSans.Medium"
+            android:id="@+id/tv_golf_info"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginBottom="30dp"
-            >
+            android:gravity="center"
+            android:text="클럽정보"
+            android:layout_marginLeft="32dp" />
 
-            <LinearLayout
-                android:id="@+id/mll_club_type"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_guests"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/tv_golf_info"/>
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_cancel"
+            android:gravity="center"
+            android:text="저장"
+            android:textColor="@color/irisBlue"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="취소"
+            android:textColor="@color/gray"
+            android:textSize="22sp" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_header"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp">
 
                 <LinearLayout
-                    android:id="@+id/ll_wood"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:id="@+id/wood_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/woodRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView">
 
-                    <LinearLayout
-                        android:id="@+id/ll_wood_header"
-                        android:layout_width="140dp"
-                        android:layout_height="100dp"
-                        android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_woodTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="우드"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                        <TextView
-                            android:id="@+id/tv_wood"
-                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="bottom"
-                            android:paddingBottom="3dp"
-                            android:text="우드" />
-
-                        <TextView
-                            android:id="@+id/tv_wood_qty"
-                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:paddingTop="3dp"
-                            android:text="2개" />
-                    </LinearLayout>
-
-                    <com.eye3.golfpay.fmb_tab.view.WoodInserter
-                        android:id="@+id/wood_inserter"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/tv_woodCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
                 </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/ll_utility"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
 
-                    <LinearLayout
-                        android:id="@+id/ll_utility_header"
-                        android:layout_width="140dp"
-                        android:layout_height="100dp"
-                        android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/woodRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/wood_view"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_utility"
-                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="bottom"
-                            android:paddingBottom="3dp"
-                            android:text="유틸리티" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <TextView
-                            android:id="@+id/tv_utility_qty"
-                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:paddingTop="3dp"
-                            android:text="2개" />
-                    </LinearLayout>
-
-                    <com.eye3.golfpay.fmb_tab.view.UtilityInserter
-                        android:id="@+id/utility_inserter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8" />
-                </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
 
                 <LinearLayout
-                    android:id="@+id/ll_iron"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
+                    android:id="@+id/utility_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/utiltyRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/utiltyRecyclerView">
 
-                    <LinearLayout
-                        android:id="@+id/ll_iron_header"
-                        android:layout_width="140dp"
-                        android:layout_height="100dp"
-                        android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_utilityTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="유틸리티"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                        <TextView
-                            android:id="@+id/tv_iron"
-                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="bottom"
-                            android:paddingBottom="3dp"
-                            android:text="아이언" />
-
-                        <TextView
-                            android:id="@+id/tv_iron_qty"
-                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:paddingTop="3dp"
-                            android:text="2개" />
-                    </LinearLayout>
-
-                    <com.eye3.golfpay.fmb_tab.view.IronInserter
-                        android:id="@+id/iron_inserter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8" />
+                    <TextView
+                        android:id="@+id/tv_utilityCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
                 </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/utiltyRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/utility_view"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
+
                 <LinearLayout
-                    android:id="@+id/ll_wedge"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
+                    android:id="@+id/iron_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/ironRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ironRecyclerView">
 
-                    <LinearLayout
-                        android:id="@+id/ll_wedge_header"
-                        android:layout_width="140dp"
-                        android:layout_height="100dp"
-                        android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_ironTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="아이언"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                        <TextView
-                            android:id="@+id/tv_wedge"
-                            style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="bottom"
-                            android:paddingBottom="3dp"
-                            android:text="웨지" />
-
-                        <TextView
-                            android:id="@+id/tv_wedge_qty"
-                            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:paddingTop="3dp"
-                            android:text="2개" />
-                    </LinearLayout>
-
-                    <com.eye3.golfpay.fmb_tab.view.WedgeInserter
-                        android:id="@+id/wedge_inserter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8" />
+                    <TextView
+                        android:id="@+id/tv_ironCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:id="@+id/ll_putter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="110dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ironRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/iron_view"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
-                            android:id="@+id/ll_putter_header"
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="vertical">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <TextView
-                                android:id="@+id/tv_putter"
-                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:gravity="bottom"
-                                android:paddingBottom="3dp"
-                                android:text="퍼터" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
 
-                            <TextView
-                                android:id="@+id/tv_putter_qty"
-                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:paddingTop="3dp"
-                                android:text="2개" />
-                        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/wedge_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/wedgeRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/wedgeRecyclerView">
 
-                        <com.eye3.golfpay.fmb_tab.view.PutterInserter
-                            android:id="@+id/putter_inserter"
-                            android:layout_width="400dp"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/ll_putter_cover"
-                        android:layout_width="wrap_content"
-                        android:layout_height="110dp"
-                        android:layout_toRightOf="@+id/ll_putter"
-                        android:gravity="center_vertical">
+                    <TextView
+                        android:id="@+id/tv_wedgeTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="웨지"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                        <LinearLayout
-                            android:id="@+id/ll_putter_cover_header"
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="60dp"
-                            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_wedgeCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_putter_cover"
-                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:gravity="bottom"
-                                android:paddingBottom="3dp"
-                                android:text="퍼터커버" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wedgeRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/wedge_view"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                            <TextView
-                                android:id="@+id/tv_putter_cover_qty"
-                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:paddingTop="3dp"
-                                android:text="2개" />
-                        </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.eye3.golfpay.fmb_tab.view.PutterCoverInserter
-                            android:id="@+id/putter_cover_inserter"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5.5" />
-                    </LinearLayout>
-                </RelativeLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="50dp">
-                    <LinearLayout
-                        android:id="@+id/ll_wood_cover"
-                        android:layout_width="wrap_content"
-                        android:layout_height="110dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/putter_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/putterRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/putterRecyclerView">
 
-                        <LinearLayout
-                            android:id="@+id/ll_wood_cover_header"
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_putterTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="퍼터"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                            <TextView
-                                android:id="@+id/tv_wood_cover"
-                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:gravity="bottom"
-                                android:paddingBottom="3dp"
-                                android:text="우드커버" />
+                    <TextView
+                        android:id="@+id/tv_putterCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_wood_cover_qty"
-                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:paddingTop="3dp"
-                                android:text="2개" />
-                        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/putterRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/putter_view"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.eye3.golfpay.fmb_tab.view.WoodCoverInserter
-                            android:id="@+id/wood_cover_inserter"
-                            android:layout_width="400dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="5.5" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/ll_micell_cover"
-                        android:layout_width="wrap_content"
-                        android:layout_height="110dp"
-                        android:layout_toRightOf="@+id/ll_wood_cover"
-                        android:gravity="center_vertical">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
-                            android:id="@+id/ll_micell_cover_header"
-                            android:layout_width="140dp"
-                            android:layout_height="100dp"
-                            android:layout_marginLeft="60dp"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
 
-                            <TextView
-                                android:id="@+id/tv_micell_cover"
-                                style="@style/GlobalTextView.20SP.Black.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:gravity="bottom"
-                                android:paddingBottom="3dp"
-                                android:text="기타커버" />
+                <LinearLayout
+                    android:id="@+id/putterCover_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/putterCoverRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/putterCoverRecyclerView">
 
-                            <TextView
-                                android:id="@+id/tv_micell_cover_qty"
-                                style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Regular"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:paddingTop="3dp"
-                                android:text="2개"  />
-                        </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_putterCoverTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="퍼터커버"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                        <com.eye3.golfpay.fmb_tab.view.MicellCoverInserter
-                            android:id="@+id/micell_cover_inserter"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5.5"/>
-                    </LinearLayout>
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_putterCoverCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/putterCoverRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/putterCover_view"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
+
+                <LinearLayout
+                    android:id="@+id/woodCover_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/woodCoverRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodCoverRecyclerView">
+
+                    <TextView
+                        android:id="@+id/tv_woodCoverTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="우드커버"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
+
+                    <TextView
+                        android:id="@+id/tv_woodCoverCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/woodCoverRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/woodCover_view"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="22dp">
+
+                <LinearLayout
+                    android:id="@+id/etcCover_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/etcCoverRecyclerView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etcCoverRecyclerView">
+
+                    <TextView
+                        android:id="@+id/tv_etcCoverTitle"
+                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="기타커버"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
+
+                    <TextView
+                        android:id="@+id/tv_etcCoverCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:text="0개"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/etcCoverRecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/zumthor"
+                    android:paddingRight="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/etcCover_view"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

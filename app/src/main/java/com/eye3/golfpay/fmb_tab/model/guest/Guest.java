@@ -71,6 +71,9 @@ public class Guest implements Serializable {
     @SerializedName("club_set")
     public List<Club> clubList;
 
+    //UI에서 사용
+    public boolean selected = false;
+
     public ArrayList<GalleryPicture> getArrClubImageList() {
         return arrClubImageList;
     }
