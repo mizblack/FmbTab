@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,10 +20,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.TeeUpViewPagerAdapter;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
@@ -31,6 +33,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
+import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.VisitorsGuestItem;
 
 import java.util.ArrayList;
@@ -42,8 +45,8 @@ import java.util.TimerTask;
  * A simple {@link Fragment} subclass.
  */
 public class ViewMenuFragment extends BaseFragment {
-    private RecyclerView teeUpRecyclerView;
-    private TeeUpAdapter teeUpAdapter;
+    private ViewPager teeUpViewPager;
+    private TeeUpViewPagerAdapter teeUpAdapter;
     private TextView caddieNameTextView;
     private TextView groupNameTextView;
     private TextView reservationPersonNameTextView;
@@ -52,6 +55,7 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView inOutTextView01;
     private TextView tvCartNo;
     private TextView controlTxtView;
+    private ImageButton btnLeftMove, btnRightMove;
     private View selectTobDivider, selectBottomDivider, roundingLinearLayout;
     private DrawerLayout drawer_layout;
     private FmbCustomDialog fmbDialog;
@@ -114,7 +118,7 @@ public class ViewMenuFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_view_menu, container, false);
-        teeUpRecyclerView = v.findViewById(R.id.teeUpRecyclerView);
+        teeUpViewPager = v.findViewById(R.id.teeUpViewPager);
         gpsLinear = v.findViewById(R.id.gpsLinearLayout);
         scoreBoardLinear = v.findViewById(R.id.scoreBoardLinearLayout);
         nearstLongestLinear = v.findViewById(R.id.nearestLongestLinearLayout);
@@ -128,6 +132,10 @@ public class ViewMenuFragment extends BaseFragment {
         closeLinear = v.findViewById(R.id.closeLinearLayoutViewMenu);
         caddieNameTextView = v.findViewById(R.id.caddieNameTextView);
         caddieCancelLinearLayout = v.findViewById(R.id.caddieCancelLinearLayout);
+
+
+        btnLeftMove = v.findViewById(R.id.btn_move_left);
+        btnRightMove = v.findViewById(R.id.btn_move_right);
         init(v);
         return v;
     }
@@ -182,7 +190,7 @@ public class ViewMenuFragment extends BaseFragment {
         selectBottomDivider = v.findViewById(R.id.selectBottomDivider);
 
         tvCartNo = v.findViewById(R.id.cart_no);
-        teeUpRecyclerView = v.findViewById(R.id.teeUpRecyclerView);
+
         mTvRoundStartfinish = v.findViewById(R.id.first_round_start);
         mTvRoundStartfinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +206,7 @@ public class ViewMenuFragment extends BaseFragment {
             public void onClick(View v) {
                 selectTobDivider.setVisibility(View.VISIBLE);
                 selectBottomDivider.setVisibility(View.VISIBLE);
-                teeUpRecyclerView.setVisibility(View.VISIBLE);
+                //teeUpRecyclerView.setVisibility(View.VISIBLE);
                 roundingLinearLayout.setVisibility(View.GONE);
 
                 disableMenu();
@@ -214,7 +222,7 @@ public class ViewMenuFragment extends BaseFragment {
         controlTxtView = v.findViewById(R.id.controlTextViewViewMenu);
 
         selectBottomDivider.setVisibility(View.VISIBLE);
-        teeUpRecyclerView.setVisibility(View.VISIBLE);
+        //teeUpRecyclerView.setVisibility(View.VISIBLE);
         roundingLinearLayout.setVisibility(View.GONE);
 //        caddieCancelLinearLayout.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -385,7 +393,7 @@ public class ViewMenuFragment extends BaseFragment {
             public void onClick(View v) {
                 selectTobDivider.setVisibility(View.VISIBLE);
                 selectBottomDivider.setVisibility(View.VISIBLE);
-                teeUpRecyclerView.setVisibility(View.VISIBLE);
+                //teeUpRecyclerView.setVisibility(View.VISIBLE);
                 roundingLinearLayout.setVisibility(View.GONE);
 
                 disableMenu();
@@ -425,24 +433,85 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
         //   showProgress("티업시간을 받아오는 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy("3", new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(TeeUpTime response) {
                 hideProgress();
                 systemUIHide();
 
+                if (response == null)
+                    return;
+
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
+                    todayReserveTimer.cancel();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
                     //*****************
-                    teeUpAdapter = new TeeUpAdapter(Global.teeUpTime.getTodayReserveList());
-                    teeUpRecyclerView.setHasFixedSize(true);
-                    LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-                    teeUpRecyclerView.setLayoutManager(manager);
-                    teeUpRecyclerView.setAdapter(teeUpAdapter);
-                    teeUpAdapter.notifyDataSetChanged();
+                    teeUpAdapter = new TeeUpViewPagerAdapter(getContext(), Global.teeUpTime.getTodayReserveList(), new TeeUpViewPagerAdapter.OnAdapterClickListener() {
+                        @Override
+                        public void onClicked(int position) {
+                            selectTobDivider.setVisibility(View.GONE);
+                            selectBottomDivider.setVisibility(View.GONE);
+                            teeUpViewPager.setVisibility(View.GONE);
+                            roundingLinearLayout.setVisibility(View.VISIBLE);
+
+                            TodayReserveList item = teeUpAdapter.getItem(position);
+                            Global.selectedTeeUpIndex = position;
+                            Global.selectedReservation = item;
+                            Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
+                            groupNameTextView.setText(item.getGroup());
+                            reservationPersonNameTextView.setText(item.getGuestName());
+                            roundingTeeUpTimeTextView.setText(Util.timeMapper(item.getTeeoff()));
+                            setInOutTextView(item.getInoutCourse());
+                            enableMenu();
+                        }
+                    });
+
+                    teeUpViewPager.setAdapter(teeUpAdapter);
+                    teeUpViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                            btnLeftMove.setVisibility(View.VISIBLE);
+                            btnRightMove.setVisibility(View.VISIBLE);
+
+                            if (teeUpAdapter.getCount() == 1) {
+                                btnLeftMove.setVisibility(View.GONE);
+                                btnRightMove.setVisibility(View.GONE);
+                            } else if (position == 0) {
+                                btnLeftMove.setVisibility(View.GONE);
+                            } else if (position+1 ==  teeUpAdapter.getCount()) {
+                                btnRightMove.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onPageSelected(int position) {
+
+
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+
+                        }
+                    });
+
+                    btnLeftMove.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            teeUpViewPager.setCurrentItem(teeUpViewPager.getCurrentItem()-1);
+                        }
+                    });
+                    btnRightMove.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            teeUpViewPager.setCurrentItem(teeUpViewPager.getCurrentItem()+1);
+                        }
+                    });
+
                     if (mContext != null) {
 
                         if (getActivity() != null || getActivity().isFinishing() == false) {
@@ -464,6 +533,21 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
             }
         });
+    }
+
+    void setInOutTextView(String course) {
+        String courseTemp;
+        if (course.equals("IN")) {
+            courseTemp = "OUT";
+        } else {
+            courseTemp = "IN";
+        }
+        inOutTextView00.setText(inOutMapper(course));
+        inOutTextView01.setText(inOutMapper(courseTemp));
+    }
+
+    String inOutMapper(String course) {
+        return course + "코스";
     }
 
     private void startTimer() {
@@ -636,7 +720,7 @@ public class ViewMenuFragment extends BaseFragment {
                         todayReserveTimer.cancel();
                         selectTobDivider.setVisibility(View.GONE);
                         selectBottomDivider.setVisibility(View.GONE);
-                        teeUpRecyclerView.setVisibility(View.GONE);
+                        //teeUpRecyclerView.setVisibility(View.GONE);
                         roundingLinearLayout.setVisibility(View.VISIBLE);
 
                         int position = getAdapterPosition();
@@ -744,6 +828,7 @@ public class ViewMenuFragment extends BaseFragment {
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveGuestList(reserveId, new DataInterface.ResponseCallback<ReserveGuestList>() {
             @Override
             public void onSuccess(ReserveGuestList response) {
+
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
                     //   GoNativeScreen(new CaddieFragment(), null);
@@ -765,5 +850,4 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
     }
-
 }

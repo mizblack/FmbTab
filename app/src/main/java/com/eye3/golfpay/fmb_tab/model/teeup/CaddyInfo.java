@@ -35,5 +35,7 @@ public class CaddyInfo implements Serializable {
         return cart_no;
     }
 
-
+    public void setCart_no(String cart_no) {
+        this.cart_no = cart_no;
+    }
 }

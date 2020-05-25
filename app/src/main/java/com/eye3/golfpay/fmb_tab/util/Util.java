@@ -1848,4 +1848,17 @@ public class Util {
         }
     }
 
+    public static String timeMapper(String time) {
+        String timeString;
+        String amOrPm;
+        if (Integer.parseInt(time.split(":")[0]) >= 12) {
+            amOrPm = " PM";
+        } else {
+            amOrPm = " AM";
+        }
+//            timeString = time.split(":")[0] + ":" + time.split(":")[1] + amOrPm;
+        timeString = time.split(":")[0] + ":" + time.split(":")[1];
+        return timeString;
+    }
+
 }

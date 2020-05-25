@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/translucentBlack"
     android:gravity="center"
     android:orientation="vertical">
@@ -12,34 +12,32 @@
         android:layout_width="1160dp"
         android:layout_height="650dp"
         android:layout_alignParentTop="true"
-        android:background="@color/white"
         android:orientation="horizontal"
         tools:ignore="DisableBaselineAlignment">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/gallery_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
         <ImageView
             android:id="@+id/arrow_left"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/arrow_left_gallery"
             android:layout_centerVertical="true"
             android:layout_marginStart="30dp"
             android:padding="10dp"
-            />
+            android:src="@drawable/arrow_left_gallery" />
 
         <ImageView
             android:id="@+id/arrow_right"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/arrow_right"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="30dp"
             android:padding="10dp"
-            />
-
+            android:src="@drawable/arrow_right" />
 
     </RelativeLayout>
-    </RelativeLayout>
+</RelativeLayout>

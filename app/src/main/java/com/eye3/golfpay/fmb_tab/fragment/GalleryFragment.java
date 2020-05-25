@@ -202,44 +202,14 @@ public class GalleryFragment extends BaseFragment {
             viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int) v.getTag());
-//                    assert getFragmentManager() != null;
-//                    galleryViewFragment.show(getFragmentManager(), TAG);
+                    GalleryViewFragment galleryViewFragment = new GalleryViewFragment(mPictureList, (int) v.getTag());
+                    assert getFragmentManager() != null;
+                    galleryViewFragment.show(getFragmentManager(), TAG);
                     systemUIHide();
 
-                    List<String> list = new ArrayList<>();
-                    for (int i = 0; i < mPictureList.size(); i++) {
-
-                        String m_path = Environment.getExternalStoragePublicDirectory(
-                                Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/KakaoTalk_20200305_185727011_01.jpg";
-
-                        list.add(m_path);
-
-
-                        File file = new File(m_path);
-                        if (file.exists() == true) {
-                            String path = file.getAbsolutePath();
-                            int a = path.length();
-                        }
-
-                    }
-
-                    new ImageViewer.Builder<>(getContext(), list)
-                            .setStartPosition(position)
-                            .show();
                 }
             });
-
-            String m_path = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/KakaoTalk_20200305_185727011_01.jpg";
-
-            //setClubImage(viewHolder.imageView, mPictureList.get(position).uri);
-            setClubImage(viewHolder.imageView, m_path);
-            File f = new File(m_path);
-            boolean bb = f.exists();
-            if (bb == true) {
-
-            }
+            setClubImage(viewHolder.imageView, mPictureList.get(position).uri);
         }
 
         @Override
