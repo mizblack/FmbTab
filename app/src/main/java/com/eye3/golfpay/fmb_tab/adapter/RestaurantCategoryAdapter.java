@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -14,24 +15,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
 
-
 import java.util.ArrayList;
 
 
-public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
+public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCategoryAdapter.ClubHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count);
+        public void onAdapterItemClicked(int count);
     }
 
     public class ClubHolder extends RecyclerView.ViewHolder {
 
         public TextView tv_item;
+        public View iv_bar;
+        public ImageView iv_select;
 
         public ClubHolder(View itemView) {
             super(itemView);
 
             tv_item = itemView.findViewById(R.id.tv_item);
+            iv_bar = itemView.findViewById(R.id.iv_bar);
+            iv_select = itemView.findViewById(R.id.iv_select);
         }
     }
 
@@ -49,11 +53,11 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
     private ArrayList<Item> items;
     private Context context;
     private IOnClickAdapter onClickAdapter;
-    private ClubInfoDialog.ClubType clubType;
-    public ClubAdapter(Context context, ClubInfoDialog.ClubType clubType, IOnClickAdapter listener) {
+
+    public RestaurantCategoryAdapter(Context context, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;
-        this.clubType = clubType;
+
         items = new ArrayList<>();
     }
 
@@ -73,7 +77,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
     @Override
     public ClubHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_club_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_restaurant_category_item, parent, false);
         ClubHolder rcv = new ClubHolder(view);
 
         return rcv;
@@ -84,25 +88,29 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
         try {
 
-            if (items.get(position).selected == true) {
-                holder.tv_item.setBackgroundColor(ContextCompat.getColor(context, R.color.irisBlue));
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_16SP_White_NotoSans_Medium);
-            } else {
-                holder.tv_item.setBackgroundColor(Color.WHITE);
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_16SP_A3A5A7_NotoSans_Medium);
+            Item item = items.get(position);
+
+            holder.iv_bar.setVisibility(View.GONE);
+            holder.iv_select.setVisibility(View.GONE);
+            holder.tv_item.setTextAppearance(R.style.GlobalTextView_18SP_505258_NotoSans_Bold);
+            holder.tv_item.setText(item.item);
+
+            if (item.selected == true) {
+                holder.iv_bar.setVisibility(View.VISIBLE);
+                holder.iv_select.setVisibility(View.VISIBLE);
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_18SP_White_NotoSans_Bold);
             }
 
-            holder.tv_item.setText(items.get(position).item);
-
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //allSelected(false);
-                    items.get(position).selected ^= true;
-                    onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
+                    allSelected(false);
+                    items.get(position).selected = true;
+                    onClickAdapter.onAdapterItemClicked(position);
                     notifyDataSetChanged();
                 }
             });
+
         } catch (NullPointerException e) {
             Log.e(TAG, "NullPointerException : " + e);
         } catch (Exception e) {
@@ -118,6 +126,12 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
         }
 
         return count;
+    }
+
+    private void allSelected(boolean select) {
+        for (Item item : items) {
+            item.selected = select;
+        }
     }
 
     @Override

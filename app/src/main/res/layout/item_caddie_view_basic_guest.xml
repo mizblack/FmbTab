@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="234dp"
+    android:layout_height="match_parent"
+    android:paddingRight="32dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    tools:context=".fragment.CaddieFragment"
+    tools:ignore="DisableBaselineAlignment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/carNumberEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="차량번호"
+                android:inputType="textShortMessage"
+                android:maxLines="1"
+                android:textColor="@color/ebonyBlack"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText,SpUsage,TextFields" />
+
+            <ImageView
+                android:id="@+id/carNumberImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/caddie_memo"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/phoneNumberEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="연락처 입력"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textColor="@color/ebonyBlack"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText,SpUsage,TextFields" />
+
+            <ImageView
+                android:id="@+id/phoneNumberImageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/caddie_memo"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/guestMemoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="개인메모"
+                    tools:ignore="HardcodedText,SpUsage" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/personalImageView"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/caddie_memo"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/guestMemoContentTextView"
+                style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="255"/>
+
+            <TextView
+                android:id="@+id/guestMemoTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:visibility="gone"
+                tools:ignore="SpUsage" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

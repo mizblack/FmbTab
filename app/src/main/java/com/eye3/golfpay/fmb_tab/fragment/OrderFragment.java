@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,9 +40,13 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantListAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
+import com.eye3.golfpay.fmb_tab.dialog.PopupDialog;
+import com.eye3.golfpay.fmb_tab.dialog.RestaurantsPopupDialog;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.Category2;
@@ -328,73 +333,95 @@ public class OrderFragment extends BaseFragment {
         });
 
         mLinearSubMenu.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                int selectedItem = -1;
-                List<Category2> spinnSubCate2MenuList = getSubMenuList("", mTVCateName.getText().toString().trim());
-                if (spinnSubCate2MenuList == null) {
-                    Toast.makeText(mContext, "서브카테고리가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                int ui_flags =
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
-                List<String> spinnSubMenuList = new ArrayList<>();
+                MenuCategoryDialog dlg = new MenuCategoryDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
 
-                if (mSpinnAdapter != null)
-                    mSpinnAdapter.clear();
+                dlg.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-                for (int i = 0; spinnSubCate2MenuList.size() > i; i++) {
-                    spinnSubMenuList.add(spinnSubCate2MenuList.get(i).catergory2_name);
-                }
+                dlg.show();
 
-                mSpinnAdapter = new ArrayAdapter<String>(mContext, R.layout.sub_menu_spinner_item, spinnSubMenuList) {
-                    @Override
-                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                        View v = null;
-                        v = super.getDropDownView(position, null, parent);
-                        // If this is the selected item position
-                        if (position == selectedItem) {
-                            v.setBackgroundColor(Color.BLUE);
-
-                        } else {
-                            // for other views
-                            v.setBackgroundColor(Color.BLACK);
-
-                        }
-                        return v;
-                    }
-                };
-                mSpinnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mSpinnSubMenu.setVisibility(View.VISIBLE);
-                mSpinnSubMenu.setAdapter(mSpinnAdapter);
-                mSpinnSubMenu.setSelection(0);
-                mSpinnSubMenu.setGravity(Gravity.CENTER);
-                mSpinnSubMenu.setBackgroundColor(Color.BLACK);
-                mSpinnSubMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (position > 0) {
-                            int subMenuZeroIdx = getPositionForSubMenuZeroItem(mTVCateName.getText().toString().trim(), spinnSubMenuList.get(position).toString());
-                            mTvSubCateName.setText(spinnSubMenuList.get(position));
-                            if (subMenuZeroIdx != -1) {
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mRecyclerCategory.smoothScrollToPosition(subMenuZeroIdx);
-                                    }
-                                }, 100);
-
-                            } else
-                                Toast.makeText(mContext, "해당 서브카테고리에 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
             }
+
+//            @Override
+//            public void onClick(View v) {
+//                int selectedItem = -1;
+//                List<Category2> spinnSubCate2MenuList = getSubMenuList("", mTVCateName.getText().toString().trim());
+//                if (spinnSubCate2MenuList == null) {
+//                    Toast.makeText(mContext, "서브카테고리가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//                List<String> spinnSubMenuList = new ArrayList<>();
+//
+//                if (mSpinnAdapter != null)
+//                    mSpinnAdapter.clear();
+//
+//                for (int i = 0; spinnSubCate2MenuList.size() > i; i++) {
+//                    spinnSubMenuList.add(spinnSubCate2MenuList.get(i).catergory2_name);
+//                }
+//
+//                mSpinnAdapter = new ArrayAdapter<String>(mContext, R.layout.sub_menu_spinner_item, spinnSubMenuList) {
+//                    @Override
+//                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+//                        View v = null;
+//                        v = super.getDropDownView(position, null, parent);
+//                        // If this is the selected item position
+//                        if (position == selectedItem) {
+//                            v.setBackgroundColor(Color.BLUE);
+//
+//                        } else {
+//                            // for other views
+//                            v.setBackgroundColor(Color.BLACK);
+//
+//                        }
+//                        return v;
+//                    }
+//                };
+//                mSpinnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                mSpinnSubMenu.setVisibility(View.VISIBLE);
+//                mSpinnSubMenu.setAdapter(mSpinnAdapter);
+//                mSpinnSubMenu.setSelection(0);
+//                mSpinnSubMenu.setGravity(Gravity.CENTER);
+//                mSpinnSubMenu.setBackgroundColor(Color.BLACK);
+//                mSpinnSubMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                        if (position > 0) {
+//                            int subMenuZeroIdx = getPositionForSubMenuZeroItem(mTVCateName.getText().toString().trim(), spinnSubMenuList.get(position).toString());
+//                            mTvSubCateName.setText(spinnSubMenuList.get(position));
+//                            if (subMenuZeroIdx != -1) {
+//                                new Handler().postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        mRecyclerCategory.smoothScrollToPosition(subMenuZeroIdx);
+//                                    }
+//                                }, 100);
+//
+//                            } else
+//                                Toast.makeText(mContext, "해당 서브카테고리에 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
+//            }
 
         });
     }

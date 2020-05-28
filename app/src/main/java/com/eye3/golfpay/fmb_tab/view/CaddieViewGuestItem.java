@@ -51,7 +51,6 @@ import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
-import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
 import com.eye3.golfpay.fmb_tab.listener.OnEditorFinishListener;
 import com.eye3.golfpay.fmb_tab.listener.OnSignatureFinishListener;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
@@ -87,12 +86,6 @@ public class CaddieViewGuestItem extends RelativeLayout {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     public ImageView mClubImageView, mSignatureImageView;
 
-//    public CaddieViewGuestItem(Context context) {
-//        super(context);
-//
-//        init(context);
-//    }
-
     public CaddieViewGuestItem(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -109,7 +102,7 @@ public class CaddieViewGuestItem extends RelativeLayout {
 
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.item_caddie_view_guest, this, false);
+        View v = inflater.inflate(R.layout.item_caddie_view_basic_guest, this, false);
 
         mGuestMemoLinearLayout = v.findViewById(R.id.guestMemoLinearLayout);
 
@@ -179,7 +172,7 @@ public class CaddieViewGuestItem extends RelativeLayout {
     public void init(Context context, Guest guest) {
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.item_caddie_view_guest, this, false);
+        View v = inflater.inflate(R.layout.item_caddie_view_basic_guest, this, false);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 212, getResources().getDisplayMetrics());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -274,19 +267,6 @@ public class CaddieViewGuestItem extends RelativeLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // Flags for full-screen mode:
-                int ui_flags =
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
-                ClubInfoDialog dlg = new ClubInfoDialog(context);
-                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
-                wmlp.gravity = Gravity.CENTER;
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
-                dlg.show();
                 return false;
             }
         });

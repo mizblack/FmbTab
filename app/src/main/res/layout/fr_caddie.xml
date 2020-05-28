@@ -1,130 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/rootView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_fragment"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
         android:background="@color/white"
-        android:orientation="horizontal"
-        tools:ignore="DisableBaselineAlignment">
+        app:layout_constraintEnd_toStartOf="@+id/right_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/guestViewContainerLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingLeft="40dp"
-            android:paddingTop="12dp"
-            tools:ignore="Orientation" />
+        <TextView
+            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="유정"
+            android:layout_marginLeft="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:background="@color/black"
-            android:orientation="vertical"
-            android:padding="36dp">
+        <TextView
+            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="광어"
+            android:layout_marginLeft="264dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+        <TextView
+            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="우럭"
+            android:layout_marginLeft="498dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/teamMemoLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="730dp"
+            android:text="놀래미"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="팀메모"
-                        android:textColor="@color/white"
-                        android:textSize="24dp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText,SpUsage" />
+        <ImageButton
+            android:id="@+id/btn_slide_down"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@null"
+            android:src="@drawable/down"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="32dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-                    <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/caddie_memo"
-                        tools:ignore="ContentDescription" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </LinearLayout>
+    <FrameLayout
+        android:id="@+id/main_fragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/right_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_fragment" />
 
-<!--                <ScrollView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="0dp"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:layout_marginBottom="8dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:scrollbars="none"-->
-<!--                    tools:ignore="NestedWeights">-->
+    <FrameLayout
+        android:id="@+id/right_fragment"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:background="#333333"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/teamMemoContentTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="20dp"
-                            tools:ignore="HardcodedText,SpUsage" />
-
-                        <TextView
-                            android:id="@+id/teamMemoTimeTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textSize="16dp"
-                            tools:ignore="SpUsage" />
-
-                    </LinearLayout>
-
-<!--                </ScrollView>-->
-
-            </LinearLayout>
-
-            <TextView
-                style="@style/GlobalTextView.20SP.Black.NotoSans.Bold"
-                android:id="@+id/saveCadieTextView"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="저장하기"
-                tools:ignore="HardcodedText,SpUsage" />
-
-            <TextView
-                style="@style/GlobalTextView.20SP.White.NotoSans.Bold"
-                android:id="@+id/cancelTextView"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shape_white_edge"
-                android:gravity="center"
-                android:text="취소"
-                tools:ignore="HardcodedText,SpUsage" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

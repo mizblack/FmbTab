@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category1"
+        android:layout_width="340dp"
+        android:layout_height="match_parent"
+        android:background="@color/ebonyBlack"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/view_category2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카테고리를 선택해 주세요."
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="80dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/ebonyBlack"
+        app:layout_constraintEnd_toStartOf="@+id/view_category3"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="80dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category3"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:background="@color/ebonyBlack"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="80dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/btn_apply"
+        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Bold"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:background="@drawable/shape_white_circle"
+        android:gravity="center"
+        android:text="적용"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_close"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/btn_close"
+        style="@style/GlobalTextView.16SP.white.NotoSans.Bold"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:background="@drawable/shape_white_edge_circle"
+        android:gravity="center"
+        android:text="닫기"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

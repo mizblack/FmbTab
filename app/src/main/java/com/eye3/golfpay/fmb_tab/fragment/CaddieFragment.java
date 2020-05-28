@@ -1,9 +1,15 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +39,13 @@ public class CaddieFragment extends BaseFragment {
     public static LinearLayout mGuestViewContainerLinearLayout;
     private LinearLayout mTeamMemoLinear;
     TextView mTeamMemoContentTextView;
+    private ImageButton btnSlideDown;
+
+
+
+    private FragmentManager fragmentManager;
+    private CaddieMainFragment caddieMainFragment;
+    private FragmentTransaction transaction;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,20 +105,60 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        closeKeyboard();
+        //closeKeyboard();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
-        mGuestViewContainerLinearLayout = v.findViewById(R.id.guestViewContainerLinearLayout);
-        createCaddieGuestViews();
-        mTeamMemoLinear = v.findViewById(R.id.teamMemoLinearLayout);
-        teamMemoOnClick(mTeamMemoLinear);
-        mTeamMemoContentTextView = v.findViewById(R.id.teamMemoContentTextView);
-        mTeamMemoContentTextView.setText(Global.guestList.get(0).getTeamMemo());
+
         mParentActivity.showMainBottomBar();
+
+        fragmentManager = getChildFragmentManager();
+
+        caddieMainFragment = new CaddieMainFragment();
+
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_fragment, caddieMainFragment).commitAllowingStateLoss();
+
+        btnSlideDown = v.findViewById(R.id.btn_slide_down);
+        btnSlideDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                caddieMainFragment.slidingDown();
+                hideSlidButton();
+            }
+        });
         return v;
+    }
+
+    public void showSlidButton() {
+
+        btnSlideDown.setVisibility(View.VISIBLE);
+
+        btnSlideDown.animate()
+                .alpha(1.0f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                    }
+                });
+    }
+
+    public void hideSlidButton() {
+
+        btnSlideDown.animate()
+                .alpha(0.0f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        btnSlideDown.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override
@@ -116,14 +169,15 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         //최종 전송시 클릭버튼
-        v.findViewById(R.id.saveCadieTextView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int i = 0; mGuestViewContainerLinearLayout.getChildCount() > i; i++)
-                    ((CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i)).setReserveGuestInfo(guestList.get(i));
-            }
-        });
+//        v.findViewById(R.id.saveCadieTextView).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                for (int i = 0; mGuestViewContainerLinearLayout.getChildCount() > i; i++)
+//                    ((CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i)).setReserveGuestInfo(guestList.get(i));
+//            }
+//        });
 
     }
 

@@ -8,6 +8,8 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.eye3.golfpay.fmb_tab.R;
 
 /**
@@ -24,6 +26,7 @@ public class RestaurantsPopupDialog extends Dialog {
     private String target;
     private String Idx;
     private IListenerDialogTouch mListener;
+
 
     public interface  IListenerDialogTouch {
         public void onTouch();
