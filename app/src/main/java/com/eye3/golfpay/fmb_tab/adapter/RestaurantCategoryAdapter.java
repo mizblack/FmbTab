@@ -40,11 +40,13 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
     }
 
     public class Item {
-        public Item(String s) {
-            item = s;
+        public Item(String id, String name) {
+            categoryId = id;
+            categoryName = name;
         }
 
-        public String item;
+        public String categoryId;
+        public String categoryName;
         public boolean selected = false;
     }
 
@@ -61,13 +63,9 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
         items = new ArrayList<>();
     }
 
-    public void addItem(String s) {
-        Item item = new Item(s);
+    public void addItem(String id, String name) {
+        Item item = new Item(id, name);
         items.add(item);
-    }
-
-    public String getItem(int position) {
-        return items.get(position).item;
     }
 
     public void clearData() {
@@ -93,7 +91,7 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
             holder.iv_bar.setVisibility(View.GONE);
             holder.iv_select.setVisibility(View.GONE);
             holder.tv_item.setTextAppearance(R.style.GlobalTextView_18SP_505258_NotoSans_Bold);
-            holder.tv_item.setText(item.item);
+            holder.tv_item.setText(item.categoryName);
 
             if (item.selected == true) {
                 holder.iv_bar.setVisibility(View.VISIBLE);

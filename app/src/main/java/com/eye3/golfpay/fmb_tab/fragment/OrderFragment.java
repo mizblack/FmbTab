@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,14 +37,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantListAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
-import com.eye3.golfpay.fmb_tab.dialog.PopupDialog;
-import com.eye3.golfpay.fmb_tab.dialog.RestaurantsPopupDialog;
-import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.Category2;
 import com.eye3.golfpay.fmb_tab.model.order.GuestNameOrder;
@@ -61,7 +54,6 @@ import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.NameOrderView;
 import com.eye3.golfpay.fmb_tab.view.OrderItemInvoiceView;
 import com.eye3.golfpay.fmb_tab.view.SnappingLinearLayoutManager;
@@ -70,14 +62,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.prefs.PreferenceChangeListener;
 
 
 public class OrderFragment extends BaseFragment {
     private View v;
-    private static int NUM_OF_RESTAURANT;
-    private static int NUM_OF_SINGLE_ORDERED_ITEM = 1;
-    private static String STRING_CADDY = "(캐디)";
 
     public static final int NUM_MENU_NAME_KEY = 1 + 2 << 24;
     public static final int NUM_NAMEORDER_KEY = 2 + 2 << 24;
@@ -87,21 +75,17 @@ public class OrderFragment extends BaseFragment {
     private Button orderOrApplyBtn;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     private RecyclerView mRecyclerCategory;
-    private TextView[] mRestaurantTabBarArr;
     private ImageView mFoodImage, mFoodNoImage;
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
-    private LinearLayout mOrderBrowserLinearLayout, mLinearSubMenu;
+    private LinearLayout mOrderBrowserLinearLayout;
     private RecyclerView rv_restaurant;
     LinearLayout mGuestContainer;
     public static LinearLayout mTabsRootLinear;
     private ShadeOrder mShadeOrders;
-    private ArrayList<OrderedMenuItem> mOrderedMenuItems = new ArrayList<>();
-    private String mOrderedGuestId = "";
-
 
     // 최상위 카테고리 이름
-    private TextView mTVCateName, mTvSubCateName, infoTextView;
+    private TextView mTVCateName, infoTextView;
     private TextView mTotalPriceTextView;
     private TextView mCancelButton;
     private TextView mTempSaveButton;
@@ -116,8 +100,6 @@ public class OrderFragment extends BaseFragment {
     RelativeLayout mRelOrderHistory;
     ConstraintLayout mRelSendOrder;
     Button mBtnHistory, mBtnAdd;
-    AppCompatSpinner mSpinnSubMenu;
-    ArrayAdapter mSpinnAdapter;
     TextView mTvCaddy;
     RestaurantMenuOrder mRestaurantMenuOrder;
 
@@ -145,7 +127,6 @@ public class OrderFragment extends BaseFragment {
         rv_restaurant = v.findViewById(R.id.rv_restaurant);
         mGuestContainer = v.findViewById(R.id.guest_container);
         mTVCateName = v.findViewById(R.id.tv_cate_name);
-        mTvSubCateName = v.findViewById(R.id.tv_sub_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
         mArrowToApply = v.findViewById(R.id.arrow_to_apply);
         mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
@@ -156,12 +137,10 @@ public class OrderFragment extends BaseFragment {
         mFoodImage = v.findViewById(R.id.img_food);
         mFoodNoImage = v.findViewById(R.id.img_no_img);
         mTempSaveButton = v.findViewById(R.id.btnTempSave);
-        mLinearSubMenu = v.findViewById(R.id.linear_sub_menu);
         mRelOrderHistory = v.findViewById(R.id.rel_order_history);
         mRelSendOrder = v.findViewById(R.id.rel_send_order);
         mBtnHistory = v.findViewById(R.id.btn_order_history);
         mBtnAdd = v.findViewById(R.id.btn_add);
-        mSpinnSubMenu = v.findViewById(R.id.spinn_sub_menu);
         mTvCaddy = v.findViewById(R.id.tvCaddy);
         mTvCaddy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,42 +181,14 @@ public class OrderFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
-
 
     private void initFoodImage() {
         if (mRestaurantList == null) {
             Toast.makeText(getActivity(), "존재하는 식당 정보가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
-//        if (mRestaurantList.get(0).categoryList == null || mRestaurantList.get(0).categoryList.size() == 0) {
-//            Toast.makeText(getActivity(), "존재하는 식당 메뉴 카테고리가 없습니다.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (mRestaurantList.get(0).categoryList.get(0).subCategoryList.get(0)== null || mRestaurantList.get(0).categoryList.get(0).Menus.size() == 0) {
-//            //    Toast.makeText(getActivity(), " 식당 메뉴가 없습니다.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
-//        if (mRestaurantList.get(0).categoryList.get(0).subCategoryList.size() > 0) {
-
-        //  if (mSelectedRestaurantTabIdx < 0)
-        //  setFoodImage(mFoodImage, (((Restaurant) mTvTheRestaurant.getTag()).categoryList.get(0).subCategoryList.get(0).Menus.get(0).image));
-        //  else
-        //  setFoodImage(mFoodImage, (mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList.get(0).subCategoryList.get(0).Menus.get(0).image));
-        //    }
     }
-
-    private int getIndexByName(String guestName) {
-        for (int i = 0; mOrderDetailList.size() > i; i++) {
-            if (getGuestName(mOrderDetailList.get(i).reserve_guest_id).equals(guestName))
-                return i;
-        }
-        return -1;
-
-    }
-
 
     private void openTempSavedOrderList() {
         //임시저장정보가 있다면
@@ -332,7 +283,7 @@ public class OrderFragment extends BaseFragment {
             }
         });
 
-        mLinearSubMenu.setOnClickListener(new View.OnClickListener() {
+        mTVCateName.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -345,85 +296,53 @@ public class OrderFragment extends BaseFragment {
                                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
                 MenuCategoryDialog dlg = new MenuCategoryDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.setListener(new MenuCategoryDialog.IListenerApplyCategory() {
+                    @Override
+                    public void onApplyCategory(String ct1Id, String ct2Id) {
+                        int subMenuZeroIdx = getPositionForSubMenuZeroItem(ct1Id, ct2Id);
 
+                        if (subMenuZeroIdx == -1) {
+                            Toast.makeText(getContext(), "선택한 카테고리에는 메뉴가 없습니다. 서버 확인 필요~", Toast.LENGTH_SHORT).show();
+                            mTVCateName.setText("전체");
+                            mRecyclerCategory.smoothScrollToPosition(0);
+                            return;
+                        }
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRecyclerCategory.smoothScrollToPosition(subMenuZeroIdx);
+                                mTVCateName.setText(findCategoryName(ct1Id, ct2Id));
+                            }
+                        }, 100);
+
+                    }
+                });
+
+                dlg.setData(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
                 dlg.getWindow().
                         setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
                 dlg.show();
-
             }
-
-//            @Override
-//            public void onClick(View v) {
-//                int selectedItem = -1;
-//                List<Category2> spinnSubCate2MenuList = getSubMenuList("", mTVCateName.getText().toString().trim());
-//                if (spinnSubCate2MenuList == null) {
-//                    Toast.makeText(mContext, "서브카테고리가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                List<String> spinnSubMenuList = new ArrayList<>();
-//
-//                if (mSpinnAdapter != null)
-//                    mSpinnAdapter.clear();
-//
-//                for (int i = 0; spinnSubCate2MenuList.size() > i; i++) {
-//                    spinnSubMenuList.add(spinnSubCate2MenuList.get(i).catergory2_name);
-//                }
-//
-//                mSpinnAdapter = new ArrayAdapter<String>(mContext, R.layout.sub_menu_spinner_item, spinnSubMenuList) {
-//                    @Override
-//                    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-//                        View v = null;
-//                        v = super.getDropDownView(position, null, parent);
-//                        // If this is the selected item position
-//                        if (position == selectedItem) {
-//                            v.setBackgroundColor(Color.BLUE);
-//
-//                        } else {
-//                            // for other views
-//                            v.setBackgroundColor(Color.BLACK);
-//
-//                        }
-//                        return v;
-//                    }
-//                };
-//                mSpinnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                mSpinnSubMenu.setVisibility(View.VISIBLE);
-//                mSpinnSubMenu.setAdapter(mSpinnAdapter);
-//                mSpinnSubMenu.setSelection(0);
-//                mSpinnSubMenu.setGravity(Gravity.CENTER);
-//                mSpinnSubMenu.setBackgroundColor(Color.BLACK);
-//                mSpinnSubMenu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        if (position > 0) {
-//                            int subMenuZeroIdx = getPositionForSubMenuZeroItem(mTVCateName.getText().toString().trim(), spinnSubMenuList.get(position).toString());
-//                            mTvSubCateName.setText(spinnSubMenuList.get(position));
-//                            if (subMenuZeroIdx != -1) {
-//                                new Handler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        mRecyclerCategory.smoothScrollToPosition(subMenuZeroIdx);
-//                                    }
-//                                }, 100);
-//
-//                            } else
-//                                Toast.makeText(mContext, "해당 서브카테고리에 메뉴가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-//            }
-
         });
+    }
+
+    private String findCategoryName(String ct1Id, String ct2Id) {
+        for (Category ct1 : mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList) {
+            if (ct1.catergory1_id.equals(ct1Id) == true) {
+
+                for (Category2 ct2 : ct1.subCategoryList) {
+                    if (ct2.catergory2_id.equals(ct2Id) == true) {
+                        return ct1.catergory1_name + "/" + ct2.catergory2_name;
+                    }
+                }
+            }
+        }
+
+        return "전체";
     }
 
     //
@@ -441,9 +360,19 @@ public class OrderFragment extends BaseFragment {
                     if (menuList != null) {
                         for (int k = 0; menuList.size() > k; k++) {
                             if (k == 0)
-                                mWholeMenuList.add(new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price, menuList.get(k).image, categoryList.get(i).catergory1_name, subCateList.get(j).catergory2_name, position));
+                                mWholeMenuList.add(
+                                        new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price,
+                                                menuList.get(k).image,
+                                                categoryList.get(i).catergory1_id,
+                                                subCateList.get(j).catergory2_id,
+                                                position));
                             else
-                                mWholeMenuList.add(new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price, menuList.get(k).image, categoryList.get(i).catergory1_name, subCateList.get(j).catergory2_name, -1));
+                                mWholeMenuList.add(
+                                        new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price,
+                                                menuList.get(k).image,
+                                                categoryList.get(i).catergory1_id,
+                                                subCateList.get(j).catergory2_id,
+                                                -1));
                             position++;
                         }
                     }
@@ -466,26 +395,10 @@ public class OrderFragment extends BaseFragment {
         }
     }
 
-    //최초 화면 초기화
-    private void init() {
-        mMenuAdapter.clearOrder();
-        mOrderItemInvoiceArrayList = new ArrayList<OrderItemInvoice>();
-        mOrderedGuestId = null;
-        mShadeOrders = null;
-        mOrderBrowserLinearLayout.removeAllViewsInLayout();
-        mTotalPriceTextView.setText("");
-        initFoodImage();
-        refreshCategory();
-//        if (mCateAdapter != null && mCateAdapter.mMenuAdapter != null)
-//            mCateAdapter.mMenuAdapter.notifyDataSetChanged();
-        resetGuestList();
-    }
-
     private void refresh() {
         initOrderDetailList();
         mMenuAdapter.clearOrder();
         mOrderItemInvoiceArrayList = new ArrayList<OrderItemInvoice>();
-        mOrderedGuestId = null;
         mShadeOrders = null;
         mOrderBrowserLinearLayout.removeAllViewsInLayout();
         mTotalPriceTextView.setText("");
@@ -576,9 +489,8 @@ public class OrderFragment extends BaseFragment {
                     preSelectedGuestView = (TextView) v;
                     preSelectedGuestView.setTextAppearance(R.style.ShadeGuestNameSelectTextView);
                     preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
-                    mOrderedGuestId = (String) v.getTag();
-                    //주문된 음식이 있다면
 
+                    //주문된 음식이 있다면
                     if (mMenuAdapter.haveOrder()) {
                         if (v.getTag().equals(mOrderDetailList.get(idx).reserve_guest_id)) {
 
@@ -906,10 +818,6 @@ public class OrderFragment extends BaseFragment {
                         //At this point the layout is complete and the
                         //dimensions of recyclerView and any child views are known.
                         //Remove listener after changed RecyclerView's height to prevent infinite loop
-
-                        mTVCateName.setText(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList.get(0).catergory1_name);
-                        mTvSubCateName.setText(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList.get(0).subCategoryList.get(0).catergory2_name);
-
                         recycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
@@ -973,6 +881,9 @@ public class OrderFragment extends BaseFragment {
         });
 
         rv_restaurant.setAdapter(adapter);
+
+        //처음엔 무조건 첫번째 식당이 선택되도록
+        mRestaurantList.get(0).select = true;
         adapter.setData(mRestaurantList);
     }
 
@@ -982,22 +893,14 @@ public class OrderFragment extends BaseFragment {
             mMenuAdapter.notifyDataSetChanged();
     }
 
-    private List<Category2> getSubMenuList(String Category1Id, String Category1Name) {
-        List<Category> cate1List;
 
-        cate1List = mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList;
-
-        for (int i = 0; cate1List.size() > i; i++) {
-            if (cate1List.get(i).catergory1_name.equals(Category1Name))
-                return cate1List.get(i).subCategoryList;
-        }
-        return null;
-    }
 
     //서브아아템의 wholemenulist의 position을 리턴한다. (smoothScrollto 사용시)
-    private int getPositionForSubMenuZeroItem(String Category1Name, String Category2Name) {
+    private int getPositionForSubMenuZeroItem(String category1Id, String category2Id) {
         for (int i = 0; mWholeMenuList.size() > i; i++) {
-            if (mWholeMenuList.get(i).category1.equals(Category1Name) && mWholeMenuList.get(i).category2.equals(Category2Name)) {
+            if (mWholeMenuList.get(i).category1Idx.equals(category1Id) == true &&
+                    mWholeMenuList.get(i).category2Idx.equals(category2Id) == true) {
+
                 if (mWholeMenuList.get(i).SubCateZeroIndex != -1) {
                     return mWholeMenuList.get(i).SubCateZeroIndex;
                 }
@@ -1060,8 +963,6 @@ public class OrderFragment extends BaseFragment {
             }
         }
 
-        public static final int NUM_CATEGORY_NAME = 1 + 2 << 24;
-        public static final int NUM_SUB_CATEGORY_NAME = 2 + 2 << 24;
         Context mContext;
         List<RestaurantMenu> mMenuList;
         public MenuItemViewHolder preSelectedViewHolder;
@@ -1140,23 +1041,10 @@ public class OrderFragment extends BaseFragment {
         @Override
         public void onViewAttachedToWindow(@NonNull MenuItemViewHolder holder) {
             super.onViewAttachedToWindow(holder);
-            if (mSpinnSubMenu.getVisibility() == View.VISIBLE)
-                mSpinnSubMenu.setVisibility(View.INVISIBLE);
-            else {
-                String catergory1_name = ((RestaurantMenu) holder.itemView.getTag()).category1;
-                String catergory2_name = ((RestaurantMenu) holder.itemView.getTag()).category2;
-                mTVCateName.setText(catergory1_name);
-                mTvSubCateName.setText(catergory2_name);
-
-                //   mTvSubCateName.setText(subCategoryList.get(mSubCategoryPosition).catergory2_name);
-                //   Log.d(TAG, "onViewAttachedToWindow Menu    " + mCategory1Name + " " + subCategoryList.get(mSubCategoryPosition).catergory2_name);
-            }
-
         }
 
         @Override
         public int getItemCount() {
-            // Toast.makeText(mContext, "메뉴 사이즈" +mMenuList.size(), Toast.LENGTH_SHORT ).show();
             return mMenuList.size();
         }
 
@@ -1177,5 +1065,4 @@ public class OrderFragment extends BaseFragment {
             notifyDataSetChanged();
         }
     }
-
 }

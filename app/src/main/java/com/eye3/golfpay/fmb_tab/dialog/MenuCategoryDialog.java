@@ -28,6 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.adapter.ClubAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantCategoryAdapter;
+import com.eye3.golfpay.fmb_tab.model.order.Category;
+import com.eye3.golfpay.fmb_tab.model.order.Category2;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017-09-22.
@@ -35,7 +39,7 @@ import com.eye3.golfpay.fmb_tab.adapter.RestaurantCategoryAdapter;
 
 public class MenuCategoryDialog extends Dialog {
 
-    private IListenerDialogTouch mListener;
+    private IListenerApplyCategory mListener;
     private ConstraintLayout category1;
     private ConstraintLayout category2;
     private ConstraintLayout category3;
@@ -44,11 +48,16 @@ public class MenuCategoryDialog extends Dialog {
     private RecyclerView rvCategory1;
     private RecyclerView rvCategory2;
     private RecyclerView rvCategory3;
+    private ArrayList<Category> categories;
+
+    private int currentCt1Index = -1;
+    private String currentCt1Id = null;
+    private String currentCt2Id = null;
 
     private static final int DURATION = 500;
 
-    public interface IListenerDialogTouch {
-        public void onTouch();
+    public interface IListenerApplyCategory {
+        void onApplyCategory(String ct1Id, String ct2Id);
     }
 
     public MenuCategoryDialog(Context context) {
@@ -59,7 +68,7 @@ public class MenuCategoryDialog extends Dialog {
         super(context, themeResId);
     }
 
-    public void setListener(IListenerDialogTouch listener) {
+    public void setListener(IListenerApplyCategory listener) {
         mListener = listener;
     }
 
@@ -87,7 +96,15 @@ public class MenuCategoryDialog extends Dialog {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "적용~", Toast.LENGTH_SHORT).show();
+
+                if (currentCt1Id == null || currentCt2Id == null) {
+                    Toast.makeText(getContext(), "카테고리를 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+//                String test = "category1: " + currentCt1Id + "  category2: " + currentCt2Id;
+//                Toast.makeText(getContext(), test, Toast.LENGTH_SHORT).show();
+                mListener.onApplyCategory(currentCt1Id, currentCt2Id);
                 dismiss();
             }
         });
@@ -106,6 +123,10 @@ public class MenuCategoryDialog extends Dialog {
                 showMenu();
             }
         }, 10);
+    }
+
+    public void setData(ArrayList<Category> categories) {
+        this.categories = categories;
     }
 
     private void showMenu() {
@@ -143,10 +164,19 @@ public class MenuCategoryDialog extends Dialog {
         rvCategory1.setLayoutManager(layoutManager);
         RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
             @Override
-            public void onAdapterItemClicked(int count) {
+            public void onAdapterItemClicked(int position) {
 
-                if (category2.getWidth() > 2)
+                if (currentCt1Index == position)
                     return;
+
+                currentCt1Id = categories.get(position).catergory1_id;
+                currentCt1Index = position;
+                currentCt2Id = null;
+
+                if (category2.getWidth() > 2) {
+                    resetCategory2(position);
+                    return;
+                }
 
                 ValueAnimator anim = ValueAnimator.ofInt(1, category1.getWidth());
                 anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -158,7 +188,7 @@ public class MenuCategoryDialog extends Dialog {
                         layoutParams.width = val;
                         category2.setLayoutParams(layoutParams);
                         category2.setVisibility(View.VISIBLE);
-
+                        resetCategory2(position);
                     }
                 });
                 anim.setDuration(DURATION);
@@ -166,13 +196,9 @@ public class MenuCategoryDialog extends Dialog {
             }
         });
 
-        adapter.addItem("전체");
-        adapter.addItem("한식");
-        adapter.addItem("중식");
-        adapter.addItem("일식");
-        adapter.addItem("패스트푸드");
-        adapter.addItem("식료");
-        adapter.addItem("음료");
+        for (Category ct1 : categories) {
+            adapter.addItem(ct1.catergory1_id, ct1.catergory1_name);
+        }
 
         rvCategory1.setAdapter(adapter);
     }
@@ -183,45 +209,43 @@ public class MenuCategoryDialog extends Dialog {
         rvCategory2.setLayoutManager(layoutManager);
         RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
             @Override
-            public void onAdapterItemClicked(int count) {
+            public void onAdapterItemClicked(int position) {
 
-                if (category3.getWidth() > 1)
-                    return;
+                currentCt2Id = categories.get(currentCt1Index).subCategoryList.get(position).catergory2_id;
 
-                ValueAnimator anim = ValueAnimator.ofInt(1, category1.getWidth());
-                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                if (category3.getWidth() > 1)
+//                    return;
 
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        int val = (Integer) valueAnimator.getAnimatedValue();
-                        ViewGroup.LayoutParams layoutParams = category3.getLayoutParams();
-                        layoutParams.width = val;
-                        category3.setLayoutParams(layoutParams);
-                        category3.setVisibility(View.VISIBLE);
-                        initCategory3();
-                    }
-                });
-                anim.setDuration(DURATION);
-                anim.start();
+//                ValueAnimator anim = ValueAnimator.ofInt(1, category1.getWidth());
+//                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//
+//                    @Override
+//                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                        int val = (Integer) valueAnimator.getAnimatedValue();
+//                        ViewGroup.LayoutParams layoutParams = category3.getLayoutParams();
+//                        layoutParams.width = val;
+//                        category3.setLayoutParams(layoutParams);
+//                        category3.setVisibility(View.VISIBLE);
+//                        initCategory3();
+//                    }
+//                });
+//                anim.setDuration(DURATION);
+//                anim.start();
             }
         });
 
-        adapter.addItem("볶음요리");
-        adapter.addItem("면류");
-        adapter.addItem("밥류");
-        adapter.addItem("전체");
-        adapter.addItem("탕요리");
-        adapter.addItem("전체");
-        adapter.addItem("반찬류");
-//        adapter.addItem("고기반찬");
-//        adapter.addItem("생선반찬");
-//        adapter.addItem("국요리");
-//        adapter.addItem("무침요리");
-//        adapter.addItem("부침요리");
-//        adapter.addItem("조림요리");
-//        adapter.addItem("찌개요리");
-
         rvCategory2.setAdapter(adapter);
+    }
+
+    private void resetCategory2(int index) {
+        RestaurantCategoryAdapter adapter = (RestaurantCategoryAdapter)rvCategory2.getAdapter();
+        adapter.clearData();
+
+        for (Category2 ct2: categories.get(index).subCategoryList) {
+            adapter.addItem(ct2.catergory2_id, ct2.catergory2_name);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
     private void initCategory3() {
@@ -235,8 +259,8 @@ public class MenuCategoryDialog extends Dialog {
             }
         });
 
-        adapter.addItem("볶음밥류");
-        adapter.addItem("볶음면류");
+        adapter.addItem("4", "볶음밥류");
+        adapter.addItem("5", "볶음면류");
 
         rvCategory3.setAdapter(adapter);
     }
