@@ -54,6 +54,7 @@ import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.NameOrderView;
 import com.eye3.golfpay.fmb_tab.view.OrderItemInvoiceView;
 import com.eye3.golfpay.fmb_tab.view.SnappingLinearLayoutManager;
@@ -287,13 +288,6 @@ public class OrderFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
-                int ui_flags =
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
                 MenuCategoryDialog dlg = new MenuCategoryDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 dlg.setListener(new MenuCategoryDialog.IListenerApplyCategory() {
@@ -320,7 +314,7 @@ public class OrderFragment extends BaseFragment {
                 });
 
                 dlg.setData(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList);
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
                 dlg.getWindow().
                         setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);

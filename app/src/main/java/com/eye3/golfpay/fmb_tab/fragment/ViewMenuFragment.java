@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,8 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.adapter.TeeUpViewPagerAdapter;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.dialog.LogoutDialog;
+import com.eye3.golfpay.fmb_tab.dialog.PopupDialog;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -58,7 +63,6 @@ public class ViewMenuFragment extends BaseFragment {
     private ImageButton btnLeftMove, btnRightMove;
     private View selectTobDivider, selectBottomDivider, roundingLinearLayout;
     private DrawerLayout drawer_layout;
-    private FmbCustomDialog fmbDialog;
     private SettingsCustomDialog settingsCustomDialog;
     private TextView gpsTextView00;
     private TextView gpsTextView01;
@@ -252,13 +256,31 @@ public class ViewMenuFragment extends BaseFragment {
         v.findViewById(R.id.btn_logout).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                fmbDialog = new FmbCustomDialog(getActivity(), "Logout", "로그아웃 하시겠습니까?", "아니오", "네", leftListener, rightListener, true);
-                fmbDialog.show();
+
+                LogoutDialog dlg = new LogoutDialog(getContext(), R.style.DialogTheme);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+
+                // Set alertDialog "not focusable" so nav bar still hiding:
+                dlg.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                dlg.show();
+
+                dlg.setListener(new LogoutDialog.IListenerLogout() {
+                    @Override
+                    public void onLogout() {
+                        if (drawer_layout != null)
+                            drawer_layout.closeDrawer(GravityCompat.END);
+                        setLogout();
+                    }
+                });
 
                 return false;
             }
         });
-
 
         // 캐디수첩
         v.findViewById(R.id.caddieLinearLayout).setOnClickListener(new View.OnClickListener() {
@@ -405,23 +427,6 @@ public class ViewMenuFragment extends BaseFragment {
         setDisableColor();
 
     }
-
-    private View.OnClickListener leftListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            fmbDialog.dismiss();
-        }
-    };
-
-    private View.OnClickListener rightListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (drawer_layout != null)
-                drawer_layout.closeDrawer(GravityCompat.END);
-            fmbDialog.dismiss();
-            setLogout();
-        }
-    };
 
     private void setLogout() {
 

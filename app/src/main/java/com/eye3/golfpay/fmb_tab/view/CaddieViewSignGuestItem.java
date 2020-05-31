@@ -45,6 +45,7 @@ import com.eye3.golfpay.fmb_tab.listener.OnSignatureFinishListener;
 import com.eye3.golfpay.fmb_tab.model.gallery.GalleryPicture;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.util.SignatureDialogFragment;
+import com.eye3.golfpay.fmb_tab.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -191,19 +192,11 @@ public class CaddieViewSignGuestItem extends RelativeLayout {
         v.findViewById(R.id.club_info_list).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //Flags for full-screen mode:
-                int ui_flags =
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
                 ClubInfoDialog dlg = new ClubInfoDialog(context);
                 WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
                 wmlp.gravity = Gravity.CENTER;
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
                 dlg.show();
             }
         });

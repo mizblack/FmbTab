@@ -46,6 +46,7 @@ import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
+import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewSignGuestItem;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -127,15 +128,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
 
-                // Flags for full-screen mode:
-                int ui_flags =
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
                 PopupDialog dlg = new PopupDialog(MainActivity.this, R.style.DialogTheme);
                 WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
                 wmlp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
@@ -148,7 +140,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
 
                 dlg.show();
 
@@ -158,17 +150,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         findViewById(R.id.main_bottom_bar).findViewById(R.id.dlgtest2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Flags for full-screen mode:
-                int ui_flags =
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
                 RestaurantsPopupDialog dlg = new RestaurantsPopupDialog(MainActivity.this, android.R.style.Theme_Holo_Light);
-                dlg.getWindow().getDecorView().setSystemUiVisibility(ui_flags);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
 
                 dlg.show();
 
