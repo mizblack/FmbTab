@@ -54,12 +54,12 @@ public class OrderItemInvoiceView extends RelativeLayout {
             public void onClick(View v) {
                 if (!isExtended) {
                     //mLinearNameOrder.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
-                    mIvExtending.setImageResource(R.drawable.ic_expand_less_black_24dp);
+                    mIvExtending.setImageResource(R.drawable.ic_expand_more_black_24dp);
                     mLinearNameOrder.setVisibility(View.GONE);
                     isExtended = true;
                 } else {
                     //mLinearNameOrder.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, 0));
-                    mIvExtending.setImageResource(R.drawable.ic_expand_more_black_24dp);
+                    mIvExtending.setImageResource(R.drawable.ic_expand_less_black_24dp);
                     mLinearNameOrder.setVisibility(View.VISIBLE);
                     isExtended = false;
                 }

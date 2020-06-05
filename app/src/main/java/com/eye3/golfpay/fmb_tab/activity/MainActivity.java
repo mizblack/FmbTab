@@ -33,10 +33,8 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.common.UIThread;
-import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
 import com.eye3.golfpay.fmb_tab.dialog.PopupDialog;
 import com.eye3.golfpay.fmb_tab.dialog.RestaurantsPopupDialog;
-import com.eye3.golfpay.fmb_tab.fragment.CaddieFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CaddieMainFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
@@ -47,11 +45,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.Util;
-import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
-import com.eye3.golfpay.fmb_tab.view.CaddieViewSignGuestItem;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
+import com.eye3.golfpay.fmb_tab.view.CaddieViewBasicGuestItem;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
@@ -354,9 +348,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
             Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
 
-            CaddieViewSignGuestItem guestItem = (CaddieViewSignGuestItem) CaddieMainFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
+            CaddieViewBasicGuestItem guestItem = (CaddieViewBasicGuestItem) CaddieMainFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
             setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
-            //  guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
+            guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
             ;
         }

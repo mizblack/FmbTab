@@ -16,7 +16,6 @@ import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewBasicGuestItem;
-import com.eye3.golfpay.fmb_tab.view.CaddieViewSignGuestItem;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
@@ -81,35 +80,7 @@ public class CaddieMainFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fr_caddie_main, container, false);
-        mGuestViewContainerLinearLayout = view.findViewById(R.id.view_sign);
         createGuestBasicView(view.findViewById(R.id.view_main));
-        createGuestSignView(mGuestViewContainerLinearLayout);
-        slidingUpPanelLayout = view.findViewById(R.id.sliding_layout);
-        ivGrab = view.findViewById(R.id.iv_grab);
-
-        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-
-            SlidingUpPanelLayout.PanelState mPreviousState;
-
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                float offsetInPixel = (slideOffset * (panel.getHeight() - slidingUpPanelLayout.getPanelHeight()));
-
-                if (offsetInPixel == 0.0f) {
-                    ivGrab.setVisibility(View.VISIBLE);
-                    ((CaddieFragment)getParentFragment()).hideSlidButton();
-                } else {
-                    ivGrab.setVisibility(View.GONE);
-                    ((CaddieFragment)getParentFragment()).showSlidButton();
-                }
-                Log.d(TAG, offsetInPixel + "");
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                mPreviousState = previousState;
-            }
-        });
 
         return view;
     }
@@ -126,22 +97,8 @@ public class CaddieMainFragment extends Fragment {
         }
     }
 
-    private void createGuestSignView(LinearLayout container) {
-
-        guestList = Global.guestList;
-        for (int i = 0; guestList.size() > i; i++) {
-            container.addView(createGuestSignItemView(guestList.get(i)));
-        }
-    }
-
     private View createGuestItemView(Guest guest) {
-        CaddieViewBasicGuestItem guestItemView = new CaddieViewBasicGuestItem(getActivity(), guest);
-
-        return guestItemView;
-    }
-
-    private View createGuestSignItemView(Guest guest) {
-        CaddieViewSignGuestItem guestItemView = new CaddieViewSignGuestItem(getActivity(), guest);
+        CaddieViewBasicGuestItem guestItemView = new CaddieViewBasicGuestItem(getActivity(), guest, guestList.size());
 
         return guestItemView;
     }

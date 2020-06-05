@@ -28,6 +28,7 @@ import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.EditorDialogFragment;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewGuestItem;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class CaddieFragment extends BaseFragment {
     private LinearLayout mTeamMemoLinear;
     TextView mTeamMemoContentTextView;
     private ImageButton btnSlideDown;
+    private TextView[] tvGuestNames = new TextView[5];
 
 
 
@@ -112,14 +114,24 @@ public class CaddieFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fr_caddie, container, false);
 
+        tvGuestNames[0] = v.findViewById(R.id.tv_guest_name1);
+        tvGuestNames[1] = v.findViewById(R.id.tv_guest_name2);
+        tvGuestNames[2] = v.findViewById(R.id.tv_guest_name3);
+        tvGuestNames[3] = v.findViewById(R.id.tv_guest_name4);
+        tvGuestNames[4] = v.findViewById(R.id.tv_guest_name5);
+
         mParentActivity.showMainBottomBar();
-
         fragmentManager = getChildFragmentManager();
-
         caddieMainFragment = new CaddieMainFragment();
-
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_fragment, caddieMainFragment).commitAllowingStateLoss();
+
+
+        int i = 0;
+        for (Guest guest : Global.guestList) {
+            tvGuestNames[i].setVisibility(View.VISIBLE);
+            tvGuestNames[i++].setText(guest.getGuestName());
+        }
 
         btnSlideDown = v.findViewById(R.id.btn_slide_down);
         btnSlideDown.setOnClickListener(new View.OnClickListener() {
@@ -214,8 +226,6 @@ public class CaddieFragment extends BaseFragment {
             }
         });
     }
-
-
 
     @Override
     public void onDestroy() {

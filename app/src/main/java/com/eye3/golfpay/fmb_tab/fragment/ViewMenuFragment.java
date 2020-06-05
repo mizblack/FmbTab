@@ -404,8 +404,10 @@ public class ViewMenuFragment extends BaseFragment {
         v.findViewById(R.id.closeLinearLayoutViewMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer_layout.closeDrawer(GravityCompat.END);
 
+                //메인 메뉴만 있을 경우 메뉴가 사라지는 버그가 있음
+                if (mParentActivity.getPreviousBaseFragment() != null)
+                    drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -435,10 +437,9 @@ public class ViewMenuFragment extends BaseFragment {
         getActivity().finish();
     }
 
-
     private void getTodayReservesForCaddy(final Context context, String caddy_id) {
         //   showProgress("티업시간을 받아오는 중입니다....");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy("3", new DataInterface.ResponseCallback<TeeUpTime>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(TeeUpTime response) {

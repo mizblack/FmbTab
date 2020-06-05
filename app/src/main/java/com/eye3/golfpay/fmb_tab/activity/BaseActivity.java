@@ -58,6 +58,10 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         return drawer;
     }
 
+    public BaseFragment getPreviousBaseFragment() {
+        return mPreviousBaseFragment;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

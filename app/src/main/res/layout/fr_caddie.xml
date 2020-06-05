@@ -7,61 +7,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_fragment"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="74dp"
         android:background="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/right_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="유정"
-            android:layout_marginLeft="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="40dp"
+            android:paddingRight="12dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_guest_name1"
+                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                android:text="유정"
+                />
 
-        <TextView
-            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="광어"
-            android:layout_marginLeft="264dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tv_guest_name2"
+                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                android:text="광어"/>
 
-        <TextView
-            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="우럭"
-            android:layout_marginLeft="498dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tv_guest_name3"
+                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                android:text="우럭"
+                />
 
-        <TextView
-            android:id="@+id/textView6"
-            style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="730dp"
-            android:text="놀래미"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/tv_guest_name4"
+                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                android:text="놀래미" />
+
+            <TextView
+                android:id="@+id/tv_guest_name5"
+                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:text="우엉" />
+
+        </LinearLayout>
+
 
         <ImageButton
             android:id="@+id/btn_slide_down"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@null"
-            android:src="@drawable/down"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="4dp"
             android:layout_marginRight="32dp"
+            android:layout_marginBottom="4dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close_24dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,18 +91,10 @@
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/right_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_fragment" />
 
-    <FrameLayout
-        android:id="@+id/right_fragment"
-        android:layout_width="300dp"
-        android:layout_height="0dp"
-        android:background="#333333"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

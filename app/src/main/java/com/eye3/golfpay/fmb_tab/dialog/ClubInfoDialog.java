@@ -173,6 +173,9 @@ public class ClubInfoDialog extends Dialog {
         });
         recyclerView.setAdapter(adapter);
 
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        linearLayoutManager.scrollToPositionWithOffset(0, 0);
+
         for (String item: items) {
             adapter.addItem(item);
         }

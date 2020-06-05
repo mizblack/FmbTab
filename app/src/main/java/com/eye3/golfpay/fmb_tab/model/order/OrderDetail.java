@@ -1,8 +1,6 @@
 package com.eye3.golfpay.fmb_tab.model.order;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -131,4 +129,12 @@ public class OrderDetail implements Serializable {
         this.paid_total_amount = total;
     }
 
+    public OrderedMenuItem findOrderMenu(String id) {
+        for (OrderedMenuItem item :mOrderedMenuItemList) {
+            if (item.getId() == id)
+                return item;
+        }
+
+        return null;
+    }
 }

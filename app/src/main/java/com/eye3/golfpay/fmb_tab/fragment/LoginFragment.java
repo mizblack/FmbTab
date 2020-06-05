@@ -50,14 +50,17 @@ public class LoginFragment extends BaseFragment {
         init(v);
 
         if (BuildConfig.DEBUG == true) {
-            mNameEditText.setText("roidcaddy@aaa.aaa");
-            mPhoneNumberEditText.setText("111!!!qqq");
+//            mNameEditText.setText("roidcaddy@golfpay.co.kr");
+//            mPhoneNumberEditText.setText("@a1234567");
+
+            mNameEditText.setText("test@test.test");
+            mPhoneNumberEditText.setText("@test123");
         }
 
         return v;
     }
 
-    private void init(View v){
+    private void init(View v) {
 
         //매번 로그인 하기 귀찮아서 자동 로그인
         if(BuildConfig.DEBUG == true) {
@@ -144,8 +147,4 @@ public class LoginFragment extends BaseFragment {
         //메뉴fragment활성화 시킨다.
         GoNavigationDrawer(new ViewMenuFragment(), null);
     }
-
-
-
-
 }
