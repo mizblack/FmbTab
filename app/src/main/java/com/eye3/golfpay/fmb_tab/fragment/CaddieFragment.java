@@ -44,7 +44,6 @@ public class CaddieFragment extends BaseFragment {
     private TextView[] tvGuestNames = new TextView[5];
 
 
-
     private FragmentManager fragmentManager;
     private CaddieMainFragment caddieMainFragment;
     private FragmentTransaction transaction;
@@ -53,9 +52,7 @@ public class CaddieFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
-
     }
-
 
     private void setDataTeamMemo(String teamMemo) {
         mTeamMemoContentTextView.setText(teamMemo);
@@ -89,7 +86,6 @@ public class CaddieFragment extends BaseFragment {
             closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
         }
     }
-
 
     private View createGuestItemView(Guest guest) {
         CaddieViewGuestItem guestItemView = new CaddieViewGuestItem(getActivity(), guest);
@@ -133,44 +129,7 @@ public class CaddieFragment extends BaseFragment {
             tvGuestNames[i++].setText(guest.getGuestName());
         }
 
-        btnSlideDown = v.findViewById(R.id.btn_slide_down);
-        btnSlideDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                caddieMainFragment.slidingDown();
-                hideSlidButton();
-            }
-        });
         return v;
-    }
-
-    public void showSlidButton() {
-
-        btnSlideDown.setVisibility(View.VISIBLE);
-
-        btnSlideDown.animate()
-                .alpha(1.0f)
-                .setDuration(500)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                    }
-                });
-    }
-
-    public void hideSlidButton() {
-
-        btnSlideDown.animate()
-                .alpha(0.0f)
-                .setDuration(500)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        btnSlideDown.setVisibility(View.GONE);
-                    }
-                });
     }
 
     @Override

@@ -91,6 +91,7 @@ public class CaddieMainFragment extends Fragment {
 
     private void createGuestBasicView(LinearLayout container) {
 
+        mGuestViewContainerLinearLayout = container;
         guestList = Global.guestList;
         for (int i = 0; guestList.size() > i; i++) {
             container.addView(createGuestItemView(guestList.get(i)));
