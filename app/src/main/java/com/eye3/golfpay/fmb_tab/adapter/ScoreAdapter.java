@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
+import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count);
+        public void onAdapterItemClicked(int count);
     }
 
     public class ScorebHolder extends RecyclerView.ViewHolder {
@@ -48,7 +49,6 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
     private ArrayList<Item> items;
     private Context context;
     private IOnClickAdapter onClickAdapter;
-    private ClubInfoDialog.ClubType clubType;
     public ScoreAdapter(Context context, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;
@@ -96,8 +96,9 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
                 @Override
                 public void onClick(View v) {
                     //allSelected(false);
-                    items.get(position).selected ^= true;
-                    onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
+                    allSelected(false);
+                    items.get(position).selected = true;
+                    onClickAdapter.onAdapterItemClicked(position);
                     notifyDataSetChanged();
                 }
             });
@@ -108,14 +109,10 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
         }
     }
 
-    private int getSelectedCount() {
-        int count = 0;
+    private void allSelected(boolean select) {
         for (Item item : items) {
-            if (item.selected == true)
-                count++;
+            item.selected = select;
         }
-
-        return count;
     }
 
     @Override

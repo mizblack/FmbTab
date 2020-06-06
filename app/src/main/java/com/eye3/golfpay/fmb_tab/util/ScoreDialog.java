@@ -177,7 +177,14 @@ public class ScoreDialog extends Dialog {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 holder.rv_score.setHasFixedSize(true);
                 holder.rv_score.setLayoutManager(layoutManager);
-                ScoreAdapter adapter = new ScoreAdapter(getContext(), null);
+
+                ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
+                    @Override
+                    public void onAdapterItemClicked(int position) {
+                        
+                    }
+                });
+
 
                 int score = -3;
                 for (int i = 0; i < 18; i++) {
@@ -191,7 +198,13 @@ public class ScoreDialog extends Dialog {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 holder.rv_putt.setHasFixedSize(true);
                 holder.rv_putt.setLayoutManager(layoutManager);
-                ScoreAdapter adapter = new ScoreAdapter(getContext(), null);
+                ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
+                    @Override
+                    public void onAdapterItemClicked(int count) {
+
+
+                    }
+                });
 
                 for (int i = 0; i < 15; i++) {
                     adapter.addItem(i++ + "");

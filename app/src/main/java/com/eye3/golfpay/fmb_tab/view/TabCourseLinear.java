@@ -3,9 +3,11 @@ package com.eye3.golfpay.fmb_tab.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -300,7 +302,18 @@ public class TabCourseLinear extends LinearLayout {
                             if (isPreviousHoleScoreFilledUp(playerList, mTabIdx, mHoleScoreLayoutIdx)) {
                                 notifyDataSetChanged();
                                 sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mTabIdx, mHoleScoreLayoutIdx);
+                                WindowManager.LayoutParams wmlp = sDialog.getWindow().getAttributes();
+                                wmlp.gravity = Gravity.CENTER_VERTICAL;
+
+                                sDialog.getWindow().setAttributes(wmlp);
+
                                 sDialog.setOnScoreInputFinishListener(listener);
+
+                                sDialog.getWindow().
+                                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+                                sDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
                                 sDialog.show();
                             } else {
                                 Toast.makeText(mContext, "이전 플레이어 점수를 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
