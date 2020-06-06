@@ -19,8 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.ClubAdapter;
+import com.eye3.golfpay.fmb_tab.adapter.ScoreAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
@@ -75,7 +78,7 @@ public class ScoreDialog extends Dialog {
         getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.score_dlg);
-       //코스정보만있고 스코어 정보는 없음
+        //코스정보만있고 스코어 정보는 없음
         mCurrentCourseInfo = Global.courseInfoList.get(mTabIdx);
 
         mLeftButton = findViewById(R.id.btnLeft);
@@ -110,7 +113,6 @@ public class ScoreDialog extends Dialog {
                 }
             });
             mRightButton.setText(mRightTitle);
-
         }
 
         recycler = findViewById(R.id.player_score_list);
@@ -121,8 +123,7 @@ public class ScoreDialog extends Dialog {
         recycler.setAdapter(mScoreInputAdapter);
         mScoreInputAdapter.notifyDataSetChanged();
 
-        mReserveScore = new ReserveScore(mPlayerList,  Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
-
+        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
@@ -148,11 +149,10 @@ public class ScoreDialog extends Dialog {
     }
 
 
-
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
         List<Player> mPlayerList;
-       int mTabIdx;
-       int mHoleLayoutIdx ;
+        int mTabIdx;
+        int mHoleLayoutIdx;
 
         public ScoreInputAdapter(Context context, List<Player> playerList, int mTabIdx, int mHoleLayoutIdx) {
 
@@ -172,134 +172,33 @@ public class ScoreDialog extends Dialog {
 
         @Override
         public void onBindViewHolder(@NonNull final ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
-            final int playerIdx = position;
-            //*******
-            holder.playerName.setText(mPlayerList.get(position).name);
-            Score a_playerScore = mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore;
-            final Hole selected_hole =  mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx);
 
-            //각홀 점수를 통해 inserter 배경을 지정하여 초기화한다.
-            holder.inserter.initScoreBackgroundSelected(AppDef.Par_Tar(a_playerScore, AppDef.isTar), AppDef.isTar);
-            holder.inserterPutt.initPuttScoreBackgroundSelected(a_playerScore.putting);
-            if (AppDef.isTar) {
-                final TextView[] viewArr = holder.inserter.mStrokeScoreTextViewArr;
-                for (int i = 0; viewArr.length > i; i++) {
-                    viewArr[i].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+            if (holder.rv_score.getAdapter() == null) {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                holder.rv_score.setHasFixedSize(true);
+                holder.rv_score.setLayoutManager(layoutManager);
+                ScoreAdapter adapter = new ScoreAdapter(getContext(), null);
 
-                            ScoreInserter.initAllBackGroundResources(viewArr);
-
-                            if (!(boolean) v.getTag(ScoreInserter.NUM_STROKE_SELLECTED_PREVIOUS_KEY)) {
-                                v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                                ((TextView)v).setTextColor(Color.WHITE);
-                                setPar(mReserveScore.guest_score_list.get(playerIdx), ((TextView) v).getText().toString().trim());
-                                setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(((TextView) v).getText().toString().trim()) + Integer.valueOf(selected_hole.par)));
-                                v.setTag(ScoreInserter.NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
-                            } else {
-                                ((TextView)v).setTextColor(Color.GRAY);
-                                setPar(mReserveScore.guest_score_list.get(playerIdx), "-");
-                                setTar(mReserveScore.guest_score_list.get(playerIdx), "-");
-                            }
-
-                        }
-                    });
+                int score = -3;
+                for (int i = 0; i < 18; i++) {
+                    adapter.addItem(score++ + "");
                 }
-                int selectedIdx = holder.inserter.mSelectedStrokeScoreTvIdx;
 
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(a_playerScore, AppDef.isTar), selectedIdx);
+                holder.rv_score.setAdapter(adapter);
+            }
 
-            } else {
-                final TextView[] viewArr = holder.inserter.mParScoreTextViewArr;
-                for (int i = 0; viewArr.length > i; i++) {
-                    viewArr[i].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ScoreInserter.initAllBackGroundResources(viewArr);
+            if (holder.rv_putt.getAdapter() == null) {
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                holder.rv_putt.setHasFixedSize(true);
+                holder.rv_putt.setLayoutManager(layoutManager);
+                ScoreAdapter adapter = new ScoreAdapter(getContext(), null);
 
-                            if (!(boolean) v.getTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY)) {
-                                v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                                ((TextView)v).setTextColor(Color.WHITE);
-                                setPar(mReserveScore.guest_score_list.get(playerIdx), ((TextView) v).getText().toString().trim());
-                                setTar(mReserveScore.guest_score_list.get(playerIdx), String.valueOf(Integer.valueOf(((TextView) v).getText().toString().trim()) + Integer.valueOf(selected_hole.par)));
-                                v.setTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
-                            } else { //같은 스코어블럭을 눌럿을때
-                                ((TextView)v).setTextColor(Color.GRAY);
-                                setPar(mReserveScore.guest_score_list.get(playerIdx), "-");
-                                setTar(mReserveScore.guest_score_list.get(playerIdx), "-");
-                                v.setTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
-                            }
-                        }
-
-                    });
+                for (int i = 0; i < 15; i++) {
+                    adapter.addItem(i++ + "");
                 }
-                int selectedIdx = holder.inserter.mSelectedParScoreTvIdx;
-                holder.inserter.setBackGroundColorSelected(viewArr, AppDef.Par_Tar(a_playerScore, AppDef.isTar), selectedIdx);
 
+                holder.rv_putt.setAdapter(adapter);
             }
-
-            holder.inserterPutt.setBackGroundColorSelected(holder.inserterPutt.mPuttScoreTextViewArr,a_playerScore.putting, holder.inserterPutt.mSelectedPuttScoreTvIdx);
-            for (int i = 0; holder.inserterPutt.mPuttScoreTextViewArr.length > i; i++) {
-                holder.inserterPutt.mPuttScoreTextViewArr[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ScoreInserter.initAllBackGroundResources(holder.inserterPutt.mPuttScoreTextViewArr);
-                        mReserveScore.guest_score_list.get(playerIdx).putting = ((TextView) v).getText().toString().trim();
-                        if (!(boolean) v.getTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY)) {
-                            v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                            ((TextView)v).setTextColor(Color.WHITE);
-                            mReserveScore.guest_score_list.get(playerIdx).putting = ((TextView) v).getText().toString().trim();
-                            v.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
-                        } else {
-                            ((TextView)v).setTextColor(Color.GRAY);
-                            mReserveScore.guest_score_list.get(playerIdx).putting = "-";
-                            v.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
-                        }
-
-
-                        // ScoreInserter.initAllBackGroundResources(holder.inserterPutt.mPuttScoreTextViewArr);
-                        // v.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                    }
-                });
-            }
-            mReserveScore.guest_score_list.get(playerIdx).putting = holder.inserterPutt.mSelectedPuttInserterTv.getText().toString().trim();
-        }
-
-        private void setTar(Score score, String scoreStr) {
-            //점수 취소를 위한 -추가
-            if (scoreStr.equals("-")) {
-                score.tar = scoreStr;
-                return;
-            }
-            if (scoreStr == null || !Util.isIntegerNumber(scoreStr)) {
-                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            score.tar = scoreStr;
-        }
-
-        private void setPar(Score score, String scoreStr) {
-            if (scoreStr.equals("-")) {
-                score.par = scoreStr;
-                return;
-            }
-            if (scoreStr == null || !Util.isIntegerNumber(scoreStr)) {
-                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            score.par = scoreStr;
-        }
-
-        private void setPutting(Score score, String scoreStr) {
-            if (scoreStr.equals("-")) {
-                score.putting = scoreStr;
-                return;
-            }
-            if (scoreStr == null || !Util.isIntegerNumber(scoreStr)) {
-                Toast.makeText(mContext, "정수가 아닙니다.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            score.putting = scoreStr;
         }
 
 
@@ -310,25 +209,15 @@ public class ScoreDialog extends Dialog {
 
         public class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
             TextView playerName;
-            ScoreInserter inserter;
-            ScoreInserter inserterPutt;
+            RecyclerView rv_score;
+            RecyclerView rv_putt;
 
             //onCreate의 view임(score_input_row)
             public ScoreInputItemViewHolder(@NonNull final View itemView) {
                 super(itemView);
                 playerName = itemView.findViewById(R.id.playerName);
-                if (AppDef.isTar) {
-                    inserter = itemView.findViewById(R.id.inserter);
-                    inserter.init(mContext, AppDef.ScoreType.Tar);
-
-                } else { //if Par
-                    inserter = itemView.findViewById(R.id.inserter);
-                    inserter.init(mContext, AppDef.ScoreType.Par);
-
-                }
-
-                inserterPutt = itemView.findViewById(R.id.inserter_putt);
-                inserterPutt.init(mContext, AppDef.ScoreType.Putt);
+                rv_score = itemView.findViewById(R.id.rv_score);
+                rv_putt = itemView.findViewById(R.id.rv_putt);
             }
         }
     }
@@ -339,7 +228,7 @@ public class ScoreDialog extends Dialog {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if ("ok".equals(response.getResultCode())) {
-                //    Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                    //    Toast.makeText(mContext, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                     mReserveScore = null; //다음 입력을 위해 clear한다.
                     inputFinishListener.OnScoreInputFinished(mPlayerList);
                     dismiss();

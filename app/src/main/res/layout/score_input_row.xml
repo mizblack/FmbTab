@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:layout_marginBottom="14dp"
     android:orientation="horizontal">
 
     <TextView
-        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
         android:id="@+id/playerName"
+        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
         android:layout_centerVertical="true"
+        android:text="유정"
         android:textColor="@color/ebonyBlack"
-        android:text="유정"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.eye3.golfpay.fmb_tab.view.ScoreInserter
-        android:id="@+id/inserter"
-        android:layout_width="600dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="114dp"
-        android:gravity="center" />
 
-    <com.eye3.golfpay.fmb_tab.view.ScoreInserter
-        android:id="@+id/inserter_putt"
-        android:layout_width="360dp"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/inserter"
-        android:layout_marginLeft="30dp"
-        android:gravity="center" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_score"
+        android:layout_width="532dp"
+        android:layout_height="97dp"
+        android:layout_marginLeft="76dp"
+        android:background="@color/zumthor"
+        android:fadeScrollbars="false"
+        android:paddingRight="1dp"
+        android:scrollbarSize="2dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/playerName"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_putt"
+        android:layout_width="396dp"
+        android:layout_height="97dp"
+        android:layout_marginLeft="40dp"
+        android:background="@color/zumthor"
+        android:fadeScrollbars="false"
+        android:paddingRight="1dp"
+        android:scrollbarSize="2dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_score"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
