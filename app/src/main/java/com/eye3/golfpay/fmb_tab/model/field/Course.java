@@ -67,7 +67,7 @@ public class Course implements Serializable {
 
     @SerializedName("holes")
     @Expose
-    public List<Hole> holes ;
+    public List<Hole> holes;
 
 //    public Course(Course copyCourse){
 //        this.course_id = copyCourse.course_id;

@@ -160,7 +160,6 @@ public class ScoreFragment extends BaseFragment {
                 public void onClick(View v) {
                     mTabIdx = idx;
                     Global.CurrentCourse = (Course) tvCourseBarArr[idx].getTag();
-
                     selectCourse(mPlayerList, idx);
                 }
             });

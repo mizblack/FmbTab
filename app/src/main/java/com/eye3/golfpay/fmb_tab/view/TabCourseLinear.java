@@ -126,9 +126,6 @@ public class TabCourseLinear extends LinearLayout {
         this.mTabIdx = tabIdx;
         this.mPlayerList = playerList;
         this.mCtypeArrangedCourse = ctyped;
-       //여기 수정할것*******************************************
-     //   this.mCtypeArrangedCourse = mPlayerList.get(0).playingCourse.get(mTabIdx);
-        //스코어뷰를 재활용하므로 반드시 이전 뷰들을 모두 제거해야 현생성되는 뷰가 보여진다.
         this.removeAllViewsInLayout();
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -322,25 +319,7 @@ public class TabCourseLinear extends LinearLayout {
                         }
                     });
                 }
-
-
             }
-
-//            private View.OnClickListener leftListener = new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    inputFinishListener.OnScoreInputFinished(mPlayerList);
-//                    sDialog.dismiss();
-//
-//                }
-//            };
-//
-//            private View.OnClickListener rightListener = new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    //
-//                }
-//            };
 
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
                 @Override
@@ -397,9 +376,7 @@ public class TabCourseLinear extends LinearLayout {
                     } else {
                         scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#F5F7F8"));
                         //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
-
                     }
-
                 }
             }
 
@@ -465,8 +442,6 @@ public class TabCourseLinear extends LinearLayout {
             return playerList.size();
         }
     }
-
-
 
     private void setBadge(ImageView iv, Hole playedHole) {
 
@@ -536,7 +511,7 @@ public class TabCourseLinear extends LinearLayout {
                     total_score = total_score + Integer.parseInt(course.holes.get(i).playedScore.par);
             }
         }
-        //다시 스트링으로 변환해 리턴
+
         return String.valueOf(total_score);
     }
 
@@ -548,10 +523,8 @@ public class TabCourseLinear extends LinearLayout {
                 total_score = total_score + Integer.parseInt(course.holes.get(i).playedScore.putting);
         }
 
-        //다시 스트링으로 변환해 리턴
         return String.valueOf(total_score);
     }
-
 
     public int getTotalDistance(Hole[] holes) {
         int totalDistance = 0;
@@ -566,6 +539,4 @@ public class TabCourseLinear extends LinearLayout {
         }
         return totalDistance;
     }
-
 }
-

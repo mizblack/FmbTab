@@ -3,8 +3,6 @@ package com.eye3.golfpay.fmb_tab.util;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,20 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
-import com.eye3.golfpay.fmb_tab.adapter.ClubAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.ScoreAdapter;
-import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
-import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.score.ReserveScore;
-import com.eye3.golfpay.fmb_tab.model.score.Score;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.view.ScoreInserter;
 
 import java.util.List;
 
@@ -79,6 +71,7 @@ public class ScoreDialog extends Dialog {
 
         setContentView(R.layout.score_dlg);
         //코스정보만있고 스코어 정보는 없음
+
         mCurrentCourseInfo = Global.courseInfoList.get(mTabIdx);
 
         mLeftButton = findViewById(R.id.btnLeft);
@@ -180,8 +173,9 @@ public class ScoreDialog extends Dialog {
 
                 ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
                     @Override
-                    public void onAdapterItemClicked(int position) {
-                        
+                    public void onAdapterItemClicked(Integer index, Integer value) {
+                        mReserveScore.guest_score_list.get(position).par = value.toString();
+                        mReserveScore.guest_score_list.get(position).tar = index.toString();
                     }
                 });
 
@@ -200,9 +194,9 @@ public class ScoreDialog extends Dialog {
                 holder.rv_putt.setLayoutManager(layoutManager);
                 ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
                     @Override
-                    public void onAdapterItemClicked(int count) {
-
-
+                    public void onAdapterItemClicked(Integer index, Integer value) {
+                        mReserveScore.guest_score_list.get(position).putting = value.toString();
+                        mReserveScore.guest_score_list.get(position).tar = index.toString();
                     }
                 });
 
@@ -262,9 +256,6 @@ public class ScoreDialog extends Dialog {
             }
 
         });
-
     }
-
-
 }
 

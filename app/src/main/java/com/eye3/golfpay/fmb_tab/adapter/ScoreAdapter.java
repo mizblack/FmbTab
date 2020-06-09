@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(int count);
+        public void onAdapterItemClicked(Integer position, Integer value);
     }
 
     public class ScorebHolder extends RecyclerView.ViewHolder {
@@ -98,7 +98,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
                     //allSelected(false);
                     allSelected(false);
                     items.get(position).selected = true;
-                    onClickAdapter.onAdapterItemClicked(position);
+                    onClickAdapter.onAdapterItemClicked(position, Integer.parseInt(items.get(position).item));
                     notifyDataSetChanged();
                 }
             });

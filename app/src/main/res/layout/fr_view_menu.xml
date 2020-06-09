@@ -783,14 +783,17 @@
                     android:id="@+id/noticeDivider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/darkGray" />
+                    android:background="@color/darkGray"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/paymentLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"
-                    tools:ignore="UselessParent">
+                    tools:ignore="UselessParent"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/paymentTextView00"
