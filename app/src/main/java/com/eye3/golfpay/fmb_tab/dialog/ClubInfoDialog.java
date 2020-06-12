@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.adapter.ClubAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.ClubGuestListAdapter;
+import com.eye3.golfpay.fmb_tab.adapter.NearestLongestAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantListAdapter;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
@@ -43,11 +44,11 @@ public class ClubInfoDialog extends Dialog {
     String[] wood = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     String[] utility = {"1", "2", "3", "4", "5", "6", "7"};
     String[] iron = {"3", "4", "5", "6", "7", "8", "9", "10", "11"};
+    String[] putter = {"0개", "1개", "2개", "3개"};
     String[] wedge = {"Pw", "Sw", "PSw", "52w", "53w", "54w", "55w", "56w", "57w", "58w", "60w"};
-    String[] putter = {"0", "1", "2", "3"};
-    String[] putterCover = {"0", "1", "2", "3", "4", "5"};
-    String[] woodCover = {"0", "1", "2", "3", "4", "5", "6", "7"};
-    String[] etcCover = {"0", "1", "2", "3", "4", "5"};
+    String[] putterCover = {"0개", "1개", "2개", "3개", "4개", "5개"};
+    String[] woodCover = {"0개", "1개", "2개", "3개", "4개", "5개", "6개", "7개"};
+    String[] etcCover = {"0개", "1개", "2개", "3개", "4개", "5개"};
 
     public enum ClubType {
         eWood,
@@ -107,14 +108,14 @@ public class ClubInfoDialog extends Dialog {
         tv_woodCoverCount = findViewById(R.id.tv_woodCoverCount);
         tv_etcCoverCount  = findViewById(R.id.tv_etcCoverCount);
 
-        initRecyclerViews(woodRecyclerView, wood, ClubType.eWood);
-        initRecyclerViews(utiltyRecyclerView, utility, ClubType.eUtility);
-        initRecyclerViews(ironRecyclerView, iron, ClubType.eIron);
-        initRecyclerViews(wedgeRecyclerView, wedge, ClubType.eWedge);
-        initRecyclerViews(putterRecyclerView, putter, ClubType.ePutter);
-        initRecyclerViews(putterCoverRecyclerView, putterCover, ClubType.ePutterCover);
-        initRecyclerViews(woodCoverRecyclerView, woodCover, ClubType.eWoodCover);
-        initRecyclerViews(etcCoverRecyclerView, etcCover, ClubType.eEtcCover);
+        initRecyclerViews(woodRecyclerView, wood, true, ClubType.eWood);
+        initRecyclerViews(utiltyRecyclerView, utility, true, ClubType.eUtility);
+        initRecyclerViews(ironRecyclerView, iron, true, ClubType.eIron);
+        initRecyclerViews(wedgeRecyclerView, wedge, false, ClubType.eWedge);
+        initRecyclerViews(putterRecyclerView, putter, true, ClubType.ePutter);
+        initRecyclerViews(putterCoverRecyclerView, putterCover, false, ClubType.ePutterCover);
+        initRecyclerViews(woodCoverRecyclerView, woodCover, false, ClubType.eWoodCover);
+        initRecyclerViews(etcCoverRecyclerView, etcCover, false, ClubType.eEtcCover);
 
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,11 +153,11 @@ public class ClubInfoDialog extends Dialog {
         adapter.select(0);
     }
 
-    private void initRecyclerViews(RecyclerView recyclerView, String[] items, ClubType clubType) {
+    private void initRecyclerViews(RecyclerView recyclerView, String[] items, boolean isMultiSelect, ClubType clubType) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        ClubAdapter adapter = new ClubAdapter(getContext(), clubType, new ClubAdapter.IOnClickAdapter() {
+        ClubAdapter adapter = new ClubAdapter(getContext(), clubType, isMultiSelect, new ClubAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(ClubType clubType, int count) {
                 switch (clubType) {
@@ -180,4 +181,5 @@ public class ClubInfoDialog extends Dialog {
             adapter.addItem(item);
         }
     }
+
 }

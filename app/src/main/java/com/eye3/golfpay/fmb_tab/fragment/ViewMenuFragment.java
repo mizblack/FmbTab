@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
+import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
@@ -102,8 +104,12 @@ public class ViewMenuFragment extends BaseFragment {
     private LinearLayout gpsLinear, scoreBoardLinear, nearstLongestLinear, rankingNormalLinear, caddieLinear,
             orderLinear, paymentLinear, settingLinear, scoreLinear, controlLinear, closeLinear, caddieCancelLinearLayout;
 
+
+    private RelativeLayout view_background;
+
     Timer todayReserveTimer;
     TextView mTvRoundStartfinish;
+    TextView btnClose;
 
 
     public ViewMenuFragment() {
@@ -137,9 +143,12 @@ public class ViewMenuFragment extends BaseFragment {
         caddieNameTextView = v.findViewById(R.id.caddieNameTextView);
         caddieCancelLinearLayout = v.findViewById(R.id.caddieCancelLinearLayout);
 
+        view_background = v.findViewById(R.id.view_background);
+
 
         btnLeftMove = v.findViewById(R.id.btn_move_left);
         btnRightMove = v.findViewById(R.id.btn_move_right);
+        btnClose = v.findViewById(R.id.btn_close);
         init(v);
         return v;
     }
@@ -414,20 +423,55 @@ public class ViewMenuFragment extends BaseFragment {
         showListTextView = v.findViewById(R.id.showListTextView);
         showListTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                selectTobDivider.setVisibility(View.VISIBLE);
-                selectBottomDivider.setVisibility(View.VISIBLE);
-                //teeUpRecyclerView.setVisibility(View.VISIBLE);
+            public void onClick(View view) {
+
+                view_background.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
+                v.findViewById(R.id.header).setVisibility(View.INVISIBLE);
+                v.findViewById(R.id.header_list).setVisibility(View.VISIBLE);
                 roundingLinearLayout.setVisibility(View.GONE);
 
-                disableMenu();
-                setDisableColor();
+                selectTobDivider.setVisibility(View.VISIBLE);
+                selectBottomDivider.setVisibility(View.VISIBLE);
+                teeUpViewPager.setVisibility(View.VISIBLE);
+                teeUpViewPager.setCurrentItem(teeUpViewPager.getCurrentItem());
+
+                btnLeftMove.setVisibility(View.VISIBLE);
+                btnRightMove.setVisibility(View.VISIBLE);
+
+                btnRightMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_irisblue_circle));
+                btnLeftMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_irisblue_circle));
+
+                if (teeUpAdapter.getCount() == 1) {
+                    btnLeftMove.setVisibility(View.GONE);
+                    btnRightMove.setVisibility(View.GONE);
+                } else if (teeUpViewPager.getCurrentItem() == 0) {
+                    btnLeftMove.setVisibility(View.GONE);
+                } else if (teeUpViewPager.getCurrentItem()+1 == teeUpAdapter.getCount()) {
+                    btnRightMove.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectTobDivider.setVisibility(View.GONE);
+                selectBottomDivider.setVisibility(View.GONE);
+                teeUpViewPager.setVisibility(View.GONE);
+                roundingLinearLayout.setVisibility(View.VISIBLE);
+                btnLeftMove.setVisibility(View.GONE);
+                btnRightMove.setVisibility(View.GONE);
+                view_background.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
+                v.findViewById(R.id.header).setVisibility(View.VISIBLE);
+                v.findViewById(R.id.header_list).setVisibility(View.INVISIBLE);
+
+                btnRightMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_black_circle));
+                btnLeftMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_black_circle));
             }
         });
 
         disableMenu();
         setDisableColor();
-
     }
 
     private void setLogout() {
@@ -458,20 +502,39 @@ public class ViewMenuFragment extends BaseFragment {
                     teeUpAdapter = new TeeUpViewPagerAdapter(getContext(), Global.teeUpTime.getTodayReserveList(), new TeeUpViewPagerAdapter.OnAdapterClickListener() {
                         @Override
                         public void onClicked(int position) {
-                            selectTobDivider.setVisibility(View.GONE);
-                            selectBottomDivider.setVisibility(View.GONE);
-                            teeUpViewPager.setVisibility(View.GONE);
-                            roundingLinearLayout.setVisibility(View.VISIBLE);
 
-                            TodayReserveList item = teeUpAdapter.getItem(position);
-                            Global.selectedTeeUpIndex = position;
-                            Global.selectedReservation = item;
-                            Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
-                            groupNameTextView.setText(item.getGroup());
-                            reservationPersonNameTextView.setText(item.getGuestName());
-                            roundingTeeUpTimeTextView.setText(Util.timeMapper(item.getTeeoff()));
-                            setInOutTextView(item.getInoutCourse());
-                            enableMenu();
+                            String reserveId = getReserveId(response);
+                            DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(context, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
+                                @Override
+                                public void onSuccess(ResponseData<Object> response) {
+                                    selectTobDivider.setVisibility(View.GONE);
+                                    selectBottomDivider.setVisibility(View.GONE);
+                                    teeUpViewPager.setVisibility(View.GONE);
+                                    roundingLinearLayout.setVisibility(View.VISIBLE);
+                                    btnLeftMove.setVisibility(View.GONE);
+                                    btnRightMove.setVisibility(View.GONE);
+
+                                    TodayReserveList item = teeUpAdapter.getItem(position);
+                                    Global.selectedTeeUpIndex = position;
+                                    Global.selectedReservation = item;
+                                    Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
+                                    groupNameTextView.setText(item.getGroup());
+                                    reservationPersonNameTextView.setText(item.getGuestName());
+                                    roundingTeeUpTimeTextView.setText(Util.timeMapper(item.getTeeoff()));
+                                    setInOutTextView(item.getInoutCourse());
+                                    enableMenu();
+                                }
+
+                                @Override
+                                public void onError(ResponseData<Object> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Throwable t) {
+
+                                }
+                            });
                         }
                     });
 
@@ -539,6 +602,10 @@ public class ViewMenuFragment extends BaseFragment {
                 systemUIHide();
             }
         });
+    }
+
+    private String getReserveId(TeeUpTime response) {
+        return response.getTodayReserveList().get(teeUpViewPager.getCurrentItem()).getReserveNo();
     }
 
     void setInOutTextView(String course) {

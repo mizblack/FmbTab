@@ -8,6 +8,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
+import com.eye3.golfpay.fmb_tab.model.order.PlayStatus;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
@@ -345,6 +346,29 @@ public class DataInterface extends BasicDataInterface {
                 @Override
                 public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
                     solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setPlayStatus(final Context context, String reserve_id, String play_status, final ResponseCallback<ResponseData<Object>> callback) {
+        try {
+
+            Call<ResponseData<Object>> call = service.setPlayStatus(new PlayStatus(reserve_id, play_status));
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    callback.onSuccess(response.body());
                 }
 
                 @Override

@@ -5,6 +5,7 @@ import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
 import com.eye3.golfpay.fmb_tab.model.notice.NoticeItem;
+import com.eye3.golfpay.fmb_tab.model.order.PlayStatus;
 import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
@@ -27,7 +28,7 @@ import retrofit2.http.Query;
 
 public interface HttpService {
 
-    @Headers("Authorization: abc")
+    @Headers("Authorization: {access_token}")
 
     @FormUrlEncoded
     @POST("caddyLogin")
@@ -75,5 +76,9 @@ public interface HttpService {
 
     @POST("getNoticeList")
     Call<ResponseData<NoticeItem>> getNoticeList();
+
+
+    @POST("setPlayStatus")
+    Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);
 
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.dialog.ClubInfoDialog;
+import com.eye3.golfpay.fmb_tab.model.order.Restaurant;
 
 
 import java.util.ArrayList;
@@ -50,10 +51,13 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
     private Context context;
     private IOnClickAdapter onClickAdapter;
     private ClubInfoDialog.ClubType clubType;
-    public ClubAdapter(Context context, ClubInfoDialog.ClubType clubType, IOnClickAdapter listener) {
+    boolean isMultiSelect;
+
+    public ClubAdapter(Context context, ClubInfoDialog.ClubType clubType, boolean isMultiSelect, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;
         this.clubType = clubType;
+        this.isMultiSelect = isMultiSelect;
         items = new ArrayList<>();
     }
 
@@ -98,15 +102,29 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
                 @Override
                 public void onClick(View v) {
                     //allSelected(false);
-                    items.get(position).selected ^= true;
+
+                    if (isMultiSelect == true) {
+                        items.get(position).selected ^= true;
+                    } else {
+                        allSelected(false);
+                        items.get(position).selected = true;
+                    }
+
                     onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
                     notifyDataSetChanged();
+
                 }
             });
         } catch (NullPointerException e) {
             Log.e(TAG, "NullPointerException : " + e);
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
+        }
+    }
+
+    private void allSelected(boolean select) {
+        for (Item item : items) {
+            item.selected = select;
         }
     }
 

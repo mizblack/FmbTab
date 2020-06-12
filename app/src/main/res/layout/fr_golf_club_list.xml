@@ -103,16 +103,12 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/woodRecyclerView"
-                    android:layout_width="500dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
                     android:background="@color/zumthor"
                     android:paddingRight="1dp"
-                    android:scrollbars="horizontal"
-                    android:scrollbarStyle="insideInset"
                     android:fadeScrollbars="false"
-                    android:scrollbarSize="2dp"
-
                     app:layout_constraintStart_toEndOf="@+id/wood_view"
                     app:layout_constraintTop_toTopOf="parent" />
 
