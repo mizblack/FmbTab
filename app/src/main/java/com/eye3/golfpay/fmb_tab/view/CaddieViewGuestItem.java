@@ -77,7 +77,6 @@ import static com.eye3.golfpay.fmb_tab.util.Logger.TAG;
 
 public class CaddieViewGuestItem extends RelativeLayout {
     private static int sendCountNum = 0;
-    protected static ProgressDialog pd; // 프로그레스바 선언
     Guest mGuest;
     Context mContext;
     TextView mMemberNameTextView, mGuestMemoContentTextView;
@@ -363,99 +362,12 @@ public class CaddieViewGuestItem extends RelativeLayout {
         guestInfo.setCarNo(guest.getCarNumber());
         guestInfo.setHp(guest.getPhoneNumber());
         guestInfo.setGuestMemo(guest.getMemo());
-        guestInfo.setTeamMemo(guest.getTeamMemo());
+        //guestInfo.setTeamMemo(guest.getTeamMemo());
         guestInfo.setSignImage(signatureImageFile);
         guestInfo.setClubImage(clubImageFile);
-
-        setReserveGuestInfo(guestInfo);
-    }
-
-    private void setReserveGuestInfo(GuestInfo guestInfo) {
-        showProgress("데이터를 전송중입니다." );
-        RequestBody reserveGuestId = null, carNo = null, hp = null, guestMemo = null, teamMemo = null, requestFile = null, requestFile2 = null;
-
-        MultipartBody.Part signImage = null, clubImage = null;
-        if (guestInfo.getReserveGuestId() != null)
-            reserveGuestId = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getReserveGuestId());
-        if (guestInfo.getCarNo() != null)
-            carNo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getCarNo());
-        if (guestInfo.getHp() != null)
-            hp = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getHp());
-        if (guestInfo.getGuestMemo() != null) {
-            guestMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getGuestMemo());
-        }
-        if (guestInfo.getTeamMemo() != null) {
-            teamMemo = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getTeamMemo());
-        }
-        if (guestInfo.getSignImage() != null) {
-            requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getSignImage());
-            signImage = MultipartBody.Part.createFormData("sign_image", guestInfo.getSignImage().getName(), requestFile);
-        }
-        if (guestInfo.getClubImage() != null) {
-            requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), guestInfo.getClubImage());
-            clubImage = MultipartBody.Part.createFormData("club_image", guestInfo.getClubImage().getName(), requestFile2);
-        }
-
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
-            @Override
-            public void onSuccess(GuestInfoResponse response) {
-                if ("ok".equals(response.getRetCode())) {
-                    if (Global.guestList.size() - 1 > sendCountNum) {
-                        sendCountNum++;
-                    } else if (sendCountNum == Global.guestList.size() - 1) {
-                        Toast.makeText(mContext, "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                        hideProgress();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onError(GuestInfoResponse response) {
-                hideProgress();
-                Toast.makeText(mContext, response.getRetMsg(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-               hideProgress();
-            }
-        });
-    }
-
-    protected void showProgress(final String msg) {
-        UIThread.executeInUIThread(new Runnable() {
-            @Override
-            public void run() {
-                if (pd == null) {
-                    // 객체를 1회만 생성한다.
-                    pd = new ProgressDialog(mContext); // 생성한다.
-                    pd.setCancelable(true);
-                    // 백키로 닫는 기능을 제거한다.
-                }
-                pd.setMessage(msg);
-                // 원하는 메시지를 세팅한다.
-                pd.show();
-                // 화면에 띠워라
-            }
-        });
-
     }
 
 
-    // 프로그레스 다이얼로그 숨기기
-    protected void hideProgress() {
-        UIThread.executeInUIThread(new Runnable() {
-            @Override
-            public void run() {
-                if (pd != null && pd.isShowing()) {
-                    // 닫는다 : 객체가 존재하고, 보일때만
-                    pd.dismiss();
-                }
-            }
-        });
-
-    }
 
 
     private static File getResizedFile(Context context, Bitmap bitmap, String filename) {

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,12 +42,16 @@ import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.guest.CaddieInfo;
+import com.eye3.golfpay.fmb_tab.model.guest.ClubInfo;
+import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
 import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewBasicGuestItem;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -66,6 +71,45 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         super.onCreate(savedInstanceState);
 
+
+        CaddieInfo ca = new CaddieInfo();
+
+        ca.setCaddie_id("1");
+        ca.setTeamMemo("team memo");
+        ca.getTeamPhotos().add("team_photo1");
+        ca.getTeamPhotos().add("team_photo2");
+        ca.getTeamPhotos().add("team_photo3");
+
+        GuestInfo gi = new GuestInfo();
+        gi.setReserveGuestId("guest id");
+        gi.setCarNo("car number");
+        gi.setGuestMemo("guest memo");
+        gi.setHp("phone number");
+
+        ClubInfo ci = new ClubInfo();
+        ci.cover.add("2");
+        ci.iron.add("0");
+        ci.iron.add("1");
+        ci.iron.add("2");
+        ci.putter.add("2");
+        ci.putter_cover.add("2");
+        ci.utility.add("2");
+        ci.wedge.add("Pw");
+        ci.wedge.add("Sw");
+        ci.wedge.add("PSw");
+        ci.wood_cover.add("2");
+        ci.wood.add("7");
+        ci.wood.add("8");
+        gi.setClubInfo(ci);
+
+        ca.getGuestInfo().add(gi);
+//        ca.getGuestInfo().add(gi);
+//        ca.getGuestInfo().add(gi);
+//        ca.getGuestInfo().add(gi);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ca);
+        Log.d("json", json);
 
         systemUIHide();
         setContentView(R.layout.activity_main);
@@ -203,7 +247,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                closeKeyboard(findViewById(R.id.phoneNumberEditText));
 //            }
 //        });
-
     }
 
 

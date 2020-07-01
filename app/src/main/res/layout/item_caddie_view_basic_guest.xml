@@ -31,6 +31,7 @@
                 tools:ignore="UselessParent">
 
                 <TextView
+                    android:id="@+id/tv_club_info"
                     style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,12 +58,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_wood"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="우드"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_woodCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>
@@ -74,12 +77,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_utility"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="유틸리티"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_utilityCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>
@@ -90,12 +95,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_iron"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="아이언"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_ironCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>
@@ -106,12 +113,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_putter"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="퍼터"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_putterCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>
@@ -122,12 +131,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_wedge"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="웨지"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_wedgeCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>
@@ -138,12 +149,14 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:id="@+id/tv_cover"
                     style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
                     android:text="커버"
                     tools:ignore="HardcodedText,SpUsage" />
 
                 <TextView
-                    style="@style/GlobalTextView.15SP.lightGray.NotoSans.Regular"
+                    android:id="@+id/tv_coverCount"
+                    style="@style/GlobalTextView.15SP.ebonyBlack.NotoSans.Medium"
                     android:layout_alignParentRight="true"
                     android:text="" />
             </RelativeLayout>

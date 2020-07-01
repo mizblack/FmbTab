@@ -16,6 +16,12 @@ import java.util.ArrayList;
 
 public class NearestLongestAdapter extends RecyclerView.Adapter<NearestLongestAdapter.ItemHolder> {
 
+
+    public enum Unit {
+        Meters,
+        Centimeters
+    }
+
     public interface IOnClickAdapter {
         public void onAdapterItemClicked(Integer id);
     }
@@ -45,17 +51,44 @@ public class NearestLongestAdapter extends RecyclerView.Adapter<NearestLongestAd
     private ArrayList<Item> items;
     private Context context;
     private IOnClickAdapter onClickAdapter;
+    private Unit distansceUnit;
 
-
-    public NearestLongestAdapter(Context context, IOnClickAdapter listener) {
+    public NearestLongestAdapter(Context context, Unit unit, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;
         items = new ArrayList<>();
-
-        for (int i = 10; i <= 50; i++) {
-            Item item = new Item(i * 10);
-            items.add(item);
+        distansceUnit = unit;
+        if (unit == Unit.Meters) {
+            for (int i = 15; i <= 35; i++) {
+                Item item = new Item(i * 10);
+                items.add(item);
+            }
+        } else {
+            for (int i = 0; i <= 30; i++) {
+                Item item = new Item(i);
+                items.add(item);
+            }
         }
+    }
+
+    public void setScore(int score) {
+
+        if (score == -1)
+            return;
+
+        int position = 0;
+        for (int i = 0; i < items.size(); i++) {
+
+            position = i;
+            Item item = items.get(i);
+            if (item.num == score) {
+                item.selected = true;
+                break;
+            }
+        }
+
+        if (onClickAdapter != null)
+            onClickAdapter.onAdapterItemClicked(position);
     }
 
     public Integer getItem(int position) {

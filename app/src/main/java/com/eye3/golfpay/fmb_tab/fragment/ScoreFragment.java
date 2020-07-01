@@ -12,8 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
@@ -26,6 +30,8 @@ import com.eye3.golfpay.fmb_tab.view.TabCourseLinear;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.eye3.golfpay.fmb_tab.util.Logger.TAG;
 
 public class ScoreFragment extends BaseFragment {
 
@@ -133,7 +139,28 @@ public class ScoreFragment extends BaseFragment {
         longest.setVisibility(View.GONE);
         courseLinearLayout = v.findViewById(R.id.courseLinearLayout);
         mParentActivity.showMainBottomBar();
+
+
+        //Nearest 클릭릭
+        tabBar.findViewById(R.id.pinkNearestOrLongest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
+//                nearestLongestDialogFragment.setmNearestOrLongest(hole.gameType);
+//                nearestLongestDialogFragment.setCourse(course);
+//                nearestLongestDialogFragment.setHole(hole);
+                showDialogFragment(nearestLongestDialogFragment);
+            }
+        });
         return v;
+    }
+
+    private void showDialogFragment(DialogFragment dialogFragment) {
+        FragmentManager supportFragmentManager = ((MainActivity) (getContext())).getSupportFragmentManager();
+        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+        dialogFragment.show(transaction, TAG);
+        assert dialogFragment.getFragmentManager() != null;
+        dialogFragment.getFragmentManager().executePendingTransactions();
     }
 
     private void rightLinearLayoutOnClick() {

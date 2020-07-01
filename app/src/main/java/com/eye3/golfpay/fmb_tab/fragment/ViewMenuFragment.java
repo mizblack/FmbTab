@@ -22,7 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -328,7 +331,6 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-
         v.findViewById(R.id.paymentLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -374,13 +376,10 @@ public class ViewMenuFragment extends BaseFragment {
         v.findViewById(R.id.nearestLongestLinearLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "개발중입니다. ", Toast.LENGTH_SHORT).show();
-//                GoNativeScreen(new ScoreFragment(), null);
-//                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
-//                assert getFragmentManager() != null;
-//                nearestLongestDialogFragment.show(getFragmentManager(), TAG);
-//                drawer_layout.closeDrawer(GravityCompat.END);
-//                systemUIHide();
+                GoNativeScreen(new ScoreFragment(), null);
+                drawer_layout.closeDrawer(GravityCompat.END);
+                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
+                showDialogFragment(nearestLongestDialogFragment);
             }
         });
 
@@ -425,6 +424,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 
+                //목록보기
                 view_background.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
                 v.findViewById(R.id.header).setVisibility(View.INVISIBLE);
                 v.findViewById(R.id.header_list).setVisibility(View.VISIBLE);
@@ -434,6 +434,9 @@ public class ViewMenuFragment extends BaseFragment {
                 selectBottomDivider.setVisibility(View.VISIBLE);
                 teeUpViewPager.setVisibility(View.VISIBLE);
                 teeUpViewPager.setCurrentItem(teeUpViewPager.getCurrentItem());
+
+                //read only
+                teeUpAdapter.setListMode(true);
 
                 btnLeftMove.setVisibility(View.VISIBLE);
                 btnRightMove.setVisibility(View.VISIBLE);
@@ -465,6 +468,9 @@ public class ViewMenuFragment extends BaseFragment {
                 v.findViewById(R.id.header).setVisibility(View.VISIBLE);
                 v.findViewById(R.id.header_list).setVisibility(View.INVISIBLE);
 
+                //read only 해제
+                teeUpAdapter.setListMode(false);
+
                 btnRightMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_black_circle));
                 btnLeftMove.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_black_circle));
             }
@@ -472,6 +478,14 @@ public class ViewMenuFragment extends BaseFragment {
 
         disableMenu();
         setDisableColor();
+    }
+
+    private void showDialogFragment(DialogFragment dialogFragment) {
+        FragmentManager supportFragmentManager = ((MainActivity) (getContext())).getSupportFragmentManager();
+        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+        dialogFragment.show(transaction, TAG);
+        assert dialogFragment.getFragmentManager() != null;
+        dialogFragment.getFragmentManager().executePendingTransactions();
     }
 
     private void setLogout() {
@@ -494,7 +508,8 @@ public class ViewMenuFragment extends BaseFragment {
                     return;
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
-                    todayReserveTimer.cancel();
+
+                    //todayReserveTimer.cancel();
                     tvCartNo.setText(response.getCaddyInfo().getCart_no() + "번 카트");
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
@@ -503,7 +518,7 @@ public class ViewMenuFragment extends BaseFragment {
                         @Override
                         public void onClicked(int position) {
 
-                            String reserveId = getReserveId(response);
+                            int reserveId = getReserveId(response);
                             DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(context, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
                                 @Override
                                 public void onSuccess(ResponseData<Object> response) {
@@ -580,13 +595,6 @@ public class ViewMenuFragment extends BaseFragment {
                             teeUpViewPager.setCurrentItem(teeUpViewPager.getCurrentItem()+1);
                         }
                     });
-
-                    if (mContext != null) {
-
-                        if (getActivity() != null || getActivity().isFinishing() == false) {
-                            Toast.makeText(getActivity(), "안녕하세요 " + response.getCaddyInfo().getName() + "님! \n티업시간을 선택해주세요.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
                 }
             }
 
@@ -604,8 +612,8 @@ public class ViewMenuFragment extends BaseFragment {
         });
     }
 
-    private String getReserveId(TeeUpTime response) {
-        return response.getTodayReserveList().get(teeUpViewPager.getCurrentItem()).getReserveNo();
+    private int getReserveId(TeeUpTime response) {
+        return response.getTodayReserveList().get(teeUpViewPager.getCurrentItem()).getId();
     }
 
     void setInOutTextView(String course) {
@@ -629,14 +637,9 @@ public class ViewMenuFragment extends BaseFragment {
         todayReserveTimer.schedule(new TimerTask() {
 
             @Override
-
             public void run() {
-
                 getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
-
-
                 //    update();
-
             }
 
         }, 10 * 1000, 1000 * 5);
@@ -762,138 +765,6 @@ public class ViewMenuFragment extends BaseFragment {
         closeLinear.setEnabled(false);
 
         setDisableColor();
-    }
-
-    private class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.TeeUpTimeItemViewHolder> {
-
-        View mMenuView, divider;
-
-        ArrayList<TodayReserveList> todayReserveList;
-        TextView teeUpTimeTextView, reservationGuestNameTextView, startTextView;
-        LinearLayout visitorsGuestItemLinearLayout;
-
-        TeeUpAdapter(ArrayList<TodayReserveList> todayReserveList) {
-            this.todayReserveList = todayReserveList;
-        }
-
-        class TeeUpTimeItemViewHolder extends RecyclerView.ViewHolder {
-
-            TeeUpTimeItemViewHolder(View v) {
-                super(v);
-
-                teeUpTimeTextView = v.findViewById(R.id.teeUpTimeTextView);
-                reservationGuestNameTextView = v.findViewById(R.id.reservationPersonNameTextView);
-                visitorsGuestItemLinearLayout = v.findViewById(R.id.visitorsGuestItemLinearLayout);
-                divider = v.findViewById(R.id.divider);
-                startTextView = v.findViewById(R.id.startTextView);
-
-                startTextView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        todayReserveTimer.cancel();
-                        selectTobDivider.setVisibility(View.GONE);
-                        selectBottomDivider.setVisibility(View.GONE);
-                        //teeUpRecyclerView.setVisibility(View.GONE);
-                        roundingLinearLayout.setVisibility(View.VISIBLE);
-
-                        int position = getAdapterPosition();
-                        Global.selectedTeeUpIndex = position;
-                        Global.selectedReservation = todayReserveList.get(position);
-                        Global.reserveId = String.valueOf(todayReserveList.get(position).getId());
-                        groupNameTextView.setText(todayReserveList.get(position).getGroup());
-                        reservationPersonNameTextView.setText(todayReserveList.get(position).getGuestName());
-                        roundingTeeUpTimeTextView.setText(timeMapper(todayReserveList.get(position).getTeeoff()));
-                        setInOutTextView(todayReserveList.get(position).getInoutCourse());
-
-                        enableMenu();
-
-                        return false;
-                    }
-                });
-            }
-        }
-
-        @NonNull
-        @Override
-        public TeeUpAdapter.TeeUpTimeItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            mMenuView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tee_up, viewGroup, false);
-            return new TeeUpAdapter.TeeUpTimeItemViewHolder(mMenuView);
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onBindViewHolder(@NonNull TeeUpAdapter.TeeUpTimeItemViewHolder scoreItemViewHolder, int position) {
-            //     if (position == 0) {
-            mMenuView.setBackgroundResource(R.drawable.shape_black_edge);
-//                divider.setVisibility(View.VISIBLE);
-            startTextView.setText("대기");
-            startTextView.setTextColor(0xff00abc5);
-            //      }
-            teeUpTimeTextView.setText(todayReserveList.get(position).getInoutCourse() + " " + timeMapper(todayReserveList.get(position).getTeeoff()));
-            reservationGuestNameTextView.setText(todayReserveList.get(position).getGuestName());
-            for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
-                VisitorsGuestItem visitorsGuestItem = new VisitorsGuestItem(mContext);
-                TextView memberNameTextView = visitorsGuestItem.findViewById(R.id.memberNameTextView);
-                ImageView ivCheckin = visitorsGuestItem.findViewById(R.id.iv_checkin);
-                memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
-                if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
-                    //내장객이 전원 입장을 안했을때
-                    //  ivCheckin.setImageAlpha(50);
-                    ivCheckin.setVisibility(View.INVISIBLE);
-                    startTextView.setEnabled(false);
-                } else if (areAllGuestsEnteredToPlay(position)) {
-                    startTextView.setEnabled(true);
-                    startTextView.setText("시작");
-                }
-                visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
-
-            }
-
-        }
-
-        private boolean areAllGuestsEnteredToPlay(int position) {
-            for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
-
-                if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public int getItemCount() {
-            return todayReserveList.size();
-        }
-
-        String timeMapper(String time) {
-            String timeString;
-            String amOrPm;
-            if (Integer.parseInt(time.split(":")[0]) >= 12) {
-                amOrPm = " PM";
-            } else {
-                amOrPm = " AM";
-            }
-//            timeString = time.split(":")[0] + ":" + time.split(":")[1] + amOrPm;
-            timeString = time.split(":")[0] + ":" + time.split(":")[1];
-            return timeString;
-        }
-
-        String inOutMapper(String course) {
-            return course + "코스";
-        }
-
-        void setInOutTextView(String course) {
-            String courseTemp;
-            if (course.equals("IN")) {
-                courseTemp = "OUT";
-            } else {
-                courseTemp = "IN";
-            }
-            inOutTextView00.setText(inOutMapper(course));
-            inOutTextView01.setText(inOutMapper(courseTemp));
-        }
-
     }
 
     public void getReserveGuestList(int reserveId) {

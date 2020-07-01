@@ -103,16 +103,19 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
                 public void onClick(View v) {
                     //allSelected(false);
 
+
                     if (isMultiSelect == true) {
                         items.get(position).selected ^= true;
+                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
                     } else {
                         allSelected(false);
                         items.get(position).selected = true;
+
+                        //멀티 셀렉트가 안 되는 항목들은 선택한 인덱스가 갯수가 된다.
+                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCoverCount());
                     }
 
-                    onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
                     notifyDataSetChanged();
-
                 }
             });
         } catch (NullPointerException e) {
@@ -136,6 +139,38 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
         }
 
         return count;
+    }
+
+    public int getSelectedCoverCount() {
+        for (Item item : items) {
+            if (item.selected == true) {
+                String a = item.item.substring(0, 1);
+                return Integer.parseInt(a);
+            }
+        }
+
+        return 0;
+    }
+
+    public ArrayList<String> getSelectedItems() {
+
+        ArrayList<String> selectedItms = new ArrayList<>();
+        for (Item item : items) {
+            if (item.selected == true)
+                selectedItms.add(item.item);
+        }
+
+        return selectedItms;
+    }
+
+    public void setSelectItem(ArrayList<String> selectItem) {
+        for (Item item : items) {
+
+            for (String str : selectItem) {
+                if (item.item.equals(str))
+                    item.selected = true;
+            }
+        }
     }
 
     @Override

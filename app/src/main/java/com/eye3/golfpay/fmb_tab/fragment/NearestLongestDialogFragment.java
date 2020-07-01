@@ -28,10 +28,13 @@ import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
+import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.LongestInserter;
 import com.eye3.golfpay.fmb_tab.view.NearestInserter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class NearestLongestDialogFragment extends DialogFragment {
 
@@ -43,9 +46,20 @@ public class NearestLongestDialogFragment extends DialogFragment {
     private View cancelLinearLayout;
     private TextView mTabLongest, mTabNearest;
 
+    private ArrayList<TextView> tvNearestRank = new ArrayList<>();
+    private ArrayList<TextView> tvLongestRank = new ArrayList<>();
+
     private String mNearestOrLongest = AppDef.NEAREST;
     private  Course mCourse;
     private Hole mHole;
+
+    private TextView tv_1st;
+    private TextView tv_2nd;
+    private TextView tv_2nd_name;
+    private TextView tv_2nd_score;
+    private TextView tv_3rd;
+    private TextView tv_3rd_name;
+    private TextView tv_3rd_score;
 
     private RecyclerView recyclerView;
     LinearLayoutManager learingLayout;
@@ -60,6 +74,8 @@ public class NearestLongestDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fr_nearest_longest, container, false);
+
+        mNearestOrLongest = AppDef.LONGEST;
         guestItemLinearLayout = view.findViewById(R.id.guestItemLinearLayout);
         cancelLinearLayout = view.findViewById(R.id.cancelLinearLayout);
         mTabLongest = view.findViewById(R.id.longestTextView);
@@ -68,10 +84,11 @@ public class NearestLongestDialogFragment extends DialogFragment {
             public void onClick(View v) {
 
                 if (mNearestOrLongest.equals(AppDef.NEAREST)) {
-                    mTabNearest.setTextAppearance(R.style.GlobalTextView_32SP_gray_NotoSans_Medium);
+                    mTabNearest.setTextAppearance(R.style.GlobalTextView_28SP_gray_NotoSans_Medium);
+                    ( (TextView)getView().findViewById(R.id.measurement_unit)).setTextAppearance(R.style.GlobalTextView_16SP_irisBlue_NotoSans_Medium);
                 }
                 mNearestOrLongest = AppDef.LONGEST;
-                ((TextView) v).setTextAppearance(R.style.GlobalTextView_32SP_ebonyBlack_NotoSans_Medium);
+                ((TextView) v).setTextAppearance(R.style.GlobalTextView_28SP_ebonyBlack_NotoSans_Medium);
                 changeScreenTo(AppDef.LONGEST);
 
             }
@@ -81,16 +98,25 @@ public class NearestLongestDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mNearestOrLongest.equals(AppDef.LONGEST)) {
-                    mTabLongest.setTextAppearance(R.style.GlobalTextView_32SP_gray_NotoSans_Medium);
+                    mTabLongest.setTextAppearance(R.style.GlobalTextView_28SP_gray_NotoSans_Medium);
+                    ( (TextView)getView().findViewById(R.id.measurement_unit)).setTextAppearance(R.style.GlobalTextView_14SP_irisBlue_NotoSans_Medium);
                 }
                 mNearestOrLongest = AppDef.NEAREST;
-                ((TextView) v).setTextAppearance(R.style.GlobalTextView_32SP_ebonyBlack_NotoSans_Medium);
+                ((TextView) v).setTextAppearance(R.style.GlobalTextView_28SP_ebonyBlack_NotoSans_Medium);
                 changeScreenTo(AppDef.NEAREST);
             }
         });
-        ( (TextView)view.findViewById(R.id.long_near_hole_no)).setText("Hole "+ mHole.hole_no);
-        ( (TextView)view.findViewById(R.id.long_near_par)).setText("Par" + mHole.par);
-        ( (TextView)view.findViewById(R.id.long_near_course)).setText("Course(" + mCourse.courseName + ")");
+//        ( (TextView)view.findViewById(R.id.long_near_hole_no)).setText("Hole "+ mHole.hole_no);
+//        ( (TextView)view.findViewById(R.id.long_near_par)).setText("Par" + mHole.par);
+//        ( (TextView)view.findViewById(R.id.long_near_course)).setText("Course(" + mCourse.courseName + ")");
+
+        tv_1st = view.findViewById(R.id.tv_1st);
+        tv_2nd = view.findViewById(R.id.tv_2nd);
+        tv_2nd_name = view.findViewById(R.id.tv_2nd_name);
+        tv_2nd_score = view.findViewById(R.id.tv_2nd_score);
+        tv_3rd = view.findViewById(R.id.tv_3rd);
+        tv_3rd_name = view.findViewById(R.id.tv_3rd_name);
+        tv_3rd_score = view.findViewById(R.id.tv_3rd_score);
 
         return view;
     }
@@ -107,55 +133,73 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
 
     private void makeNearest() {
+
+        tvNearestRank = new ArrayList<>();
         guestItemLinearLayout.removeAllViewsInLayout();
         ( (TextView)getView().findViewById(R.id.measurement_unit)).setText("Centimeters");
         if (guestArrayList.size() != 0) {
             for (int i = 0; i < guestArrayList.size(); i++) {
 
+                final int pos = i;
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.item_nearest_longest_input, null, false);
 
-                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)Util.convertDpToPixel(90.f, getContext()));
                 v.setLayoutParams(lllp);
 
-                final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
-                recyclerView = selectorLinearLayout.findViewById(R.id.reyclerview);
+                recyclerView = v.findViewById(R.id.reyclerview);
                 learingLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(learingLayout);
 
+
                 final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 TextView nameTextView = v.findViewById(R.id.nameTextView);
+                tvNearestRank.add(v.findViewById(R.id.rankingTextView));
 
-                adapter = new NearestLongestAdapter(getContext(), new NearestLongestAdapter.IOnClickAdapter() {
+                if (i == 0) {
+                    recyclerView.setPadding(0, 2, 0, 0);
+                    LinearLayout llmetersTextView = v.findViewById(R.id.llmetersTextView);
+                    llmetersTextView.setPadding(0, 2, 0, 2);
+                }
+
+                adapter = new NearestLongestAdapter(getContext(), NearestLongestAdapter.Unit.Centimeters, new NearestLongestAdapter.IOnClickAdapter() {
                     @Override
                     public void onAdapterItemClicked(final Integer id) {
                         tvMeters.setText(adapter.getItem(id) + "CM");
+                        guestArrayList.get(pos).setNearest(adapter.getItem(id));
+                        setNearestRank();
                     }
                 });
 
                 recyclerView.setAdapter(adapter);
                 nameTextView.setText(guestArrayList.get(i).getGuestName());
                 guestItemLinearLayout.addView(v);
+
+                adapter.setScore(guestArrayList.get(pos).getNearest());
             }
+
+            setNearestRank();
         }
     }
 
     private void makeLongest() {
+
+        tvLongestRank = new ArrayList<>();
         guestItemLinearLayout.removeAllViewsInLayout();
         ( (TextView)getView().findViewById(R.id.measurement_unit)).setText("Meters");
         if (guestArrayList.size() != 0) {
             for (int i = 0; i < guestArrayList.size(); i++) {
 
+                final int pos = i;
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View v = inflater.inflate(R.layout.item_nearest_longest_input, null, false);
 
-                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160);
+                LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)Util.convertDpToPixel(90.f, getContext()));
                 v.setLayoutParams(lllp);
 
-                final LinearLayout selectorLinearLayout = v.findViewById(R.id.selectorLinearLayout);
-                recyclerView = selectorLinearLayout.findViewById(R.id.reyclerview);
+                recyclerView = v.findViewById(R.id.reyclerview);
                 learingLayout = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
 
                 recyclerView.setHasFixedSize(true);
@@ -163,25 +207,174 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
                 final TextView tvMeters = v.findViewById(R.id.metersTextView);
                 TextView nameTextView = v.findViewById(R.id.nameTextView);
+                tvLongestRank.add(v.findViewById(R.id.rankingTextView));
 
-                adapter = new NearestLongestAdapter(getContext(), new NearestLongestAdapter.IOnClickAdapter() {
+                if (i == 0) {
+                    recyclerView.setPadding(0, 2, 0, 0);
+                    LinearLayout llmetersTextView = v.findViewById(R.id.llmetersTextView);
+                    llmetersTextView.setPadding(0, 2, 0, 2);
+                }
+
+                adapter = new NearestLongestAdapter(getContext(), NearestLongestAdapter.Unit.Meters, new NearestLongestAdapter.IOnClickAdapter() {
                     @Override
                     public void onAdapterItemClicked(final Integer id) {
                         tvMeters.setText(adapter.getItem(id) + "M");
+                        guestArrayList.get(pos).setLongest(adapter.getItem(id));
+                        setLongestRank();
                     }
                 });
 
                 recyclerView.setAdapter(adapter);
                 nameTextView.setText(guestArrayList.get(i).getGuestName());
                 guestItemLinearLayout.addView(v);
+
+                adapter.setScore(guestArrayList.get(pos).getLongest());
+            }
+
+            setLongestRank();
+        }
+    }
+
+    private void setLongestRank() {
+
+        for (int i = 0; i < guestArrayList.size(); i++) {
+
+            int rank = 1;
+            int score = guestArrayList.get(i).getLongest();
+            for (int j = 0; j < guestArrayList.size(); j++) {
+                if (score < guestArrayList.get(j).getLongest()) {
+                    rank++;
+                }
+            }
+
+            if (guestArrayList.get(i).getLongest() > 0)
+                guestArrayList.get(i).setLongestRank(rank);
+        }
+
+        for (int i = 0; i < tvLongestRank.size(); i++) {
+            tvLongestRank.get(i).setText(getRankText(guestArrayList.get(i).getLongestRank()));
+        }
+
+        updateLongestRank();
+    }
+
+    private void setNearestRank() {
+        for (int i = 0; i < guestArrayList.size(); i++) {
+
+            int rank = 1;
+            int score = guestArrayList.get(i).getNearest();
+            for (int j = 0; j < guestArrayList.size(); j++) {
+
+                if (guestArrayList.get(j).getNearest() < 0)
+                    continue;
+
+                if (score > guestArrayList.get(j).getNearest()) {
+                    rank++;
+                }
+            }
+
+            if (guestArrayList.get(i).getNearest() >= 0)
+                guestArrayList.get(i).setNearestRank(rank);
+        }
+
+        for (int i = 0; i < tvNearestRank.size(); i++) {
+            tvNearestRank.get(i).setText(getRankText(guestArrayList.get(i).getNearestRank()));
+        }
+
+        updateNearestRank();
+    }
+
+    private String getRankText(int rank) {
+        switch(rank) {
+            case 1: return "1st";
+            case 2: return "2nd";
+            case 3: return "3rd";
+            case 4: return "4th";
+            case 5: return "5th";
+        }
+
+        return "-";
+    }
+
+    private void updateLongestRank() {
+
+        ArrayList<GuestDatum> temp = (ArrayList<GuestDatum>)guestArrayList.clone();
+        Collections.sort(temp, new Comparator<GuestDatum>() {
+            @Override
+            public int compare(GuestDatum o1, GuestDatum o2) {
+                return o1.getLongestRank() - o2.getLongestRank();
+            }
+        });
+
+        for (int i = 0; i < temp.size(); i++) {
+
+            if (temp.get(i).getLongest() < 0)
+                continue;
+
+            if (i == 0) {
+                String rankText = String.format("%s\n%dM", temp.get(i).getGuestName(), temp.get(i).getLongest());
+                tv_1st.setText(rankText);
+            }
+            else if (i == 1) {
+                tv_2nd.setText(getRankText(temp.get(i).getLongestRank()));
+                tv_2nd_name.setText(temp.get(i).getGuestName());
+                tv_2nd_score.setText(temp.get(i).getLongest() + "M");
+            }
+            else if (i == 2) {
+                tv_3rd.setText(getRankText(temp.get(i).getLongestRank()));
+                tv_3rd_name.setText(temp.get(i).getGuestName());
+                tv_3rd_score.setText(temp.get(i).getLongest() + "M");
             }
         }
     }
 
+    private void updateNearestRank() {
+
+        ArrayList<GuestDatum> temp = (ArrayList<GuestDatum>)guestArrayList.clone();
+        Collections.sort(temp, new Comparator<GuestDatum>() {
+            @Override
+            public int compare(GuestDatum o1, GuestDatum o2) {
+                return o1.getNearestRank() - o2.getNearestRank();
+            }
+        });
+
+        for (int i = 0; i < temp.size(); i++) {
+
+            if (temp.get(i).getNearest() < 0)
+                continue;
+
+            if (i == 0) {
+                String rankText = String.format("%s\n%dM", temp.get(i).getGuestName(), temp.get(i).getNearest());
+                tv_1st.setText(rankText);
+            }
+            else if (i == 1) {
+                tv_2nd.setText(getRankText(temp.get(i).getNearestRank()));
+                tv_2nd_name.setText(temp.get(i).getGuestName());
+                tv_2nd_score.setText(temp.get(i).getNearest() + "CM");
+            }
+            else if (i == 2) {
+                tv_3rd.setText(getRankText(temp.get(i).getNearestRank()));
+                tv_3rd_name.setText(temp.get(i).getGuestName());
+                tv_3rd_score.setText(temp.get(i).getNearest() + "CM");
+            }
+        }
+    }
+
+    private void clearRank() {
+        tv_1st.setText("-");
+        tv_2nd.setText("-");
+        tv_2nd_name.setText("");
+        tv_2nd_score.setText("");
+
+        tv_3rd.setText("-");
+        tv_3rd_name.setText("");
+        tv_3rd_score.setText("");
+    }
 
     private void changeScreenTo(String nearestOrLongest) {
-        if (nearestOrLongest.equals(AppDef.NEAREST))
 
+        clearRank();
+        if (nearestOrLongest.equals(AppDef.NEAREST))
             makeNearest();
         else
             makeLongest();
@@ -244,7 +437,6 @@ public class NearestLongestDialogFragment extends DialogFragment {
                 hideProgress();
             }
         });
-
     }
 
     protected void showProgress(final String msg) {
@@ -263,9 +455,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
                 // 화면에 띠워라
             }
         });
-
     }
-
 
     // 프로그레스 다이얼로그 숨기기
     protected void hideProgress() {
@@ -278,7 +468,5 @@ public class NearestLongestDialogFragment extends DialogFragment {
                 }
             }
         });
-
     }
-
 }

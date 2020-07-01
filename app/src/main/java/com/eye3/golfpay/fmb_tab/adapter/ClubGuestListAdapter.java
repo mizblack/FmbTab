@@ -51,6 +51,8 @@ public class ClubGuestListAdapter extends RecyclerView.Adapter<ClubGuestListAdap
     }
 
     public void select(int position) {
+
+        allSelected(false);
         guestList.get(position).selected = true;
         notifyDataSetChanged();
     }

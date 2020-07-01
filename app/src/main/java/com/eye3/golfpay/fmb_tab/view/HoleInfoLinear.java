@@ -83,25 +83,13 @@ public class HoleInfoLinear extends LinearLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(hole.gameType != null) {
-                    NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
-                    nearestLongestDialogFragment.setmNearestOrLongest(hole.gameType);
-                    nearestLongestDialogFragment.setCourse(course);
-                    nearestLongestDialogFragment.setHole(hole);
-                    showDialogFragment(nearestLongestDialogFragment);
+
                 }
                 return false;
             }
         });
 
         addView(v);
-    }
-
-    private void showDialogFragment(DialogFragment dialogFragment) {
-        FragmentManager supportFragmentManager = ((MainActivity) (context)).getSupportFragmentManager();
-        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-        dialogFragment.show(transaction, TAG);
-        assert dialogFragment.getFragmentManager() != null;
-        dialogFragment.getFragmentManager().executePendingTransactions();
     }
 
     private void init(Context context, AttributeSet attrs) {

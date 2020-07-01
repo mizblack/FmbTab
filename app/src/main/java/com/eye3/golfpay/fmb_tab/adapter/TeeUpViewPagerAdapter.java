@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.eye3.golfpay.fmb_tab.R;
@@ -18,8 +19,6 @@ import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.VisitorsGuestItem;
 
 import java.util.ArrayList;
-
-
 
 public class TeeUpViewPagerAdapter extends PagerAdapter {
 
@@ -31,6 +30,7 @@ public class TeeUpViewPagerAdapter extends PagerAdapter {
     ArrayList<TodayReserveList> todayReserveList;
     LinearLayout visitorsGuestItemLinearLayout;
     ImageView mIvMap;
+    TextView startTextView;
     OnAdapterClickListener onAdapterClickListener;
 
     @SuppressLint("MissingPermission")
@@ -46,7 +46,7 @@ public class TeeUpViewPagerAdapter extends PagerAdapter {
         View view;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.item_tee_up, container, false);
-        TextView teeUpTimeTextView, reservationGuestNameTextView, startTextView;
+        TextView teeUpTimeTextView, reservationGuestNameTextView;
 
         teeUpTimeTextView = view.findViewById(R.id.teeUpTimeTextView);
         reservationGuestNameTextView = view.findViewById(R.id.reservationPersonNameTextView);
@@ -73,19 +73,30 @@ public class TeeUpViewPagerAdapter extends PagerAdapter {
             if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
                 //내장객이 전원 입장을 안했을때
                 //  ivCheckin.setImageAlpha(50);
-                ivCheckin.setVisibility(View.INVISIBLE);
+                ivCheckin.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_out));
                 startTextView.setEnabled(false);
-            } else if (areAllGuestsEnteredToPlay(position)) {
-                startTextView.setEnabled(true);
-                startTextView.setText("시작");
+            } else {
+                ivCheckin.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_in));
             }
+
             visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
+        }
+
+        if (areAllGuestsEnteredToPlay(position)) {
+            startTextView.setEnabled(true);
+            startTextView.setText("시작");
         }
 
         container.addView(view);
         return view;
     }
 
+    public void setListMode(boolean listMode) {
+        if (listMode == true) {
+            startTextView.setEnabled(false);
+        } else
+            startTextView.setEnabled(true);
+    }
 
 
     private boolean areAllGuestsEnteredToPlay(int position) {

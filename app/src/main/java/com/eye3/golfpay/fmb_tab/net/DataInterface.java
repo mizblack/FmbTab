@@ -361,7 +361,7 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void setPlayStatus(final Context context, String reserve_id, String play_status, final ResponseCallback<ResponseData<Object>> callback) {
+    public void setPlayStatus(final Context context, int reserve_id, String play_status, final ResponseCallback<ResponseData<Object>> callback) {
         try {
 
             Call<ResponseData<Object>> call = service.setPlayStatus(new PlayStatus(reserve_id, play_status));

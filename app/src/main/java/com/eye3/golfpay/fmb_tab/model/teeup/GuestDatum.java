@@ -14,10 +14,7 @@ public class GuestDatum implements Serializable {
     @SerializedName("guest_id")
     @Expose
     private String guest_id ;
-
-
     private String id = guest_id;
-
 
     @SerializedName("guestName")
     @Expose
@@ -39,8 +36,6 @@ public class GuestDatum implements Serializable {
     @SerializedName("hole_add")
     private Long holeAdd;
 
-
-
     @SerializedName("paid_amount")
     private Long paidAmount;
     @SerializedName("pay_location")
@@ -61,6 +56,43 @@ public class GuestDatum implements Serializable {
     private String phoneNumber;
     @SerializedName("carNumber")
     private String carNumber;
+
+    private int nearest = -1;
+    private int longest = -1;
+    private int longestRank = 6;
+    private int nearestRank = 6;
+
+    public int getNearest() {
+        return nearest;
+    }
+
+    public void setNearest(int nearest) {
+        this.nearest = nearest;
+    }
+
+    public int getLongest() {
+        return longest;
+    }
+
+    public void setLongest(int longest) {
+        this.longest = longest;
+    }
+
+    public int getLongestRank() {
+        return longestRank;
+    }
+
+    public void setLongestRank(int rank) {
+        this.longestRank = rank;
+    }
+
+    public int getNearestRank() {
+        return nearestRank;
+    }
+
+    public void setNearestRank(int nearestRank) {
+        this.nearestRank = nearestRank;
+    }
 
     public Long getCartBill() {
         return cartBill;

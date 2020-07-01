@@ -14,9 +14,9 @@ public class PlayStatus implements Serializable {
 
     @SerializedName("reserve_id")
     @Expose
-    public String reserve_id ;
+    public int reserve_id ;
 
-    public PlayStatus(String reserve_id, String play_status){
+    public PlayStatus(int reserve_id, String play_status){
         this.play_status = play_status;
         this.reserve_id = reserve_id;
     }
