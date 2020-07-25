@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +27,7 @@ import com.eye3.golfpay.fmb_tab.common.UIThread;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.field.Hole;
 import com.eye3.golfpay.fmb_tab.model.teeup.GuestDatum;
+import com.eye3.golfpay.fmb_tab.model.teeup.GuestScoreDB;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
@@ -35,6 +38,8 @@ import com.eye3.golfpay.fmb_tab.view.NearestInserter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import io.realm.Realm;
 
 public class NearestLongestDialogFragment extends DialogFragment {
 
@@ -118,7 +123,29 @@ public class NearestLongestDialogFragment extends DialogFragment {
         tv_3rd_name = view.findViewById(R.id.tv_3rd_name);
         tv_3rd_score = view.findViewById(R.id.tv_3rd_score);
 
+        loadGuestScore();
+
         return view;
+    }
+
+    private void loadGuestScore() {
+        //데이터 넣기(insert)
+        for (GuestDatum guestDatum: guestArrayList) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    // 쿼리를 해서 하나를 가져온다.
+                    GuestScoreDB data = realm.where(GuestScoreDB.class).equalTo("guest_id", guestDatum.getId()).findFirst();
+                    if (data != null) {
+                        guestDatum.setLongest(data.getLongest());
+                        guestDatum.setLongestRank(data.getLongestRank());
+                        guestDatum.setNearest(data.getNearest());
+                        guestDatum.setNearestRank(data.getNearestRank());
+                    }
+                }
+            });
+        }
     }
 
     public void setmNearestOrLongest(String NearestLongest) {
@@ -253,6 +280,35 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
         for (int i = 0; i < tvLongestRank.size(); i++) {
             tvLongestRank.get(i).setText(getRankText(guestArrayList.get(i).getLongestRank()));
+
+            final GuestScoreDB gsd = new GuestScoreDB();
+            gsd.setGuest_id(guestArrayList.get(i).getId());
+            gsd.setLongest(guestArrayList.get(i).getLongest());
+            gsd.setLongestRank(guestArrayList.get(i).getLongestRank());
+
+            Realm realm = Realm.getDefaultInstance();
+
+            //데이터 넣기(insert)
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    // 쿼리를 해서 하나를 가져온다.
+                    GuestScoreDB data = realm.where(GuestScoreDB.class).equalTo("guest_id", gsd.getGuest_id()).findFirst();
+
+                    // Insert
+                    if(data == null) {
+                        GuestScoreDB insert = realm.createObject(GuestScoreDB.class);
+                        insert.setGuest_id(gsd.getGuest_id());
+                        insert.setLongest(gsd.getLongest());
+                        insert.setLongestRank(gsd.getLongestRank());
+                    }
+                    // Update
+                    else {
+                        data.setGuest_id(gsd.getGuest_id());
+                        data.setLongest(gsd.getLongest());
+                        data.setLongestRank(gsd.getLongestRank());
+                    }
+                }
+            });
         }
 
         updateLongestRank();
@@ -279,6 +335,35 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
         for (int i = 0; i < tvNearestRank.size(); i++) {
             tvNearestRank.get(i).setText(getRankText(guestArrayList.get(i).getNearestRank()));
+
+            final GuestScoreDB gsd = new GuestScoreDB();
+            gsd.setGuest_id(guestArrayList.get(i).getId());
+            gsd.setNearest(guestArrayList.get(i).getNearest());
+            gsd.setNearestRank(guestArrayList.get(i).getNearestRank());
+
+            Realm realm = Realm.getDefaultInstance();
+
+            //데이터 넣기(insert)
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    // 쿼리를 해서 하나를 가져온다.
+                    GuestScoreDB data = realm.where(GuestScoreDB.class).equalTo("guest_id", gsd.getGuest_id()).findFirst();
+
+                    // Insert
+                    if(data == null) {
+                        GuestScoreDB insert = realm.createObject(GuestScoreDB.class);
+                        insert.setGuest_id(gsd.getGuest_id());
+                        insert.setNearest(gsd.getNearest());
+                        insert.setNearestRank(gsd.getNearestRank());
+                    }
+                    // Update
+                    else {
+                        data.setGuest_id(gsd.getGuest_id());
+                        data.setNearest(gsd.getNearest());
+                        data.setNearestRank(gsd.getNearestRank());
+                    }
+                }
+            });
         }
 
         updateNearestRank();

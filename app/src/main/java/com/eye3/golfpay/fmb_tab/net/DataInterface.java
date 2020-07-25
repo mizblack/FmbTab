@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
@@ -290,8 +291,29 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
+    public void sendGpsInfo(final Context context, String caddy_num, double lat, double lng, int reserve_id, final ResponseCallback<ResponseData<GpsInfo>> callback) {
+        try {
 
+            Call<ResponseData<GpsInfo>> call = service.sendGpsInfo(caddy_num, lat, lng, reserve_id);
+            call.enqueue(new Callback<ResponseData<GpsInfo>>() {
+                @Override
+                public void onResponse(Call<ResponseData<GpsInfo>> call, Response<ResponseData<GpsInfo>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
 
+                @Override
+                public void onFailure(Call<ResponseData<GpsInfo>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
 
 

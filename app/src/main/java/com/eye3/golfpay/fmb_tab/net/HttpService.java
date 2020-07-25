@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fmb_tab.net;
 
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
 import com.eye3.golfpay.fmb_tab.model.login.Login;
@@ -77,8 +78,12 @@ public interface HttpService {
     @POST("getNoticeList")
     Call<ResponseData<NoticeItem>> getNoticeList();
 
-
     @POST("setPlayStatus")
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);
 
+    @GET("setCartPos")
+    Call<ResponseData<GpsInfo>> sendGpsInfo(@Query("caddy_num") String caddy_num,
+                                            @Query("lat") double lat,
+                                            @Query("lng") double lng,
+                                            @Query("reserve_id") int reserve_id);
 }

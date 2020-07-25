@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +47,7 @@ import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.CaddieInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ClubInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
@@ -62,7 +68,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public DrawerLayout drawer_layout;
     TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView;
     TextView reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
-
+    LocationManager mLocationManager;
     ImageView markView, cancelView;
     LinearLayout ll_login;
 
@@ -71,7 +77,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         super.onCreate(savedInstanceState);
 
-
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         CaddieInfo ca = new CaddieInfo();
 
         ca.setCaddie_id("1");
@@ -119,10 +125,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         requestPermission();
         startLocationService();
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+
+        sendGpsInfo("138", 37.2113911, 127.5687663, 6722);
     }
 
-    private void requestPermission(){
-       //permission 추가할경우 new String[]에  android.Manifest.permission.XXX 추가
+    private void requestPermission() {
+        //permission 추가할경우 new String[]에  android.Manifest.permission.XXX 추가
         if (Build.VERSION.SDK_INT >= 23 &&
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -134,11 +142,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void startLocationService() {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
-            } else {
-                startService(new Intent(getApplicationContext(), CartLocationService.class));
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
+        } else {
+            startService(new Intent(getApplicationContext(), CartLocationService.class));
+        }
     }
 
     public void openDrawerLayout() {
@@ -348,7 +356,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onResume();
         // systemUIHide();
         //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-
     }
 
 
@@ -437,4 +444,88 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return index;
     }
 
+
+    private int LOCATION_REFRESH_DISTANCE = 3; // 30 meters. The Minimum Distance to be changed to get location update
+    private int MY_PERMISSIONS_REQUEST_LOCATION = 100;
+    private int interval = 3;
+
+    private void startListeningUserLocation() {
+
+// check for permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, interval, LOCATION_REFRESH_DISTANCE, locationListener);
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        }
+    }
+
+    private void stopListeningUserLocation() {
+        mLocationManager.removeUpdates(locationListener);
+    }
+
+    //define the listener
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+
+    public void sendGpsInfo(String caddy_num, double lat, double lng, int reserve_id) {
+        showProgress("게스트의 정보를 받아오는 중입니다....");
+        DataInterface.getInstance(Global.HOST_ADDRESS_DEV_AWS).sendGpsInfo(this, caddy_num, lat, lng, reserve_id,
+                new DataInterface.ResponseCallback<ResponseData<GpsInfo>>() {
+
+            @Override
+            public void onSuccess(ResponseData<GpsInfo> response) {
+
+                if (response.getResultMessage().equals("성공")) {
+                    GpsInfo gpsInfo = response.getData();
+                    hideProgress();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<GpsInfo> response) {
+                Toast.makeText(getBaseContext(), "정보를 받아오는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+        });
+    }
 }
+

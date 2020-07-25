@@ -56,6 +56,8 @@ public class Global {
     public static final String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
   //  public static final String HOST_BASE_ADDRESS_AWS = "http://deverp.golfpay.co.kr/";
     public static final String HOST_BASE_ADDRESS_STORAGE = HOST_BASE_ADDRESS_AWS ;
+
+    public static final String HOST_ADDRESS_DEV_AWS = "http://deverp.golfpay.co.kr/api/v1/";
     /**
      * 접속 호스트 주소. 개발계
      */

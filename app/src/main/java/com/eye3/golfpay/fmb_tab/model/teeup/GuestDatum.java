@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import io.realm.RealmObject;
+
 @SuppressWarnings("unused")
 public class GuestDatum implements Serializable {
 

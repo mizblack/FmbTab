@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,17 +20,11 @@ import com.eye3.golfpay.fmb_tab.listener.IClubInfoListener;
 import com.eye3.golfpay.fmb_tab.model.guest.CaddieInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.Guest;
 import com.eye3.golfpay.fmb_tab.model.guest.GuestInfo;
-import com.eye3.golfpay.fmb_tab.model.info.GuestInfoResponse;
-import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewBasicGuestItem;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
