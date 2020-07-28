@@ -68,6 +68,10 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
         items.add(item);
     }
 
+    public String getItem(int position) {
+        return items.get(position).categoryName;
+    }
+
     public void clearData() {
         items.clear();
     }

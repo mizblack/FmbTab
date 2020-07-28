@@ -2,12 +2,18 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +24,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.ChatMessageAdapter;
+import com.eye3.golfpay.fmb_tab.dialog.ControlShortCutDialog;
+import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
+import com.eye3.golfpay.fmb_tab.model.chat.MemberData;
+import com.eye3.golfpay.fmb_tab.model.chat.Message;
+import com.eye3.golfpay.fmb_tab.util.Util;
+import com.eye3.golfpay.fmb_tab.view.ControlPanelView;
 
 import java.util.ArrayList;
 
@@ -39,12 +52,20 @@ public class ControlFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
     private ConstraintLayout view_caddie_list;
+    private ControlPanelView controlPanelView;
     private LinearLayout ll_space;
     private boolean isCaddieVisible = false;
     private LinearLayout ll_menu;
     private LinearLayout ll_caddie_list;
     private ArrayList<MenuItem> menuItems = new ArrayList<>();
     private ArrayList<String> caddies = new ArrayList<>();
+
+    private ListView messages_view;
+    private ChatMessageAdapter chatMessageAdapter;
+    private ImageButton send_message;
+    private EditText edit_chat;
+    private MemberData memberData;
+    private TextView tvTo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,19 +92,81 @@ public class ControlFragment extends BaseFragment {
 
         view_caddie_list = view.findViewById(R.id.view_caddie_list);
         ll_menu = view.findViewById(R.id.ll_menu);
-        ll_space = view.findViewById(R.id.ll_space);
-        ll_space.setOnClickListener(new View.OnClickListener() {
+        tvTo = view.findViewById(R.id.tv_to);
+        ll_caddie_list = view.findViewById(R.id.ll_caddie_list);
+        addMenuItem();
+        createCaddieList();
+
+
+        controlPanelView = view.findViewById(R.id.view_control_panel);
+        controlPanelView.init(getContext());
+        controlPanelView.setOnClickListener(new ControlPanelView.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                view_caddie_list.setVisibility(View.GONE);
-                isCaddieVisible = false;
+            public void onShortcutMessage(String msg) {
+                edit_chat.setText(msg);
+            }
+
+            @Override
+            public void onShowShortcutDlg() {
+                showControlShortDialog();
             }
         });
 
-        ll_caddie_list = view.findViewById(R.id.ll_caddie_list);
-        addMenuItem();
 
-        createCaddieList();
+                edit_chat = view.findViewById(R.id.edit_chat);
+        send_message = view.findViewById(R.id.send_message);
+        chatMessageAdapter = new ChatMessageAdapter(mContext);
+
+        messages_view = view.findViewById(R.id.messages_view);
+        messages_view.setAdapter(chatMessageAdapter);
+        send_message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String s = edit_chat.getText().toString();
+                memberData = new MemberData(tvTo.getText().toString(), "#434343");
+
+                boolean my = true;
+                if (s.indexOf("!") >= 0) {
+                    my = false;
+                    memberData = new MemberData("상봉이", "#434343");
+                }
+
+                Message msg = new Message(edit_chat.getText().toString(), memberData, my);
+                chatMessageAdapter.add(msg);
+                //messages_view.setSelection(messages_view.getCount() - 1);
+                messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
+                edit_chat.setText("");
+            }
+        });
+
+        messages_view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                view_caddie_list.setVisibility(View.GONE);
+                isCaddieVisible = false;
+                return false;
+            }
+        });
+    }
+
+    private void showControlShortDialog() {
+        ControlShortCutDialog dlg = new ControlShortCutDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dlg.setListener(new ControlShortCutDialog.IListenerApplyShortcut() {
+            @Override
+            public void onApplyShortcut(String shortcut) {
+                edit_chat.setText(shortcut);
+            }
+        });
+
+        //dlg.setData(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList);
+        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        dlg.getWindow().
+                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        dlg.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dlg.show();
     }
 
     @Override
@@ -108,7 +191,7 @@ public class ControlFragment extends BaseFragment {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mi.view = inflater.inflate(R.layout.item_control_menu, null, false);
 
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 82);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 92);
             mi.view.setLayoutParams(lllp);
 
             TextView tvTitle = mi.view.findViewById(R.id.tv_title);
@@ -146,6 +229,8 @@ public class ControlFragment extends BaseFragment {
                     bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
                     checkIn.setVisibility(View.VISIBLE);
                     mi.isActive = true;
+
+                    tvTo.setText("To." + mi.title);
                 }
             });
 
@@ -216,7 +301,7 @@ public class ControlFragment extends BaseFragment {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.item_control_caddie, null, false);
 
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 82);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 92);
             view.setLayoutParams(lllp);
 
             TextView tvTitle = view.findViewById(R.id.tv_title);
@@ -226,6 +311,7 @@ public class ControlFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getContext(), tvTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                    tvTo.setText("To." + tvTitle.getText().toString());
                     view_caddie_list.setVisibility(View.GONE);
                     isCaddieVisible = false;
                 }
@@ -239,6 +325,7 @@ public class ControlFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getContext(), tvTitle2.getText().toString(), Toast.LENGTH_SHORT).show();
+                        tvTo.setText("To." + tvTitle2.getText().toString());
                         view_caddie_list.setVisibility(View.GONE);
                         isCaddieVisible = false;
                     }

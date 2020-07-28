@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/ebonyBlack"
+    android:id="@+id/layout_container"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category1"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:background="@color/ebonyBlack"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/view_category2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_category1"
+            style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="코스"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category2"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:background="@color/ebonyBlack"
+        app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+        app:layout_constraintStart_toEndOf="@+id/view_category1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/tv_category2"
+            style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="홀"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category3"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:background="@color/ebonyBlack"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+        app:layout_constraintStart_toEndOf="@+id/view_category2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_category3"
+            style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="위치"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_category4"
+        android:layout_width="220dp"
+        android:layout_height="0dp"
+        android:background="@color/ebonyBlack"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+        app:layout_constraintStart_toEndOf="@+id/view_category3"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_category4"
+            style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:text="소지품"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_bottom"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@color/ebonyBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_category4"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="18dp"
+            android:textColor="#66ffffff"
+            android:gravity="center_vertical"
+            android:text="* 기타 특이사항은 채팅 입력창에 기입해주세요."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_apply"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_apply"
+            style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Bold"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/shape_white_circle"
+            android:gravity="center"
+            android:text="적용"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_close" />
+
+        <TextView
+            android:id="@+id/btn_close"
+            style="@style/GlobalTextView.16SP.white.NotoSans.Bold"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/shape_white_edge_circle"
+            android:gravity="center"
+            android:text="닫기"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
