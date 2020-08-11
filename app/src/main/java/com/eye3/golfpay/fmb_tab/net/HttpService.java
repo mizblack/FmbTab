@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.net;
 
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
@@ -86,4 +87,7 @@ public interface HttpService {
                                             @Query("lat") double lat,
                                             @Query("lng") double lng,
                                             @Query("reserve_id") int reserve_id);
+
+    @GET("http://deverp.golfpay.co.kr/api/v1/getChatHotkey")
+    Call<ChatHotKey> getChatHotkey();
 }

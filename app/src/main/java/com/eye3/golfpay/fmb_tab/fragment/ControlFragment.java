@@ -2,8 +2,7 @@ package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,15 +19,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.adapter.ChatMessageAdapter;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.dialog.ControlShortCutDialog;
-import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
 import com.eye3.golfpay.fmb_tab.model.chat.MemberData;
 import com.eye3.golfpay.fmb_tab.model.chat.Message;
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyItem;
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyOption;
+import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.ControlPanelView;
 
@@ -50,6 +51,7 @@ public class ControlFragment extends BaseFragment {
         View view;
     }
 
+    private View mView;
     protected String TAG = getClass().getSimpleName();
     private ConstraintLayout view_caddie_list;
     private ControlPanelView controlPanelView;
@@ -65,17 +67,17 @@ public class ControlFragment extends BaseFragment {
     private ImageButton send_message;
     private EditText edit_chat;
     private MemberData memberData;
-    private TextView tvTo;
+    private int itemHeight = 92;
+    private String to;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        itemHeight = 42;
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
-
-
     }
 
     @Override
@@ -90,30 +92,18 @@ public class ControlFragment extends BaseFragment {
 //        SetDividerVisibility(false);
      //   setDrawerLayoutEnable(true);
 
+        mView = view;
         view_caddie_list = view.findViewById(R.id.view_caddie_list);
         ll_menu = view.findViewById(R.id.ll_menu);
-        tvTo = view.findViewById(R.id.tv_to);
         ll_caddie_list = view.findViewById(R.id.ll_caddie_list);
         addMenuItem();
         createCaddieList();
+        requestHotKeyList();
 
 
-        controlPanelView = view.findViewById(R.id.view_control_panel);
-        controlPanelView.init(getContext());
-        controlPanelView.setOnClickListener(new ControlPanelView.OnClickListener() {
-            @Override
-            public void onShortcutMessage(String msg) {
-                edit_chat.setText(msg);
-            }
-
-            @Override
-            public void onShowShortcutDlg() {
-                showControlShortDialog();
-            }
-        });
 
 
-                edit_chat = view.findViewById(R.id.edit_chat);
+        edit_chat = view.findViewById(R.id.edit_chat);
         send_message = view.findViewById(R.id.send_message);
         chatMessageAdapter = new ChatMessageAdapter(mContext);
 
@@ -123,8 +113,12 @@ public class ControlFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
+                if (edit_chat.getText().toString().isEmpty()) {
+                    return;
+                }
+
                 String s = edit_chat.getText().toString();
-                memberData = new MemberData(tvTo.getText().toString(), "#434343");
+                memberData = new MemberData(to, "#434343");
 
                 boolean my = true;
                 if (s.indexOf("!") >= 0) {
@@ -150,8 +144,8 @@ public class ControlFragment extends BaseFragment {
         });
     }
 
-    private void showControlShortDialog() {
-        ControlShortCutDialog dlg = new ControlShortCutDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+    private void showControlShortDialog(ArrayList<ChatHotKeyOption> getOptions) {
+        ControlShortCutDialog dlg = new ControlShortCutDialog(getContext(), getOptions, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dlg.setListener(new ControlShortCutDialog.IListenerApplyShortcut() {
             @Override
             public void onApplyShortcut(String shortcut) {
@@ -191,7 +185,7 @@ public class ControlFragment extends BaseFragment {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mi.view = inflater.inflate(R.layout.item_control_menu, null, false);
 
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 92);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
             mi.view.setLayoutParams(lllp);
 
             TextView tvTitle = mi.view.findViewById(R.id.tv_title);
@@ -230,7 +224,7 @@ public class ControlFragment extends BaseFragment {
                     checkIn.setVisibility(View.VISIBLE);
                     mi.isActive = true;
 
-                    tvTo.setText("To." + mi.title);
+                    to = "To." + tvTitle.getText().toString();
                 }
             });
 
@@ -259,6 +253,21 @@ public class ControlFragment extends BaseFragment {
 
             if (mi.title.equals("캐디선택")) {
                 iv_arrow.setVisibility(View.VISIBLE);
+                tvTitle.setText("캐디선택");
+            }
+        }
+    }
+
+    private void setToCaddie(String toCaddie) {
+
+        unSelectAll();
+
+        for (MenuItem mi : menuItems) {
+
+            if (mi.title.equals("캐디선택")) {
+                TextView tvTitle = mi.view.findViewById(R.id.tv_title);
+                tvTitle.setText(String.format("캐디선택(%s)", toCaddie));
+                to = "To." + toCaddie;
             }
         }
     }
@@ -292,7 +301,7 @@ public class ControlFragment extends BaseFragment {
         caddies.add("24.수현");
         caddies.add("25.이하이");
         caddies.add("26.이소라");
-        caddies.add("27.하림");
+        caddies.add("27.아오이소라");
         caddies.add("28.소향");
         caddies.add("29.정승환");
         caddies.add("30.아이유");
@@ -301,7 +310,7 @@ public class ControlFragment extends BaseFragment {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.item_control_caddie, null, false);
 
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 92);
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
             view.setLayoutParams(lllp);
 
             TextView tvTitle = view.findViewById(R.id.tv_title);
@@ -310,8 +319,8 @@ public class ControlFragment extends BaseFragment {
             tvTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), tvTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-                    tvTo.setText("To." + tvTitle.getText().toString());
+                    //Toast.makeText(getContext(), tvTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                    setToCaddie(tvTitle.getText().toString());
                     view_caddie_list.setVisibility(View.GONE);
                     isCaddieVisible = false;
                 }
@@ -324,8 +333,8 @@ public class ControlFragment extends BaseFragment {
                 tvTitle2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), tvTitle2.getText().toString(), Toast.LENGTH_SHORT).show();
-                        tvTo.setText("To." + tvTitle2.getText().toString());
+                        //Toast.makeText(getContext(), tvTitle2.getText().toString(), Toast.LENGTH_SHORT).show();
+                        setToCaddie(tvTitle2.getText().toString());
                         view_caddie_list.setVisibility(View.GONE);
                         isCaddieVisible = false;
                     }
@@ -340,6 +349,67 @@ public class ControlFragment extends BaseFragment {
         }
     }
 
+    public void requestHotKeyList() {
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).requestHotKeyList(new DataInterface.ResponseCallback<ChatHotKey>() {
+            @Override
+            public void onSuccess(ChatHotKey response) {
+                if (response == null) {
+                    Log.d(TAG, "requestHotKeyList is null");
+                    return;
+                }
+
+                controlPanelView = mView.findViewById(R.id.view_control_panel);
+                controlPanelView.init(getContext());
+                controlPanelView.createHotkeyHeader(response.getHeader());
+                controlPanelView.createHotKey(response.getBody());
+                controlPanelView.setOnClickListener(new ControlPanelView.OnClickListener() {
+                    @Override
+                    public void onShortcutMessage(String msg) {
+                        edit_chat.setText(msg);
+                    }
+
+                    @Override
+                    public void onShowShortcutDlg(String option) {
+                        ArrayList<ChatHotKeyOption> getOptions = getOptions(option, response.getOptions());
+                        showControlShortDialog(getOptions);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(ChatHotKey response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private ArrayList<ChatHotKeyOption> getOptions(String option, ArrayList<ChatHotKeyOption> chatHotKeyOptions) {
+        ArrayList<ChatHotKeyOption> options = new ArrayList<>();
+
+        String[] split = option.split(",");
+
+        for (String str : split) {
+            options.add(findHotkeyOption(str, chatHotKeyOptions));
+        }
+
+        return options;
+    }
+
+    private ChatHotKeyOption findHotkeyOption(String option, ArrayList<ChatHotKeyOption> chatHotKeyOptions) {
+        for (ChatHotKeyOption item : chatHotKeyOptions) {
+            if (item.getTitle().equals(option)) {
+                return item;
+            }
+        }
+
+        return null;
+    }
 }
 
 

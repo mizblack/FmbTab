@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantCategoryAdapter;
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyOption;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.Category2;
 
@@ -48,7 +49,7 @@ public class ControlShortCutDialog extends Dialog {
     private RecyclerView rvCategory2;
     private RecyclerView rvCategory3;
     private RecyclerView rvCategory4;
-
+    private ArrayList<ChatHotKeyOption> options;
     private int currentCt1Index = -1;
 
     private String[] shortcut = new String[5];
@@ -59,8 +60,9 @@ public class ControlShortCutDialog extends Dialog {
         super(context);
     }
 
-    public ControlShortCutDialog(Context context, int themeResId) {
+    public ControlShortCutDialog(Context context, ArrayList<ChatHotKeyOption> options, int themeResId) {
         super(context, themeResId);
+        this.options = options;
     }
 
     public void setListener(IListenerApplyShortcut listener) {
@@ -86,10 +88,29 @@ public class ControlShortCutDialog extends Dialog {
         rvCategory3 = findViewById(R.id.rv_category3);
         rvCategory4 = findViewById(R.id.rv_category4);
 
-        initCategory1();
-        initCategory2();
-        initCategory3();
-        initCategory4();
+        if (options.size() == 2) {
+            initCategory1();
+            initCategory2();
+            category1.setVisibility(View.VISIBLE);
+            category2.setVisibility(View.VISIBLE);
+        } else if (options.size() == 3) {
+            initCategory1();
+            initCategory2();
+            initCategory3();
+            category1.setVisibility(View.VISIBLE);
+            category2.setVisibility(View.VISIBLE);
+            category3.setVisibility(View.VISIBLE);
+        } else if (options.size() == 4) {
+            initCategory1();
+            initCategory2();
+            initCategory3();
+            initCategory4();
+            category1.setVisibility(View.VISIBLE);
+            category2.setVisibility(View.VISIBLE);
+            category3.setVisibility(View.VISIBLE);
+            category4.setVisibility(View.VISIBLE);
+        }
+
 
         btnApply = findViewById(R.id.btn_apply);
         btnClose = findViewById(R.id.btn_close);
@@ -153,6 +174,12 @@ public class ControlShortCutDialog extends Dialog {
                 });
     }
 
+    private void addItem(RestaurantCategoryAdapter adapter, ChatHotKeyOption option) {
+        for (ChatHotKeyOption.Detail detail : option.getDetail()) {
+            adapter.addItem("", detail.text);
+        }
+    }
+
     private void initCategory1() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvCategory1.setHasFixedSize(true);
@@ -165,10 +192,7 @@ public class ControlShortCutDialog extends Dialog {
             }
         });
 
-        adapter.addItem("4", "IN");
-        adapter.addItem("5", "OUT");
-        adapter.addItem("5", "기타");
-
+        addItem(adapter, options.get(0));
         rvCategory1.setAdapter(adapter);
     }
 
@@ -184,10 +208,7 @@ public class ControlShortCutDialog extends Dialog {
             }
         });
 
-        for (int i = 1; i < 10; i++)
-            adapter.addItem("4", String.format("%d번홀", i));
-
-
+        addItem(adapter, options.get(1));
         rvCategory2.setAdapter(adapter);
     }
 
@@ -203,21 +224,7 @@ public class ControlShortCutDialog extends Dialog {
             }
         });
 
-        adapter.addItem("4", "티박스");
-        adapter.addItem("5", "페어웨이");
-        adapter.addItem("5", "페어웨이벙커");
-        adapter.addItem("5", "페어웨이러프");
-        adapter.addItem("5", "그린주변");
-        adapter.addItem("5", "그린위");
-        adapter.addItem("5", "그린벙커");
-        adapter.addItem("5", "카트도로");
-        adapter.addItem("5", "상봉역");
-        adapter.addItem("5", "상봉역주변");
-        adapter.addItem("5", "상봉역1번출구");
-        adapter.addItem("5", "상봉역2번출구");
-        adapter.addItem("5", "상봉역벙커");
-        adapter.addItem("5", "상봉역위");
-
+        addItem(adapter, options.get(2));
         rvCategory3.setAdapter(adapter);
     }
 
@@ -233,19 +240,7 @@ public class ControlShortCutDialog extends Dialog {
             }
         });
 
-        adapter.addItem("4", "검");
-        adapter.addItem("4", "방패");
-        adapter.addItem("4", "반지");
-        adapter.addItem("4", "목걸이");
-        adapter.addItem("4", "도끼");
-        adapter.addItem("4", "지팡이");
-        adapter.addItem("4", "투구");
-        adapter.addItem("4", "장갑");
-        adapter.addItem("4", "물약");
-        adapter.addItem("4", "고기");
-        adapter.addItem("4", "약초");
-
-
+        addItem(adapter, options.get(3));
         rvCategory4.setAdapter(adapter);
     }
 }

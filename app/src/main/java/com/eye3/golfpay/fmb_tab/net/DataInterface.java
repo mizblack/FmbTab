@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 import android.view.View;
 
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
@@ -400,6 +401,28 @@ public class DataInterface extends BasicDataInterface {
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
 
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void requestHotKeyList(final ResponseCallback<ChatHotKey> callback) {
+        try {
+            Call<ChatHotKey> call = service.getChatHotkey();
+            call.enqueue(new Callback<ChatHotKey>() {
+                @Override
+                public void onResponse(Call<ChatHotKey> call, Response<ChatHotKey> response) {
+                    ChatHotKey reserveGuestList = response.body();
+                    callback.onSuccess(reserveGuestList);
+                }
+
+                @Override
+                public void onFailure(Call<ChatHotKey> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
             });
         } catch (Exception ex) {
             ex.printStackTrace();

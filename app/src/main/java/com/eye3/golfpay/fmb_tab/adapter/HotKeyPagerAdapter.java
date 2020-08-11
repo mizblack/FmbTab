@@ -16,20 +16,23 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyItem;
 import com.eye3.golfpay.fmb_tab.util.Util;
 
 import java.util.ArrayList;
 
-public class ShortCutPagerAdapter extends PagerAdapter {
+public class HotKeyPagerAdapter extends PagerAdapter {
 
 
     public class ShortcutItem {
 
-        public ShortcutItem(String title, String descr, boolean multi) {
-            this.title = title; this.descr = descr; this.multi = multi;
+        public ShortcutItem(String title, String descr, String option) {
+            this.title = title; this.descr = descr; this.option = option;
+            multi = !(option == null || option.isEmpty() == true);
         }
         public String title;
         public String descr;
+        public String option;
         public boolean multi;
     }
 
@@ -42,24 +45,38 @@ public class ShortCutPagerAdapter extends PagerAdapter {
     OnAdapterClickListener onAdapterClickListener;
 
     @SuppressLint("MissingPermission")
-    public ShortCutPagerAdapter(Context context, OnAdapterClickListener listener) {
+    public HotKeyPagerAdapter(Context context, OnAdapterClickListener listener) {
         mContext = context;
         onAdapterClickListener = listener;
+    }
 
-        shortcutList.add(new ShortcutItem("9홀추가", "9홀추가", false));
-        shortcutList.add(new ShortcutItem("경기중단", "경기중단", false));
-        shortcutList.add(new ShortcutItem("앞팀진행", "앞팀진행", false));
-        shortcutList.add(new ShortcutItem("티샷완료", "티샷완료", false));
-        shortcutList.add(new ShortcutItem("세컨완료", "세컨완료", false));
-        shortcutList.add(new ShortcutItem("홀아웃", "홀아웃", true));
-        shortcutList.add(new ShortcutItem("파3싸인", "파3싸인", false));
-        shortcutList.add(new ShortcutItem("홀인원", "홀인원", false));
-        shortcutList.add(new ShortcutItem("이글", "이글", false));
-        shortcutList.add(new ShortcutItem("뒷팀진행", "뒷팀진행", false));
-        shortcutList.add(new ShortcutItem("환자발생", "환자발생", true));
-        shortcutList.add(new ShortcutItem("물품요청", "물품요청", true));
-        shortcutList.add(new ShortcutItem("", "", false));
-        shortcutList.add(new ShortcutItem("", "", false));
+    public void addHotkey(ArrayList<ChatHotKeyItem> hotKeyItems) {
+
+        for (ChatHotKeyItem item : hotKeyItems) {
+            shortcutList.add(new ShortcutItem(item.getTitle(), item.getMessage(), item.getOption()));
+        }
+
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+//        shortcutList.add(new ShortcutItem("test", "test", ""));
+
+        int flag = 16;
+        if (shortcutList.size() > 16 && shortcutList.size() <= 32)
+            flag = 32;
+
+        int size = shortcutList.size();
+        for (int i = 0; i < flag - size; i++) {
+            shortcutList.add(new ShortcutItem("", "", ""));
+        }
     }
 
     @NonNull
@@ -72,13 +89,17 @@ public class ShortCutPagerAdapter extends PagerAdapter {
 
         GridLayout gridView = view.findViewById(R.id.grid_view);
         container.addView(view);
-        createItem(gridView);
+        createItem(gridView, position == 0 ? 0 : 16);
         return view;
     }
 
-    private void createItem(GridLayout gridView) {
+    private void createItem(GridLayout gridView, int startPos) {
 
-        for (int i = 0; i < shortcutList.size(); i++) {
+        for (int i = startPos; i < shortcutList.size(); i++) {
+
+            if (startPos == 0 && i >= 16) {
+                break;
+            }
 
             final int position = i;
             ShortcutItem shortcut = shortcutList.get(i);
@@ -126,7 +147,8 @@ public class ShortCutPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
 
-        return 2;
+        int size = (shortcutList.size() / 16);
+        return size;
     }
 
 
@@ -143,5 +165,4 @@ public class ShortCutPagerAdapter extends PagerAdapter {
     public ShortcutItem getShortcutItem(int position) {
         return shortcutList.get(position);
     }
-
 }
