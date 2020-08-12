@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 import android.view.View;
 
+import com.eye3.golfpay.fmb_tab.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
@@ -429,4 +430,25 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
+    public void sendChatMessage(String sender, String sender_type, String msg, String receiver_type, final ResponseCallback<ResponseChatMsg> callback) {
+        try {
+            Call<ResponseChatMsg> call = service.sendChatMessage(sender, sender_type, msg, receiver_type);
+            call.enqueue(new Callback<ResponseChatMsg>() {
+                @Override
+                public void onResponse(Call<ResponseChatMsg> call, Response<ResponseChatMsg> response) {
+                    ResponseChatMsg reserveGuestList = response.body();
+                    callback.onSuccess(reserveGuestList);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseChatMsg> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

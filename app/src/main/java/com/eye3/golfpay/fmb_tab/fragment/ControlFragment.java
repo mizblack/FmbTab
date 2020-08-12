@@ -26,6 +26,7 @@ import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.dialog.ControlShortCutDialog;
 import com.eye3.golfpay.fmb_tab.model.chat.MemberData;
 import com.eye3.golfpay.fmb_tab.model.chat.Message;
+import com.eye3.golfpay.fmb_tab.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyItem;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyOption;
@@ -42,7 +43,9 @@ public class ControlFragment extends BaseFragment {
     public class MenuItem {
 
         public MenuItem(String title, boolean isActive, boolean isDisable) {
-            this.title = title; this.isActive = isActive; this.isDisable = isDisable;
+            this.title = title;
+            this.isActive = isActive;
+            this.isDisable = isDisable;
         }
 
         public String title;
@@ -90,7 +93,7 @@ public class ControlFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 //        SetTitle("KT WMMS");
 //        SetDividerVisibility(false);
-     //   setDrawerLayoutEnable(true);
+        //   setDrawerLayoutEnable(true);
 
         mView = view;
         view_caddie_list = view.findViewById(R.id.view_caddie_list);
@@ -99,8 +102,6 @@ public class ControlFragment extends BaseFragment {
         addMenuItem();
         createCaddieList();
         requestHotKeyList();
-
-
 
 
         edit_chat = view.findViewById(R.id.edit_chat);
@@ -112,25 +113,7 @@ public class ControlFragment extends BaseFragment {
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (edit_chat.getText().toString().isEmpty()) {
-                    return;
-                }
-
-                String s = edit_chat.getText().toString();
-                memberData = new MemberData(to, "#434343");
-
-                boolean my = true;
-                if (s.indexOf("!") >= 0) {
-                    my = false;
-                    memberData = new MemberData("상봉이", "#434343");
-                }
-
-                Message msg = new Message(edit_chat.getText().toString(), memberData, my);
-                chatMessageAdapter.add(msg);
-                //messages_view.setSelection(messages_view.getCount() - 1);
-                messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
-                edit_chat.setText("");
+                sendMessage();
             }
         });
 
@@ -327,7 +310,7 @@ public class ControlFragment extends BaseFragment {
             });
 
             TextView tvTitle2 = view.findViewById(R.id.tv_title2);
-            if (i+1 < caddies.size()) {
+            if (i + 1 < caddies.size()) {
                 tvTitle2.setText(caddies.get(++i));
 
                 tvTitle2.setOnClickListener(new View.OnClickListener() {
@@ -409,6 +392,51 @@ public class ControlFragment extends BaseFragment {
         }
 
         return null;
+    }
+
+    private void sendMessage() {
+
+        if (edit_chat.getText().toString().isEmpty()) {
+            return;
+        }
+
+        final String chatMessage = edit_chat.getText().toString();
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).sendChatMessage("2119", "caddie", chatMessage, "ctrltwr",
+                new DataInterface.ResponseCallback<ResponseChatMsg>() {
+            @Override
+            public void onSuccess(ResponseChatMsg response) {
+                if (response == null) {
+                    Log.d(TAG, "ResponseChatMsg is null");
+                    return;
+                }
+
+                memberData = new MemberData(to, "#434343");
+
+                //boolean my = true;
+//                if (chatMessage.indexOf("!") >= 0) {
+//                    my = false;
+//                    memberData = new MemberData("상봉이", "#434343");
+//                }
+
+                Message msg = new Message(response.getMsg(), memberData, true);
+                chatMessageAdapter.add(msg);
+                //messages_view.setSelection(messages_view.getCount() - 1);
+                messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
+                edit_chat.setText("");
+            }
+
+            @Override
+            public void onError(ResponseChatMsg response) {
+                Toast.makeText(getContext(), "메시지 전송 오류", Toast.LENGTH_SHORT).show();
+                edit_chat.setText("");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+
     }
 }
 

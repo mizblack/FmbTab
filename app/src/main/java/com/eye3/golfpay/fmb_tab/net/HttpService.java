@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fmb_tab.net;
 
+import com.eye3.golfpay.fmb_tab.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
@@ -90,4 +91,10 @@ public interface HttpService {
 
     @GET("http://deverp.golfpay.co.kr/api/v1/getChatHotkey")
     Call<ChatHotKey> getChatHotkey();
+
+    @GET("http://deverp.golfpay.co.kr/api/v1/sendmsg")
+    Call<ResponseChatMsg> sendChatMessage(@Query("sender") String sender,
+                                          @Query("sender_type") String sender_type,
+                                          @Query("msg") String msg,
+                                          @Query("receiver_type") String receiver_type);
 }
