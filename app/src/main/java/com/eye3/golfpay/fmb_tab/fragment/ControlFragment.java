@@ -73,11 +73,10 @@ public class ControlFragment extends BaseFragment {
     private int itemHeight = 92;
     private String to;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        itemHeight = 42;
+        //itemHeight = 42;
         Bundle bundle = getArguments();
         if (bundle != null) {
         }
@@ -251,6 +250,9 @@ public class ControlFragment extends BaseFragment {
                 TextView tvTitle = mi.view.findViewById(R.id.tv_title);
                 tvTitle.setText(String.format("캐디선택(%s)", toCaddie));
                 to = "To." + toCaddie;
+                View bar = mi.view.findViewById(R.id.view_bar);
+                tvTitle.setTextAppearance(getContext(), R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
+                bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
             }
         }
     }

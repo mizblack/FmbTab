@@ -31,6 +31,7 @@ import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.adapter.TeeUpViewPagerAdapter;
 import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.dialog.LogoutDialog;
+import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.guest.ReserveGuestList;
 import com.eye3.golfpay.fmb_tab.model.teeup.TeeUpTime;
 import com.eye3.golfpay.fmb_tab.model.teeup.TodayReserveList;
@@ -507,6 +508,7 @@ public class ViewMenuFragment extends BaseFragment {
                     caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
                     Global.teeUpTime = response;
                     //*****************
+
                     teeUpAdapter = new TeeUpViewPagerAdapter(getContext(), Global.teeUpTime.getTodayReserveList(), new TeeUpViewPagerAdapter.OnAdapterClickListener() {
                         @Override
                         public void onClicked(int position) {
@@ -526,6 +528,10 @@ public class ViewMenuFragment extends BaseFragment {
                                     Global.selectedTeeUpIndex = position;
                                     Global.selectedReservation = item;
                                     Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
+
+                                    getAllCourseInfo(getContext());
+
+
                                     groupNameTextView.setText(item.getGroup());
                                     reservationPersonNameTextView.setText(item.getGuestName());
                                     roundingTeeUpTimeTextView.setText(Util.timeMapper(item.getTeeoff()));
@@ -601,6 +607,35 @@ public class ViewMenuFragment extends BaseFragment {
             public void onFailure(Throwable t) {
                 hideProgress();
                 systemUIHide();
+            }
+        });
+    }
+
+    private void getAllCourseInfo(Context context) {
+        showProgress("코스 정보를 가져오는 중입니다.");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
+
+            @Override
+            public void onSuccess(ResponseData<Course> response) {
+                hideProgress();
+                if (response.getResultCode().equals("ok")) {
+                    Global.courseInfoList = response.getList();
+
+
+                } else if (response.getResultCode().equals("fail")) {
+                    // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onError(ResponseData<Course> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
             }
         });
     }

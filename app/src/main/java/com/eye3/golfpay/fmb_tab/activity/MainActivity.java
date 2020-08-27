@@ -119,14 +119,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         systemUIHide();
         setContentView(R.layout.activity_main);
-        getAllCourseInfo(MainActivity.this);
         init();
         hideMainBottomBar();
         requestPermission();
         startLocationService();
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
 
-        sendGpsInfo("138", 37.2113911, 127.5687663, 6722);
+        //sendGpsInfo("138", 37.2113911, 127.5687663, 6722);
     }
 
     private void requestPermission() {
@@ -258,34 +257,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private void getAllCourseInfo(Context context) {
-        showProgress("코스 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
 
-            @Override
-            public void onSuccess(ResponseData<Course> response) {
-                hideProgress();
-                if (response.getResultCode().equals("ok")) {
-                    Global.courseInfoList = response.getList();
-
-
-                } else if (response.getResultCode().equals("fail")) {
-                    // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onError(ResponseData<Course> response) {
-                hideProgress();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideProgress();
-            }
-        });
-    }
 
 
     @Override

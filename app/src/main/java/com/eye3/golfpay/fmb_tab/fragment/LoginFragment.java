@@ -50,11 +50,11 @@ public class LoginFragment extends BaseFragment {
         init(v);
 
         if (BuildConfig.DEBUG == true) {
-            mNameEditText.setText("roidcaddy@golfpay.co.kr");
-            mPhoneNumberEditText.setText("@a1234567");
+//            mNameEditText.setText("roidcaddy@golfpay.co.kr");
+//            mPhoneNumberEditText.setText("@a1234567");
 
-//            mNameEditText.setText("test@test.test");
-//            mPhoneNumberEditText.setText("@test123");
+            mNameEditText.setText("aaa@aaa.aaa");
+            mPhoneNumberEditText.setText("aaaa");
         }
 
         return v;

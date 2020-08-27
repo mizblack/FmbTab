@@ -3,6 +3,8 @@ package com.eye3.golfpay.fmb_tab.net;
 import android.content.Context;
 import android.view.View;
 
+import com.eye3.golfpay.fmb_tab.activity.MainActivity;
+import com.eye3.golfpay.fmb_tab.common.Global;
 import com.eye3.golfpay.fmb_tab.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKey;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
@@ -163,7 +165,9 @@ public class DataInterface extends BasicDataInterface {
 
     public void getCourseInfo(final Context context, String cc_id, final ResponseCallback<ResponseData<Course>> callback) {
         try {
-            Call<ResponseData<Course>> call = service.getCourseInfo(cc_id);
+            int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            //int reserve_id = 9430;
+            Call<ResponseData<Course>> call = service.getCourseInfo(cc_id, reserve_id);
             call.enqueue(new Callback<ResponseData<Course>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Course>> call, Response<ResponseData<Course>> response) {

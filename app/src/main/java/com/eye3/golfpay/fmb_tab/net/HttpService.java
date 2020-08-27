@@ -42,7 +42,7 @@ public interface HttpService {
     Call<TeeUpTime> getTodayReservesForCaddy(@Field("caddy_id") String caddy_id);
 
     @GET("getAllCourse")
-    Call<ResponseData<Course>> getCourseInfo(@Query("cc_id") String ccId);
+    Call<ResponseData<Course>> getCourseInfo(@Query("cc_id") String ccId, @Query("reserve_id") int reserveId);
 
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
