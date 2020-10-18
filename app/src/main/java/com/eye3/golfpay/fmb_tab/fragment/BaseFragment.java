@@ -27,7 +27,7 @@ import java.util.Objects;
 //layout(content mMenuView)을 갖고 있지 않음
 public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
 
-    protected String TAG;
+    public String TAG;
     protected Context mContext;
     // Parent Activity 핸들
     protected BaseActivity mParentActivity;

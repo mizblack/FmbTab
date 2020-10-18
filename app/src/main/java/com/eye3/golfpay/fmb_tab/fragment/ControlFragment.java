@@ -438,7 +438,15 @@ public class ControlFragment extends BaseFragment {
 
             }
         });
+    }
 
+    public void receiveMessage(String sender, String message) {
+        memberData = new MemberData(sender, "#434343");
+        Message msg = new Message(message, memberData, false);
+        chatMessageAdapter.add(msg);
+        //messages_view.setSelection(messages_view.getCount() - 1);
+        messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
+        edit_chat.setText("");
     }
 }
 

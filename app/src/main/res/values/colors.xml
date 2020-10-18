@@ -26,6 +26,7 @@
     <color name="zumthor">#ccd7db</color>
     <color name="lightGray">#cccccc</color>
     <color name="lightGray50">#88cccccc</color>
+    <color name="lightGray20">#00cccccc</color>
     <color name="irisBlue">#00abc5</color>
     <color name="aliceBlue">#ebeff1</color>
     <color name="lightAliceBlue">#f5f7f8</color>

@@ -10,176 +10,138 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
 
             <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
                 android:id="@+id/tv_rank"
-                style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                android:layout_width="80dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Rank" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_toRightOf="@id/tv_rank"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                android:text="Player" />
-
-            <View
-                android:layout_width="280dp"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/zumthor" />
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:text="Rank"/>
 
         </RelativeLayout>
 
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/zumthor" />
-
-        <LinearLayout
-            android:id="@+id/rankingNormalLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/ebonyBlack"
-                        android:gravity="center"
-                        android:text="Score"
-                        android:textColor="@color/white" />
-                    <!--           세로라인-->
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="#1f2225" />
-
-                    <TextView
-                        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/ebonyBlack"
-                        android:gravity="center"
-                        android:text="Par"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="201dp"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="#1f2225" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:paddingStart="10dp"
-                        android:text="Hole"
-                        tools:ignore="RtlSymmetry" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/zumthor" />
-
-                    <TextView
-                        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                        android:layout_width="300dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Group"
-                        android:visibility="visible" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/zumthor" />
-
-                    <TextView
-                        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-                        android:layout_width="400dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Course"
-                        android:visibility="visible" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="804dp"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/zumthor" />
-            </RelativeLayout>
-        </LinearLayout>
-
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
 
-
-            <LinearLayout
-                android:id="@+id/detailLinearLayout"
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_start"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="Start"/>
 
-                <TextView
-                    style="@style/RankColumnTextView"
-                    android:layout_width="100dp"
-                    android:background="@color/ebonyBlack"
-                    android:text="Score"
-                    android:textColor="@color/white" />
+        </RelativeLayout>
 
-                <!--       헤더 컨테이너-->
-                <LinearLayout
-                    android:id="@+id/hole_no_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal" />
-            </LinearLayout>
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/zumthor" />
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_end"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="End"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="160dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="Time"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_hole"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="Hole"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="360dp"
+            android:layout_height="70dp"
+            android:background="@color/zumthor">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="Player"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#24272a">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/tv_score"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/ebonyBlack"
+                android:paddingTop="1dp"
+                android:paddingLeft="1dp"
+                android:paddingBottom="1dp"
+                android:text="Score (Over Par)"/>
 
         </RelativeLayout>
 
     </LinearLayout>
+
 
 </layout>

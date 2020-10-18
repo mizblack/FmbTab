@@ -9,8 +9,8 @@ import io.realm.RealmObject;
 public class GuestScoreDB extends RealmObject implements Serializable {
 
     private String guest_id ;
-    private int nearest = -1;
-    private int longest = -1;
+    private float nearest = -1;
+    private float longest = -1;
     private int longestRank = 6;
     private int nearestRank = 6;
 
@@ -22,19 +22,19 @@ public class GuestScoreDB extends RealmObject implements Serializable {
         this.guest_id = guest_id;
     }
 
-    public int getNearest() {
+    public float getNearest() {
         return nearest;
     }
 
-    public void setNearest(int nearest) {
+    public void setNearest(float nearest) {
         this.nearest = nearest;
     }
 
-    public int getLongest() {
+    public float getLongest() {
         return longest;
     }
 
-    public void setLongest(int longest) {
+    public void setLongest(float longest) {
         this.longest = longest;
     }
 

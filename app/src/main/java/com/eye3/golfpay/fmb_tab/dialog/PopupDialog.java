@@ -56,6 +56,11 @@ public class PopupDialog extends Dialog {
         findViewById(R.id.layout_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mListener != null) {
+                    mListener.onTouch();
+                }
+
                 dismiss();
             }
         });

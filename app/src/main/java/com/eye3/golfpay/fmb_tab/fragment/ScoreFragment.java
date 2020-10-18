@@ -87,18 +87,19 @@ public class ScoreFragment extends BaseFragment {
     private List<Course> getCtypedCourseForPlayerList(List<Player> playerList) {
         //첫번째 플레이어 코스가 전체코스임.
         //예약에서 inout 을 확인하고 코스순서를 다시 재정렬함
-        if(playerList.size() == 0){
-            return null;
-        }
-        if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
-            if (!AppDef.CType.OUT.equals(playerList.get(0).playingCourse.get(0).ctype)) {
-                swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse);
-            }
-        } else if (AppDef.CType.IN.equals(Global.selectedReservation.getInoutCourse())) {
-            if (!AppDef.CType.IN.equals(playerList.get(0).playingCourse.get(0).ctype)) {
-                swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse);
-            }
-        }
+//        if(playerList.size() == 0){
+//            return null;
+//        }
+//        if (AppDef.CType.OUT.equals(Global.selectedReservation.getInoutCourse())) {
+//            if (!AppDef.CType.OUT.equals(playerList.get(0).playingCourse.get(0).ctype)) {
+//                swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse);
+//            }
+//        } else if (AppDef.CType.IN.equals(Global.selectedReservation.getInoutCourse())) {
+//            if (!AppDef.CType.IN.equals(playerList.get(0).playingCourse.get(0).ctype)) {
+//                swapList(playerList.get(0).playingCourse.get(0), playerList.get(0).playingCourse.get(1), playerList.get(0).playingCourse);
+//            }
+//        }
+
         return playerList.get(0).playingCourse;
 
     }
@@ -145,11 +146,12 @@ public class ScoreFragment extends BaseFragment {
         tabBar.findViewById(R.id.pinkNearestOrLongest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
-//                nearestLongestDialogFragment.setmNearestOrLongest(hole.gameType);
-//                nearestLongestDialogFragment.setCourse(course);
-//                nearestLongestDialogFragment.setHole(hole);
-                showDialogFragment(nearestLongestDialogFragment);
+                //NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
+                //showDialogFragment(nearestLongestDialogFragment);
+
+                Bundle  bundle = new Bundle();
+                bundle.putString("ani_direction", "up");
+                GoNativeScreen(new NearestLongestFragment(), null);
             }
         });
         return v;
@@ -249,7 +251,8 @@ public class ScoreFragment extends BaseFragment {
 
     private void getReserveScore() {
         showProgress("스코어 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(),
+                Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
@@ -289,7 +292,6 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
             }
         });
-
     }
 
     private void refreshScore() {
@@ -318,7 +320,5 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
             }
         });
-
     }
-
 }

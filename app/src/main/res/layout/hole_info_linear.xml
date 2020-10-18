@@ -44,7 +44,6 @@
         android:layout_below="@+id/view_hole"
         style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
         android:layout_marginTop="2dp"
-        android:text="Par 3"
         android:textColor="@color/gray" />
 
     <TextView
@@ -52,7 +51,6 @@
         style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
         android:layout_alignParentBottom="true"
         android:paddingBottom="13dp"
-        android:text="410"
         android:textColor="@color/gray" />
 
 </RelativeLayout>

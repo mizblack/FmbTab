@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/translucentBlack">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="400dp"
+        android:layout_height="550dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_number"
+            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:hint="거리를 입력해 주세요"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:columnCount="3"
+            android:rowCount="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_number">
+
+            <Button
+                android:id="@+id/btn_1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:onClick="onButtonClick"
+                android:text="1"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="2"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="3"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="4"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="5"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_6"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="6"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_7"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="7"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_8"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="8"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_9"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="9"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_point"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="."
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_0"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="0"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+            <Button
+                android:id="@+id/btn_clear"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:text="clear"
+                tools:layout_editor_absoluteX="121dp"
+                tools:layout_editor_absoluteY="147dp" />
+
+        </GridLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginBottom="32dp"
+            android:text="OK"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="32dp"
+            android:text="CANCEL"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

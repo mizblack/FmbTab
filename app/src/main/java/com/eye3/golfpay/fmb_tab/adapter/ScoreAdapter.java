@@ -115,6 +115,15 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
         }
     }
 
+    public void select(String value) {
+        for (Item item : items) {
+            if (item.item.equals(value)) {
+                item.selected = true;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return items.size();

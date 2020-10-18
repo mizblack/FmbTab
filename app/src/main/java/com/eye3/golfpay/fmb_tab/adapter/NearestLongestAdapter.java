@@ -71,7 +71,7 @@ public class NearestLongestAdapter extends RecyclerView.Adapter<NearestLongestAd
         }
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
 
         if (score == -1)
             return;

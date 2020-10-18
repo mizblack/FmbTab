@@ -79,7 +79,7 @@ dependencies {
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'com.scaledrone:scaledrone-java:0.6.0'
-
+    implementation 'com.github.MrBin99:LaravelEchoAndroid:1.03'
 
 
 

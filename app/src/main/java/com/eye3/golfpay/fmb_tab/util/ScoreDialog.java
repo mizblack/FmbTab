@@ -179,10 +179,17 @@ public class ScoreDialog extends Dialog {
                     }
                 });
 
+                holder.playerName.setText(mPlayerList.get(position).name);
 
                 int score = -3;
                 for (int i = 0; i < 18; i++) {
                     adapter.addItem(score++ + "");
+                }
+
+                try {
+                    adapter.select(mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore.par);
+                } catch (Exception e) {
+
                 }
 
                 holder.rv_score.setAdapter(adapter);
@@ -204,6 +211,7 @@ public class ScoreDialog extends Dialog {
                     adapter.addItem(i++ + "");
                 }
 
+                adapter.select(mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore.putting);
                 holder.rv_putt.setAdapter(adapter);
             }
         }

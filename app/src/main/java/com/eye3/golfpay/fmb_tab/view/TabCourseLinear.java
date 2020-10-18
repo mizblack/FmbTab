@@ -231,7 +231,6 @@ public class TabCourseLinear extends LinearLayout {
             this.mContext = context;
         }
 
-
         class ScoreItemViewHolder extends RecyclerView.ViewHolder {
             TextView tvRank, tvName;
             RelativeLayout[] holeScoreLayout = new RelativeLayout[9];

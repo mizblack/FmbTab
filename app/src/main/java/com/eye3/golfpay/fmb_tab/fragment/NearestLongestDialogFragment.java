@@ -3,15 +3,11 @@ package com.eye3.golfpay.fmb_tab.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +28,6 @@ import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.util.Util;
-import com.eye3.golfpay.fmb_tab.view.LongestInserter;
-import com.eye3.golfpay.fmb_tab.view.NearestInserter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,7 +72,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fr_nearest_longest, container, false);
+        View view = inflater.inflate(R.layout.frd_nearest_longest, container, false);
 
         mNearestOrLongest = AppDef.LONGEST;
         guestItemLinearLayout = view.findViewById(R.id.guestItemLinearLayout);
@@ -267,7 +261,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
         for (int i = 0; i < guestArrayList.size(); i++) {
 
             int rank = 1;
-            int score = guestArrayList.get(i).getLongest();
+            float score = guestArrayList.get(i).getLongest();
             for (int j = 0; j < guestArrayList.size(); j++) {
                 if (score < guestArrayList.get(j).getLongest()) {
                     rank++;
@@ -318,7 +312,7 @@ public class NearestLongestDialogFragment extends DialogFragment {
         for (int i = 0; i < guestArrayList.size(); i++) {
 
             int rank = 1;
-            int score = guestArrayList.get(i).getNearest();
+            float score = guestArrayList.get(i).getNearest();
             for (int j = 0; j < guestArrayList.size(); j++) {
 
                 if (guestArrayList.get(j).getNearest() < 0)

@@ -12,8 +12,8 @@
         android:id="@+id/playerName"
         style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
         android:layout_centerVertical="true"
-        android:text="유정"
         android:textColor="@color/ebonyBlack"
+        android:layout_width="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

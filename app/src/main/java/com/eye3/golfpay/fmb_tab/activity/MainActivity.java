@@ -46,7 +46,8 @@ import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 import com.eye3.golfpay.fmb_tab.fragment.CourseFragment;
 import com.eye3.golfpay.fmb_tab.fragment.LoginFragment;
 import com.eye3.golfpay.fmb_tab.fragment.ScoreFragment;
-import com.eye3.golfpay.fmb_tab.model.field.Course;
+import com.eye3.golfpay.fmb_tab.model.chat.ChatData;
+import com.eye3.golfpay.fmb_tab.model.chat.LaravelModel;
 import com.eye3.golfpay.fmb_tab.model.gps.GpsInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.CaddieInfo;
 import com.eye3.golfpay.fmb_tab.model.guest.ClubInfo;
@@ -58,6 +59,11 @@ import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.CaddieViewBasicGuestItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+
+import net.mrbin99.laravelechoandroid.Echo;
+import net.mrbin99.laravelechoandroid.EchoCallback;
+import net.mrbin99.laravelechoandroid.EchoOptions;
+import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
 import java.io.IOException;
 
@@ -71,6 +77,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     LocationManager mLocationManager;
     ImageView markView, cancelView;
     LinearLayout ll_login;
+    Echo echo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         requestPermission();
         startLocationService();
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+
+        setLaravel();
 
         //sendGpsInfo("138", 37.2113911, 127.5687663, 6722);
     }
@@ -255,9 +264,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //            }
 //        });
     }
-
-
-
 
 
     @Override
@@ -477,27 +483,118 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         DataInterface.getInstance(Global.HOST_ADDRESS_DEV_AWS).sendGpsInfo(this, caddy_num, lat, lng, reserve_id,
                 new DataInterface.ResponseCallback<ResponseData<GpsInfo>>() {
 
-            @Override
-            public void onSuccess(ResponseData<GpsInfo> response) {
+                    @Override
+                    public void onSuccess(ResponseData<GpsInfo> response) {
 
-                if (response.getResultMessage().equals("성공")) {
-                    GpsInfo gpsInfo = response.getData();
-                    hideProgress();
-                }
+                        if (response.getResultMessage().equals("성공")) {
+                            GpsInfo gpsInfo = response.getData();
+                            hideProgress();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ResponseData<GpsInfo> response) {
+                        Toast.makeText(getBaseContext(), "정보를 받아오는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        hideProgress();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        hideProgress();
+                    }
+                });
+    }
+
+    private void setLaravel() {
+        EchoOptions options = new EchoOptions();
+
+        // Setup host of your Laravel Echo Server
+        options.host = "http://deverp.golfpay.co.kr:6001";
+
+        /*
+         * Add headers for authorizing your users (private and presence channels).
+         * This line can change matching how you have configured
+         * your guards on your Laravel application
+         */
+        //options.headers.put("Authorization", "Bearer {token}");
+
+        // Create the client
+        echo = new Echo(options);
+        echo.connect(new EchoCallback() {
+            @Override
+            public void call(Object... args) {
+                Log.d(TAG, "Laravel connect");
             }
-
+        }, new EchoCallback() {
             @Override
-            public void onError(ResponseData<GpsInfo> response) {
-                Toast.makeText(getBaseContext(), "정보를 받아오는데 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                hideProgress();
-            }
+            public void call(Object... args) {
 
-            @Override
-            public void onFailure(Throwable t) {
-                Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                hideProgress();
             }
         });
+
+
+        SocketIOPrivateChannel privateChannel = echo.privateChannel("public-event");
+        privateChannel.listen("PublicEvent", new EchoCallback() {
+            @Override
+            public void call(Object... args) {
+                // Event thrown.
+            }
+        });
+
+        echo.channel("public-event")
+                .listen("PublicEvent", new EchoCallback() {
+                    @Override
+                    public void call(Object... args) {
+                        Gson gson = new Gson();
+                        String json = gson.toJson(args[1]);
+                        LaravelModel laravelModel = (LaravelModel) gson.fromJson(json, LaravelModel.class);
+                        receiveChatMessage(laravelModel);
+                    }
+                });
+    }
+
+    private void receiveChatMessage(LaravelModel laravelModel) {
+
+        UIThread.executeInUIThread(new Runnable() {
+            @Override
+            public void run() {
+
+                ChatData chatData = laravelModel.nameValuePairs.event.nameValuePairs;
+                if (chatData.mode.equals("chat")) {
+
+                    if (mBaseFragment.TAG.equals("ControlFragment") == true) {
+                        ((ControlFragment) mBaseFragment).receiveMessage(chatData.member_id, chatData.message);
+                        return;
+                    }
+
+                    showMessagePopup();
+                }
+            }
+        });
+    }
+
+    private void showMessagePopup() {
+        PopupDialog dlg = new PopupDialog(MainActivity.this, R.style.DialogTheme);
+        dlg.setListener(new PopupDialog.IListenerDialogTouch() {
+            @Override
+            public void onTouch() {
+                GoNativeScreen(new ControlFragment(), null);
+            }
+        });
+
+        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        wmlp.x = 0;   //x position
+        wmlp.y = 0;   //y position
+
+        dlg.getWindow().
+                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+
+        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        dlg.show();
     }
 }
 

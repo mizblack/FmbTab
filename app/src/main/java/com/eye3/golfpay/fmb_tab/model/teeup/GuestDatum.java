@@ -59,24 +59,24 @@ public class GuestDatum implements Serializable {
     @SerializedName("carNumber")
     private String carNumber;
 
-    private int nearest = -1;
-    private int longest = -1;
+    private float nearest = -1;
+    private float longest = -1;
     private int longestRank = 6;
     private int nearestRank = 6;
 
-    public int getNearest() {
+    public float getNearest() {
         return nearest;
     }
 
-    public void setNearest(int nearest) {
+    public void setNearest(float nearest) {
         this.nearest = nearest;
     }
 
-    public int getLongest() {
+    public float getLongest() {
         return longest;
     }
 
-    public void setLongest(int longest) {
+    public void setLongest(float longest) {
         this.longest = longest;
     }
 
