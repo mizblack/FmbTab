@@ -75,28 +75,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/nearestLongestLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/nearest"
-            style="@style/GlobalTextView.18SP.zumthor.NotoSans.Bold"
-            android:layout_marginStart="65dp"
-            android:text="NEAREST"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/longest"
-            style="@style/GlobalTextView.18SP.zumthor.NotoSans.Bold"
-            android:layout_marginStart="75dp"
-            android:text="LONGEST"
-            tools:ignore="HardcodedText" />
-
-    </LinearLayout>
-
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -110,14 +88,6 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <TextView
-            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
-            android:id="@+id/rightButton"
-            android:text="Score"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/ebonyBlack"
-            tools:ignore="HardcodedText"/>
-
         <ImageView
             android:id="@+id/rightButtonIcon"
             android:layout_width="38dp"
@@ -125,6 +95,15 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/score_down"
             tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+            android:id="@+id/rightButton"
+            android:text="스코어"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/ebonyBlack"
+            tools:ignore="HardcodedText"/>
+
     </LinearLayout>
 
 </LinearLayout>

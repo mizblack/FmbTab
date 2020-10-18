@@ -21,8 +21,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Rank"/>
 
         </RelativeLayout>
@@ -39,9 +39,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Start"/>
 
         </RelativeLayout>
@@ -58,9 +58,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="End"/>
 
         </RelativeLayout>
@@ -77,9 +77,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Time"/>
 
         </RelativeLayout>
@@ -96,9 +96,9 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Hole"/>
 
         </RelativeLayout>
@@ -115,30 +115,29 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/white"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Player"/>
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="70dp"
             android:background="#24272a">
 
             <TextView
-                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                style="@style/GlobalTextView.18SP.White.NotoSans.Bold"
                 android:id="@+id/tv_score"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:background="@color/ebonyBlack"
-                android:paddingTop="1dp"
-                android:paddingLeft="1dp"
-                android:paddingBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
                 android:text="Score (Over Par)"/>
-
         </RelativeLayout>
 
     </LinearLayout>

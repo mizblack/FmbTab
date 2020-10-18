@@ -134,10 +134,6 @@ public class ScoreFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fr_score, container, false);
         mScoreBoard = v.findViewById(R.id.scoreBoard);
         tabBar = v.findViewById(R.id.tab_bar);
-        nearest = tabBar.findViewById(R.id.nearest);
-        longest = tabBar.findViewById(R.id.longest);
-        nearest.setVisibility(View.GONE);
-        longest.setVisibility(View.GONE);
         courseLinearLayout = v.findViewById(R.id.courseLinearLayout);
         mParentActivity.showMainBottomBar();
 
@@ -225,7 +221,7 @@ public class ScoreFragment extends BaseFragment {
         rightLinearLayout = tabBar.findViewById(R.id.rightLinearLayout);
         courseLinearLayout.setVisibility(View.VISIBLE);
         pinkNearestOrLinearLayout.setVisibility(View.VISIBLE);
-        rightButtonTextView.setText("Ranking");
+        rightButtonTextView.setText("순위");
 
         rightLinearLayoutOnClick();
 
