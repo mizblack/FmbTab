@@ -69,7 +69,6 @@ public class RankingFragment extends BaseFragment {
             type = "group";
         }
         getReserveScore(type);
-
     }
 
     @Override

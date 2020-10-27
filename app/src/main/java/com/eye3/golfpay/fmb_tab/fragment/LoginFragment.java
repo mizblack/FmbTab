@@ -145,6 +145,6 @@ public class LoginFragment extends BaseFragment {
 
     public void changeDrawerViewToMenuView() {
         //메뉴fragment활성화 시킨다.
-        GoNavigationDrawer(new ViewMenuFragment(), null);
+        GoNavigationDrawer(new TeeUpFragment(), null);
     }
 }

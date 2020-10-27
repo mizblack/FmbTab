@@ -8,15 +8,15 @@
 
     <ImageView
         android:id="@+id/iv_checkin"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_gravity="center"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/check_out"
         tools:ignore="ContentDescription"
         />
 
     <TextView
-        style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+        style="@style/GlobalTextView.24SP.ebonyBlack.NotoSans.Bold"
         android:id="@+id/memberNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

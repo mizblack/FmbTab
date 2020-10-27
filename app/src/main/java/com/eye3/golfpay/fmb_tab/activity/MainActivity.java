@@ -253,8 +253,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         groupNameTextView = findViewById(R.id.groupNameTextView);
         reservationPersonNameTextView = findViewById(R.id.reservationPersonNameTextView);
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
-        inOutTextView00 = findViewById(R.id.inOutTextView00);
-        inOutTextView01 = findViewById(R.id.inOutTextView01);
+
+
+
+        //inOutTextView00 = findViewById(R.id.inOutTextView00);
+        //inOutTextView01 = findViewById(R.id.inOutTextView01);
 
 //        findViewById(R.id.content_main_inc).setOnClickListener(new View.OnClickListener() {
 //            @Override

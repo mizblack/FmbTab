@@ -41,7 +41,7 @@
             android:fontFamily="@font/notosans_bold"
             android:textSize="20sp"
             android:layout_marginStart="10dp"
-            android:text="Nearest"
+            android:text="Nearest / Longest"
             android:textColor="@color/FMB_Color_F05D6C"
             tools:ignore="HardcodedText" />
 
