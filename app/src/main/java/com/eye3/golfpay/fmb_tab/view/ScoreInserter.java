@@ -5,25 +5,28 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
+import com.eye3.golfpay.fmb_tab.fragment.ControlFragment;
 
 import java.util.ArrayList;
 
 public class ScoreInserter extends RelativeLayout {
-    public static final int NUM_STROKE_SELLECTED_PREVIOUS_KEY = 1 + 2 << 24;
-    public static final int NUM_PAR_SELLECTED_PREVIOUS_KEY = 1 + 3 << 24;
-    public static final int NUM_PUTT_SELLECTED_PREVIOUS_KEY = 1 + 4 << 24;
 
     AppDef.ScoreType mScoreType;
     public ArrayList mParScoreIntegerArrayList;
@@ -43,8 +46,10 @@ public class ScoreInserter extends RelativeLayout {
 
     ArrayList mNearestIntegerArrayList;
     ArrayList mLongestIntegerArrayList;
-    LinearLayout mLinearScoreInserterContainer;
+    LinearLayout mScoreInserterContainer;
     Context mContext;
+
+    ArrayList<LinearLayout> scores = new ArrayList<>();
 
     public ScoreInserter(Context context) {
         super(context);
@@ -60,6 +65,8 @@ public class ScoreInserter extends RelativeLayout {
 
     public ScoreInserter(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        init(context, "type");
     }
 
     public void init(Context context) {
@@ -67,7 +74,7 @@ public class ScoreInserter extends RelativeLayout {
         createIntegerArrayList();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.inserter_layout, this, false);
-        mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
+        mScoreInserterContainer = v.findViewById(R.id.score_insert_container);
         addView(v);
     }
 
@@ -78,11 +85,13 @@ public class ScoreInserter extends RelativeLayout {
         this.mSelectedStrokeInserterTv = new TextView(mContext);
         this.mSelectedPuttInserterTv = new TextView(mContext);
 
-        createIntegerArrayList();
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.inserter_layout, this, false);
-        mLinearScoreInserterContainer = v.findViewById(R.id.linear_score_insert_container);
-        createScoreInserter(type);
+        mScoreInserterContainer = v.findViewById(R.id.score_insert_container);
+
+        createIntegerArrayList();
+
         addView(v);
 
     }
@@ -99,192 +108,57 @@ public class ScoreInserter extends RelativeLayout {
     }
 
     void createIntegerArrayList() {
-        mParScoreIntegerArrayList = incrementsLoop(3 * (-1), 6, 1);
-        mStrokesScoreIntegerArrayList = incrementsLoop(1, 9, 1);
-        mPuttIntegerArrayList = incrementsLoop(0, 5, 1);
-        mNearestIntegerArrayList = incrementsLoop(0, 20, 1);
-        mLongestIntegerArrayList = incrementsLoop(100, 300, 10);
-    }
 
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    public void setAllBackGroundColor(TextView[] tvArr, int color) {
-        for (int i = 0; tvArr.length > i; i++) {
-            tvArr[i].setBackgroundColor(color);
-        }
-    }
+        for (int i = 0; i < 4; i++) {
+            final int position = i;
+            View childView = inflater.inflate(R.layout.inserter_item, null, false);
+            LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
-    public void setAllBackGroundResource(TextView[] tvArr, int id) {
-        for (int i = 0; tvArr.length > i; i++) {
-            tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-        }
-    }
+            for (int j = -2; j < 14; j++) {
+                FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
 
-    //스코어 블럭 배경을 초기화 시킨다.
-    public static void initAllBackGroundResources(TextView[] tvArr) {
-        for (int i = 0; tvArr.length > i; i++) {
-            tvArr[i].getBackground().setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.DST_IN);
-            tvArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-            tvArr[i].setTextColor(Color.GRAY);
-        }
-    }
+                final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+                final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+                item.setLayoutParams(params);
 
-    public void setBackGroundColorSelected(TextView[] tv, int idx) {
-        tv[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
+                TextView tvItem = item.findViewById(R.id.tv_item);
+                tvItem.setText(j + "");
 
-    }
+                View view = item.findViewById(R.id.view_select);
 
-    public void setBackGroundColorSelected(TextView[] tv, String score, int idx) {
-        if (idx <= -1000)
-            return;
-        tv[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-        tv[idx].getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-    }
-
-    public static TextView findScoreInserterTextViewbyScore(TextView[] tvArr, String score) {
-        for (TextView aTv : tvArr) {
-            if (aTv.getText().toString().trim().equals(score))
-                return aTv;
-        }
-        return null;
-
-    }
-
-    public void initScoreBackgroundSelected(String score, boolean isTar) {
-        if (score.equals("-"))
-            return;
-        TextView tv;
-        if (isTar) {
-            if (mStrokeScoreTextViewArr != null) {
-                tv = findScoreInserterTextViewbyScore(mStrokeScoreTextViewArr, score);
-                tv.setBackgroundResource(R.drawable.score_inserter_bg);
-                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                tv.setTag(ScoreInserter.NUM_STROKE_SELLECTED_PREVIOUS_KEY, true);
-            }
-        } else {
-            if (mParScoreTextViewArr != null) {
-                tv = findScoreInserterTextViewbyScore(mParScoreTextViewArr, score);
-                tv.setBackgroundResource(R.drawable.score_inserter_bg);
-                tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-                tv.setTag(ScoreInserter.NUM_PAR_SELLECTED_PREVIOUS_KEY, true);
-            }
-        }
-
-
-    }
-
-    public void initPuttScoreBackgroundSelected(String puttScore) {
-        if (puttScore.equals("-"))
-            return;
-        TextView tv;
-
-        if (mPuttScoreTextViewArr != null) {
-            tv = findScoreInserterTextViewbyScore(mPuttScoreTextViewArr, puttScore);
-            tv.setBackgroundResource(R.drawable.score_inserter_bg);
-            tv.getBackground().setColorFilter(Color.parseColor("#00AEC9"), PorterDuff.Mode.SRC);
-            tv.setTag(ScoreInserter.NUM_PUTT_SELLECTED_PREVIOUS_KEY, true);
-        }
-    }
-
-    private void createScoreInserters() {
-
-        for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
-            mParScoreTextViewArr[i] = new TextView(mContext);
-
-            mParScoreTextViewArr[i].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
-            mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
-        }
-
-        for (int i = 0; mStrokesScoreIntegerArrayList.size() > i; i++) {
-            mStrokeScoreTextViewArr[i] = new TextView(mContext);
-            mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
-            mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
-        }
-
-        for (int i = 0; mPuttIntegerArrayList.size() > i; i++) {
-            mPuttScoreTextViewArr[i] = new TextView(mContext);
-            mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
-            mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
-        }
-
-
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void createScoreInserter(String scoreType) {
-        //     LinearLayout aContainer = new LinearLayout(mContext);
-        switch (scoreType) {
-            case AppDef.ScoreType.Par:
-                mParScoreTextViewArr = new TextView[mParScoreIntegerArrayList.size()];
-                for (int i = 0; mParScoreIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mParScoreTextViewArr[idx] = new TextView(mContext);
-                    mParScoreTextViewArr[idx].setBackgroundResource(R.drawable.score_inserter_bg);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        mParScoreTextViewArr[idx].setTextAppearance(R.style.ScoreInserterTextView);
+                item.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        unSelectAllRow(position);
+                        view.setVisibility(View.VISIBLE);
                     }
-                    mParScoreTextViewArr[idx].setGravity(Gravity.CENTER);
-                    mParScoreTextViewArr[idx].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
-                    mParScoreTextViewArr[i].setLeft(mParScoreTextViewArr[i].getLeft()-1);
-                    mParScoreTextViewArr[idx].setText(String.valueOf(mParScoreIntegerArrayList.get(i)));
-                    mParScoreTextViewArr[idx].setTag(NUM_PAR_SELLECTED_PREVIOUS_KEY, false);
-                    mLinearScoreInserterContainer.addView(mParScoreTextViewArr[i]);
+                });
 
-                }
-                break;
-            case AppDef.ScoreType.Tar:
-                mStrokeScoreTextViewArr = new TextView[mStrokesScoreIntegerArrayList.size()];
-                for (int i = 0; mStrokesScoreIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mStrokeScoreTextViewArr[i] = new TextView(mContext);
-                    mStrokeScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-                    mStrokeScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
-                    mStrokeScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mStrokeScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
-                    mStrokeScoreTextViewArr[i].setLeft(mStrokeScoreTextViewArr[i].getLeft()-1);
-                    mStrokeScoreTextViewArr[i].setText(String.valueOf(mStrokesScoreIntegerArrayList.get(i)));
-                    mStrokeScoreTextViewArr[i].setTag(NUM_STROKE_SELLECTED_PREVIOUS_KEY, false);
-                    mLinearScoreInserterContainer.addView(mStrokeScoreTextViewArr[i]);
+                linearLayout.addView(item);
+            }
 
-                }
-                break;
-            case AppDef.ScoreType.Putt:
-                mPuttScoreTextViewArr = new TextView[mPuttIntegerArrayList.size()];
-                for (int i = 0; mPuttIntegerArrayList.size() > i; i++) {
-                    final int idx = i;
-                    mPuttScoreTextViewArr[i] = new TextView(mContext);
-                    mPuttScoreTextViewArr[i].setBackgroundResource(R.drawable.score_inserter_bg);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        mPuttScoreTextViewArr[i].setTextAppearance(R.style.ScoreInserterTextView);
-                    }
-                    mPuttScoreTextViewArr[i].setGravity(Gravity.CENTER);
-                    mPuttScoreTextViewArr[i].setLayoutParams(new ViewGroup.LayoutParams(getResources().getDimensionPixelSize(R.dimen.score_inserter_width), getResources().getDimensionPixelSize(R.dimen.score_inserter_height)));
-                    mPuttScoreTextViewArr[i].setLeft(mPuttScoreTextViewArr[i].getLeft()-1);
-                    mPuttScoreTextViewArr[i].setText(String.valueOf(mPuttIntegerArrayList.get(i)));
-                    mPuttScoreTextViewArr[i].setTag(NUM_PUTT_SELLECTED_PREVIOUS_KEY, false);
-                    mLinearScoreInserterContainer.addView(mPuttScoreTextViewArr[i]);
+            scores.add(linearLayout);
 
-                }
-                break;
-            default:
+            View separator = inflater.inflate(R.layout.item_separator, null, false);
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, RelativeLayout.LayoutParams.MATCH_PARENT, getResources().getDisplayMetrics());
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            separator.setLayoutParams(params);
+            mScoreInserterContainer.addView(separator);
 
+            mScoreInserterContainer.addView(linearLayout);
         }
-
     }
 
-
-//    public LinearLayout getmParScoreInserter() {
-//        return createScoreInserter(AppDef.ScoreType.Par);
-//    }
-//
-//    public LinearLayout getmTarScoreInserter() {
-//        return createScoreInserter(AppDef.ScoreType.Tar);
-//    }
-//
-//    public LinearLayout getmPuttScoreInserter() {
-//        return createScoreInserter(AppDef.ScoreType.Putt);
-//    }
-
+    private void unSelectAllRow(final int position) {
+        LinearLayout view = scores.get(position);
+        for (int i = 0; i < view.getChildCount(); i++) {
+            View childView = view.getChildAt(i);
+            childView.findViewById(R.id.view_select).setVisibility(View.GONE);
+        }
+    }
 
 }

@@ -58,6 +58,29 @@ public class ScoreDialog extends Dialog {
     ReserveScore mReserveScore;
     ScoreInputFinishListener inputFinishListener;
 
+    public ScoreDialog(Context context, String leftBtnTitle, String rightBtnTitle,
+                       View.OnClickListener leftListener,
+                       View.OnClickListener rightListener, List<Player> mPlayerList, int mTabIdx, int mHoleScoreLayoutIdx) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.mContext = context;
+        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
+        this.mLeftClickListener = leftListener;
+        this.mRightClickListener = rightListener;
+        this.mLeftTitle = leftBtnTitle;
+        this.mRightTitle = rightBtnTitle;
+
+        this.mPlayerList = mPlayerList;
+        this.mTabIdx = mTabIdx;
+    }
+
+    public ScoreDialog(Context context, String leftBtnTitle, String rightBtnTitle) {
+        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        this.mContext = context;
+
+        this.mLeftTitle = leftBtnTitle;
+        this.mRightTitle = rightBtnTitle;
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,39 +131,20 @@ public class ScoreDialog extends Dialog {
             mRightButton.setText(mRightTitle);
         }
 
-        recycler = findViewById(R.id.player_score_list);
-        recycler.setHasFixedSize(true);
-        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-        recycler.setLayoutManager(mManager);
-        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList, mTabIdx, mHoleScoreLayoutIdx); //?
-        recycler.setAdapter(mScoreInputAdapter);
-        mScoreInputAdapter.notifyDataSetChanged();
-
-        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
+//        recycler = findViewById(R.id.player_score_list);
+//        recycler.setHasFixedSize(true);
+//        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+//        recycler.setLayoutManager(mManager);
+//        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList, mTabIdx, mHoleScoreLayoutIdx); //?
+//        recycler.setAdapter(mScoreInputAdapter);
+//        mScoreInputAdapter.notifyDataSetChanged();
+//
+//        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
         this.inputFinishListener = listener;
     }
-
-
-    // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
-    public ScoreDialog(Context context, String leftBtnTitle, String rightBtnTitle,
-                       View.OnClickListener leftListener,
-                       View.OnClickListener rightListener, List<Player> mPlayerList, int mTabIdx, int mHoleScoreLayoutIdx) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        this.mContext = context;
-        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
-        this.mLeftClickListener = leftListener;
-        this.mRightClickListener = rightListener;
-        this.mLeftTitle = leftBtnTitle;
-        this.mRightTitle = rightBtnTitle;
-
-        this.mPlayerList = mPlayerList;
-        this.mHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
-        this.mTabIdx = mTabIdx;
-    }
-
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
         List<Player> mPlayerList;

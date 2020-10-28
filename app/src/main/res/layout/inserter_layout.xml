@@ -3,24 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:background="@color/white">
 
     <HorizontalScrollView
         android:id="@+id/linear_insert_sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:scrollbars="none"
+        android:scrollbars="horizontal"
+        android:fadeScrollbars="false"
+        android:scrollbarFadeDuration="0"
         tools:ignore="UselessParent">
 
         <LinearLayout
-            android:id="@+id/linear_score_insert_container"
+            android:id="@+id/score_insert_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="3dp"
             />

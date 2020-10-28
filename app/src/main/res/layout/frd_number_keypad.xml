@@ -8,8 +8,8 @@
     android:background="@color/translucentBlack">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="400dp"
-        android:layout_height="550dp"
+        android:layout_width="320dp"
+        android:layout_height="600dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,144 +18,196 @@
 
         <TextView
             android:id="@+id/tv_number"
-            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Bold"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Medium"
+            android:layout_width="240dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
             android:gravity="center"
+            android:textColorHint="@color/zumthor"
             android:hint="거리를 입력해 주세요"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/gridLayout"
+            app:layout_constraintStart_toStartOf="@+id/gridLayout"
             app:layout_constraintTop_toTopOf="parent" />
 
         <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:background="@color/lightGray50"
             android:columnCount="3"
             android:rowCount="4"
+            android:saveEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_number">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_1"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
                 android:onClick="onButtonClick"
-                android:text="1"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                android:text="1" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_2"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="2"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="2" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_3"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="3"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="3" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_4"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="4"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="4" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_5"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="5"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="5" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_6"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="6"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="6" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_7"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="7"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="7" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_8"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="8"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="8" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_9"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="9"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="9" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_point"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="."
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:text="." />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_0"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="0"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:text="0" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_clear"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="clear"
-                tools:layout_editor_absoluteX="121dp"
-                tools:layout_editor_absoluteY="147dp" />
+                style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:background="@color/white"
+                android:layout_columnWeight="0"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:layout_rowWeight="1"
+                android:layout_column="2"
+                android:text="초기화" />
 
         </GridLayout>
 
-        <Button
+        <TextView
             android:id="@+id/btn_confirm"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginBottom="32dp"
-            android:text="OK"
-            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/GlobalTextView.20SP.White.NotoSans.Medium"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:background="@color/irisBlue"
+            android:gravity="center"
+            android:text="확인"
+            android:textSize="16sp"
+            android:layout_marginBottom="6dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_cancel"
-            android:layout_width="120dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="64dp"
+            style="@style/GlobalTextView.20SP.White.NotoSans.Medium"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:background="@color/zumthor"
+            android:gravity="center"
+            android:text="취소"
+            android:textSize="16sp"
             android:layout_marginBottom="32dp"
-            android:text="CANCEL"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

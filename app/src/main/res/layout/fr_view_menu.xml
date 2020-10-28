@@ -43,14 +43,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_caddie">
 
             <FrameLayout
+                android:id="@+id/view_gps"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:layout_marginEnd="1dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1" >
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_gps"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_gps"
@@ -60,14 +62,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_score"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:layout_marginStart="1dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_score"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_score"
@@ -87,14 +91,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_caddie">
 
             <FrameLayout
+                android:id="@+id/view_ranking"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_ranking"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_ranking"
@@ -104,14 +110,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_near_long"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_near_long"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_near_long"
@@ -121,14 +129,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_caddie_note"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_caddie_not"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_near_caddie_note"
@@ -138,13 +148,15 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_gallery"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_gallery"
@@ -162,16 +174,17 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/tv_caddie">
 
-
             <FrameLayout
+                android:id="@+id/view_control"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_game_control"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_control"
@@ -181,14 +194,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_restaurant"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_restaurant"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_restaurant"
@@ -198,14 +213,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_team"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_team"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_team"
@@ -215,13 +232,15 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_beto"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_beto"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_beto"
@@ -241,14 +260,16 @@
 
 
             <FrameLayout
+                android:id="@+id/view_notice"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_494B4E"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/FMB_Color_494B4E"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_notice" />
                 <RelativeLayout
                     android:id="@+id/btn_menu_notice"
@@ -258,14 +279,16 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/view_setting"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
                 android:layout_marginEnd="2dp"
+                android:background="@color/FMB_Color_3A3D40"
                 android:layout_weight="1">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/ebonyBlack"
+                    android:layout_gravity="center"
                     android:src="@drawable/menu_btn_setting"/>
                 <RelativeLayout
                     android:id="@+id/btn_menu_setting"

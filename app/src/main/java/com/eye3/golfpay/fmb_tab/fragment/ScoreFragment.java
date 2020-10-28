@@ -117,7 +117,6 @@ public class ScoreFragment extends BaseFragment {
             }
         }
         return courseList;
-
     }
 
     /*

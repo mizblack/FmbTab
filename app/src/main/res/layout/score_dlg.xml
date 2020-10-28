@@ -124,6 +124,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/player_score_list"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -132,6 +133,14 @@
             app:layout_constraintStart_toStartOf="@+id/hole_id"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             tools:ignore="ObsoleteLayoutParam" />
+
+        <com.eye3.golfpay.fmb_tab.view.ScoreInserter
+            android:layout_width="540dp"
+            android:layout_height="420dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginBottom="96dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
