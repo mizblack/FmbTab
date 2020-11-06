@@ -21,10 +21,11 @@ import java.util.List;
 
 public class Global {
 
+
     public static TeeUpTime teeUpTime ;
     public static List<Guest> guestList;
     public static ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<Bitmap>();
-
+    public static String caddieName ;
     public static String DEV_SERVER_IP = "";
     public static String DEV_SERVER_PORT = "";
     public static String SavedDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/FMB_TAB";

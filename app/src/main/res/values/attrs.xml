@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<declare-styleable name="DeviceTestItem">
-    <attr name="bg" format="reference|integer" />
-    <attr name="symbol" format="reference|integer" />
-    <attr name="text" format="reference|string" />
-    <attr name="textColor" format="reference|integer" />
-</declare-styleable>
+    <declare-styleable name="DeviceTestItem">
+        <attr name="bg" format="reference|integer" />
+        <attr name="symbol" format="reference|integer" />
+        <attr name="text" format="reference|string" />
+        <attr name="textColor" format="reference|integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ScoreInserter">
+        <attr name="teeshot" format="boolean"/>
+        <attr name="start" format="integer" />
+        <attr name="end" format="integer" />
+    </declare-styleable>
 </resources>
 

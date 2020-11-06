@@ -112,7 +112,6 @@ public class ScoreDialog extends Dialog {
             mLeftButton.setOnClickListener(mLeftClickListener);
             mLeftButton.setText(mLeftTitle);
             mRightButton.setOnClickListener(mRightClickListener);
-            mRightButton.setText(mRightTitle);
         } else {
             mLeftButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -128,8 +127,16 @@ public class ScoreDialog extends Dialog {
                     dismiss();
                 }
             });
-            mRightButton.setText(mRightTitle);
         }
+        mRightButton.setText(mRightTitle);
+
+
+        findViewById(R.id.view_disalbe).setVisibility(View.GONE);
+        findViewById(R.id.view_disalbe).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
 //        recycler = findViewById(R.id.player_score_list);
 //        recycler.setHasFixedSize(true);

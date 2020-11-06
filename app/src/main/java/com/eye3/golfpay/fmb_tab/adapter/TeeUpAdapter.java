@@ -101,8 +101,6 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
                 ImageView ivCheckin = visitorsGuestItem.findViewById(R.id.iv_checkin);
                 memberNameTextView.setText(todayReserveList.get(position).getGuestData().get(i).getGuestName());
                 if ("N".equals(todayReserveList.get(position).getGuestData().get(i).getCheckin())) {
-                    //내장객이 전원 입장을 안했을때
-                    //  ivCheckin.setImageAlpha(50);
                     ivCheckin.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.check_out));
                 } else {
                     ivCheckin.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.check_in));

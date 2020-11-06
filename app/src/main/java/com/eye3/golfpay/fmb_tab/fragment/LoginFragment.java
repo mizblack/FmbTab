@@ -124,9 +124,7 @@ public class LoginFragment extends BaseFragment {
                     mPhoneNumberEditText.setEnabled(true);
                     mNameEditText.setText("");
                     mPhoneNumberEditText.setText("");
-
                 }
-
             }
 
             @Override

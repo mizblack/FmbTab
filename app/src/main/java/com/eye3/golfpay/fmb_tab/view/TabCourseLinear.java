@@ -3,6 +3,7 @@ package com.eye3.golfpay.fmb_tab.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class TabCourseLinear extends LinearLayout {
 
     private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx, int mHoleScoreLayoutIdx) {
 
-        int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx - 1;
+        int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
         if (playerList == null)
             return false;
         //최초 홀은 무조건 통과
@@ -203,6 +204,16 @@ public class TabCourseLinear extends LinearLayout {
                 totalPar = totalPar + Integer.parseInt(holes.get(k).par);
             if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
                 totalMeter = totalMeter + Integer.parseInt(holes.get(k).hole_total_size);
+
+
+            if (k == 4) {
+                holeInfoLinear[k].findViewById(R.id.hole_longest).setVisibility(View.VISIBLE);
+            }
+
+            else if (k == 8) {
+                holeInfoLinear[k].findViewById(R.id.hole_nearest).setVisibility(View.VISIBLE);
+            }
+
         }
 
         //홀인포 전체를 나타내는 마지막 셀정보 입력
@@ -210,15 +221,14 @@ public class TabCourseLinear extends LinearLayout {
         totalHole.par = String.valueOf(totalPar);
         totalHole.hole_total_size = String.valueOf(totalMeter);
         holeInfoLinear[holeInfoLinear.length - 1] = new HoleInfoLinear(context, totalHole);
-        TextView tvCourseName = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.course_name);
+        //TextView tvCourseName = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.course_name);
         TextView tvCoursId = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.hole_no);
         tvCoursId.setVisibility(View.GONE);
-        tvCourseName.setVisibility(View.VISIBLE);
+        //tvCourseName.setVisibility(View.VISIBLE);
 
-        tvCourseName.setText(course.courseName);
-        mHolderLinear.addView(holeInfoLinear[holeInfoLinear.length - 1]);
+       // tvCourseName.setText(course.courseName);
+        //mHolderLinear.addView(holeInfoLinear[holeInfoLinear.length - 1]);
     }
-
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
         List<Player> playerList;
@@ -243,6 +253,12 @@ public class TabCourseLinear extends LinearLayout {
                 ll_score_row = view.findViewById(R.id.ll_score_row);
                 tvRank = view.findViewById(R.id.rank);
                 tvName = view.findViewById(R.id.name);
+
+                final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LayoutParams.MATCH_PARENT, getResources().getDisplayMetrics());
+                final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+                ll_score_row.setLayoutParams(params);
+
 
                 holeScoreLayout[0] = view.findViewById(R.id.hole1_ll);
                 holeScoreLayout[1] = view.findViewById(R.id.hole2_ll);
@@ -357,7 +373,15 @@ public class TabCourseLinear extends LinearLayout {
 
             for (int j = 0; scoreItemViewHolder.holeScoreLayout.length > j; j++) {
                 if (j == mHoleScoreLayoutIdx) {
-                    scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.GRAY);
+
+                    if (i % 2 == 0) {
+                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#d7dcde"));
+                        //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
+                    } else {
+                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#e0e3e4"));
+                        //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
+                    }
+
                     holeInfoLinear[j].setBackgroundColor(0xff00abc5);
                     holeInfoLinear[j].tvHoleNo.setTextColor(0xffffffff);
                     holeInfoLinear[j].tvPar.setTextColor(0xfff5f7f8);

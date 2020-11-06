@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hole1LinearLayout"
-    android:layout_width="87dp"
-    android:layout_height="110dp"
+    android:layout_width="88dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="16dp">
     <View
@@ -16,39 +15,60 @@
         android:paddingRight="5dp"
         />
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_hole"
         android:layout_below="@+id/view_game_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="6dp">
 
         <TextView
-            android:id="@+id/course_name"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:textSize="18sp"
-            android:text=""
-            android:textColor="@color/gray" />
-
-        <TextView
+            style="@style/GlobalTextView.18SP.gray.NotoSans.Bold"
             android:id="@+id/hole_no"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:textSize="18sp"
-            android:text="7"
-            android:textColor="@color/gray" />
-    </FrameLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/hole_longest"
+            style="@style/GlobalTextView.12SP.White.NotoSans.Medium"
+            android:background="@drawable/longest_round"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="롱기"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@+id/hole_no"
+            app:layout_constraintBottom_toBottomOf="@+id/hole_no"
+            app:layout_constraintTop_toTopOf="@+id/hole_no"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/hole_nearest"
+            style="@style/GlobalTextView.12SP.White.NotoSans.Medium"
+            android:background="@drawable/nearest_round"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="니어"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@+id/hole_no"
+            app:layout_constraintBottom_toBottomOf="@+id/hole_no"
+            app:layout_constraintTop_toTopOf="@+id/hole_no"
+            android:visibility="gone"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
         android:id="@+id/hole_par"
         android:layout_below="@+id/view_hole"
-        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-        android:layout_marginTop="2dp"
+        style="@style/GlobalTextView.16SP.gray.NotoSans.Bold"
+        android:layout_marginTop="3dp"
         android:textColor="@color/gray" />
 
     <TextView
         android:id="@+id/hole_meter"
-        style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+        style="@style/GlobalTextView.16SP.gray.NotoSans.Bold"
         android:layout_alignParentBottom="true"
         android:paddingBottom="13dp"
         android:textColor="@color/gray" />

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -21,12 +22,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.eye3.golfpay.fmb_tab.R;
 import com.eye3.golfpay.fmb_tab.activity.MainActivity;
 import com.eye3.golfpay.fmb_tab.common.Global;
+import com.eye3.golfpay.fmb_tab.dialog.LogoutDialog;
 import com.eye3.golfpay.fmb_tab.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.fmb_tab.model.field.Course;
 import com.eye3.golfpay.fmb_tab.model.teeup.Player;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
 import com.eye3.golfpay.fmb_tab.service.CartLocationService;
+import com.eye3.golfpay.fmb_tab.util.FmbCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.ScoreDialog;
 import com.eye3.golfpay.fmb_tab.util.SettingsCustomDialog;
 import com.eye3.golfpay.fmb_tab.util.Util;
@@ -40,6 +43,7 @@ import java.util.Objects;
 public class ViewMenuFragment extends BaseFragment {
 
     private View mView;
+    private TextView caddieNameTextView;
     private DrawerLayout drawer_layout;
     private SettingsCustomDialog settingsCustomDialog;
     public ViewMenuFragment() {
@@ -56,7 +60,6 @@ public class ViewMenuFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fr_view_menu, container, false);
-
         getAllCourseInfo(mContext);
         return mView;
     }
@@ -83,6 +86,23 @@ public class ViewMenuFragment extends BaseFragment {
     private void init() {
 
         drawer_layout = (mParentActivity).findViewById(R.id.drawer_layout);
+
+        caddieNameTextView = mView.findViewById(R.id.tv_caddie);
+        caddieNameTextView.setText(Global.caddieName + " 캐디");
+
+        mView.findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
+        mView.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.closeDrawer(GravityCompat.END);
+            }
+        });
 
         mView.findViewById(R.id.btn_menu_gps).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +274,29 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable t) {
                 hideProgress();
+            }
+        });
+    }
+
+    private void logout() {
+        LogoutDialog dlg = new LogoutDialog(getContext(), R.style.DialogTheme);
+        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        wmlp.gravity = Gravity.CENTER;
+
+        // Set alertDialog "not focusable" so nav bar still hiding:
+        dlg.getWindow().
+                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        dlg.show();
+
+        dlg.setListener(new LogoutDialog.IListenerLogout() {
+            @Override
+            public void onLogout() {
+                if (drawer_layout != null)
+                    drawer_layout.closeDrawer(GravityCompat.END);
+                setLogout();
             }
         });
     }

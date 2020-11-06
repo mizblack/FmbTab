@@ -101,8 +101,11 @@ public class TeeUpFragment extends BaseFragment {
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
 
                     //todayReserveTimer.cancel();
-                    caddieNameTextView.setText(response.getCaddyInfo().getName() + " 캐디");
+
                     Global.teeUpTime = response;
+                    Global.caddieName = response.getCaddyInfo().getName();
+                    caddieNameTextView.setText(Global.caddieName + " 캐디");
+
                     //*****************
                     LinearLayoutManager mManager = new LinearLayoutManager(mContext);
                     rvTeam.setHasFixedSize(true);

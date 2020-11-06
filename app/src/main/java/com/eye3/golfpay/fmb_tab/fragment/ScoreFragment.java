@@ -198,7 +198,7 @@ public class ScoreFragment extends BaseFragment {
             if (i != selectedTabIdx)
                 CourseTabBar[i].setTextColor(Color.GRAY);
         }
-        TabCourseLinear.setmHoleScoreLayoutIdx(-1);
+        TabCourseLinear.setmHoleScoreLayoutIdx(0);
         createScoreTab(playerList, selectedTabIdx);
 
     }

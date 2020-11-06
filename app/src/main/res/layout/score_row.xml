@@ -52,7 +52,7 @@
 
         <RelativeLayout
             android:id="@+id/hole1_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent">
 
             <TextView
@@ -81,7 +81,7 @@
 
         <RelativeLayout
             android:id="@+id/hole2_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -111,7 +111,7 @@
 
         <RelativeLayout
             android:id="@+id/hole3_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -141,7 +141,7 @@
 
         <RelativeLayout
             android:id="@+id/hole4_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -171,7 +171,7 @@
 
         <RelativeLayout
             android:id="@+id/hole5_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -201,7 +201,7 @@
 
         <RelativeLayout
             android:id="@+id/hole6_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -231,7 +231,7 @@
 
         <RelativeLayout
             android:id="@+id/hole7_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -261,7 +261,7 @@
 
         <RelativeLayout
             android:id="@+id/hole8_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -291,7 +291,7 @@
 
         <RelativeLayout
             android:id="@+id/hole9_ll"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:visibility="visible">
 
@@ -320,11 +320,9 @@
         </RelativeLayout>
 
 
-
-
         <RelativeLayout
             android:id="@+id/ll_course0_total"
-            android:layout_width="87dp"
+            android:layout_width="89dp"
             android:layout_height="match_parent">
 
             <View
@@ -383,7 +381,7 @@
 
         <RelativeLayout
             android:id="@+id/whole_total_linear"
-            android:layout_width="87dp"
+            android:layout_width="88dp"
             android:layout_height="match_parent"
             android:background="@color/ebonyBlack"
             android:orientation="vertical">
