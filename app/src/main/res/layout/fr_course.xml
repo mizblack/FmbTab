@@ -2,130 +2,151 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/map_info_title"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:background="#555555"
+        android:layout_height="120dp"
+        android:background="#55585c"
         android:orientation="horizontal"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="23dp">
+
+
+        <TextView
+            style="@style/GlobalTextView.38SP.white.NotoSans.Medium"
+            android:id="@+id/tv_hole_par"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 Hole Par 4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+            android:id="@+id/courseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OUTCOURSE"
+            app:layout_constraintStart_toStartOf="@+id/tv_hole_par"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hole_par"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/GlobalTextView.38SP.white.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:text="02:18"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_hole_par"
+            app:layout_constraintStart_toEndOf="@+id/tv_hole_par"
+            app:layout_constraintTop_toTopOf="@+id/tv_hole_par"
+            tools:ignore="HardcodedText,SpUsage" />
+
 
         <LinearLayout
+            android:id="@+id/linearLayout10"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="30dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/holeNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="@color/white"
-                    android:textSize="42dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Hole Par "
-                    android:textColor="@color/white"
-                    android:textSize="42dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/holePar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="@color/white"
-                    android:textSize="42dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/courseName"
+            app:layout_constraintStart_toStartOf="@+id/tv_time"
+            app:layout_constraintTop_toTopOf="@+id/courseName">
 
             <TextView
-                android:id="@+id/courseName"
+                style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-COURSE"
-                android:textColor="@color/white"
-                android:textSize="20dp"
+                android:text="전 07:08"
+                tools:ignore="HardcodedText,SpUsage" />
+
+
+            <TextView
+                style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:text="후 07:08"
                 tools:ignore="HardcodedText,SpUsage" />
 
         </LinearLayout>
 
+
         <LinearLayout
+            android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="30dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout10"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                app:meter="375/356"
+                app:oval_color="#6c2126"
+                app:title="Black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--:--"
-                    android:textColor="@color/white"
-                    android:textSize="42dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginLeft="16dp"
+                app:meter="338/320"
+                app:oval_color="#ffffff"
+                app:title="White" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--:--"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                app:meter="286/263"
+                app:oval_color="#dc3053"
+                app:title="Ladies" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" - "
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
+            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                app:meter="338/320"
+                app:oval_color="#416f9d"
+                app:title="Championship" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="--:--"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
+            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                app:meter="286/263"
+                app:oval_color="#dc763e"
+                app:title="Front" />
         </LinearLayout>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/tv_score"
+            style="@style/GlobalTextView.17SP.999999.NotoSans.Medium"
+            android:layout_width="90dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:background="@drawable/shape_round_dark_bg"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="스코어"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/linearLayout6"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:layout_editor_absoluteY="16dp">
 
             <View
                 android:layout_width="12dp"
@@ -135,209 +156,10 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/shape_monarch_circle" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tournament"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/tournamentTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- / -"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
 
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_white_circle" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Regular"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/regularTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- / -"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_amaranth_circle" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ladies"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/ladiesTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- / -"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_san_marino_circle" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Championship"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/championshipTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- / -"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_red_circle" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Front"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <TextView
-                    android:id="@+id/frontTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="- / -"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/closeLinearLayout"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/nearest_longest_close"
-                tools:ignore="ContentDescription" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/map_pager"

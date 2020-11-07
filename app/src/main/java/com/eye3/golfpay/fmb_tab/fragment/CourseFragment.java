@@ -42,9 +42,8 @@ public class CourseFragment extends BaseFragment {
     public ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
     public CoursePagerAdapter mCoursePagerAdapter;
-    private TextView mTvCourseName, mTvHoleNo, mTvHolePar;
+    private TextView mTvCourseName;
     public TextView mTvHereToHole;
-    private TextView tournamentTextView, regularTextView, ladiesTextView, championshipTextView, frontTextView;
 
     public CourseFragment() {
     }
@@ -63,23 +62,15 @@ public class CourseFragment extends BaseFragment {
         mMapPager = v.findViewById(R.id.map_pager);
         mTvHereToHole = v.findViewById(R.id.here_to_hole);
         mTvCourseName = v.findViewById(R.id.courseName);
-        mTvHoleNo = v.findViewById(R.id.holeNo);
-        mTvHolePar = v.findViewById(R.id.holePar);
         View menuLinearLayout = v.findViewById(R.id.menuLinearLayout);
-        View closeLinearLayout = v.findViewById(R.id.closeLinearLayout);
 
-        tournamentTextView = v.findViewById(R.id.tournamentTextView);
-        regularTextView = v.findViewById(R.id.regularTextView);
-        ladiesTextView = v.findViewById(R.id.ladiesTextView);
-        championshipTextView = v.findViewById(R.id.championshipTextView);
-        frontTextView = v.findViewById(R.id.frontTextView);
 
-        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoNativeScreen(new ScoreFragment(), null);
-            }
-        });
+//        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GoNativeScreen(new ScoreFragment(), null);
+//            }
+//        });
 
         menuLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,16 +122,16 @@ public class CourseFragment extends BaseFragment {
 
                         @Override
                         public void onPageSelected(int position) {
-                            mTvHoleNo.setText(Global.CurrentCourse.holes.get(position).hole_no);
+                            //mTvHoleNo.setText(Global.CurrentCourse.holes.get(position).hole_no);
                             mTvCourseName.setText(Global.CurrentCourse.courseName);
-                            mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
+                            //mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
 
                             if (Global.CurrentCourse.holes != null &&  Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
-                                tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
-                                regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
-                                ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
-                                championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
-                                frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
+                                //tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
+                                //regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
+                                //ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
+                                //championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
+                                //frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
                             }
 
                         }
@@ -151,16 +142,16 @@ public class CourseFragment extends BaseFragment {
                         }
                     });
                     //초기화
-                    mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
+                   // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
-                    mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
+                    //mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
 
                     if (Global.CurrentCourse.holes != null && Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
-                        tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
-                        regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
-                        ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
-                        championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
-                        frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
+                        //tournamentTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(0).getTboxValue());
+                        //regularTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(1).getTboxValue());
+                        //ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
+                        //championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
+                        //frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
                     }else{
                         Toast.makeText(mContext, "Tbox 정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }

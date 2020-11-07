@@ -12,5 +12,11 @@
         <attr name="start" format="integer" />
         <attr name="end" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="TeeShotSpotView">
+        <attr name="oval_color" format="color"/>
+        <attr name="title" format="reference|string"/>
+        <attr name="meter" format="string"/>
+    </declare-styleable>
 </resources>
 
