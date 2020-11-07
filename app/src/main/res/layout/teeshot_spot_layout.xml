@@ -11,6 +11,7 @@
         android:id="@+id/iv_oval"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginTop="2dp"
         android:background="@drawable/shape_oval_red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,17 +20,17 @@
         android:id="@+id/tv_text"
         style="@style/GlobalTextView.12SP.White.NotoSans.Medium"
         android:layout_width="wrap_content"
-        android:layout_height="14dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:gravity="center"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_oval"
         app:layout_constraintStart_toEndOf="@+id/iv_oval"
         app:layout_constraintTop_toTopOf="@+id/iv_oval" />
 
     <TextView
         android:id="@+id/tv_meter"
-        style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+        style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

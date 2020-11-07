@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -46,7 +47,7 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     private boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
     RelativeLayout mContentRelativeLayout;
-    LinearLayout mBottomBarLinearLayout;
+    ConstraintLayout mBottomBarLayout;
 
     public void setOnKeyBackPressedListener(BaseFragment listener) {
         mOnKeyBackPressedListener = listener;
@@ -110,15 +111,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     public void showMainBottomBar() {
         mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
         mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.content_view_height)));
-        mBottomBarLinearLayout = findViewById(R.id.main_bottom_bar);
-        mBottomBarLinearLayout.setVisibility(View.VISIBLE);
+        mBottomBarLayout = findViewById(R.id.main_bottom_bar);
+        mBottomBarLayout.setVisibility(View.VISIBLE);
     }
 
     public void hideMainBottomBar() {
         mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
         mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        mBottomBarLinearLayout = findViewById(R.id.main_bottom_bar);
-        mBottomBarLinearLayout.setVisibility(View.GONE);
+        mBottomBarLayout = findViewById(R.id.main_bottom_bar);
+        mBottomBarLayout.setVisibility(View.GONE);
 
 
     }

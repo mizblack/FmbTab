@@ -241,11 +241,12 @@ public class CartLocationService extends Service {
                 if (Global.courseFragment.mCoursePagerAdapter.mLocation != null &&
                         Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat != null &&
                         Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon != null) {
-                    Global.courseFragment.mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(
-                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
-                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
-                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
-                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon)) + "M"));
+
+//                    Global.courseFragment.mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(
+//                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
+//                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
+//                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
+//                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon)) + "M"));
                 }
             }
         }

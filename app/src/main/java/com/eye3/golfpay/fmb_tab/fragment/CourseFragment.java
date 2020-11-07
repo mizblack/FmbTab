@@ -43,7 +43,6 @@ public class CourseFragment extends BaseFragment {
     private ArrayList<Course> mCourseInfoList;
     public CoursePagerAdapter mCoursePagerAdapter;
     private TextView mTvCourseName;
-    public TextView mTvHereToHole;
 
     public CourseFragment() {
     }
@@ -60,10 +59,7 @@ public class CourseFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fr_course, container, false);
 
         mMapPager = v.findViewById(R.id.map_pager);
-        mTvHereToHole = v.findViewById(R.id.here_to_hole);
         mTvCourseName = v.findViewById(R.id.courseName);
-        View menuLinearLayout = v.findViewById(R.id.menuLinearLayout);
-
 
 //        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,14 +68,8 @@ public class CourseFragment extends BaseFragment {
 //            }
 //        });
 
-        menuLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) Objects.requireNonNull(getActivity())).openDrawerLayout();
-            }
-        });
 
-        (mParentActivity).hideMainBottomBar();
+        (mParentActivity).showMainBottomBar();
         return v;
     }
 
@@ -202,7 +192,7 @@ public class CourseFragment extends BaseFragment {
             mIvMap = view.findViewById(R.id.iv_map);
 
             if (mLocation != null && mHoleList.get(position).gps_lat != null && mHoleList.get(position).gps_lon != null) {
-                mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))) + "M");
+                //mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(mLocation.getLatitude(), mLocation.getLongitude(), Double.parseDouble(mHoleList.get(position).gps_lat), Double.parseDouble(mHoleList.get(position).gps_lon))) + "M");
             }
 
             if (mHoleList.get(position).img_1_file_url != null) {

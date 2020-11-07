@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView;
     TextView reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
     LocationManager mLocationManager;
-    ImageView markView, cancelView;
+    LinearLayout markView, cancelView;
     LinearLayout ll_login;
     Echo echo;
 
@@ -213,34 +214,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        gpsTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.gpsTextView);
-        gpsTxtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CourseFragment courseFragment = new CourseFragment();
-                GoNativeScreen(courseFragment, null);
-                Global.courseFragment = courseFragment;
-                closeDrawerLayout();
-            }
-        });
-
-        scoreTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.scoreTextView);
-        scoreTxtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoNativeScreen(new ScoreFragment(), null);
-                closeDrawerLayout();
-            }
-        });
-
-        controlTxtView = findViewById(R.id.main_bottom_bar).findViewById(R.id.controlTextView);
-        controlTxtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoNativeScreen(new ControlFragment(), null);
-                closeDrawerLayout();
-            }
-        });
 
         markView = findViewById(R.id.main_bottom_bar).findViewById(R.id.mark);
         markView.setOnClickListener(new View.OnClickListener() {

@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGray"
+    android:background="@color/zumthor"
     android:gravity="center">
 
     <ImageView
         android:id="@+id/iv_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/lightGray"
-        android:scaleType="fitCenter"
-        android:src="@drawable/holeinone"
+        android:layout_marginLeft="300dp"
+        android:background="@color/zumthor"
+        android:scaleType="center"
         tools:ignore="ContentDescription" />
 
 </LinearLayout>

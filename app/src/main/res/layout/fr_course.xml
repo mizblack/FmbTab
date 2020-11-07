@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/map_info_title"
@@ -11,32 +11,32 @@
         android:layout_height="120dp"
         android:background="#55585c"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
         android:paddingLeft="32dp"
+        android:paddingTop="12dp"
         android:paddingRight="23dp">
 
 
         <TextView
-            style="@style/GlobalTextView.38SP.white.NotoSans.Medium"
             android:id="@+id/tv_hole_par"
+            style="@style/GlobalTextView.32SP.white.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 Hole Par 4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
             android:id="@+id/courseName"
+            style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OUTCOURSE"
             app:layout_constraintStart_toStartOf="@+id/tv_hole_par"
-            app:layout_constraintTop_toBottomOf="@+id/tv_hole_par"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_hole_par" />
 
         <TextView
             android:id="@+id/tv_time"
-            style="@style/GlobalTextView.38SP.white.NotoSans.Medium"
+            style="@style/GlobalTextView.32SP.white.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
@@ -57,7 +57,7 @@
             app:layout_constraintTop_toTopOf="@+id/courseName">
 
             <TextView
-                style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+                style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전 07:08"
@@ -65,7 +65,7 @@
 
 
             <TextView
-                style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+                style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -95,7 +95,7 @@
             <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 app:meter="338/320"
                 app:oval_color="#ffffff"
                 app:title="White" />
@@ -103,7 +103,7 @@
             <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 app:meter="286/263"
                 app:oval_color="#dc3053"
                 app:title="Ladies" />
@@ -111,7 +111,7 @@
             <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 app:meter="338/320"
                 app:oval_color="#416f9d"
                 app:title="Championship" />
@@ -119,7 +119,7 @@
             <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 app:meter="286/263"
                 app:oval_color="#dc763e"
                 app:title="Front" />
@@ -130,10 +130,10 @@
             style="@style/GlobalTextView.17SP.999999.NotoSans.Medium"
             android:layout_width="90dp"
             android:layout_height="36dp"
-            android:gravity="center"
-            android:background="@drawable/shape_round_dark_bg"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_round_dark_bg"
+            android:gravity="center"
             android:text="스코어"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,199 +166,55 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/map_info_title"
-        android:background="@color/lightGray" />
+        android:background="@color/zumthor" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="bottom"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/map_info_title"
+        android:background="@android:color/transparent"
         tools:ignore="DisableBaselineAlignment">
 
-        <LinearLayout
+        <TextView
+            style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
+            android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:orientation="vertical">
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:text="Hole cup position"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hole cup position"
-                android:textColor="@color/darkGray"
-                android:textSize="17dp"
-                tools:ignore="HardcodedText,SpUsage" />
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/hole_cup_image"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            tools:ignore="ContentDescription" />
 
-            <ImageView
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/aliceBlue"
-                android:src="@drawable/hole_cup_image"
-                tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/textView9"
+            style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Hole to hole"
+            app:layout_constraintStart_toStartOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
+        <TextView
+            android:id="@+id/tv_distance"
+            style="@style/GlobalTextView.78SP.irisBlue.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="273M"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Here to Hole"
-                android:textColor="@color/darkGray"
-                android:textSize="17dp"
-                tools:ignore="HardcodedText,SpUsage" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/here_to_hole"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-M"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="56dp"
-                    tools:ignore="HardcodedText,SpUsage" />
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="16dp"
-                    android:background="@color/aliceBlue"
-                    android:src="@drawable/ic_noimage"
-                    tools:ignore="ContentDescription" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-카트"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        tools:ignore="HardcodedText,SpUsage" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/shape_white_circle"
-                        android:src="@drawable/ic_noimage"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/shape_white_circle" />
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/shape_white_circle" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-카트"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        tools:ignore="HardcodedText,SpUsage" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/shape_white_circle"
-                        android:src="@drawable/ic_noimage"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/shape_red_circle" />
-
-                <View
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/shape_red_circle" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-카트"
-                        android:textColor="@color/mandy"
-                        android:textSize="18dp"
-                        tools:ignore="HardcodedText,SpUsage" />
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/shape_red_circle"
-                        android:src="@drawable/ic_noimage"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/menuLinearLayout"
-            android:layout_width="74dp"
-            android:layout_height="68dp"
-            android:background="@color/irisBlue"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/logo"
-                tools:ignore="ContentDescription" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
