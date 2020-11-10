@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FmbTab</string>
+    <string name="app_name">GolfPay</string>
     <string name="intro_message">Camera </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

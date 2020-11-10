@@ -1,19 +1,12 @@
 package com.eye3.golfpay.fmb_tab.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,26 +14,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.RestaurantCategoryAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantListAdapter;
+import com.eye3.golfpay.fmb_tab.adapter.RestaurantMenuAdapter;
 import com.eye3.golfpay.fmb_tab.common.AppDef;
 import com.eye3.golfpay.fmb_tab.common.Global;
-import com.eye3.golfpay.fmb_tab.dialog.MenuCategoryDialog;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
 import com.eye3.golfpay.fmb_tab.model.order.Category2;
 import com.eye3.golfpay.fmb_tab.model.order.GuestNameOrder;
@@ -54,7 +40,6 @@ import com.eye3.golfpay.fmb_tab.model.order.ShadeOrder;
 import com.eye3.golfpay.fmb_tab.model.order.StoreOrder;
 import com.eye3.golfpay.fmb_tab.net.DataInterface;
 import com.eye3.golfpay.fmb_tab.net.ResponseData;
-import com.eye3.golfpay.fmb_tab.util.Util;
 import com.eye3.golfpay.fmb_tab.view.NameOrderView;
 import com.eye3.golfpay.fmb_tab.view.OrderItemInvoiceView;
 import com.eye3.golfpay.fmb_tab.view.SnappingLinearLayoutManager;
@@ -76,7 +61,8 @@ public class OrderFragment extends BaseFragment {
     private Button orderOrApplyBtn;
     private ArrayList<Restaurant> mRestaurantList = new ArrayList<>();
     private RecyclerView mRecyclerCategory;
-    private ImageView mFoodImage, mFoodNoImage;
+    private RecyclerView mRecyclerMenu;
+
     private int mSelectedRestaurantTabIdx = 0;
     //탭홀더
     private LinearLayout mOrderBrowserLinearLayout;
@@ -86,7 +72,7 @@ public class OrderFragment extends BaseFragment {
     private ShadeOrder mShadeOrders;
 
     // 최상위 카테고리 이름
-    private TextView mTVCateName, infoTextView;
+    private TextView infoTextView;
     private TextView mTotalPriceTextView;
     private TextView mCancelButton;
     private TextView mTempSaveButton;
@@ -107,6 +93,7 @@ public class OrderFragment extends BaseFragment {
 
     List<RestaurantMenu> mWholeMenuList;
     RestaurantMenuAdapter mMenuAdapter;
+    RestaurantCategoryAdapter mCategoryAdapter;
     int mNumOfOrderHistoryOfSelectedRestaurant = 0;
 
     @Override
@@ -128,7 +115,6 @@ public class OrderFragment extends BaseFragment {
 
         rv_restaurant = v.findViewById(R.id.rv_restaurant);
         mGuestContainer = v.findViewById(R.id.guest_container);
-        mTVCateName = v.findViewById(R.id.tv_cate_name);
         infoTextView = v.findViewById(R.id.infoTextView);
         mArrowToApply = v.findViewById(R.id.arrow_to_apply);
         mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
@@ -136,8 +122,8 @@ public class OrderFragment extends BaseFragment {
         mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
         mRecyclerCategory = v.findViewById(R.id.recycler_category);
-        mFoodImage = v.findViewById(R.id.img_food);
-        mFoodNoImage = v.findViewById(R.id.img_no_img);
+        mRecyclerMenu = v.findViewById(R.id.recycler_menu);
+
         mTempSaveButton = v.findViewById(R.id.btnTempSave);
         mRelOrderHistory = v.findViewById(R.id.rel_order_history);
         mRelSendOrder = v.findViewById(R.id.rel_send_order);
@@ -174,6 +160,8 @@ public class OrderFragment extends BaseFragment {
                     Toast.makeText(mContext, "주문한 음식이 없습니다. 먼저 음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
             }
         });
+
+
         initOrderItemInvoiceView();
         mParentActivity.showMainBottomBar();
         return v;
@@ -282,45 +270,6 @@ public class OrderFragment extends BaseFragment {
                     sendShadeOrders();
                 else
                     Toast.makeText(getActivity(), "먼저 주문을 해주십시요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mTVCateName.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                MenuCategoryDialog dlg = new MenuCategoryDialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                dlg.setListener(new MenuCategoryDialog.IListenerApplyCategory() {
-                    @Override
-                    public void onApplyCategory(String ct1Id, String ct2Id) {
-                        int subMenuZeroIdx = getPositionForSubMenuZeroItem(ct1Id, ct2Id);
-
-                        if (subMenuZeroIdx == -1) {
-                            Toast.makeText(getContext(), "선택한 카테고리에는 메뉴가 없습니다. 서버 확인 필요~", Toast.LENGTH_SHORT).show();
-                            mTVCateName.setText("전체");
-                            mRecyclerCategory.smoothScrollToPosition(0);
-                            return;
-                        }
-
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRecyclerCategory.smoothScrollToPosition(subMenuZeroIdx);
-                                mTVCateName.setText(findCategoryName(ct1Id, ct2Id));
-                            }
-                        }, 100);
-
-                    }
-                });
-
-                dlg.setData(mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList);
-                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-                dlg.getWindow().
-                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-                dlg.show();
             }
         });
     }
@@ -435,28 +384,7 @@ public class OrderFragment extends BaseFragment {
     }
 
 
-    private void setFoodImage(ImageView img, String url) {
-        if (img != null) {
 
-            mFoodNoImage.setVisibility(View.GONE);
-            Glide.with(mContext)
-                    .load(Global.HOST_BASE_ADDRESS_AWS + url)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            mFoodNoImage.setVisibility(View.VISIBLE);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            return false;
-                        }
-                    })
-                    .into(mFoodImage);
-        }
-    }
 
     public String getGuestName(String reserveId) {
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
@@ -845,6 +773,11 @@ public class OrderFragment extends BaseFragment {
     private void initRecyclerView(RecyclerView recycler, Restaurant selectedRestaurant) {
         mWholeMenuList = makeTotalMenuList(selectedRestaurant);
         mMenuAdapter = new RestaurantMenuAdapter(mContext, mWholeMenuList);
+
+        GridLayoutManager mManager = new GridLayoutManager(getActivity(), 2);
+        mManager.setOrientation(RecyclerView.VERTICAL);
+        recycler.setLayoutManager(mManager);
+
         recycler.setAdapter(mMenuAdapter);
         recycler.setHasFixedSize(true);
         mMenuAdapter.notifyDataSetChanged();
@@ -860,6 +793,38 @@ public class OrderFragment extends BaseFragment {
                 });
     }
 
+    //******************************************************************************************************
+    private void initCategoryRecyclerView(RecyclerView recycler) {
+
+        ArrayList<Category> categoryList = mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList;
+        mCategoryAdapter = new RestaurantCategoryAdapter(mContext, categoryList, new RestaurantCategoryAdapter.IOnCategoryClickAdapter() {
+            @Override
+            public void onApplyCategory(String ct1Id, String ct2Id) {
+                initRecyclerView(mRecyclerMenu, mRestaurantList.get(mSelectedRestaurantTabIdx));
+            }
+        });
+
+        recycler.setAdapter(mCategoryAdapter);
+        mRecyclerCategory.setLayoutManager(new SnappingLinearLayoutManager(mContext, 1, false));
+        recycler.setHasFixedSize(true);
+        mCategoryAdapter.notifyDataSetChanged();
+
+        recycler.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        //At this point the layout is complete and the
+                        //dimensions of recyclerView and any child views are known.
+                        //Remove listener after changed RecyclerView's height to prevent infinite loop
+                        recycler.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+
+
+
+
+    }
+
     private void getRestaurantMenu() {
         showProgress("식당 메뉴 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
@@ -870,15 +835,12 @@ public class OrderFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
                     mRestaurantList = (ArrayList<Restaurant>) response.getList();
 
+                    initRecyclerView(mRecyclerMenu, mRestaurantList.get(mSelectedRestaurantTabIdx));
                     initRestaurantRecyclerView();
                     initFoodImage();
+                    initCategoryRecyclerView(mRecyclerCategory);
 
-                    mMenuAdapter = new RestaurantMenuAdapter(mContext, makeTotalMenuList(mRestaurantList.get(0)));
-                    mRecyclerCategory.setAdapter(mMenuAdapter);
-                    mRecyclerCategory.setHasFixedSize(true);
-                    mRecyclerCategory.setLayoutManager(new SnappingLinearLayoutManager(mContext, 1, false));
-                    mMenuAdapter.notifyDataSetChanged();
-                    //레스토랑 선택 초기화
+
 
                     refresh();
                     openTempSavedOrderList();
@@ -913,7 +875,8 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onAdapterItemClicked(Integer id) {
                 mSelectedRestaurantTabIdx = id;
-                initRecyclerView(mRecyclerCategory, mRestaurantList.get(id));
+                //initRecyclerView(mRecyclerCategory, mRestaurantList.get(id));
+                initCategoryRecyclerView(mRecyclerCategory);
             }
         });
 
@@ -929,8 +892,6 @@ public class OrderFragment extends BaseFragment {
         if (mMenuAdapter != null)
             mMenuAdapter.notifyDataSetChanged();
     }
-
-
 
     //서브아아템의 wholemenulist의 position을 리턴한다. (smoothScrollto 사용시)
     private int getPositionForSubMenuZeroItem(String category1Id, String category2Id) {
@@ -990,134 +951,7 @@ public class OrderFragment extends BaseFragment {
         mRecyclerCategory.smoothScrollToPosition(position);
     }
 
-    private class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAdapter.MenuItemViewHolder> {
 
 
-        private RestaurantMenu selectedMenu = null;
 
-        class MenuItemViewHolder extends RecyclerView.ViewHolder {
-            TextView tvMenuName, tvPrice, tvMenuId;
-
-            //onCreateViewHolder 의 mMenuView 임()
-            MenuItemViewHolder(@NonNull final View itemView) {
-                super(itemView);
-                tvMenuName = itemView.findViewById(R.id.tv_menu_name);
-                tvPrice = itemView.findViewById(R.id.tv_menu_price);
-                tvMenuId = itemView.findViewById(R.id.tv_menu_id);
-            }
-        }
-
-        Context mContext;
-        List<RestaurantMenu> mMenuList;
-        public MenuItemViewHolder preSelectedViewHolder;
-
-        RestaurantMenuAdapter(Context context, List<RestaurantMenu> menuList) {
-            Log.d(TAG, "  메뉴 사이즈   " + String.valueOf(menuList.size()));
-            mContext = context;
-            mMenuList = menuList;
-        }
-
-        @NonNull
-        @Override
-        // recyclerView 가 parent 임
-        public MenuItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-            View view = LayoutInflater.from(mContext).inflate(R.layout.restaurant_menu_row, parent, false);
-            //    Log.d(TAG, "onCreateViewHolder    " + "MenuItemViewHolder");
-            return new MenuItemViewHolder(view);
-        }
-
-        private String priceMapper(int price) {
-            String priceToString = "" + price;
-            if (price >= 1000) {
-                int length = priceToString.length();
-                String string00 = priceToString.substring(0, priceToString.length() - 3);
-                String string01 = priceToString.substring(priceToString.length() - 3, length);
-                priceToString = string00 + "," + string01;
-            }
-            return priceToString;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull final RestaurantMenuAdapter.MenuItemViewHolder holder, int position) {
-            final int idx = position;
-            Log.d(TAG, "onBindViewHolder    " + "메뉴명: " + mMenuList.get(idx).name + "MenuItemViewHolder");
-            holder.itemView.setTag(mMenuList.get(position));
-            if (mMenuList.get(idx).isSelected) {
-                holder.itemView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-                holder.tvMenuName.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
-                holder.tvPrice.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
-            } else {
-                holder.itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
-                holder.tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-                holder.tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-            }
-
-            //              holder.tvMenuName.setText(mMenuList.get(idx).name + " " + mCategory2List.get(idx).catergory2_name);
-            holder.tvMenuName.setText(mMenuList.get(idx).name);
-            if (mMenuList.get(idx).price != null)
-                holder.tvPrice.setText(priceMapper(Integer.parseInt(mMenuList.get(idx).price)));
-            holder.tvMenuId.setText(mMenuList.get(idx).id);
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-
-                View preView = null;
-                @Override
-                public void onClick(View v) {
-
-                    if (mMenuList.get(idx).isSelected == true)
-                        return;
-
-                    if (preSelectedViewHolder != null) {
-
-                        preSelectedViewHolder.itemView.setBackgroundColor(getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(getActivity()).getTheme()));
-                        preSelectedViewHolder.tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-                        preSelectedViewHolder.tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-                    }
-
-                    preSelectedViewHolder = holder;
-
-                    clearOrder();
-                    mMenuList.get(idx).isSelected = true;
-                    selectedMenu = mMenuList.get(idx);
-                    resetGuestList();
-                    setFoodImage(mFoodImage, mMenuList.get(idx).image);
-                    notifyDataSetChanged();
-                    //moveSmoothScroll(position);
-                    preView = v;
-                }
-            });
-        }
-
-        @Override
-        public void onViewAttachedToWindow(@NonNull MenuItemViewHolder holder) {
-            super.onViewAttachedToWindow(holder);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mMenuList.size();
-        }
-
-        public boolean haveOrder() {
-            for (RestaurantMenu item : mMenuList) {
-                if (item.isSelected == true)
-                    return true;
-            }
-
-            return false;
-        }
-
-        public void clearOrder() {
-            for (RestaurantMenu item : mMenuList) {
-                item.isSelected = false;
-            }
-
-            notifyDataSetChanged();
-        }
-
-        public RestaurantMenu getSelectedMenu() {
-            return selectedMenu;
-        }
-    }
 }

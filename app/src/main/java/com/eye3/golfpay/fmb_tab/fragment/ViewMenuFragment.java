@@ -100,7 +100,8 @@ public class ViewMenuFragment extends BaseFragment {
         mView.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer_layout.closeDrawer(GravityCompat.END);
+                if (mParentActivity.getPreviousBaseFragment() != null)
+                    drawer_layout.closeDrawer(GravityCompat.END);
             }
         });
 
@@ -245,8 +246,9 @@ public class ViewMenuFragment extends BaseFragment {
         mView.findViewById(R.id.view_beto).setBackgroundColor(ContextCompat.getColor(mContext, R.color.FMB_Color_494B4E));
         mView.findViewById(R.id.view_notice).setBackgroundColor(ContextCompat.getColor(mContext, R.color.FMB_Color_494B4E));
         mView.findViewById(R.id.view_setting).setBackgroundColor(ContextCompat.getColor(mContext, R.color.FMB_Color_3A3D40));
-
         mView.findViewById(id).setBackgroundColor(ContextCompat.getColor(mContext, R.color.irisBlue));
+
+        mView.findViewById(R.id.btn_close).setVisibility(View.VISIBLE);
     }
 
     private void getAllCourseInfo(Context context) {

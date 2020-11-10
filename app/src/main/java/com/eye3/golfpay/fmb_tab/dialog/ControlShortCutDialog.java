@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.fmb_tab.R;
+import com.eye3.golfpay.fmb_tab.adapter.HotkeyCategoryAdapter;
 import com.eye3.golfpay.fmb_tab.adapter.RestaurantCategoryAdapter;
 import com.eye3.golfpay.fmb_tab.model.control.ChatHotKeyOption;
 import com.eye3.golfpay.fmb_tab.model.order.Category;
@@ -174,7 +175,7 @@ public class ControlShortCutDialog extends Dialog {
                 });
     }
 
-    private void addItem(RestaurantCategoryAdapter adapter, ChatHotKeyOption option) {
+    private void addItem(HotkeyCategoryAdapter adapter, ChatHotKeyOption option) {
         for (ChatHotKeyOption.Detail detail : option.getDetail()) {
             adapter.addItem("", detail.text);
         }
@@ -184,10 +185,10 @@ public class ControlShortCutDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvCategory1.setHasFixedSize(true);
         rvCategory1.setLayoutManager(layoutManager);
-        final RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
+        final HotkeyCategoryAdapter adapter = new HotkeyCategoryAdapter(getContext(), new HotkeyCategoryAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(int position) {
-                RestaurantCategoryAdapter adapter = (RestaurantCategoryAdapter)rvCategory1.getAdapter();
+                HotkeyCategoryAdapter adapter = (HotkeyCategoryAdapter)rvCategory1.getAdapter();
                 shortcut[0] = adapter.getItem(position);
             }
         });
@@ -200,10 +201,10 @@ public class ControlShortCutDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvCategory2.setHasFixedSize(true);
         rvCategory2.setLayoutManager(layoutManager);
-        RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
+        HotkeyCategoryAdapter adapter = new HotkeyCategoryAdapter(getContext(), new HotkeyCategoryAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(int position) {
-                RestaurantCategoryAdapter adapter = (RestaurantCategoryAdapter)rvCategory2.getAdapter();
+                HotkeyCategoryAdapter adapter = (HotkeyCategoryAdapter)rvCategory2.getAdapter();
                 shortcut[1] = adapter.getItem(position);
             }
         });
@@ -216,10 +217,10 @@ public class ControlShortCutDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvCategory3.setHasFixedSize(true);
         rvCategory3.setLayoutManager(layoutManager);
-        RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
+        HotkeyCategoryAdapter adapter = new HotkeyCategoryAdapter(getContext(), new HotkeyCategoryAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(int position) {
-                RestaurantCategoryAdapter adapter = (RestaurantCategoryAdapter)rvCategory3.getAdapter();
+                HotkeyCategoryAdapter adapter = (HotkeyCategoryAdapter)rvCategory3.getAdapter();
                 shortcut[2] = adapter.getItem(position);
             }
         });
@@ -232,10 +233,10 @@ public class ControlShortCutDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvCategory4.setHasFixedSize(true);
         rvCategory4.setLayoutManager(layoutManager);
-        RestaurantCategoryAdapter adapter = new RestaurantCategoryAdapter(getContext(), new RestaurantCategoryAdapter.IOnClickAdapter() {
+        HotkeyCategoryAdapter adapter = new HotkeyCategoryAdapter(getContext(), new HotkeyCategoryAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(int position) {
-                RestaurantCategoryAdapter adapter = (RestaurantCategoryAdapter)rvCategory4.getAdapter();
+                HotkeyCategoryAdapter adapter = (HotkeyCategoryAdapter)rvCategory4.getAdapter();
                 shortcut[3] = adapter.getItem(position);
             }
         });

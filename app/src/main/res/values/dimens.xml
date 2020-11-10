@@ -31,6 +31,6 @@
 
     <dimen name="personal_bill_unit_width">230dp</dimen>
     <dimen name="personal_bill_unit_height">400dp</dimen>
-    <dimen name="bottom_bar_height">130dp</dimen>
+    <dimen name="bottom_bar_height">120dp</dimen>
     <dimen name="content_view_height">680dp</dimen>
 </resources>

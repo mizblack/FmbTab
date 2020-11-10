@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pattensBlue"
+    android:background="@color/aliceBlue"
     android:orientation="horizontal"
     android:weightSum="10"
     tools:ignore="DisableBaselineAlignment">
@@ -14,8 +14,12 @@
         android:id="@+id/fl_order_left_board"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="7"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/orderBrowserRootLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/applyFragmentLinear"
@@ -27,7 +31,6 @@
             android:id="@+id/tabsRootLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="7"
             android:background="@color/white"
             android:orientation="vertical"
             android:paddingEnd="20dp"
@@ -52,61 +55,34 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_cate_name"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_cate_name"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="100dp"
-                    android:drawableRight="@drawable/ic_arrow_down_irisblue_24dp"
-                    android:text="전체"
-                    android:textColor="@color/irisBlue"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="28dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/aliceBlue"
                 android:orientation="horizontal">
 
-                <FrameLayout
-                    android:layout_width="485dp"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/img_food"
-                        android:layout_width="485dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/order_menu_temp"
-                        android:scaleType="centerCrop"
-                        tools:ignore="ContentDescription" />
-                    <ImageView
-                        android:id="@+id/img_no_img"
-                        android:layout_width="485dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/zumthor"
-                        android:src="@drawable/ic_noimage"
-                        android:scaleType="center"
-                        tools:ignore="ContentDescription"
-                        android:visibility="gone"/>
-                </FrameLayout>
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_menu"
+                    android:layout_width="668dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_order_list"
+                    android:paddingLeft="1dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_category"
-                    android:layout_width="228dp"
+                    android:layout_width="92dp"
                     android:layout_height="match_parent"
-                    android:padding="1dp"
-                    android:background="@drawable/shape_order_list" />
+                    android:background="@drawable/shape_order_list"
+                    android:padding="1dp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -121,8 +97,8 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:background="@color/zumthor">
+                            android:background="@color/zumthor"
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/guest_container"
@@ -130,7 +106,7 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 app:layout_constraintStart_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </ScrollView>
@@ -139,23 +115,21 @@
                         android:layout_width="92dp"
                         android:layout_height="1dp"
                         android:layout_below="@+id/guest_scrollview"
-                        android:background="@color/zumthor"/>
+                        android:background="@color/zumthor" />
 
                     <TextView
                         android:id="@+id/tvCaddy"
                         android:layout_width="90dp"
                         android:layout_height="94dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_gravity="bottom"
                         android:background="@color/ebonyBlack"
-                        android:layout_alignParentBottom="true"
                         android:gravity="center"
                         android:text="캐디"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
 
                 </RelativeLayout>
-
-
 
 
             </LinearLayout>
@@ -165,16 +139,20 @@
 
     <LinearLayout
         android:id="@+id/orderBrowserRootLinearLayout"
-        android:layout_width="0dp"
+        android:layout_width="340dp"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
         android:layout_weight="3"
         android:background="@color/white"
         android:orientation="vertical"
         android:padding="30dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Medium"
             android:id="@+id/infoTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,8 +160,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:text=" 드시고 싶은 메뉴를\n 선택하신후\n 주문자 이름을 터치하면\n 주문이 추가됩니다."
-            android:textColor="@color/irisBlue"
-            android:textSize="20dp"
             tools:ignore="HardcodedText,SpUsage" />
 
         <ScrollView
@@ -238,41 +214,44 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-             <RelativeLayout
-                 android:id="@+id/rel_order_history"
-                 android:layout_width="match_parent"
-                 android:layout_height="140dp"
-                 android:visibility="invisible">
-                 <Button
-                     android:id="@+id/btn_add"
-                     android:layout_above="@id/btn_order_history"
-                     android:layout_width="match_parent"
-                     android:layout_height="70dp"
-                     android:layout_weight="2"
-                     android:background="@color/irisBlue"
-                     android:gravity="center"
-                     android:text="추가주문하기"
-                     android:textColor="@color/white"
-                     android:textSize="20dp"
-                     android:textStyle="bold"
-                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
-                 <Button
-                     android:id="@+id/btn_order_history"
-                     android:layout_width="match_parent"
-                     android:layout_height="65dp"
-                     android:layout_alignParentBottom="true"
-                     android:layout_marginTop="5dp"
-                     android:layout_weight="2"
-                     android:background="@drawable/shape_gray_edge"
-                     android:gravity="center"
-                     android:text="주문내역보기"
-                     android:textColor="@color/gray"
-                     android:textSize="20dp"
-                     android:textStyle="bold"
-                     tools:ignore="ButtonStyle,HardcodedText,SpUsage"
-                     android:layout_above="@id/btn_order_history"
-                     />
-             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_order_history"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/btn_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_above="@id/btn_order_history"
+                    android:layout_weight="2"
+                    android:background="@color/irisBlue"
+                    android:gravity="center"
+                    android:text="추가주문하기"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
+
+                <Button
+                    android:id="@+id/btn_order_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_above="@id/btn_order_history"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2"
+                    android:background="@drawable/shape_gray_edge"
+                    android:gravity="center"
+                    android:text="주문내역보기"
+                    android:textColor="@color/gray"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
+            </RelativeLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/rel_send_order"
                 android:layout_width="match_parent"
@@ -284,15 +263,15 @@
                     android:id="@+id/btnTempSave"
                     android:layout_width="200dp"
                     android:layout_height="70dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="1dp"
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="임시저장"
                     android:textColor="@color/irisBlue"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginBottom="1dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
@@ -318,12 +297,12 @@
                     android:id="@+id/bar"
                     android:layout_width="match_parent"
                     android:layout_height="4dp"
-                    android:layout_marginTop="1dp"
                     android:layout_below="@+id/resetButton"
+                    android:layout_marginTop="1dp"
                     android:background="@color/white"
-                    app:layout_constraintTop_toBottomOf="@+id/btnTempSave"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnTempSave" />
 
                 <Button
                     android:id="@+id/orderOrApplyBtn"
@@ -337,9 +316,9 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@+id/bar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bar"
                     tools:ignore="ButtonStyle,HardcodedText,SpUsage" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -347,4 +326,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

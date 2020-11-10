@@ -21,4 +21,6 @@ public class Category implements Serializable {
     @Expose
     public ArrayList<Category2> subCategoryList = new ArrayList<>();
 
+    public boolean isSelected;
+
 }
