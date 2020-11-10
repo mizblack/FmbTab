@@ -19,7 +19,7 @@
             android:id="@+id/tab_bar"
             layout="@layout/tab_bar"/>
 
-        <com.eye3.golfpay.fmb_tab.view.TabCourseLinear
+        <com.eye3.golfpay.view.TabCourseLinear
             android:id="@+id/scoreBoard"
             android:layout_gravity="center_horizontal"
             android:layout_width="1203dp"

@@ -41,7 +41,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.eye3.golfpay.fmb_tab.view.ControlPanelView
+    <com.eye3.golfpay.view.ControlPanelView
         android:id="@+id/view_control_panel"
         android:layout_width="432dp"
         android:layout_height="0dp"

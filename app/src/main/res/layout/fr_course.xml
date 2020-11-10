@@ -85,14 +85,14 @@
             app:layout_constraintStart_toEndOf="@+id/linearLayout10"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+            <com.eye3.golfpay.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:meter="375/356"
                 app:oval_color="#6c2126"
                 app:title="Black" />
 
-            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+            <com.eye3.golfpay.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -100,7 +100,7 @@
                 app:oval_color="#ffffff"
                 app:title="White" />
 
-            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+            <com.eye3.golfpay.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -108,7 +108,7 @@
                 app:oval_color="#dc3053"
                 app:title="Ladies" />
 
-            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+            <com.eye3.golfpay.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -116,7 +116,7 @@
                 app:oval_color="#416f9d"
                 app:title="Championship" />
 
-            <com.eye3.golfpay.fmb_tab.view.TeeShotSpotView
+            <com.eye3.golfpay.view.TeeShotSpotView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"

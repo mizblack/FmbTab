@@ -1,4 +1,4 @@
-package com.eye3.golfpay.fmb_tab;
+package com.eye3.golfpay;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.eye3.golfpay.fmb_tab", appContext.getPackageName());
+        assertEquals("com.eye3.golfpay", appContext.getPackageName());
     }
 }

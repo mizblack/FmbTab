@@ -1,4 +1,4 @@
-package com.eye3.golfpay.fmb_tab;
+package com.eye3.golfpay;
 
 import org.junit.Test;
 
