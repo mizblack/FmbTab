@@ -46,10 +46,10 @@ public class ViewMenuFragment extends BaseFragment {
     private TextView caddieNameTextView;
     private DrawerLayout drawer_layout;
     private SettingsCustomDialog settingsCustomDialog;
+
     public ViewMenuFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -230,9 +230,11 @@ public class ViewMenuFragment extends BaseFragment {
                 settingsCustomDialog.show();
             }
         });
+
+        mView.findViewById(R.id.btn_menu_near_caddie_note).performClick();
     }
 
-    private void selectMenu(int id) {
+    public void selectMenu(int id) {
 
         mView.findViewById(R.id.view_gps).setBackgroundColor(ContextCompat.getColor(mContext, R.color.FMB_Color_494B4E));
         mView.findViewById(R.id.view_score).setBackgroundColor(ContextCompat.getColor(mContext, R.color.FMB_Color_494B4E));

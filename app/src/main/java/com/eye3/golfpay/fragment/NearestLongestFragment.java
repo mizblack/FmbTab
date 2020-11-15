@@ -16,14 +16,20 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.dialog.GameHoleDialog;
+import com.eye3.golfpay.model.field.NearLong;
+import com.eye3.golfpay.model.login.Login;
+import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.teeup.GuestDatum;
 import com.eye3.golfpay.model.teeup.GuestScoreDB;
+import com.eye3.golfpay.net.DataInterface;
+import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
 
 import org.w3c.dom.Text;
@@ -111,6 +117,7 @@ public class NearestLongestFragment extends BaseFragment {
 
 
         loadGuestScore();
+        loadGuestScoreFromAPI();
 
         for (int i = 0; i < guestArrayList.size(); i++) {
             addPlayerList(view.findViewById(R.id.view_list), i, guestArrayList.size());
@@ -346,6 +353,25 @@ public class NearestLongestFragment extends BaseFragment {
             String rankText = getRankText(guestArrayList.get(i).getLongestRank());
             tvRank.setText(rankText);
         }
+    }
+
+    private void loadGuestScoreFromAPI() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getGameTypeScore(getContext(), new DataInterface.ResponseCallback<NearLongScoreBoard>() {
+            @Override
+            public void onSuccess(NearLongScoreBoard response) {
+
+            }
+
+            @Override
+            public void onError(NearLongScoreBoard response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private void loadGuestScore() {

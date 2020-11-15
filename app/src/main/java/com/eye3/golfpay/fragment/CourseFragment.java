@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -24,14 +25,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.GPSUtil;
+import com.eye3.golfpay.view.TeeShotSpotView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -43,6 +49,10 @@ public class CourseFragment extends BaseFragment {
     private ArrayList<Course> mCourseInfoList;
     public CoursePagerAdapter mCoursePagerAdapter;
     private TextView mTvCourseName;
+    View mainView;
+
+    private TextView tv_hole_par, tv_time;
+    private TeeShotSpotView tbox1, tbox2, tbox3, tbox4, tbox5;
 
     public CourseFragment() {
     }
@@ -56,10 +66,10 @@ public class CourseFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_course, container, false);
+        mainView = inflater.inflate(R.layout.fr_course, container, false);
 
-        mMapPager = v.findViewById(R.id.map_pager);
-        mTvCourseName = v.findViewById(R.id.courseName);
+        mMapPager = mainView.findViewById(R.id.map_pager);
+        mTvCourseName = mainView.findViewById(R.id.courseName);
 
 //        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -69,8 +79,25 @@ public class CourseFragment extends BaseFragment {
 //        });
 
 
+        tv_hole_par = mainView.findViewById(R.id.tv_hole_par);
+        tv_time = mainView.findViewById(R.id.tv_time);
+        tbox1 = mainView.findViewById(R.id.tbox1);
+        tbox2 = mainView.findViewById(R.id.tbox2);
+        tbox3 = mainView.findViewById(R.id.tbox3);
+        tbox4 = mainView.findViewById(R.id.tbox4);
+        tbox5 = mainView.findViewById(R.id.tbox5);
+
+        mainView.findViewById(R.id.tv_score).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoNativeScreen(new ScoreFragment(), null);
+                (mParentActivity).getViewMenuFragment().selectMenu(R.id.view_score);
+            }
+        });
         (mParentActivity).showMainBottomBar();
-        return v;
+
+        startTimerThread();
+        return mainView;
     }
 
     @Override
@@ -112,18 +139,7 @@ public class CourseFragment extends BaseFragment {
 
                         @Override
                         public void onPageSelected(int position) {
-                            //mTvHoleNo.setText(Global.CurrentCourse.holes.get(position).hole_no);
-                            mTvCourseName.setText(Global.CurrentCourse.courseName);
-                            //mTvHolePar.setText(Global.CurrentCourse.holes.get(position).par);
-
-                            if (Global.CurrentCourse.holes != null &&  Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
-                                //tournamentTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
-                                //regularTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
-                                //ladiesTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
-                                //championshipTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
-                                //frontTextView.setText(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
-                            }
-
+                            setDrawPage(position);
                         }
 
                         @Override
@@ -132,7 +148,7 @@ public class CourseFragment extends BaseFragment {
                         }
                     });
                     //초기화
-                   // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
+                    // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     //mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
 
@@ -142,13 +158,15 @@ public class CourseFragment extends BaseFragment {
                         //ladiesTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(2).getTboxValue());
                         //championshipTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(3).getTboxValue());
                         //frontTextView.setText(Global.CurrentCourse.holes.get(0).tBox.get(4).getTboxValue());
-                    }else{
+                    } else {
                         Toast.makeText(mContext, "Tbox 정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
+
+                    setDrawPage(0);
+
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -163,6 +181,21 @@ public class CourseFragment extends BaseFragment {
         });
     }
 
+    private void setDrawPage(int position) {
+        mTvCourseName.setText(Global.CurrentCourse.courseName);
+        String holeNo = Global.CurrentCourse.holes.get(position).hole_no;
+        String par = Global.CurrentCourse.holes.get(position).par;
+        tv_hole_par.setText(String.format("%s Hole Par %s", holeNo, par));
+
+        if (Global.CurrentCourse.holes != null && Global.CurrentCourse.holes.get(0).tBox.size() > 0) {
+
+            tbox1.setValue(Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(0).getTboxValue());
+            tbox2.setValue(Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(1).getTboxValue());
+            tbox3.setValue(Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(2).getTboxValue());
+            tbox4.setValue(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue());
+            tbox5.setValue(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue());
+        }
+    }
 
     public class CoursePagerAdapter extends PagerAdapter implements LocationListener {
         Context mContext;
@@ -257,6 +290,33 @@ public class CourseFragment extends BaseFragment {
                 "\n속도 : " + location.getSpeed() +
                 "\n정확도 : " + location.getAccuracy() +
                 "\n제공프로바이더 : " + location.getProvider();
+    }
+
+    private void startTimerThread() {
+
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                updateTimer();
+            }
+        }.start();
+    }
+
+    private void updateTimer() {
+        UIThread.executeInUIThread(new Runnable() {
+            @Override
+            public void run() {
+                int hou = Calendar.getInstance(Locale.KOREA).get(Calendar.HOUR);
+                int min = Calendar.getInstance(Locale.KOREA).get(Calendar.MINUTE);
+                tv_time.setText(String.format("%02d:%02d", hou, min));
+            }
+        });
+        startTimerThread();
     }
 }
 

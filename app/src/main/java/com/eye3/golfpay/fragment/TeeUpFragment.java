@@ -11,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.adapter.TeeUpAdapter;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
@@ -168,8 +170,12 @@ public class TeeUpFragment extends BaseFragment {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
                     //   GoNativeScreen(new CaddieFragment(), null);
-                    // drawer_layout.closeDrawer(GravityCompat.END);
+                    mParentActivity.getDrawer().closeDrawer(GravityCompat.END, false);
                     hideProgress();
+
+                    ((MainActivity)mParentActivity).navigationView.setVisibility(View.GONE);
+                    ((MainActivity)mParentActivity).updateUI();
+                    GoNativeScreen(new CaddieFragment(), null);
                     GoNavigationDrawer(new ViewMenuFragment(), null);
                 }
             }

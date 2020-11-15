@@ -3,6 +3,7 @@ package com.eye3.golfpay.net;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
+import com.eye3.golfpay.model.field.NearLong;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
@@ -12,6 +13,7 @@ import com.eye3.golfpay.model.order.PlayStatus;
 import com.eye3.golfpay.model.order.Restaurant;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
+import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
@@ -96,4 +98,8 @@ public interface HttpService {
                                           @Query("sender_type") String sender_type,
                                           @Query("msg") String msg,
                                           @Query("receiver_type") String receiver_type);
+
+    @FormUrlEncoded
+    @POST("getGameTypeScore")
+    Call<NearLongScoreBoard> getGameTypeScore(@Field("reserve_id") int reserveId);
 }

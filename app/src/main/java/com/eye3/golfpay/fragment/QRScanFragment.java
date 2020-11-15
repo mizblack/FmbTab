@@ -194,8 +194,6 @@ public class QRScanFragment extends BaseFragment {
 
         getAllCourseInfo(getActivity());
         GoNavigationDrawer(new ViewMenuFragment(), null);
-
-
     }
 
     private void getAllCourseInfo(Context context) {

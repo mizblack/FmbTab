@@ -25,8 +25,11 @@ public class TeeShotSpotView extends ConstraintLayout {
 
     Context mContext;
     int color;
-    String text;
-    String meter;
+    String mText;
+    String mMeter;
+
+    private TextView tvText;
+    private TextView tvMeter;
 
     public TeeShotSpotView(Context context) {
         super(context);
@@ -42,8 +45,8 @@ public class TeeShotSpotView extends ConstraintLayout {
         super(context, attrs);
 
         color = context.obtainStyledAttributes(attrs, R.styleable.TeeShotSpotView).getColor(R.styleable.TeeShotSpotView_oval_color, 0);
-        text = context.obtainStyledAttributes(attrs, R.styleable.TeeShotSpotView).getString(R.styleable.TeeShotSpotView_title);
-        meter = context.obtainStyledAttributes(attrs, R.styleable.TeeShotSpotView).getString(R.styleable.TeeShotSpotView_meter);
+        mText = context.obtainStyledAttributes(attrs, R.styleable.TeeShotSpotView).getString(R.styleable.TeeShotSpotView_title);
+        mMeter = context.obtainStyledAttributes(attrs, R.styleable.TeeShotSpotView).getString(R.styleable.TeeShotSpotView_meter);
         init(context);
     }
 
@@ -58,12 +61,16 @@ public class TeeShotSpotView extends ConstraintLayout {
         drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         ivOval.setBackground(drawable);
 
-        TextView tvText = v.findViewById(R.id.tv_text);
-        tvText.setText(text);
-        TextView tvMeter = v.findViewById(R.id.tv_meter);
-        tvMeter.setText(meter);
+        tvText = v.findViewById(R.id.tv_text);
+        tvText.setText(mText);
+        tvMeter = v.findViewById(R.id.tv_meter);
+        tvMeter.setText(mMeter);
 
         addView(v);
+    }
 
+    public void setValue(String text, String meter) {
+        tvText.setText(text);
+        tvMeter.setText(meter);
     }
 }

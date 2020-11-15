@@ -42,11 +42,13 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.PopupDialog;
 import com.eye3.golfpay.dialog.RestaurantsPopupDialog;
+import com.eye3.golfpay.fragment.CaddieFragment;
 import com.eye3.golfpay.fragment.CaddieMainFragment;
 import com.eye3.golfpay.fragment.ControlFragment;
 import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.fragment.ScoreFragment;
+import com.eye3.golfpay.fragment.ViewMenuFragment;
 import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.LaravelModel;
 import com.eye3.golfpay.model.gps.GpsInfo;
@@ -67,11 +69,13 @@ import net.mrbin99.laravelechoandroid.EchoOptions;
 import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 0;
-    NavigationView navigationView;
+    public NavigationView navigationView;
     public DrawerLayout drawer_layout;
     TextView gpsTxtView, scoreTxtView, controlTxtView, groupNameTextView;
     TextView reservationPersonNameTextView, roundingTeeUpTimeTextView, inOutTextView00, inOutTextView01;
@@ -79,6 +83,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     LinearLayout markView, cancelView;
     LinearLayout ll_login;
     Echo echo;
+    TextView currentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,9 +213,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 RestaurantsPopupDialog dlg = new RestaurantsPopupDialog(MainActivity.this, android.R.style.Theme_Holo_Light);
                 dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-
                 dlg.show();
-
             }
         });
 
@@ -223,6 +226,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
+        currentTime = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_teeup_time);
         groupNameTextView = findViewById(R.id.groupNameTextView);
         reservationPersonNameTextView = findViewById(R.id.reservationPersonNameTextView);
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
@@ -239,6 +243,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                closeKeyboard(findViewById(R.id.phoneNumberEditText));
 //            }
 //        });
+
+        startTimerThread();
     }
 
 
@@ -571,6 +577,48 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
         dlg.show();
+    }
+
+    public void updateUI() {
+
+        TextView course = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_course);
+        course.setText("  /  OUT코스(코스마다 바뀌어야 하는 건가?)");
+
+        TextView name = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_name);
+        name.setText(Global.selectedReservation.getGuestName());
+
+        TextView group = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_teeup_group);
+        String groupName = Global.selectedReservation.getGroup();
+        group.setText(groupName);
+        if (groupName == null || groupName.isEmpty()) {
+            findViewById(R.id.main_bottom_bar).findViewById(R.id.iv_ball).setVisibility(View.GONE);
+        }
+    }
+
+    private void startTimerThread() {
+
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                updateTimer();
+            }
+        }.start();
+    }
+
+    private void updateTimer() {
+        UIThread.executeInUIThread(new Runnable() {
+            @Override
+            public void run() {
+                int hou = Calendar.getInstance(Locale.KOREA).get(Calendar.HOUR);
+                int min = Calendar.getInstance(Locale.KOREA).get(Calendar.MINUTE);
+                currentTime.setText(String.format("%02d:%02d", hou, min));
+            }
+        });
+        startTimerThread();
     }
 }
 

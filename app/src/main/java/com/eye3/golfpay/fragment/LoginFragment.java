@@ -1,9 +1,11 @@
 package com.eye3.golfpay.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,10 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
-import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.Security;
@@ -28,10 +28,13 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LoginFragment extends BaseFragment {
     TextView mStartTextView;
     EditText mPhoneNumberEditText, mNameEditText;
     ImageView mCancelIcon;
+    CheckBox cbSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,15 +50,24 @@ public class LoginFragment extends BaseFragment {
         mNameEditText = v.findViewById(R.id.nameEditText);
         mStartTextView = v.findViewById(R.id.startTextView);
         mCancelIcon = v.findViewById(R.id.cancelIcon);
+        cbSave = v.findViewById(R.id.cb_save);
         init(v);
 
-        if (BuildConfig.DEBUG == true) {
-//            mNameEditText.setText("roidcaddy@golfpay.co.kr");
-//            mPhoneNumberEditText.setText("@a1234567");
+        SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+        String id  = pref.getString("id", "");
+        String pwd = pref.getString("password", "");
+        boolean check = pref.getBoolean("save", false);
+        mNameEditText.setText(id);
+        mPhoneNumberEditText.setText(pwd);
+        cbSave.setChecked(check);
 
-            mNameEditText.setText("aaa@aaa.aaa");
-            mPhoneNumberEditText.setText("aaaa");
-        }
+//        if (BuildConfig.DEBUG) {
+////            mNameEditText.setText("roidcaddy@golfpay.co.kr");
+////            mPhoneNumberEditText.setText("@a1234567");
+//
+//            mNameEditText.setText("aaa@aaa.aaa");
+//            mPhoneNumberEditText.setText("aaaa");
+//        }
 
         return v;
     }
@@ -63,14 +75,14 @@ public class LoginFragment extends BaseFragment {
     private void init(View v) {
 
         //매번 로그인 하기 귀찮아서 자동 로그인
-        if(BuildConfig.DEBUG == true) {
-            UIThread.executeInUIThread(new Runnable() {
-                @Override
-                public void run() {
-                    mStartTextView.performClick();
-                }
-            });
-        }
+//        if(BuildConfig.DEBUG) {
+//            UIThread.executeInUIThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mStartTextView.performClick();
+//                }
+//            });
+//        }
 
         // 메뉴뷰 이벤트처리
         mStartTextView.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +104,6 @@ public class LoginFragment extends BaseFragment {
                 closeKeyboard(mPhoneNumberEditText);
                 mNameEditText.setEnabled(false);
                 mPhoneNumberEditText.setEnabled(false);
-
             }
         });
 
@@ -102,8 +113,6 @@ public class LoginFragment extends BaseFragment {
                 getActivity().finish();
             }
         });
-
-
     }
 
     private void login(String id, String pwd) {
@@ -118,6 +127,13 @@ public class LoginFragment extends BaseFragment {
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
                     changeDrawerViewToMenuView();
+
+                    if (cbSave.isChecked()) {
+                        saveAccount(id, mPhoneNumberEditText.getText().toString(), true);
+                    } else {
+                        saveAccount("", "", false);
+                    }
+
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
                     mNameEditText.setEnabled(true);
@@ -139,6 +155,19 @@ public class LoginFragment extends BaseFragment {
                 systemUIHide();
             }
         });
+    }
+
+    private void saveAccount(String id, String pwd, boolean check) {
+        try {
+            SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("id", id);
+            editor.putString("password", pwd);
+            editor.putBoolean("save", check);
+            editor.apply();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeDrawerViewToMenuView() {

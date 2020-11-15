@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.eye3.golfpay.util.Logger.TAG;
-
 public class ScoreFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();

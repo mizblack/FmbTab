@@ -1,23 +1,17 @@
 package com.eye3.golfpay.activity;
 
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -258,7 +252,6 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         transaction.replace(R.id.nav_view, mBaseFragment).commitAllowingStateLoss();
-
     }
 
     public void GoOrderLeftBoard(BaseFragment fragment, Bundle bundle) {
@@ -334,6 +327,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment.isVisible()) {
                 return ((BaseFragment) fragment);
+            }
+        }
+        return null;
+    }
+
+    public ViewMenuFragment getViewMenuFragment() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof ViewMenuFragment) {
+                return ((ViewMenuFragment) fragment);
             }
         }
         return null;

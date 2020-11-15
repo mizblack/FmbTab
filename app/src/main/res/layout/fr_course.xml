@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
-            android:text="02:18"
             app:layout_constraintBottom_toBottomOf="@+id/tv_hole_par"
             app:layout_constraintStart_toEndOf="@+id/tv_hole_par"
             app:layout_constraintTop_toTopOf="@+id/tv_hole_par"
@@ -86,6 +85,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.eye3.golfpay.view.TeeShotSpotView
+                android:id="@+id/tbox1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:meter="375/356"
@@ -93,6 +93,7 @@
                 app:title="Black" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
+                android:id="@+id/tbox2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -101,6 +102,7 @@
                 app:title="White" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
+                android:id="@+id/tbox3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -109,6 +111,7 @@
                 app:title="Ladies" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
+                android:id="@+id/tbox4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -117,6 +120,7 @@
                 app:title="Championship" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
+                android:id="@+id/tbox5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -132,7 +136,7 @@
             android:layout_height="36dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/shape_round_dark_bg"
+            android:background="@drawable/ripple_blend_score_button"
             android:gravity="center"
             android:text="스코어"
 

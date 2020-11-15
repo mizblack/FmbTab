@@ -8,6 +8,7 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
+import com.eye3.golfpay.model.field.NearLong;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
@@ -17,6 +18,7 @@ import com.eye3.golfpay.model.order.PlayStatus;
 import com.eye3.golfpay.model.order.Restaurant;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
+import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
@@ -449,6 +451,31 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getGameTypeScore(final Context context, final ResponseCallback<NearLongScoreBoard> callback) {
+        try {
+            int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            //int reserve_id = 9430;
+            Call<NearLongScoreBoard> call = service.getGameTypeScore(reserve_id);
+            call.enqueue(new Callback<NearLongScoreBoard>() {
+                @Override
+                public void onResponse(Call<NearLongScoreBoard> call, Response<NearLongScoreBoard> response) {
+                    NearLongScoreBoard nearLongScoreBoard = response.body();
+                    callback.onSuccess(nearLongScoreBoard);
+                }
+
+                @Override
+                public void onFailure(Call<NearLongScoreBoard> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
         } catch (Exception ex) {
