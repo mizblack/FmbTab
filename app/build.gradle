@@ -81,6 +81,8 @@ dependencies {
     implementation 'com.scaledrone:scaledrone-java:0.6.0'
     implementation 'com.github.MrBin99:LaravelEchoAndroid:1.03'
 
+    implementation 'com.github.Johnyoat:non-swipe-view-pager:1.0.0'
+
 
 
 //    implementation 'androidx.appcompat:appcompat:1.1.0'

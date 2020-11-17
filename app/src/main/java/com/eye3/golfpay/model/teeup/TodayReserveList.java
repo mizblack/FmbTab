@@ -1,6 +1,7 @@
 
 package com.eye3.golfpay.model.teeup;
 
+import com.eye3.golfpay.model.order.PlayStatus;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -115,6 +116,9 @@ public class TodayReserveList implements Serializable {
     @SerializedName("memo")
     @Expose
     private String memo;
+
+    @SerializedName("play_status")
+    private String playStatus;
 
     public String getMemo() {
         return memo;
@@ -532,4 +536,7 @@ public class TodayReserveList implements Serializable {
         this.updatedUser = updatedUser;
     }
 
+    public String getPlayStatus() {
+        return playStatus;
+    }
 }

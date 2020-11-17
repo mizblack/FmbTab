@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_marginEnd="12dp"
     android:layout_height="42dp"
     android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables">
@@ -18,10 +19,12 @@
     <TextView
         style="@style/GlobalTextView.24SP.ebonyBlack.NotoSans.Bold"
         android:id="@+id/memberNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:ellipsize="end"
         android:layout_gravity="center_vertical"
+        android:singleLine="true"
         android:text="강도식"
         tools:ignore="HardcodedText,SpUsage" />
 

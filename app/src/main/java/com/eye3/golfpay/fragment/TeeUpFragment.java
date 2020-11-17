@@ -38,7 +38,7 @@ import java.util.TimerTask;
 public class TeeUpFragment extends BaseFragment {
 
     private RecyclerView rvTeam;
-    private TeeUpAdapter teeUpAdapter;
+    private TeeUpAdapter teeUpAdapter = null;
     private Timer todayReserveTimer;
     private TextView caddieNameTextView;
     public TeeUpFragment() {
@@ -75,6 +75,10 @@ public class TeeUpFragment extends BaseFragment {
         }, 10 * 1000, 1000 * 5);
     }
 
+    private void stopTimer() {
+        todayReserveTimer.cancel();
+    }
+
     private void setLogout() {
 
         todayReserveTimer.cancel();
@@ -108,42 +112,17 @@ public class TeeUpFragment extends BaseFragment {
                     Global.caddieName = response.getCaddyInfo().getName();
                     caddieNameTextView.setText(Global.caddieName + " 캐디");
 
-                    //*****************
-                    LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-                    rvTeam.setHasFixedSize(true);
-                    rvTeam.setLayoutManager(mManager);
+                    if (teeUpAdapter == null) {
+                        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+                        rvTeam.setHasFixedSize(true);
+                        rvTeam.setLayoutManager(mManager);
+                        initTeeUpAdapter(response);
+                        rvTeam.setAdapter(teeUpAdapter);
+                    }
 
-                    teeUpAdapter = new TeeUpAdapter(mContext, new TeeUpAdapter.IOnClickAdapter() {
-                        @Override
-                        public void onAdapterItemClicked(Integer position) {
-                            int reserveId = response.getTodayReserveList().get(position).getId();
-                            DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(mContext, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
-                                @Override
-                                public void onSuccess(ResponseData<Object> response) {
-
-                                    TodayReserveList item = teeUpAdapter.getItem(position);
-                                    Global.selectedTeeUpIndex = position;
-                                    Global.selectedReservation = item;
-                                    Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
-                                    getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
-                                }
-
-                                @Override
-                                public void onError(ResponseData<Object> response) {
-
-                                }
-
-                                @Override
-                                public void onFailure(Throwable t) {
-
-                                }
-                            });
-
-                        }
-                    });
                     teeUpAdapter.setData(Global.teeUpTime.getTodayReserveList());
-                    rvTeam.setAdapter(teeUpAdapter);
-                    teeUpAdapter.notifyDataSetChanged();
+
+                    //teeUpAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -157,6 +136,38 @@ public class TeeUpFragment extends BaseFragment {
             public void onFailure(Throwable t) {
                 hideProgress();
                 systemUIHide();
+            }
+        });
+    }
+
+    private void initTeeUpAdapter(TeeUpTime response) {
+        teeUpAdapter = new TeeUpAdapter(mContext, new TeeUpAdapter.IOnClickAdapter() {
+            @Override
+            public void onAdapterItemClicked(Integer position) {
+                int reserveId = response.getTodayReserveList().get(position).getId();
+                DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(mContext, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
+                    @Override
+                    public void onSuccess(ResponseData<Object> response) {
+
+                        stopTimer();
+                        TodayReserveList item = teeUpAdapter.getItem(position);
+                        Global.selectedTeeUpIndex = position;
+                        Global.selectedReservation = item;
+                        Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
+                        getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
+                    }
+
+                    @Override
+                    public void onError(ResponseData<Object> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
+
             }
         });
     }

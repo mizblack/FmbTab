@@ -13,11 +13,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.teeup.GuestDatum;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
+import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.view.VisitorsGuestItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> {
@@ -88,7 +92,7 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
         String course = todayReserveList.get(position).getInoutCourse() + "코스";
         String group = todayReserveList.get(position).getGroup();
 
-        holder.tv_tee_up_time.setText(teeUpTime);
+        holder.tv_tee_up_time.setText(DateUtils.removeSecondFromTimeString(teeUpTime));
         holder.tv_course.setText(course);
         holder.tv_name.setText(guestName);
         if (group != null)
@@ -108,7 +112,7 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
                 holder.visitorsGuestItemLinearLayout.addView(visitorsGuestItem);
             }
 
-            if (position == 0) {
+            if (todayReserveList.get(position).getPlayStatus().equals("게임종료")) {
                 holder.viewMask.setVisibility(View.VISIBLE);
             }
 

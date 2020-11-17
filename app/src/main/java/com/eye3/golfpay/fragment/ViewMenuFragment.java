@@ -78,11 +78,6 @@ public class ViewMenuFragment extends BaseFragment {
         dialogFragment.getFragmentManager().executePendingTransactions();
     }
 
-    private void setLogout() {
-        Objects.requireNonNull(getActivity()).stopService((new Intent(getActivity(), CartLocationService.class)));
-        getActivity().finish();
-    }
-
     private void init() {
 
         drawer_layout = (mParentActivity).findViewById(R.id.drawer_layout);
@@ -298,9 +293,10 @@ public class ViewMenuFragment extends BaseFragment {
         dlg.setListener(new LogoutDialog.IListenerLogout() {
             @Override
             public void onLogout() {
-                if (drawer_layout != null)
-                    drawer_layout.closeDrawer(GravityCompat.END);
-                setLogout();
+                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
+                GoNavigationDrawer(new LoginFragment(), null);
+                mParentActivity.GoRootScreenAdd(null);
+                mParentActivity.hideMainBottomBar();
             }
         });
     }

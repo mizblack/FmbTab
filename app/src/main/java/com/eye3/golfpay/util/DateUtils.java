@@ -1,5 +1,6 @@
 package com.eye3.golfpay.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -525,6 +526,18 @@ public class DateUtils {
             amPm = "오전";
         else
             amPm = "오후";
+    }
+
+    public static String removeSecondFromTimeString(String time) {
+        try {
+            Date date = new SimpleDateFormat("HH:mm:ss").parse(time);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            return sdf.format(date);
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
   //  Log.d(TAG, year + "년 " + month + "월 " + day + "일 " + amPm + " " + hour + "시 " + min + "분");

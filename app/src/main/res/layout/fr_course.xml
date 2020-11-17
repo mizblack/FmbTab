@@ -165,7 +165,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.litetech.libs.nonswipeviewpager.ViewPager
         android:id="@+id/map_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

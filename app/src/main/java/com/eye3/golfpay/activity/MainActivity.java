@@ -58,6 +58,7 @@ import com.eye3.golfpay.model.guest.GuestInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
+import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.CaddieViewBasicGuestItem;
 import com.google.android.material.navigation.NavigationView;
@@ -69,7 +70,10 @@ import net.mrbin99.laravelechoandroid.EchoOptions;
 import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -243,8 +247,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                closeKeyboard(findViewById(R.id.phoneNumberEditText));
 //            }
 //        });
-
-        startTimerThread();
     }
 
 
@@ -581,44 +583,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void updateUI() {
 
-        TextView course = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_course);
-        course.setText("  /  OUT코스(코스마다 바뀌어야 하는 건가?)");
+        try {
+            currentTime.setText(DateUtils.removeSecondFromTimeString(Global.selectedReservation.getTeeoff()));
 
-        TextView name = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_name);
-        name.setText(Global.selectedReservation.getGuestName());
+            TextView course = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_course);
+            course.setText(" / " + Global.selectedReservation.getInoutCourse() + " 코스");
 
-        TextView group = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_teeup_group);
-        String groupName = Global.selectedReservation.getGroup();
-        group.setText(groupName);
-        if (groupName == null || groupName.isEmpty()) {
-            findViewById(R.id.main_bottom_bar).findViewById(R.id.iv_ball).setVisibility(View.GONE);
+            TextView name = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_name);
+            name.setText(Global.selectedReservation.getGuestName());
+
+            TextView group = findViewById(R.id.main_bottom_bar).findViewById(R.id.tv_teeup_group);
+            String groupName = Global.selectedReservation.getGroup();
+            group.setText(groupName);
+            if (groupName == null || groupName.isEmpty()) {
+                findViewById(R.id.main_bottom_bar).findViewById(R.id.iv_ball).setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    private void startTimerThread() {
-
-        new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                updateTimer();
-            }
-        }.start();
-    }
-
-    private void updateTimer() {
-        UIThread.executeInUIThread(new Runnable() {
-            @Override
-            public void run() {
-                int hou = Calendar.getInstance(Locale.KOREA).get(Calendar.HOUR);
-                int min = Calendar.getInstance(Locale.KOREA).get(Calendar.MINUTE);
-                currentTime.setText(String.format("%02d:%02d", hou, min));
-            }
-        });
-        startTimerThread();
     }
 }
 
