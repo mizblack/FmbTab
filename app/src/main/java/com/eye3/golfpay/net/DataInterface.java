@@ -15,7 +15,9 @@ import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.notice.NoticeItem;
 import com.eye3.golfpay.model.order.PlayStatus;
+import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.order.Restaurant;
+import com.eye3.golfpay.model.order.RestaurantMenu;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
@@ -29,6 +31,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Part;
 
 public class DataInterface extends BasicDataInterface {
     private static DataInterface instance;
@@ -211,9 +214,9 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void getRestaurantMenu(final Context context, String caddyId, String reserve_no, final ResponseCallback<ResponseData<Restaurant>> callback) {
+    public void getRestaurantMenu(final Context context, final ResponseCallback<ResponseData<Restaurant>> callback) {
         try {
-            Call<ResponseData<Restaurant>> call = service.getRestaurantMenu(caddyId, reserve_no);
+            Call<ResponseData<Restaurant>> call = service.storeCategory();
             call.enqueue(new Callback<ResponseData<Restaurant>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Restaurant>> call, Response<ResponseData<Restaurant>> response) {
@@ -222,6 +225,27 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<Restaurant>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getStoreMenu(final Context context, String restaurantId, String categoryId, final ResponseCallback<ResponseData<RestaurantMenu>> callback) {
+        try {
+            Call<ResponseData<RestaurantMenu>> call = service.storeMenu(restaurantId, categoryId);
+            call.enqueue(new Callback<ResponseData<RestaurantMenu>>() {
+                @Override
+                public void onResponse(Call<ResponseData<RestaurantMenu>> call, Response<ResponseData<RestaurantMenu>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<RestaurantMenu>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
@@ -462,6 +486,7 @@ public class DataInterface extends BasicDataInterface {
         try {
             int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
             //int reserve_id = 9430;
+
             Call<NearLongScoreBoard> call = service.getGameTypeScore(reserve_id);
             call.enqueue(new Callback<NearLongScoreBoard>() {
                 @Override
@@ -478,6 +503,82 @@ public class DataInterface extends BasicDataInterface {
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
             });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setGameTypeScore(final Context context, int guest_id, String game_type, String distance, final ResponseCallback<ResponseData<Object>> callback) {
+        try {
+            int res_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            //int reserve_id = 9430;
+
+            Call<ResponseData<Object>> call = service.setGameTypeScore(res_id, guest_id, game_type, distance);
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    ResponseData<Object> nearLongScoreBoard = response.body();
+                    callback.onSuccess(nearLongScoreBoard);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setReserveGameType(final Context context, ReserveGameType request, final ResponseCallback<ResponseData<Object>> callback) {
+        try {
+            Call<ResponseData<Object>> call = service.setReserveGameType(request);
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    ResponseData<Object> res = response.body();
+                    callback.onSuccess(res);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getReserveGameType(final Context context, final ResponseCallback<ReserveGameType> callback) {
+        try {
+
+            int res_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            Call<ReserveGameType> call = service.getReserveGameType(res_id);
+
+            call.enqueue(new RetryableCallback<ReserveGameType>(call, context) {
+                @Override
+                public void onResponse(Call<ReserveGameType> call, Response<ReserveGameType> response) {
+                    ReserveGameType res = response.body();
+                    callback.onSuccess(res);
+                }
+
+                @Override
+                public void onFailure(Call<ReserveGameType> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

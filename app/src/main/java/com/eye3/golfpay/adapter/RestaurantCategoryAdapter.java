@@ -93,8 +93,8 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
             @Override
             public void onClick(View v) {
 
-                if (categoryList.get(idx).isSelected == true)
-                    return;
+//                if (categoryList.get(idx).isSelected == true)
+//                    return;
 
                 if (preSelectedViewHolder != null) {
 
@@ -140,6 +140,15 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
         }
 
         notifyDataSetChanged();
+    }
+
+    public void firstSelect() {
+        try {
+            categoryList.get(0).isSelected = true;
+            notifyDataSetChanged();
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     public Category getSelectedMenu() {

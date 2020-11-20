@@ -10,7 +10,9 @@ import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.notice.NoticeItem;
 import com.eye3.golfpay.model.order.PlayStatus;
+import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.order.Restaurant;
+import com.eye3.golfpay.model.order.RestaurantMenu;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
@@ -29,6 +31,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface HttpService {
@@ -54,6 +57,12 @@ public interface HttpService {
 
     @GET("shadeMenu")
     Call<ResponseData<Restaurant>> getRestaurantMenu(@Query("caddy_id") String caddyId, @Query("reserve_no") String reserveNo);
+
+    @GET("storeCategory")
+    Call<ResponseData<Restaurant>> storeCategory();
+
+    @GET("storeMenu/{restaurant_id}/{category_id}")
+    Call<ResponseData<RestaurantMenu>> storeMenu(@Path("restaurant_id") String restaurantId, @Path("category_id") String categoryId);
 
     @GET("orderShadeHistory")
     Call<ResponseData<StoreOrder>> getStoreOrder(@Query("reserve_no") String reserveNo);
@@ -101,5 +110,19 @@ public interface HttpService {
 
     @FormUrlEncoded
     @POST("getGameTypeScore")
-    Call<NearLongScoreBoard> getGameTypeScore(@Field("reserve_id") int reserveId);
+    Call<NearLongScoreBoard> getGameTypeScore(@Field("res_id") int res_id);
+
+    @FormUrlEncoded
+    @POST("setGameTypeScore")
+    Call<ResponseData<Object>> setGameTypeScore(@Field("res_id") int res_id,
+                                              @Field("guest_id") int guest_id,
+                                              @Field("game_type") String game_type,
+                                              @Field("distance") String distance);
+
+    @POST("setReserveGameType")
+    Call<ResponseData<Object>> setReserveGameType(@Body ReserveGameType request);
+
+    @FormUrlEncoded
+    @POST("getReserveGameType")
+    Call<ReserveGameType> getReserveGameType(@Field("res_id") int res_id);
 }

@@ -13,8 +13,8 @@
         android:id="@+id/iv_food_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/pizza"/>
+        android:scaleType="center"
+        android:src="@drawable/ic_noimage"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="24dp"
             android:gravity="center_vertical"
-            android:text="페페로니 피자"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="32,000원"
+            android:text=""
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

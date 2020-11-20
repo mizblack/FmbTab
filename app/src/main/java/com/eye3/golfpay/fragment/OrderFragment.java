@@ -274,55 +274,13 @@ public class OrderFragment extends BaseFragment {
         });
     }
 
-    private String findCategoryName(String ct1Id, String ct2Id) {
-        for (Category ct1 : mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList) {
-            if (ct1.catergory1_id.equals(ct1Id) == true) {
-
-                for (Category2 ct2 : ct1.subCategoryList) {
-                    if (ct2.catergory2_id.equals(ct2Id) == true) {
-                        return ct1.catergory1_name + "/" + ct2.catergory2_name;
-                    }
-                }
-            }
-        }
-
-        return "전체";
-    }
-
     //
     private List<RestaurantMenu> makeTotalMenuList(Restaurant selectedRestaurant) {
 
         int position = 0; //각 메뉴아이템당 새로운 index값 적용
         mWholeMenuList = new ArrayList<>();
 
-        List<Category> categoryList = selectedRestaurant.categoryList;
-        for (int i = 0; categoryList.size() > i; i++) {
-            List<Category2> subCateList = categoryList.get(i).subCategoryList;
-            if (subCateList != null) {
-                for (int j = 0; subCateList.size() > j; j++) {
-                    List<RestaurantMenu> menuList = subCateList.get(j).Menus;
-                    if (menuList != null) {
-                        for (int k = 0; menuList.size() > k; k++) {
-                            if (k == 0)
-                                mWholeMenuList.add(
-                                        new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price,
-                                                menuList.get(k).image,
-                                                categoryList.get(i).catergory1_id,
-                                                subCateList.get(j).catergory2_id,
-                                                position));
-                            else
-                                mWholeMenuList.add(
-                                        new RestaurantMenu(menuList.get(k).id, menuList.get(k).name, menuList.get(k).price,
-                                                menuList.get(k).image,
-                                                categoryList.get(i).catergory1_id,
-                                                subCateList.get(j).catergory2_id,
-                                                -1));
-                            position++;
-                        }
-                    }
-                }
-            }
-        }
+
         return mWholeMenuList;
     }
 
@@ -341,7 +299,10 @@ public class OrderFragment extends BaseFragment {
 
     private void refresh() {
         initOrderDetailList();
-        mMenuAdapter.clearOrder();
+
+        if (mMenuAdapter != null)
+            mMenuAdapter.clearOrder();
+
         mOrderItemInvoiceArrayList = new ArrayList<OrderItemInvoice>();
         mShadeOrders = null;
         mOrderBrowserLinearLayout.removeAllViewsInLayout();
@@ -354,6 +315,10 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void resetGuestList() {
+
+        if (mMenuAdapter == null)
+            return;
+
 
         preSelectedGuestView = null;
 
@@ -382,9 +347,6 @@ public class OrderFragment extends BaseFragment {
             }
         }
     }
-
-
-
 
     public String getGuestName(String reserveId) {
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
@@ -546,7 +508,6 @@ public class OrderFragment extends BaseFragment {
             }
 
             for (OrderItemInvoice order : mRestaurantMenuOrder.getmOrderItemInvoiceArrayList()) {
-
                 for (GuestNameOrder guestNameOrder : order.mGuestNameOrders) {
                     if (guestNameOrder.mGuestName.equals(deletedGuestNameOrder.mGuestName) && guestNameOrder.mMenuName.equals(menuName)) {
                         order.mGuestNameOrders.remove(guestNameOrder);
@@ -630,57 +591,14 @@ public class OrderFragment extends BaseFragment {
 
     public String getMenuIdByMenuName(String menuName) {
         Restaurant selectedRestaurant = mRestaurantList.get(mSelectedRestaurantTabIdx);
-        for (int i = 0; selectedRestaurant.categoryList.size() > i; i++) {
-            if (selectedRestaurant.categoryList.get(i) == null)
-                break;
-            for (int j = 0; selectedRestaurant.categoryList.get(i).subCategoryList.size() > j; j++) {
-                if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j) == null)
-                    break;
-                for (int k = 0; selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.size() > k; k++) {
-                    if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k) == null)
-                        break;
-                    if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k).name.equals(menuName)) {
-                        return selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k).id;
-                    }
-                }
-            }
-        }
+
         return null;
     }
 
     public String getMenuPriceByMenuName(String menuName) {
         Restaurant selectedRestaurant = mRestaurantList.get(mSelectedRestaurantTabIdx);
-        for (int i = 0; selectedRestaurant.categoryList.size() > i; i++) {
-            if (selectedRestaurant.categoryList.get(i) == null)
-                break;
-            for (int j = 0; selectedRestaurant.categoryList.get(i).subCategoryList.size() > j; j++) {
-                if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j) == null)
-                    break;
-                for (int k = 0; selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.size() > k; k++) {
-                    if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k) == null)
-                        break;
-                    if (selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k).name.equals(menuName)) {
-                        return selectedRestaurant.categoryList.get(i).subCategoryList.get(j).Menus.get(k).price;
-                    }
-                }
-            }
-        }
+
         return null;
-    }
-
-
-    private void deleteNameOrderFromInvoiceArrayList(String menuName, GuestNameOrder deletedGuestNameOrder) {
-        for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
-            OrderItemInvoice a_itemInvoice = mOrderItemInvoiceArrayList.get(i);
-            if (a_itemInvoice.mMenunName.equals(menuName)) {
-                for (int j = 0; a_itemInvoice.mGuestNameOrders.size() > j; j++) {
-                    if ((a_itemInvoice.mGuestNameOrders.get(j).mGuestName).equals(deletedGuestNameOrder.mGuestName) && a_itemInvoice.mGuestNameOrders.get(j).qty == deletedGuestNameOrder.qty) {
-                        a_itemInvoice.mGuestNameOrders.remove(a_itemInvoice.mGuestNameOrders.get(j));
-                        a_itemInvoice.mQty -= deletedGuestNameOrder.qty;
-                    }
-                }
-            }
-        }
     }
 
     //최종적으로 Orderfragment 인보이스 레이아웃에 add..
@@ -708,21 +626,7 @@ public class OrderFragment extends BaseFragment {
     private RestaurantMenu findMenuByName(String targetMenuName) {
         List<Category> categoryList;
 
-        categoryList = mRestaurantList.get(mSelectedRestaurantTabIdx).categoryList;
 
-        if (categoryList == null)
-            return null;
-        for (int i = 0; categoryList.size() > i; i++) {
-            List<Category2> subCategoryList = categoryList.get(i).subCategoryList;
-            for (int j = 0; subCategoryList.size() > j; j++) {
-                List<RestaurantMenu> menuList = subCategoryList.get(j).Menus;
-                for (int k = 0; menuList.size() > k; k++) {
-                    if (menuList.get(k).name.equals(targetMenuName)) {
-                        return menuList.get(k);
-                    }
-                }
-            }
-        }
         return null;
     }
 
@@ -770,9 +674,9 @@ public class OrderFragment extends BaseFragment {
     }
 
     //******************************************************************************************************
-    private void initRecyclerView(RecyclerView recycler, Restaurant selectedRestaurant) {
-        mWholeMenuList = makeTotalMenuList(selectedRestaurant);
-        mMenuAdapter = new RestaurantMenuAdapter(mContext, mWholeMenuList);
+    private void initRecyclerView(RecyclerView recycler, List<RestaurantMenu>storeMenus) {
+        //mWholeMenuList = makeTotalMenuList(selectedRestaurant);
+        mMenuAdapter = new RestaurantMenuAdapter(mContext, storeMenus);
 
         GridLayoutManager mManager = new GridLayoutManager(getActivity(), 2);
         mManager.setOrientation(RecyclerView.VERTICAL);
@@ -800,7 +704,7 @@ public class OrderFragment extends BaseFragment {
         mCategoryAdapter = new RestaurantCategoryAdapter(mContext, categoryList, new RestaurantCategoryAdapter.IOnCategoryClickAdapter() {
             @Override
             public void onApplyCategory(String ct1Id, String ct2Id) {
-                initRecyclerView(mRecyclerMenu, mRestaurantList.get(mSelectedRestaurantTabIdx));
+                getStoreMenu(mRestaurantList.get(mSelectedRestaurantTabIdx).id, ct2Id);
             }
         });
 
@@ -820,28 +724,22 @@ public class OrderFragment extends BaseFragment {
                     }
                 });
 
-
-
-
+        getStoreMenu(mRestaurantList.get(0).id, mRestaurantList.get(0).categoryList.get(0).catergory1_id);
+        mCategoryAdapter.firstSelect();
     }
 
     private void getRestaurantMenu() {
         showProgress("식당 메뉴 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getRestaurantMenu(getActivity(), Global.CaddyNo, Global.selectedReservation.getReserveNo(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getRestaurantMenu(getActivity(), new DataInterface.ResponseCallback<ResponseData<Restaurant>>() {
             @Override
             public void onSuccess(ResponseData<Restaurant> response) {
                 hideProgress();
                 systemUIHide();
                 if (response.getResultCode().equals("ok")) {
                     mRestaurantList = (ArrayList<Restaurant>) response.getList();
-
-                    initRecyclerView(mRecyclerMenu, mRestaurantList.get(mSelectedRestaurantTabIdx));
                     initRestaurantRecyclerView();
                     initFoodImage();
                     initCategoryRecyclerView(mRecyclerCategory);
-
-
-
                     refresh();
                     openTempSavedOrderList();
                     getStoreOrder();
@@ -861,6 +759,28 @@ public class OrderFragment extends BaseFragment {
             public void onFailure(Throwable t) {
                 hideProgress();
                 systemUIHide();
+            }
+        });
+    }
+
+    private void getStoreMenu(String restaurantId, String categoryId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getStoreMenu(getContext(), restaurantId, categoryId, new DataInterface.ResponseCallback<ResponseData<RestaurantMenu>>() {
+            @Override
+            public void onSuccess(ResponseData<RestaurantMenu> response) {
+
+                if (response.getResultCode().equals("ok")) {
+                    initRecyclerView(mRecyclerMenu, response.getList());
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<RestaurantMenu> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }
@@ -891,20 +811,6 @@ public class OrderFragment extends BaseFragment {
         //   mMenuAdapter.setAllRestaurantMenuUnSelected();
         if (mMenuAdapter != null)
             mMenuAdapter.notifyDataSetChanged();
-    }
-
-    //서브아아템의 wholemenulist의 position을 리턴한다. (smoothScrollto 사용시)
-    private int getPositionForSubMenuZeroItem(String category1Id, String category2Id) {
-        for (int i = 0; mWholeMenuList.size() > i; i++) {
-            if (mWholeMenuList.get(i).category1Idx.equals(category1Id) == true &&
-                    mWholeMenuList.get(i).category2Idx.equals(category2Id) == true) {
-
-                if (mWholeMenuList.get(i).SubCateZeroIndex != -1) {
-                    return mWholeMenuList.get(i).SubCateZeroIndex;
-                }
-            }
-        }
-        return -1;
     }
 
     private void getStoreOrder() {

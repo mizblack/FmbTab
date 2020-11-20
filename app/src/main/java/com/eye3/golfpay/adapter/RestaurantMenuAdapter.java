@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -23,11 +24,14 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
 
     class MenuItemViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_food_image;
-
+        TextView tv_food_name;
+        TextView tv_food_price;
         //onCreateViewHolder 의 mMenuView 임()
         MenuItemViewHolder(@NonNull final View itemView) {
             super(itemView);
             iv_food_image = itemView.findViewById(R.id.iv_food_image);
+            tv_food_name = itemView.findViewById(R.id.tv_food_name);
+            tv_food_price = itemView.findViewById(R.id.tv_food_price);
         }
     }
 
@@ -68,6 +72,10 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
         final int idx = position;
         Log.d(TAG, "onBindViewHolder    " + "메뉴명: " + mMenuList.get(idx).name + "MenuItemViewHolder");
         holder.itemView.setTag(mMenuList.get(position));
+
+        holder.tv_food_name.setText(mMenuList.get(position).name);
+        holder.tv_food_price.setText(mMenuList.get(position).price);
+
         if (mMenuList.get(idx).isSelected) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
             //holder.tvMenuName.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));

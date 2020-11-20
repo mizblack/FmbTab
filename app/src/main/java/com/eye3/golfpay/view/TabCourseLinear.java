@@ -121,7 +121,7 @@ public class TabCourseLinear extends LinearLayout {
     }
 
     public void init(final Context context, final List<Player> playerList, Course ctyped,
-                     int tabIdx) {
+                     int tabIdx, int nearest, int longest) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
@@ -145,11 +145,11 @@ public class TabCourseLinear extends LinearLayout {
                 if ((parent.getItemAtPosition(position)).toString().equals("yard")) {
                     Global.isYard = true;
                     mDistanceSpinner.setSelection(2);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
                 } else if ((parent.getItemAtPosition(position)).toString().equals("meter")) {
                     Global.isYard = false;
                     mDistanceSpinner.setSelection(1);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse);
+                    createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
                 }
             }
 
@@ -159,7 +159,7 @@ public class TabCourseLinear extends LinearLayout {
             }
         });
 
-        createHoleInfoLinear(mContext, mCtypeArrangedCourse);
+        createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
 
         mScoreRecyclerView = v.findViewById(R.id.scoreRecylerView);
         initRecyclerView(mPlayerList, mTabIdx);
@@ -188,7 +188,7 @@ public class TabCourseLinear extends LinearLayout {
      *  최상단 홀정보 보여주는 뷰생성
      *
      */
-    private void createHoleInfoLinear(Context context, Course course) {
+    private void createHoleInfoLinear(Context context, Course course, int nearest_hole, int longest_hole) {
         mHolderLinear.removeAllViewsInLayout();
 
         List<Hole> holes = course.holes;
@@ -206,11 +206,11 @@ public class TabCourseLinear extends LinearLayout {
                 totalMeter = totalMeter + Integer.parseInt(holes.get(k).hole_total_size);
 
 
-            if (k == 4) {
+            if (k == longest_hole) {
                 holeInfoLinear[k].findViewById(R.id.hole_longest).setVisibility(View.VISIBLE);
             }
 
-            else if (k == 8) {
+            else if (k == nearest_hole) {
                 holeInfoLinear[k].findViewById(R.id.hole_nearest).setVisibility(View.VISIBLE);
             }
 

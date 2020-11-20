@@ -106,4 +106,8 @@ public class Global {
     public static int mBeforeSelectedMenuIdx = -1;
 
 
+    // 파일 저장 위치
+    public class STORAGE_PATH {
+        public static final String TEMP = "temp";
+    }
 }

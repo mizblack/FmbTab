@@ -178,34 +178,18 @@ public class ViewMenuFragment extends BaseFragment {
         mView.findViewById(R.id.btn_menu_team).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScoreDialog sDialog = new ScoreDialog(mContext, "저장", "취소");
-                WindowManager.LayoutParams wmlp = sDialog.getWindow().getAttributes();
-                wmlp.gravity = Gravity.CENTER_VERTICAL;
 
-                sDialog.getWindow().setAttributes(wmlp);
-
-                sDialog.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
-                    @Override
-                    public void OnScoreInputFinished(List<Player> playerList) {
-
-                    }
-                });
-
-                sDialog.getWindow().
-                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-
-                sDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-                sDialog.show();
             }
         });
 
         mView.findViewById(R.id.btn_menu_beto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 GoNativeScreen(new TopDressingFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
                 selectMenu(R.id.view_beto);
+                */
             }
         });
 
@@ -223,6 +207,23 @@ public class ViewMenuFragment extends BaseFragment {
             public void onClick(View v) {
                 settingsCustomDialog = new SettingsCustomDialog(getActivity());
                 settingsCustomDialog.show();
+            }
+        });
+
+
+        mView.findViewById(R.id.btn_menu_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.closeDrawer(GravityCompat.END);
+                ((MainActivity)mParentActivity).startCamera();
+            }
+        });
+
+        mView.findViewById(R.id.btn_menu_special_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer_layout.closeDrawer(GravityCompat.END);
+                ((MainActivity)mParentActivity).startCamera();
             }
         });
 

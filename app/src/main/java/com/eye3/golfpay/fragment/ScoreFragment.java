@@ -20,8 +20,10 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
+import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -61,21 +63,7 @@ public class ScoreFragment extends BaseFragment {
     //스코어 보드를 생성한다.
     private void createScoreTab(List<Player> mPlayerList, int mTabIdx) {
         showProgress("스코어생성 작업중");
-
-        if (NUM_OF_COURSE <= 0) {
-            Toast.makeText(getActivity(), "진행할 코스가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-                                                                             //mPlayerList.get(i)가 아님
-        mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, Global.courseInfoList.get(mTabIdx), mTabIdx);
-        mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
-            @Override
-            public void OnScoreInputFinished(List<Player> playerList) {
-                refreshScore();
-            }
-        });
-
-        hideProgress();
+        getNearLongHole();
     }
 
     private void initScoreBoard() {
@@ -198,7 +186,6 @@ public class ScoreFragment extends BaseFragment {
         }
         TabCourseLinear.setmHoleScoreLayoutIdx(0);
         createScoreTab(playerList, selectedTabIdx);
-
     }
 
     @Override
@@ -311,6 +298,62 @@ public class ScoreFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable t) {
                 hideProgress();
+            }
+        });
+    }
+
+    private void getNearLongHole() {
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveGameType(getContext(), new DataInterface.ResponseCallback<ReserveGameType>() {
+            @Override
+            public void onSuccess(ReserveGameType response) {
+                if (response.ret_code.equals("ok")) {
+                    if (NUM_OF_COURSE <= 0) {
+                        Toast.makeText(getActivity(), "진행할 코스가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    //mPlayerList.get(i)가 아님
+
+                    String course = Global.CurrentCourse.courseName;
+
+                    int nearest = -1;
+                    int longest = -1;
+                    if (course.indexOf("IN") >= 0) {
+                        if (response.course_near.equals("IN")) {
+                            nearest = response.hole_no_near-1;
+                        }
+                        else if (response.course_long.equals("IN")) {
+                            longest = response.hole_no_long-1;
+                        }
+                    } else if (course.indexOf("OUT") >= 0) {
+                        if (response.course_near.equals("OUT")) {
+                            nearest = response.hole_no_near-1;
+                        }
+                        else if (response.course_long.equals("OUT")) {
+                            longest = response.hole_no_long-1;
+                        }
+                    }
+
+                    mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, Global.courseInfoList.get(mTabIdx), mTabIdx, nearest, longest);
+                    mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
+                        @Override
+                        public void OnScoreInputFinished(List<Player> playerList) {
+                            refreshScore();
+                        }
+                    });
+
+                    hideProgress();
+                }
+            }
+
+            @Override
+            public void onError(ReserveGameType response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
     }

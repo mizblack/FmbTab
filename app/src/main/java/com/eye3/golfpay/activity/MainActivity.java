@@ -2,6 +2,7 @@ package com.eye3.golfpay.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,8 +13,11 @@ import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -37,6 +41,7 @@ import androidx.exifinterface.media.ExifInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.camera.StoreUriAsTempFileAsyncTask;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
@@ -365,6 +370,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
             ;
+        } else if (requestCode == RC_TAKE_PICTURE) {
+            if (resultCode == 0)
+                return;
+
+            new StoreUriAsTempFileAsyncTask(this, new StoreUriAsTempFileAsyncTask.ICompleteFileSace() {
+                @Override
+                public void onComplete(String path) {
+                    imagePath = path;
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+
+                        public void run() {
+
+                        }
+
+                    }, 10);
+
+                }
+            }).execute(mCameraTempUri);
+
         }
     }
 
@@ -600,6 +626,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private Uri mCameraTempUri = null;
+    public static final int RC_TAKE_PICTURE = 3333;
+    private Handler mHandler = new Handler();
+    private String imagePath;
+
+    public void startCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+
+            try {
+                ContentValues values = new ContentValues(1);
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg");
+                mCameraTempUri = getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+                startActivityForResult(intent, RC_TAKE_PICTURE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

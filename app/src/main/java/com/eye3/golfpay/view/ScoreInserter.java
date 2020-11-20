@@ -32,7 +32,7 @@ public class ScoreInserter extends RelativeLayout {
 
     Context mContext;
     private boolean teeShot = false;
-    private String[] teeShotItem = {"Fairway", "Bunker"};
+    private String[] teeShotItem = {"Fairway", "Bunker", "Rough", "OB", "Hazard"};
     private int start;
     private int end;
     private LinearLayout mScoreInserterContainer;
@@ -132,7 +132,7 @@ public class ScoreInserter extends RelativeLayout {
             View childView = inflater.inflate(R.layout.inserter_item, null, false);
             LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
-            for (int j = 0; j < 2; j++) {
+            for (String s : teeShotItem) {
                 FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
 
                 final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, getResources().getDisplayMetrics());
@@ -141,7 +141,7 @@ public class ScoreInserter extends RelativeLayout {
                 item.setLayoutParams(params);
 
                 TextView tvItem = item.findViewById(R.id.tv_item);
-                tvItem.setText(teeShotItem[j]);
+                tvItem.setText(s);
 
                 View view = item.findViewById(R.id.view_select);
 

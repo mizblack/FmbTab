@@ -23,4 +23,12 @@ public class NearLong implements Serializable {
     @SerializedName("long_ranking")
     @Expose
     public int long_ranking;
+
+    @SerializedName("near")
+    @Expose
+    public String nearest = "";
+
+    @SerializedName("long")
+    @Expose
+    public String longest = "";
 }

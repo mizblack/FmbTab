@@ -109,6 +109,29 @@ public class NumberkeypadDialogFragment extends DialogFragment {
     };
 
     private void setNumber(String s) {
+        String number = tvNumber.getText().toString();
+        int index = number.indexOf(".");
+        // .은 맨처음 올 수가 없지
+        if (s.equals(".")) {
+            if (number.isEmpty())
+                return;
+        }
+
+        if (index < 0) {
+            if (!s.equals(".") && number.length() > 2)
+                return;
+        }
+
+        // .은 두개 이상 쓸 수가 없지
+        if (index > 0) {
+            if (s.equals("."))
+                return;
+
+            //소수점 한자리만 입력받기
+            if (index == number.length()-2)
+                return;
+        }
+
         tvNumber.append(s);
     }
 }
