@@ -19,10 +19,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAdapter.MenuItemViewHolder> {
+
+    Context mContext;
     public String TAG = getClass().getSimpleName();
     private RestaurantMenu selectedMenu = null;
+    private List<RestaurantMenu> mMenuList;
+    public MenuItemViewHolder preSelectedViewHolder;
 
-    class MenuItemViewHolder extends RecyclerView.ViewHolder {
+    static class MenuItemViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_food_image;
         TextView tv_food_name;
         TextView tv_food_price;
@@ -34,10 +38,6 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
             tv_food_price = itemView.findViewById(R.id.tv_food_price);
         }
     }
-
-    Context mContext;
-    public List<RestaurantMenu> mMenuList;
-    public MenuItemViewHolder preSelectedViewHolder;
 
     public RestaurantMenuAdapter(Context context, List<RestaurantMenu> menuList) {
         Log.d(TAG, "  메뉴 사이즈   " + String.valueOf(menuList.size()));
@@ -92,7 +92,7 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
             @Override
             public void onClick(View v) {
 
-                if (mMenuList.get(idx).isSelected == true)
+                if (mMenuList.get(idx).isSelected)
                     return;
 
                 if (preSelectedViewHolder != null) {
@@ -125,7 +125,7 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
 
     public boolean haveOrder() {
         for (RestaurantMenu item : mMenuList) {
-            if (item.isSelected == true)
+            if (item.isSelected)
                 return true;
         }
 
@@ -142,5 +142,9 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
 
     public RestaurantMenu getSelectedMenu() {
         return selectedMenu;
+    }
+
+    public List<RestaurantMenu> getRestaurantMenus() {
+        return mMenuList;
     }
 }

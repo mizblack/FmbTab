@@ -186,7 +186,9 @@ public class TeeUpFragment extends BaseFragment {
 
                     ((MainActivity)mParentActivity).navigationView.setVisibility(View.GONE);
                     ((MainActivity)mParentActivity).updateUI();
-                    GoNativeScreen(new CaddieFragment(), null);
+                    //시작메뉴
+                    //GoNativeScreen(new CaddieFragment(), null);
+                    GoNativeScreen(new OrderFragment(), null);
                     GoNavigationDrawer(new ViewMenuFragment(), null);
                 }
             }

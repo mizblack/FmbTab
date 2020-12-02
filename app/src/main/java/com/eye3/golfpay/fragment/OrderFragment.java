@@ -51,7 +51,6 @@ import java.util.Objects;
 
 
 public class OrderFragment extends BaseFragment {
-    private View v;
 
     public static final int NUM_MENU_NAME_KEY = 1 + 2 << 24;
     public static final int NUM_NAMEORDER_KEY = 2 + 2 << 24;
@@ -68,7 +67,7 @@ public class OrderFragment extends BaseFragment {
     private LinearLayout mOrderBrowserLinearLayout;
     private RecyclerView rv_restaurant;
     LinearLayout mGuestContainer;
-    public static LinearLayout mTabsRootLinear;
+    static public LinearLayout mTabsRootLinear;
     private ShadeOrder mShadeOrders;
 
     // 최상위 카테고리 이름
@@ -111,61 +110,60 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fr_restaurant_order, container, false);
+        View mainView = inflater.inflate(R.layout.fr_restaurant_order, container, false);
 
-        rv_restaurant = v.findViewById(R.id.rv_restaurant);
-        mGuestContainer = v.findViewById(R.id.guest_container);
-        infoTextView = v.findViewById(R.id.infoTextView);
-        mArrowToApply = v.findViewById(R.id.arrow_to_apply);
-        mOrderBrowserLinearLayout = v.findViewById(R.id.orderBrowserLinearLayout);
-        mTabsRootLinear = v.findViewById(R.id.tabsRootLinearLayout);
-        mTotalPriceTextView = v.findViewById(R.id.totalPriceTextView);
+        rv_restaurant = mainView.findViewById(R.id.rv_restaurant);
+        mGuestContainer = mainView.findViewById(R.id.guest_container);
+        infoTextView = mainView.findViewById(R.id.infoTextView);
+        mArrowToApply = mainView.findViewById(R.id.arrow_to_apply);
+        mOrderBrowserLinearLayout = mainView.findViewById(R.id.orderBrowserLinearLayout);
+        mTabsRootLinear = mainView.findViewById(R.id.tabsRootLinearLayout);
+        mTotalPriceTextView = mainView.findViewById(R.id.totalPriceTextView);
         createGuestList(mGuestContainer);
-        mRecyclerCategory = v.findViewById(R.id.recycler_category);
-        mRecyclerMenu = v.findViewById(R.id.recycler_menu);
+        mRecyclerCategory = mainView.findViewById(R.id.recycler_category);
+        mRecyclerMenu = mainView.findViewById(R.id.recycler_menu);
 
-        mTempSaveButton = v.findViewById(R.id.btnTempSave);
-        mRelOrderHistory = v.findViewById(R.id.rel_order_history);
-        mRelSendOrder = v.findViewById(R.id.rel_send_order);
-        mBtnHistory = v.findViewById(R.id.btn_order_history);
-        mBtnAdd = v.findViewById(R.id.btn_add);
-        mTvCaddy = v.findViewById(R.id.tvCaddy);
-        mTvCaddy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mMenuAdapter.haveOrder()) {
-
-                    for (RestaurantMenu item : mMenuAdapter.mMenuList) {
-
-                        if (item.isSelected == false)
-                            continue;
-
-                        OrderedMenuItem menu = new OrderedMenuItem(item.id, "1", item.price, item.name, Global.CaddyNo);
-
-                        //캐디주문을 표기한다.
-                        infoTextView.setVisibility(View.GONE);
-                        ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
-                        (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
-                        OrderedMenuItem orderedMenuItemForCaddy = new OrderedMenuItem(menu.id, "1", menu.price, menu.menuName, Global.CaddyNo);
-                        mRestaurantMenuOrder.setmCurrentOrderedMenuItem(orderedMenuItemForCaddy);
-                        // 캐디주문시 주문자 아이디는 첫 내장객으로 지정한다.
-                        mRestaurantMenuOrder.setOrderedGuestId(mOrderDetailList.get(0).reserve_guest_id);
-                        mRestaurantMenuOrder.addRestaurantMenuOrder(orderedMenuItemForCaddy, mOrderDetailList.get(0).reserve_guest_id);
-                        makeOrderItemInvoiceArrViews(mRestaurantMenuOrder.getmOrderItemInvoiceArrayList());
-                        setTheTotalInvoice();
-                    }
-
-                } else
-                    Toast.makeText(mContext, "주문한 음식이 없습니다. 먼저 음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+        mTempSaveButton = mainView.findViewById(R.id.btnTempSave);
+        mRelOrderHistory = mainView.findViewById(R.id.rel_order_history);
+        mRelSendOrder = mainView.findViewById(R.id.rel_send_order);
+        mBtnHistory = mainView.findViewById(R.id.btn_order_history);
+        mBtnAdd = mainView.findViewById(R.id.btn_add);
+        mTvCaddy = mainView.findViewById(R.id.tvCaddy);
+        mTvCaddy.setOnClickListener(CaddieClickListener);
         initOrderItemInvoiceView();
         mParentActivity.showMainBottomBar();
-        return v;
+        return mainView;
     }
+
+    private View.OnClickListener CaddieClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mMenuAdapter.haveOrder()) {
+
+                for (RestaurantMenu item : mMenuAdapter.getRestaurantMenus()) {
+
+                    if (!item.isSelected)
+                        continue;
+
+                    OrderedMenuItem menu = new OrderedMenuItem(item.id, "1", item.price, item.name, Global.CaddyNo);
+
+                    //캐디주문을 표기한다.
+                    infoTextView.setVisibility(View.GONE);
+                    ((TextView) v).setTextColor(getResources().getColor(R.color.white, Objects.requireNonNull(getActivity()).getTheme()));
+                    (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
+                    OrderedMenuItem orderedMenuItemForCaddy = new OrderedMenuItem(menu.id, "1", menu.price, menu.menuName, Global.CaddyNo);
+                    mRestaurantMenuOrder.setmCurrentOrderedMenuItem(orderedMenuItemForCaddy);
+                    // 캐디주문시 주문자 아이디는 첫 내장객으로 지정한다.
+                    mRestaurantMenuOrder.setOrderedGuestId(mOrderDetailList.get(0).reserve_guest_id);
+                    mRestaurantMenuOrder.addRestaurantMenuOrder(orderedMenuItemForCaddy, mOrderDetailList.get(0).reserve_guest_id);
+                    makeOrderItemInvoiceArrViews(mRestaurantMenuOrder.getmOrderItemInvoiceArrayList());
+                    setTheTotalInvoice();
+                }
+
+            } else
+                Toast.makeText(mContext, "주문한 음식이 없습니다. 먼저 음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 
     @Override
@@ -176,7 +174,6 @@ public class OrderFragment extends BaseFragment {
     private void initFoodImage() {
         if (mRestaurantList == null) {
             Toast.makeText(getActivity(), "존재하는 식당 정보가 없습니다.", Toast.LENGTH_SHORT).show();
-            return;
         }
     }
 
@@ -237,7 +234,6 @@ public class OrderFragment extends BaseFragment {
                 }
             }
         });
-
 
         //임시저장
         mTempSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -319,7 +315,6 @@ public class OrderFragment extends BaseFragment {
         if (mMenuAdapter == null)
             return;
 
-
         preSelectedGuestView = null;
 
         for (int i = 0; mGuestContainer.getChildCount() > i; i++) {
@@ -388,55 +383,55 @@ public class OrderFragment extends BaseFragment {
 
             TextView tvName = viewGuest.findViewById(R.id.tv_name);
             tvName.setText(Global.selectedReservation.getGuestData().get(idx).getGuestName());
-
-            viewGuest.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onClick(View v) {
-
-                    TextView tvName;
-                    TextView tvCount;
-
-                    //이미선택된 게스트가 있다면 초기화하자
-                    if (preSelectedGuestView != null) {
-
-                        tvName = preSelectedGuestView.findViewById(R.id.tv_name);
-                        tvCount = preSelectedGuestView.findViewById(R.id.tv_count);
-
-                        tvName.setTextAppearance(R.style.GlobalTextView_20SP_999999_NotoSans_Medium);
-                        tvCount.setTextAppearance(R.style.GlobalTextView_17SP_999999_NotoSans_Medium);
-                        preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-                    }
-
-                    preSelectedGuestView = v;
-                    tvName = v.findViewById(R.id.tv_name);
-                    tvCount = v.findViewById(R.id.tv_count);
-                    tvName.setTextAppearance(R.style.GlobalTextView_20SP_White_NotoSans_Medium);
-                    tvCount.setTextAppearance(R.style.GlobalTextView_17SP_white_NotoSans_Medium);
-                    preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
-
-                    //주문된 음식이 있다면
-                    if (mMenuAdapter.haveOrder()) {
-                        RestaurantMenu item = mMenuAdapter.getSelectedMenu();
-                        OrderedMenuItem menu = new OrderedMenuItem(item.id, "1", item.price, item.name, "");
-
-                        infoTextView.setVisibility(View.GONE);
-                        mRestaurantMenuOrder.setOrderedGuestId((String) v.getTag());
-                        mRestaurantMenuOrder.setmCurrentOrderedMenuItem(menu);
-                        mRestaurantMenuOrder.addRestaurantMenuOrder(new OrderedMenuItem(menu.id, "1", menu.price, menu.menuName, ""), (String) v.getTag());
-
-                        OrderedMenuItem findMenu = mOrderDetailList.get(idx).findOrderMenu(menu.id);
-                        tvCount.setText(findMenu.qty + "");
-
-                        makeOrderItemInvoiceArrViews(mRestaurantMenuOrder.getmOrderItemInvoiceArrayList());
-                        setTheTotalInvoice();
-                    } else {
-                        Toast.makeText(mContext, "음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            setGuestClickListener(idx, viewGuest);
             container.addView(viewGuest);
         }
+    }
+
+    private void setGuestClickListener(final int index, View viewGuest) {
+        viewGuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView tvName;
+                TextView tvCount;
+
+                //이미선택된 게스트가 있다면 초기화하자
+                if (preSelectedGuestView != null) {
+                    tvName = preSelectedGuestView.findViewById(R.id.tv_name);
+                    tvCount = preSelectedGuestView.findViewById(R.id.tv_count);
+
+                    tvName.setTextAppearance(R.style.GlobalTextView_20SP_999999_NotoSans_Medium);
+                    tvCount.setTextAppearance(R.style.GlobalTextView_17SP_999999_NotoSans_Medium);
+                    preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                }
+
+                preSelectedGuestView = v;
+                tvName = v.findViewById(R.id.tv_name);
+                tvCount = v.findViewById(R.id.tv_count);
+                tvName.setTextAppearance(R.style.GlobalTextView_20SP_White_NotoSans_Medium);
+                tvCount.setTextAppearance(R.style.GlobalTextView_17SP_white_NotoSans_Medium);
+                preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
+
+                //주문된 음식이 있다면
+                if (mMenuAdapter.haveOrder()) {
+                    RestaurantMenu item = mMenuAdapter.getSelectedMenu();
+                    OrderedMenuItem menu = new OrderedMenuItem(item.id, "1", item.price, item.name, "");
+
+                    infoTextView.setVisibility(View.GONE);
+                    mRestaurantMenuOrder.setOrderedGuestId((String) v.getTag());
+                    mRestaurantMenuOrder.setmCurrentOrderedMenuItem(menu);
+                    mRestaurantMenuOrder.addRestaurantMenuOrder(new OrderedMenuItem(menu.id, "1", menu.price, menu.menuName, ""), (String) v.getTag());
+
+                    OrderedMenuItem findMenu = mOrderDetailList.get(index).findOrderMenu(menu.id);
+                    tvCount.setText(findMenu.qty + "");
+
+                    makeOrderItemInvoiceArrViews(mRestaurantMenuOrder.getmOrderItemInvoiceArrayList());
+                    setTheTotalInvoice();
+                } else {
+                    Toast.makeText(mContext, "음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     void initOrderItemInvoiceView() {
@@ -651,13 +646,10 @@ public class OrderFragment extends BaseFragment {
                     hideProgress();
                     mRelSendOrder.setVisibility(View.INVISIBLE);
                     mRelOrderHistory.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                    //전송한 retaurant order가 로컬에는 저장되지않음  임시처리
-//                    RestaurantOrder restaurantOrder = new RestaurantOrder();
-//                    restaurantOrder.setOrderDetailList(mOrderDetailList);
-//                    AppDef.restaurantOrderArrayList.add(restaurantOrder);
-                    refresh();
                     mNumOfOrderHistoryOfSelectedRestaurant++;
+                    refresh();
+
+                    Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -795,7 +787,6 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onAdapterItemClicked(Integer id) {
                 mSelectedRestaurantTabIdx = id;
-                //initRecyclerView(mRecyclerCategory, mRestaurantList.get(id));
                 initCategoryRecyclerView(mRecyclerCategory);
             }
         });
@@ -852,12 +843,4 @@ public class OrderFragment extends BaseFragment {
             }
         });
     }
-
-    private void moveSmoothScroll(int position) {
-        mRecyclerCategory.smoothScrollToPosition(position);
-    }
-
-
-
-
 }

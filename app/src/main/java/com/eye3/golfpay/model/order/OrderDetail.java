@@ -40,15 +40,6 @@ public class OrderDetail implements Serializable {
         //    this.mOrderedMenuItemList = new ArrayList<>();
     }
 
-//    public void addOrPlusOrderedMenuItem(OrderedMenuItem mOrderedMenuItem) {
-//        if (isOrderedMenuItemExist(mOrderedMenuItem.id)) {
-//            //중복 메뉴 추가시 qty 를 더한다.
-//            plusQty(mOrderedMenuItem);
-//        } else {  //중복 메뉴가 아니면 추가
-//            mOrderedMenuItemList.add(mOrderedMenuItem);
-//        }
-//    }
-
     public void addOrPlusSelectedOrderedMenuItem(OrderedMenuItem orderedMenuItem, String guestId){
         if(reserve_guest_id.equals(guestId)){
             if (isOrderedMenuItemExist(orderedMenuItem.id)) {

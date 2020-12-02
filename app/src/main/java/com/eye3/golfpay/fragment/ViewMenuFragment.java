@@ -227,7 +227,8 @@ public class ViewMenuFragment extends BaseFragment {
             }
         });
 
-        mView.findViewById(R.id.btn_menu_near_caddie_note).performClick();
+        //시작메뉴
+        //mView.findViewById(R.id.btn_menu_near_caddie_note).performClick();
     }
 
     public void selectMenu(int id) {

@@ -67,7 +67,7 @@ public class AppDef {
     public static final String LONGEST = "롱기스트";
 
     public static List<Club> clubList = new ArrayList<>();
-    public static  List<OrderItemInvoice> orderItemInvoiceArrayList = new  ArrayList<>();
+    public static List<OrderItemInvoice> orderItemInvoiceArrayList = new  ArrayList<>();
     public static List<OrderDetail> orderDetailList = new ArrayList<>();
     public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
     public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();

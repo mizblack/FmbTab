@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class RestaurantMenu implements Serializable {
 
-    @SerializedName("id")
+    @SerializedName("item_id")
     @Expose
     public String id;
 
@@ -38,7 +38,4 @@ public class RestaurantMenu implements Serializable {
         this.category2Idx = category2Idx;
         this.SubCateZeroIndex = SubCateZeroIndex;
     }
-
-
-
 }

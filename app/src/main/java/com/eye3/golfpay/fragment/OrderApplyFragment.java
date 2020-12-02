@@ -26,6 +26,7 @@ import java.util.Objects;
 
 import static com.eye3.golfpay.fragment.OrderFragment.mTabsRootLinear;
 
+
 public class OrderApplyFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
