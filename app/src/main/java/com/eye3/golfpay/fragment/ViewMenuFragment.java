@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -228,7 +229,7 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
         //시작메뉴
-        //mView.findViewById(R.id.btn_menu_near_caddie_note).performClick();
+        //mView.findViewById(R.id.btn_menu_restaurant).performClick();
     }
 
     public void selectMenu(int id) {
@@ -262,9 +263,11 @@ public class ViewMenuFragment extends BaseFragment {
                     init();
 
                 } else if (response.getResultCode().equals("fail")) {
-                    // Toast.makeText(getAct, response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                     Toast.makeText(context, response.getResultMessage(), Toast.LENGTH_SHORT).show();
                 }
-
+                else {
+                    //Toast.makeText(context, "response.getResultCode().equals("else")", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -297,6 +300,8 @@ public class ViewMenuFragment extends BaseFragment {
             public void onLogout() {
                 ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
                 GoNavigationDrawer(new LoginFragment(), null);
+
+                mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
             }

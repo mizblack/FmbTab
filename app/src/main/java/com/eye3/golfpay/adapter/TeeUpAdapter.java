@@ -99,6 +99,7 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
             holder.tv_group.setText(group);
 
         try {
+            holder.visitorsGuestItemLinearLayout.removeAllViews();
             for (int i = 0; i < todayReserveList.get(position).getGuestData().size(); i++) {
                 VisitorsGuestItem visitorsGuestItem = new VisitorsGuestItem(context);
                 TextView memberNameTextView = visitorsGuestItem.findViewById(R.id.memberNameTextView);

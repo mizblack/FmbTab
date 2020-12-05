@@ -1,88 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/personal_bill_root"
     android:layout_width="@dimen/personal_bill_unit_width"
     android:layout_height="@dimen/personal_bill_unit_height"
-    android:background="@color/zumthor"
+    android:background="@drawable/shape_zumthor_edge"
     android:orientation="vertical"
     android:padding="1dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/memberNameTextView"
+        style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:text="홍길동"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="@dimen/personal_bill_unit_width"
-            android:layout_height="1dp"
-            android:alpha="0.5"
-            android:background="@color/white" />
+    <TextView
+        android:id="@+id/member01OneOverNTextView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
+        android:text="1/-"
+        android:textColor="@color/gray"
+        android:textSize="20dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/personalOrderLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/memberNameTextView"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/memberNameTextView"
+        tools:ignore="UselessLeaf"
+        tools:layout_editor_absoluteX="12dp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/memberNameTextView"
-            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
-            android:text="홍길동" />
+            android:gravity="center_vertical|right"
+            android:layout_marginLeft="16dp"
+            android:text="계" />
 
         <TextView
-            android:id="@+id/member01OneOverNTextView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
-            android:text="1/-"
-            android:textColor="@color/gray"
-            android:textSize="20dp"
-            android:visibility="gone" />
-
-        <ScrollView
-            android:id="@+id/memberOrderScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_below="@+id/memberNameTextView"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <LinearLayout
-                android:id="@+id/personalOrderLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:ignore="UselessLeaf" />
-
-        </ScrollView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+            android:id="@+id/memberPriceTextView"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|right"
-                android:paddingRight="5dp"
-                android:text="계" />
-
-            <TextView
-                android:id="@+id/memberPriceTextView"
-                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|right"
-                android:paddingRight="5dp"
-                android:text="0000" />
-        </RelativeLayout>
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="16dp"
+            android:text="0000" />
     </RelativeLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

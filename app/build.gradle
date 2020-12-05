@@ -29,6 +29,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        exclude "lib/arm64-v8a/librealm-jni.so"
+    }
+
     applicationVariants.all { variant ->
         if (!variant.buildType.name.equals("debug")) {
             def df = new SimpleDateFormat("yyMMddhhmmss")

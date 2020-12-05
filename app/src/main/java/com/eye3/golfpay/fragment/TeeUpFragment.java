@@ -116,13 +116,12 @@ public class TeeUpFragment extends BaseFragment {
                         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
                         rvTeam.setHasFixedSize(true);
                         rvTeam.setLayoutManager(mManager);
-                        initTeeUpAdapter(response);
+                        initTeeUpAdapter();
                         rvTeam.setAdapter(teeUpAdapter);
                     }
 
                     teeUpAdapter.setData(Global.teeUpTime.getTodayReserveList());
-
-                    //teeUpAdapter.notifyDataSetChanged();
+                    teeUpAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -140,11 +139,11 @@ public class TeeUpFragment extends BaseFragment {
         });
     }
 
-    private void initTeeUpAdapter(TeeUpTime response) {
+    private void initTeeUpAdapter() {
         teeUpAdapter = new TeeUpAdapter(mContext, new TeeUpAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(Integer position) {
-                int reserveId = response.getTodayReserveList().get(position).getId();
+                int reserveId = Global.teeUpTime.getTodayReserveList().get(position).getId();
                 DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(mContext, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
                     @Override
                     public void onSuccess(ResponseData<Object> response) {

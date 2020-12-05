@@ -67,7 +67,7 @@ public class OrderFragment extends BaseFragment {
     List<OrderDetail> mOrderDetailList = new ArrayList<>();//먼저 생성해야 아래리스트에 renew됨.
     List<OrderItemInvoice> mOrderItemInvoiceArrayList = new ArrayList<>();
     //**********************************************************
-
+    public static LinearLayout mTabsRootLinear;
     private View preSelectedGuestView;
     RestaurantMenuOrder mRestaurantMenuOrder;
     List<RestaurantMenu> mWholeMenuList;
@@ -93,6 +93,7 @@ public class OrderFragment extends BaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fr_restaurant_order, container, false);
         View mainView = binding.getRoot();
 
+        mTabsRootLinear = mainView.findViewById(R.id.tabsRootLinearLayout);
         createGuestList(binding.guestContainer);
         initOrderItemInvoiceView();
         mParentActivity.showMainBottomBar();

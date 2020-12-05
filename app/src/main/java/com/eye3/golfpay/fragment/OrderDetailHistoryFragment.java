@@ -157,8 +157,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
                 Toast.makeText(mContext, "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
-        total = receptUnitView.findViewById(R.id.tvTotal);
-        total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(receiptUnit.recept_list)));
+        //total = receptUnitView.findViewById(R.id.tvTotal);
+        //total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(receiptUnit.recept_list)));
         orderTime = receptUnitView.findViewById(R.id.order_time);
         orderTime.setText(receiptUnit.order_time);
         linearPersonalOrderContainer = receptUnitView.findViewById(R.id.linear_personal_order_container);
@@ -166,14 +166,16 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         orderStatus = receptUnitView.findViewById(R.id.order_status);
         orderStatus.setText(receiptUnit.recept_list.get(0).order_status);
 
-        for (int i = 0; receiptUnit.recept_list.size() > i; i++) {
-            PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(i);
+        int w = 238; //4개
+        //int w = 197; //5개
+        for (int i = 0; /*receiptUnit.recept_list.size()*/ 4 > i; i++) {
+            PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(0);
 
             View view = createPersonalPayBillView(personalReceiptsOrder);
-            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 230, getResources().getDisplayMetrics());
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 238, getResources().getDisplayMetrics());
             final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
-            params.rightMargin = 20;
+            params.rightMargin = 10;
             view.setLayoutParams(params);
             linearPersonalOrderContainer.addView(view);
         }
@@ -210,6 +212,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         for (int i = 0; storeOrder.tablet_order_list.size() > i; i++) {
             mOrderHistoryLinear.addView(createReceptOrderView(storeOrder.tablet_order_list.get(i)));
         }
+
         //pos 오더 뷰 생성
         View view = createPosOrderView(storeOrder.pos_order_list);
         if (view != null)

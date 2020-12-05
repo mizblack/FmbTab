@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.eye3.golfpay.fragment.OrderFragment.mTabsRootLinear;
-
-
 public class OrderApplyFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
@@ -38,6 +35,7 @@ public class OrderApplyFragment extends BaseFragment {
     dreammaker.android.widget.Spinner mSpinn_Pay_Person;
     BasicSpinnerAdapter mSpinnAdapter;
     String[] mPayPersonList;
+    public static LinearLayout mTabsRootLinear;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

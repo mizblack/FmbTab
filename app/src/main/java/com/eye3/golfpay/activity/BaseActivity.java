@@ -57,6 +57,10 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         return mPreviousBaseFragment;
     }
 
+    public void setPreviousBaseFragment(BaseFragment fragment) {
+        mPreviousBaseFragment = fragment;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

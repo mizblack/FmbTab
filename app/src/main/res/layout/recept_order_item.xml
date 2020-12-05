@@ -1,88 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/order_history_bg"
     android:orientation="vertical"
     android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingBottom="20dp">
+    android:paddingRight="30dp">
 
     <LinearLayout
+        android:id="@+id/linearLayout8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:id="@+id/order_time"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="오전 06시20분" />
+            android:text="스타트하우스 (오전 06시 22분)" />
 
         <TextView
-            style="@style/GlobalTextView.17SP.gray.NotoSans.Medium"
             android:id="@+id/order_status"
+            style="@style/GlobalTextView.17SP.gray.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/personal_bill_unit_height"
-        android:layout_marginTop="16dp"
-        android:background="@color/order_history_bg"
+        android:id="@+id/linear_personal_order_container"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
         android:orientation="horizontal"
-        android:weightSum="10">
-
-        <HorizontalScrollView
-            android:layout_width="0dp"
-            android:layout_height="@dimen/personal_bill_unit_height"
-            android:layout_weight="8"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/linear_personal_order_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/personal_bill_unit_height"
-            android:layout_weight="2"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/tvTotal"
-                style="@style/ItemOrderBillTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:text="총계 "
-                android:textColor="@color/irisBlue"
-                android:textSize="22sp" />
-
-
-            <Button
-                android:id='@+id/btn_extra_order_cancel'
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_alignParentBottom="true"
-                android:background="#FF5353"
-                android:gravity="center"
-                android:padding="1dp"
-                android:text="주문취소하기"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view_total_price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
     </LinearLayout>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_total_price"
+        android:layout_width="238dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/shape_zumthor_edge"
+        app:layout_constraintBottom_toTopOf="@+id/btn_extra_order_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linear_personal_order_container">
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+    </LinearLayout>
+
+
+    <Button
+        android:id='@+id/btn_extra_order_cancel'
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FF5353"
+        android:gravity="center"
+        android:padding="1dp"
+        android:text="주문 취소 하기"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_total_price" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
