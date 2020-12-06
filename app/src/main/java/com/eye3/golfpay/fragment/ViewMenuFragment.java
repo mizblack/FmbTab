@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.LogoutDialog;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
@@ -216,7 +217,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                ((MainActivity)mParentActivity).startCamera();
+                ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto);
             }
         });
 
@@ -224,7 +225,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                ((MainActivity)mParentActivity).startCamera();
+                ((MainActivity)mParentActivity).startCamera(AppDef.CaddyPhoto);
             }
         });
 

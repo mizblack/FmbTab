@@ -20,6 +20,7 @@ import com.eye3.golfpay.model.order.Restaurant;
 import com.eye3.golfpay.model.order.RestaurantMenu;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
+import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
@@ -579,6 +580,28 @@ public class DataInterface extends BasicDataInterface {
                 }
             });
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setGuestPhotos(RequestBody reserveGuestId,
+                               RequestBody photo_type, RequestBody photo_time, RequestBody caddy_id, MultipartBody.Part part, final ResponseCallback<GuestInfoResponse> callback) {
+
+        try {
+            Call<PhotoResponse> call = service.setGuestPhotos(reserveGuestId, photo_type, photo_time, caddy_id, part);
+            call.enqueue(new Callback<PhotoResponse>() {
+                @Override
+                public void onResponse(Call<PhotoResponse> call, Response<PhotoResponse> response) {
+                    //callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<PhotoResponse> call, Throwable t) {
+
+                }
+
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }

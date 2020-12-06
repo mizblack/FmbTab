@@ -15,6 +15,7 @@ import com.eye3.golfpay.model.order.Restaurant;
 import com.eye3.golfpay.model.order.RestaurantMenu;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
+import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
@@ -125,4 +126,12 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("getReserveGameType")
     Call<ReserveGameType> getReserveGameType(@Field("res_id") int res_id);
+
+    @Multipart
+    @POST("http://deverp.golfpay.co.kr/api/v1/setGuestPhotos")
+    Call<PhotoResponse> setGuestPhotos(@Part("reserve_guest_id") RequestBody reserveGuestId,
+                                       @Part("photo_type") RequestBody photo_type,
+                                       @Part("photo_time") RequestBody photo_time,
+                                       @Part("caddy_id") RequestBody caddy_id,
+                                       @Part MultipartBody.Part img_file);
 }

@@ -30,7 +30,7 @@ public class OrderItemInvoiceView extends RelativeLayout {
 //        init(context);
 //    }
 
-    public int getmLinearNameOrderCount(){
+    public int getLinearNameOrderCount(){
        return mLinearNameOrder.getChildCount();
     }
 

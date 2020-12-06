@@ -13,6 +13,7 @@ public class NameOrderView extends LinearLayout {
     public TextView mNameTv, mQtyTv,  mCaddyTv;
     public ImageButton mPlusTv , mMinusTv;
     public LinearLayout deleteLinear;
+    public String menuPrice;
 
     public NameOrderView(Context context) {
         super(context);

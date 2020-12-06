@@ -15,9 +15,7 @@ public class AppDef {
     //    public final static int ACTIVITY_CLOSE = 9000;
 //    public final static String TAKEOVER_TEST_BEFORE  = "10";
     public static boolean wifi = false;
-
     public static boolean gps = false;
-
     public static boolean isTar = false;
 
     //스코어 점수를 par로 보여줄지 타수로 보여줄지 결정하는 함수
@@ -66,12 +64,15 @@ public class AppDef {
     public static final String NEAREST = "니어리스트";
     public static final String LONGEST = "롱기스트";
 
+    public static final String PhotoType = "PhotoType";
+    public static final int GuestPhoto = 0;
+    public static final int CaddyPhoto = 1;
+
     public static List<Club> clubList = new ArrayList<>();
     public static List<OrderItemInvoice> orderItemInvoiceArrayList = new  ArrayList<>();
     public static List<OrderDetail> orderDetailList = new ArrayList<>();
     public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
     public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();
-
     public static int mTempSaveRestaurantIdx ;
 
 //    public static List<String> getGuestList(){

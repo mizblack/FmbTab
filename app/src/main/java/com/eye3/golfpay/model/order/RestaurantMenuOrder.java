@@ -21,9 +21,9 @@ public class RestaurantMenuOrder {
     //   public OrderItemInvoice mCurrentOrderItemInvoice;
     Context context;
 
-    public RestaurantMenuOrder(Context context, List<OrderDetail> mOrderDetailList, List<OrderItemInvoice> mOrderItemInvoiceArrayList) {
-        this.mOrderDetailList = mOrderDetailList;
-        this.mOrderItemInvoiceArrayList = mOrderItemInvoiceArrayList;
+    public RestaurantMenuOrder(Context context, List<OrderDetail> orderDetailList, List<OrderItemInvoice> orderItemInvoiceArrayList) {
+        this.mOrderDetailList = orderDetailList;
+        this.mOrderItemInvoiceArrayList = orderItemInvoiceArrayList;
         this.context = context;
     }
 
@@ -31,11 +31,11 @@ public class RestaurantMenuOrder {
         mOrderedGuestId = id;
     }
 
-    public List<OrderItemInvoice> getmOrderItemInvoiceArrayList(){
+    public List<OrderItemInvoice> getOrderItemInvoiceArrayList(){
         return mOrderItemInvoiceArrayList;
     }
 
-    public void setmCurrentOrderedMenuItem(OrderedMenuItem orderedMenuItem) {
+    public void setCurrentOrderedMenuItem(OrderedMenuItem orderedMenuItem) {
         this.mCurrentOrderedMenuItem = orderedMenuItem;
     }
 
@@ -52,12 +52,12 @@ public class RestaurantMenuOrder {
 
     //이 method를 통해 메뉴추가할것
     public void addRestaurantMenuOrder(OrderedMenuItem orderedMenuItem, String guestId) {
-        addOderedMenuItemintoOrderDetailList(orderedMenuItem, guestId);
+        addOrderMenuItemIntoOrderDetailList(orderedMenuItem, guestId);
         // orderedMenuItem.qty 가 양수냐 음수냐에 따라 가감됨
         addOrderedMenuItemIntoInvoiceArrayList(new OrderedMenuItem(orderedMenuItem.id, orderedMenuItem.qty, orderedMenuItem.price, orderedMenuItem.menuName, orderedMenuItem.caddy_id), guestId);
     }
 
-    private void addOderedMenuItemintoOrderDetailList(OrderedMenuItem orderedMenuItem, String guestId) {
+    private void addOrderMenuItemIntoOrderDetailList(OrderedMenuItem orderedMenuItem, String guestId) {
         if (guestId != null) {
             OrderDetail orderDetail = mOrderDetailList.get(getIndexById(guestId));
             orderDetail.addOrPlusSelectedOrderedMenuItem(orderedMenuItem, guestId);
@@ -72,7 +72,6 @@ public class RestaurantMenuOrder {
                 return i;
         }
         return -1;
-
     }
 
     private int getIndexById(String guestId) {
@@ -81,9 +80,7 @@ public class RestaurantMenuOrder {
                 return i;
         }
         return -1;
-
     }
-
 
     public String getGuestName(String reserveId) {
         for (int i = 0; Global.selectedReservation.getGuestData().size() > i; i++) {
@@ -96,60 +93,61 @@ public class RestaurantMenuOrder {
 
     private void addOrderedMenuItemIntoInvoiceArrayList(OrderedMenuItem currentOrderedMenuItem, String guestId) {
 
-        OrderItemInvoice a_ItemInvoice = null;
+        OrderItemInvoice itemInvoice = null;
         if (mOrderItemInvoiceArrayList.size() == 0) {
-            a_ItemInvoice = new OrderItemInvoice();
-            a_ItemInvoice.mMenunName = currentOrderedMenuItem.menuName;
-            a_ItemInvoice.mQty = Integer.valueOf(currentOrderedMenuItem.qty);
-            a_ItemInvoice.mGuestNameOrders.add((new GuestNameOrder(getGuestName(mOrderedGuestId), Integer.valueOf(currentOrderedMenuItem.qty), currentOrderedMenuItem.menuName, currentOrderedMenuItem.caddy_id)));
-            mOrderItemInvoiceArrayList.add(a_ItemInvoice);
+            itemInvoice = new OrderItemInvoice();
+            itemInvoice.mMenuId = currentOrderedMenuItem.id;
+            itemInvoice.mMenuName = currentOrderedMenuItem.menuName;
+            itemInvoice.mMenuPrice = currentOrderedMenuItem.price;
+            itemInvoice.mQty = Integer.parseInt(currentOrderedMenuItem.qty);
+            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, getGuestName(mOrderedGuestId), Integer.parseInt(currentOrderedMenuItem.qty), currentOrderedMenuItem.menuName, currentOrderedMenuItem.caddy_id)));
+            mOrderItemInvoiceArrayList.add(itemInvoice);
 
         } else {
             for (int j = 0; mOrderItemInvoiceArrayList.size() > j; j++) {
-                a_ItemInvoice = mOrderItemInvoiceArrayList.get(j);
+                itemInvoice = mOrderItemInvoiceArrayList.get(j);
 
-                if (a_ItemInvoice.mMenunName.equals(currentOrderedMenuItem.menuName)) {
+                if (itemInvoice.mMenuName.equals(currentOrderedMenuItem.menuName)) {
                     //메뉴이름이 같을때
-                    a_ItemInvoice.mQty += Integer.valueOf(currentOrderedMenuItem.qty);
+                    itemInvoice.mQty += Integer.parseInt(currentOrderedMenuItem.qty);
                     //여기에선  mOrderedMenuItem qty가 항상 1이어야 한다..
 
-                    putGuestNameOrder(a_ItemInvoice, getGuestName(guestId), currentOrderedMenuItem);
+                    putGuestNameOrder(itemInvoice, getGuestName(guestId), currentOrderedMenuItem);
 
                     return;
                 }
             }
             //메뉴이름이 업스면 새인보이스생성
-            a_ItemInvoice = new OrderItemInvoice();
-            a_ItemInvoice.mMenunName = currentOrderedMenuItem.menuName;
-            a_ItemInvoice.mQty = 1;
+            itemInvoice = new OrderItemInvoice();
+            itemInvoice.mMenuName = currentOrderedMenuItem.menuName;
+            itemInvoice.mMenuId = currentOrderedMenuItem.id;
+            itemInvoice.mMenuPrice = currentOrderedMenuItem.price;
+            itemInvoice.mQty = 1;
             //      if (currentOrderedMenuItem.caddy_id == "")
-            a_ItemInvoice.mGuestNameOrders.add((new GuestNameOrder(getGuestName(guestId), currentOrderedMenuItem)));
+            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, getGuestName(guestId), currentOrderedMenuItem)));
             //      else
             //           a_ItemInvoice.mGuestNameOrders.add((new GuestNameOrder(getGuestName(guestId) + STRING_CADDY, currentOrderedMenuItem)));
 
-            mOrderItemInvoiceArrayList.add(a_ItemInvoice);
-            return;
-
-
+            mOrderItemInvoiceArrayList.add(itemInvoice);
         }
     }
 
-    private void putGuestNameOrder(OrderItemInvoice a_iteminvoice, String guestName, OrderedMenuItem orderedMenuItem) {
-        if (a_iteminvoice.mGuestNameOrders.size() < 0)
+    private void putGuestNameOrder(OrderItemInvoice itemInvoice, String guestName, OrderedMenuItem orderedMenuItem) {
+        if (itemInvoice.mGuestNameOrders.isEmpty())
             return;
-        for (int i = 0; a_iteminvoice.mGuestNameOrders.size() > i; i++) {
-            if (a_iteminvoice.mGuestNameOrders.get(i).mGuestName.equals(guestName)) {
-                if (a_iteminvoice.mGuestNameOrders.get(i).caddy_id.equals(orderedMenuItem.caddy_id)) { //게스트 명이 같고 caddy 주문이 같으면 수량을 더한다..
-                    int newQty = a_iteminvoice.mGuestNameOrders.get(i).qty + Integer.valueOf(orderedMenuItem.qty);
-                    a_iteminvoice.mGuestNameOrders.set(i, new GuestNameOrder(guestName, newQty, a_iteminvoice.mMenunName, orderedMenuItem.caddy_id));
-//                } else //게스트 명이 같고 caddy 주문이 다르면 새로 생성하여 추가한다.
-//                    a_iteminvoice.mGuestNameOrders.add(new GuestNameOrder(guestName, Integer.valueOf(orderedMenuItem.qty), a_iteminvoice.mMenunName, orderedMenuItem.caddy_id));
+
+        for (int i = 0; itemInvoice.mGuestNameOrders.size() > i; i++) {
+            if (itemInvoice.mGuestNameOrders.get(i).mGuestName.equals(guestName)) {
+                if (itemInvoice.mGuestNameOrders.get(i).caddy_id.equals(orderedMenuItem.caddy_id)) { //게스트 명이 같고 caddy 주문이 같으면 수량을 더한다..
+                    int newQty = itemInvoice.mGuestNameOrders.get(i).qty + Integer.parseInt(orderedMenuItem.qty);
+                    itemInvoice.mGuestNameOrders.set(i, new GuestNameOrder(orderedMenuItem.id, guestName, newQty, itemInvoice.mMenuName, orderedMenuItem.caddy_id));
                     return;
                 }
             }
         }
+
         //게스트명이 같은것이 없으면 게스트명으로 새로 생성한다.
-        a_iteminvoice.mGuestNameOrders.add(new GuestNameOrder(guestName, Integer.valueOf(orderedMenuItem.qty), a_iteminvoice.mMenunName, orderedMenuItem.caddy_id));
+        itemInvoice.mGuestNameOrders.add(new GuestNameOrder(orderedMenuItem.id, guestName, Integer.parseInt(orderedMenuItem.qty), itemInvoice.mMenuName, orderedMenuItem.caddy_id));
     }
 
     public void clearRestaurantMenuOrder() {

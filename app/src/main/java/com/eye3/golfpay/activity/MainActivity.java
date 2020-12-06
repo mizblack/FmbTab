@@ -60,6 +60,8 @@ import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.GuestInfo;
+import com.eye3.golfpay.model.info.GuestInfoResponse;
+import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
@@ -74,12 +76,17 @@ import net.mrbin99.laravelechoandroid.EchoCallback;
 import net.mrbin99.laravelechoandroid.EchoOptions;
 import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
@@ -93,6 +100,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     LinearLayout ll_login;
     Echo echo;
     TextView currentTime;
+    private int photoType = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -378,15 +386,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void onComplete(String path) {
                     imagePath = path;
-
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-
-                        public void run() {
-
-                        }
-
-                    }, 10);
+                    camera(path);
 
                 }
             }).execute(mCameraTempUri);
@@ -573,7 +573,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 ChatData chatData = laravelModel.nameValuePairs.event.nameValuePairs;
                 if (chatData.mode.equals("chat")) {
 
-                    if (mBaseFragment.TAG.equals("ControlFragment") == true) {
+                    if (mBaseFragment.TAG.equals("ControlFragment")) {
                         ((ControlFragment) mBaseFragment).receiveMessage(chatData.member_id, chatData.message);
                         return;
                     }
@@ -635,7 +635,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private Handler mHandler = new Handler();
     private String imagePath;
 
-    public void startCamera() {
+    public void startCamera(int photoType) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
 
@@ -647,11 +647,42 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mCameraTempUri);
+                this.photoType = photoType;
                 startActivityForResult(intent, RC_TAKE_PICTURE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void camera(String path) {
+
+        RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), "44852");
+        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "event");
+        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "normal");
+        RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), "1");
+
+        File file = new File(path);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveGuestId,
+                photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<GuestInfoResponse>() {
+            @Override
+            public void onSuccess(GuestInfoResponse response) {
+
+            }
+
+            @Override
+            public void onError(GuestInfoResponse response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }
 

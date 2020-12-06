@@ -35,6 +35,7 @@ import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class OrderDetailHistoryFragment extends BaseFragment {
@@ -142,10 +143,10 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         return v;
     }
 
-    private View createReceptOrderView(ReceiptUnit receiptUnit) {
+    private View createReceiptOrderView(ReceiptUnit receiptUnit, String storeName) {
         TextView total, orderTime;
         TextView orderStatus;
-        LinearLayout linearPersonalOrderContainer;
+        LinearLayout linearPersonalOrderContainer, linearTotalPrice;
         Button btnOrderCancel;
         View receptUnitView = LayoutInflater.from(mContext).inflate(R.layout.recept_order_item, null, false);
         btnOrderCancel = receptUnitView.findViewById(R.id.btn_extra_order_cancel);
@@ -160,26 +161,66 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         //total = receptUnitView.findViewById(R.id.tvTotal);
         //total.setText("총계" + "   " + AppDef.priceMapper(getTotalReceptUnit(receiptUnit.recept_list)));
         orderTime = receptUnitView.findViewById(R.id.order_time);
-        orderTime.setText(receiptUnit.order_time);
+        orderTime.setText(String.format("%s (%s)", storeName, receiptUnit.order_time));
         linearPersonalOrderContainer = receptUnitView.findViewById(R.id.linear_personal_order_container);
+        linearTotalPrice = receptUnitView.findViewById(R.id.view_total_price);
         //게스트중 한명만이라도 주문완료면 주문완료로 표시
         orderStatus = receptUnitView.findViewById(R.id.order_status);
         orderStatus.setText(receiptUnit.recept_list.get(0).order_status);
 
-        int w = 238; //4개
+        int itemWidth = 238; //4개
+        int itemHeight = 400;
         //int w = 197; //5개
-        for (int i = 0; /*receiptUnit.recept_list.size()*/ 4 > i; i++) {
-            PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(0);
 
+        if (true) {
+            itemWidth = 198;
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemWidth, getResources().getDisplayMetrics());
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, 0);
+            params.bottomToTop = R.id.btn_extra_order_cancel;
+            params.endToEnd = R.id.view_root;
+            params.topToTop = R.id.linear_personal_order_container;
+            params.bottomMargin = 6;
+            linearTotalPrice.setLayoutParams(params);
+        }
+
+        int maxCount = getOrderMaxCount(receiptUnit);
+        if (maxCount > 7) {
+            itemHeight = maxCount * 60;
+            final int width = 0;
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemHeight, getResources().getDisplayMetrics());
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, height);
+            params.setMarginEnd(6);
+            params.topMargin = 20;
+            params.bottomToBottom = R.id.view_root;
+            params.endToStart = R.id.view_total_price;
+            params.startToStart = R.id.view_root;
+            params.topToBottom = R.id.linearLayout8;
+            linearPersonalOrderContainer.setLayoutParams(params);
+        }
+
+        for (int i = 0; receiptUnit.recept_list.size() > i; i++) {
+            PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(i);
             View view = createPersonalPayBillView(personalReceiptsOrder);
-            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 238, getResources().getDisplayMetrics());
-            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, getResources().getDisplayMetrics());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+            final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemWidth, getResources().getDisplayMetrics());
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemHeight, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
             params.rightMargin = 10;
             view.setLayoutParams(params);
             linearPersonalOrderContainer.addView(view);
         }
         return receptUnitView;
+    }
+
+    private int getOrderMaxCount(ReceiptUnit receiptUnit) {
+
+        ArrayList<Integer> array = new ArrayList<>();
+
+        for (int i = 0; receiptUnit.recept_list.size() > i; i++) {
+            PersonalOrder personalReceiptsOrder = receiptUnit.recept_list.get(i);
+            array.add(personalReceiptsOrder.menuList.size());
+        }
+
+        return Collections.max(array);
     }
 
     private View createPosOrderView(List<PosPersonalOrder> posPersonalOrderList) {
@@ -210,7 +251,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         mOrderHistoryLinear.removeAllViewsInLayout();
 
         for (int i = 0; storeOrder.tablet_order_list.size() > i; i++) {
-            mOrderHistoryLinear.addView(createReceptOrderView(storeOrder.tablet_order_list.get(i)));
+
+            mOrderHistoryLinear.addView(createReceiptOrderView(storeOrder.tablet_order_list.get(i), storeOrder.store_name));
         }
 
         //pos 오더 뷰 생성

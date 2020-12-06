@@ -128,4 +128,13 @@ public class OrderDetail implements Serializable {
 
         return null;
     }
+
+    public Integer getTotalQty() {
+        int qty = 0;
+        for (OrderedMenuItem item :mOrderedMenuItemList) {
+            qty += Integer.parseInt(item.qty);
+        }
+
+        return qty;
+    }
 }
