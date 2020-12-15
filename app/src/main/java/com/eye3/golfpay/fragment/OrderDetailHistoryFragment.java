@@ -172,7 +172,7 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         int itemHeight = 400;
         //int w = 197; //5개
 
-        if (true) {
+        if (receiptUnit.recept_list.size() == 5) {
             itemWidth = 198;
             int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemWidth, getResources().getDisplayMetrics());
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, 0);

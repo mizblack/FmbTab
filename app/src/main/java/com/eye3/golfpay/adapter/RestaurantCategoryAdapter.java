@@ -144,6 +144,7 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
 
     public void firstSelect() {
         try {
+
             categoryList.get(0).isSelected = true;
             notifyDataSetChanged();
         } catch (IndexOutOfBoundsException e) {

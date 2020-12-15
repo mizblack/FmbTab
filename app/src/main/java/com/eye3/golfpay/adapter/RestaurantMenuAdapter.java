@@ -20,11 +20,15 @@ import java.util.Objects;
 
 public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAdapter.MenuItemViewHolder> {
 
+    public interface IRestaurantMenuListener {
+        void onMenuSelected(RestaurantMenu menu);
+    }
+
     Context mContext;
     public String TAG = getClass().getSimpleName();
     private RestaurantMenu selectedMenu = null;
     private List<RestaurantMenu> mMenuList;
-    public MenuItemViewHolder preSelectedViewHolder;
+    private IRestaurantMenuListener iRestaurantMenuListener;
 
     static class MenuItemViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_food_image;
@@ -39,10 +43,11 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
         }
     }
 
-    public RestaurantMenuAdapter(Context context, List<RestaurantMenu> menuList) {
+    public RestaurantMenuAdapter(Context context, List<RestaurantMenu> menuList, IRestaurantMenuListener listener) {
         Log.d(TAG, "  메뉴 사이즈   " + String.valueOf(menuList.size()));
         mContext = context;
         mMenuList = menuList;
+        this.iRestaurantMenuListener = listener;
     }
 
     @NonNull
@@ -95,12 +100,7 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
                 if (mMenuList.get(idx).isSelected)
                     return;
 
-                if (preSelectedViewHolder != null) {
-
-                    preSelectedViewHolder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(mContext).getTheme()));
-                }
-
-                preSelectedViewHolder = holder;
+                holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(mContext).getTheme()));
 
                 clearOrder();
                 mMenuList.get(idx).isSelected = true;
@@ -109,6 +109,7 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
                 notifyDataSetChanged();
                 //moveSmoothScroll(position);
                 preView = v;
+                iRestaurantMenuListener.onMenuSelected(mMenuList.get(idx));
             }
         });
     }

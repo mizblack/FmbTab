@@ -20,6 +20,7 @@ public class RestaurantMenuOrder {
     //   public OrderDetail mCurrentOrderDetail;
     //   public OrderItemInvoice mCurrentOrderItemInvoice;
     Context context;
+    private int mSelectedRestaurantIdx = 0;
 
     public RestaurantMenuOrder(Context context, List<OrderDetail> orderDetailList, List<OrderItemInvoice> orderItemInvoiceArrayList) {
         this.mOrderDetailList = orderDetailList;
@@ -51,7 +52,8 @@ public class RestaurantMenuOrder {
     }
 
     //이 method를 통해 메뉴추가할것
-    public void addRestaurantMenuOrder(OrderedMenuItem orderedMenuItem, String guestId) {
+    public void addRestaurantMenuOrder(int selectedRestaurantIdx, OrderedMenuItem orderedMenuItem, String guestId) {
+        mSelectedRestaurantIdx = selectedRestaurantIdx;
         addOrderMenuItemIntoOrderDetailList(orderedMenuItem, guestId);
         // orderedMenuItem.qty 가 양수냐 음수냐에 따라 가감됨
         addOrderedMenuItemIntoInvoiceArrayList(new OrderedMenuItem(orderedMenuItem.id, orderedMenuItem.qty, orderedMenuItem.price, orderedMenuItem.menuName, orderedMenuItem.caddy_id), guestId);
@@ -91,16 +93,32 @@ public class RestaurantMenuOrder {
         return "";
     }
 
+    public int getOrderQty(RestaurantMenu menu, String guestId) {
+        for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
+            OrderItemInvoice itemInvoice = mOrderItemInvoiceArrayList.get(i);
+            if (itemInvoice.mMenuId.equals(menu.id)) {
+                for (GuestNameOrder guestNameOrder : itemInvoice.mGuestNameOrders) {
+                    if (guestNameOrder.mGuestId.equals(guestId)) {
+                        return guestNameOrder.qty;
+                    }
+                }
+            }
+
+        }
+        return 0;
+    }
+
     private void addOrderedMenuItemIntoInvoiceArrayList(OrderedMenuItem currentOrderedMenuItem, String guestId) {
 
         OrderItemInvoice itemInvoice = null;
         if (mOrderItemInvoiceArrayList.size() == 0) {
             itemInvoice = new OrderItemInvoice();
+            itemInvoice.restaurantId = mSelectedRestaurantIdx;
             itemInvoice.mMenuId = currentOrderedMenuItem.id;
             itemInvoice.mMenuName = currentOrderedMenuItem.menuName;
             itemInvoice.mMenuPrice = currentOrderedMenuItem.price;
             itemInvoice.mQty = Integer.parseInt(currentOrderedMenuItem.qty);
-            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, getGuestName(mOrderedGuestId), Integer.parseInt(currentOrderedMenuItem.qty), currentOrderedMenuItem.menuName, currentOrderedMenuItem.caddy_id)));
+            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, guestId, getGuestName(mOrderedGuestId), Integer.parseInt(currentOrderedMenuItem.qty), currentOrderedMenuItem.menuName, currentOrderedMenuItem.caddy_id)));
             mOrderItemInvoiceArrayList.add(itemInvoice);
 
         } else {
@@ -112,19 +130,20 @@ public class RestaurantMenuOrder {
                     itemInvoice.mQty += Integer.parseInt(currentOrderedMenuItem.qty);
                     //여기에선  mOrderedMenuItem qty가 항상 1이어야 한다..
 
-                    putGuestNameOrder(itemInvoice, getGuestName(guestId), currentOrderedMenuItem);
+                    putGuestNameOrder(itemInvoice, guestId, getGuestName(guestId), currentOrderedMenuItem);
 
                     return;
                 }
             }
             //메뉴이름이 업스면 새인보이스생성
             itemInvoice = new OrderItemInvoice();
+            itemInvoice.restaurantId = mSelectedRestaurantIdx;
             itemInvoice.mMenuName = currentOrderedMenuItem.menuName;
             itemInvoice.mMenuId = currentOrderedMenuItem.id;
             itemInvoice.mMenuPrice = currentOrderedMenuItem.price;
             itemInvoice.mQty = 1;
             //      if (currentOrderedMenuItem.caddy_id == "")
-            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, getGuestName(guestId), currentOrderedMenuItem)));
+            itemInvoice.mGuestNameOrders.add((new GuestNameOrder(currentOrderedMenuItem.id, guestId, getGuestName(guestId), currentOrderedMenuItem)));
             //      else
             //           a_ItemInvoice.mGuestNameOrders.add((new GuestNameOrder(getGuestName(guestId) + STRING_CADDY, currentOrderedMenuItem)));
 
@@ -132,7 +151,7 @@ public class RestaurantMenuOrder {
         }
     }
 
-    private void putGuestNameOrder(OrderItemInvoice itemInvoice, String guestName, OrderedMenuItem orderedMenuItem) {
+    private void putGuestNameOrder(OrderItemInvoice itemInvoice, String guestId, String guestName, OrderedMenuItem orderedMenuItem) {
         if (itemInvoice.mGuestNameOrders.isEmpty())
             return;
 
@@ -140,14 +159,14 @@ public class RestaurantMenuOrder {
             if (itemInvoice.mGuestNameOrders.get(i).mGuestName.equals(guestName)) {
                 if (itemInvoice.mGuestNameOrders.get(i).caddy_id.equals(orderedMenuItem.caddy_id)) { //게스트 명이 같고 caddy 주문이 같으면 수량을 더한다..
                     int newQty = itemInvoice.mGuestNameOrders.get(i).qty + Integer.parseInt(orderedMenuItem.qty);
-                    itemInvoice.mGuestNameOrders.set(i, new GuestNameOrder(orderedMenuItem.id, guestName, newQty, itemInvoice.mMenuName, orderedMenuItem.caddy_id));
+                    itemInvoice.mGuestNameOrders.set(i, new GuestNameOrder(orderedMenuItem.id, guestId, guestName, newQty, itemInvoice.mMenuName, orderedMenuItem.caddy_id));
                     return;
                 }
             }
         }
 
         //게스트명이 같은것이 없으면 게스트명으로 새로 생성한다.
-        itemInvoice.mGuestNameOrders.add(new GuestNameOrder(orderedMenuItem.id, guestName, Integer.parseInt(orderedMenuItem.qty), itemInvoice.mMenuName, orderedMenuItem.caddy_id));
+        itemInvoice.mGuestNameOrders.add(new GuestNameOrder(orderedMenuItem.id, guestId, guestName, Integer.parseInt(orderedMenuItem.qty), itemInvoice.mMenuName, orderedMenuItem.caddy_id));
     }
 
     public void clearRestaurantMenuOrder() {

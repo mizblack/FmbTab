@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="UselessParent">
+
+    <TextView
+        android:id="@+id/infoTextView"
+        style="@style/GlobalTextView.20SP.irisBlue.NotoSans.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text=" 드시고 싶은 메뉴를\n 선택하신후\n 주문자 이름을 터치하면\n 주문이 추가됩니다."
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <ScrollView
+        android:id="@+id/orderBrowserScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        tools:ignore="NestedWeights">
+
+        <LinearLayout
+            android:id="@+id/orderBrowserLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UselessLeaf" />
+
+    </ScrollView>
+
+</LinearLayout>

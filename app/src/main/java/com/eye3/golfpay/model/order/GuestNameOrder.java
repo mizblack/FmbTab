@@ -2,21 +2,24 @@ package com.eye3.golfpay.model.order;
 
 public class GuestNameOrder {
     public String mMenuId;
+    public String mGuestId;
     public String mGuestName;
     public int  qty = 0;
     public String caddy_id;
     public String mMenuName;
 
-    public GuestNameOrder(String id, String name, int qty , String menuName, String caddyId){
+    public GuestNameOrder(String id, String guestId, String name, int qty , String menuName, String caddyId){
         this.mMenuId = id;
+        this.mGuestId = guestId;
         this.mGuestName = name;
         this.qty = qty;
         this.caddy_id = caddyId;
         this.mMenuName = menuName;
     }
 
-    public GuestNameOrder(String id, String guestName ,OrderedMenuItem orderedMenuItem) {
+    public GuestNameOrder(String id, String guestId, String guestName ,OrderedMenuItem orderedMenuItem) {
         this.mMenuId = id;
+        this.mGuestId = guestId;
         this.mGuestName = guestName;
         this.qty = Integer.parseInt(orderedMenuItem.qty);
         this.caddy_id = orderedMenuItem.caddy_id;
