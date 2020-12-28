@@ -12,8 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.order.RestaurantMenu;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -90,6 +94,18 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
             //holder.tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
             //holder.tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
         }
+
+        String url = "";
+        if (mMenuList.get(position).image != null)
+            url = mMenuList.get(position).image.replace("public", "storage");
+
+        Glide.with(mContext)
+                .load(Global.HOST_BASE_ADDRESS_AWS + url)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.placeholder(R.drawable.ic_noimage)
+                .into(holder.iv_food_image);
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 

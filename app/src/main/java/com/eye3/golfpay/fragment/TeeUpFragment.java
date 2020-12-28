@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.adapter.TeeUpAdapter;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.dialog.LogoutDialog;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
@@ -58,7 +61,39 @@ public class TeeUpFragment extends BaseFragment {
 
         rvTeam = v.findViewById(R.id.rv_team);
         caddieNameTextView = v.findViewById(R.id.tv_caddie);
+        v.findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
         return v;
+    }
+
+    private void logout() {
+        LogoutDialog dlg = new LogoutDialog(getContext(), R.style.DialogTheme);
+        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        wmlp.gravity = Gravity.CENTER;
+
+        // Set alertDialog "not focusable" so nav bar still hiding:
+        dlg.getWindow().
+                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        dlg.show();
+
+        dlg.setListener(new LogoutDialog.IListenerLogout() {
+            @Override
+            public void onLogout() {
+                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
+                GoNavigationDrawer(new LoginFragment(), null);
+
+                mParentActivity.setPreviousBaseFragment(new LoginFragment());
+                mParentActivity.GoRootScreenAdd(null);
+                mParentActivity.hideMainBottomBar();
+            }
+        });
     }
 
     private void startTimer() {
@@ -186,8 +221,8 @@ public class TeeUpFragment extends BaseFragment {
                     ((MainActivity)mParentActivity).navigationView.setVisibility(View.GONE);
                     ((MainActivity)mParentActivity).updateUI();
                     //시작메뉴
-                    //GoNativeScreen(new CaddieFragment(), null);
-                    GoNativeScreen(new OrderFragment(), null);
+                    GoNativeScreen(new CaddieFragment(), null);
+                    //GoNativeScreen(new OrderFragment(), null);
                     GoNavigationDrawer(new ViewMenuFragment(), null);
                 }
             }

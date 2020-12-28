@@ -25,9 +25,17 @@ public class PersonalOrder implements Serializable {
     @Expose
     public String total_price;
 
+    @SerializedName("totalPrice")
+    @Expose
+    public String totalPrice;
+
     @SerializedName("order_status")
     @Expose
     public String order_status = "";
+
+    @SerializedName("order_time")
+    @Expose
+    public String order_time = "";
 
     @SerializedName("menu")
     @Expose

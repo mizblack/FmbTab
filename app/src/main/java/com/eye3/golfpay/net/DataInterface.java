@@ -3,17 +3,16 @@ package com.eye3.golfpay.net;
 import android.content.Context;
 import android.view.View;
 
-import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
-import com.eye3.golfpay.model.field.NearLong;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
-import com.eye3.golfpay.model.notice.NoticeItem;
+import com.eye3.golfpay.model.notice.ArticleItem;
+import com.eye3.golfpay.model.order.CancelOrder;
 import com.eye3.golfpay.model.order.PlayStatus;
 import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.order.Restaurant;
@@ -32,7 +31,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Part;
 
 public class DataInterface extends BasicDataInterface {
     private static DataInterface instance;
@@ -279,6 +277,28 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
+    public void cancelOrder(final Context context, CancelOrder cancelOrder, final ResponseCallback<ResponseData<StoreOrder>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.getStoreOrder( cancelOrder);
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public void setScore(final Context context, ReserveScore reserveScore, final ResponseCallback<ResponseData<Object>> callback) {
         try {
@@ -350,18 +370,18 @@ public class DataInterface extends BasicDataInterface {
 
 
 
-    public void getNoticeList(final Context context, final ResponseCallback<ResponseData<NoticeItem>> callback) {
+    public void getNoticeList(final Context context, final ResponseCallback<ResponseData<ArticleItem>> callback) {
         try {
-            Call<ResponseData<NoticeItem>> call = service.getNoticeList();
-            call.enqueue(new Callback<ResponseData<NoticeItem>>() {
+            Call<ResponseData<ArticleItem>> call = service.getNoticeList();
+            call.enqueue(new Callback<ResponseData<ArticleItem>>() {
 
                 @Override
-                public void onResponse(Call<ResponseData<NoticeItem>> call, Response<ResponseData<NoticeItem>> response) {
+                public void onResponse(Call<ResponseData<ArticleItem>> call, Response<ResponseData<ArticleItem>> response) {
                     solveCommonError(context, callback, response, false);
                 }
 
                 @Override
-                public void onFailure(Call<ResponseData<NoticeItem>> call, Throwable t) {
+                public void onFailure(Call<ResponseData<ArticleItem>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);

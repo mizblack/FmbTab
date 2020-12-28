@@ -3,12 +3,12 @@ package com.eye3.golfpay.net;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
-import com.eye3.golfpay.model.field.NearLong;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
-import com.eye3.golfpay.model.notice.NoticeItem;
+import com.eye3.golfpay.model.notice.ArticleItem;
+import com.eye3.golfpay.model.order.CancelOrder;
 import com.eye3.golfpay.model.order.PlayStatus;
 import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.order.Restaurant;
@@ -69,6 +69,9 @@ public interface HttpService {
     Call<ResponseData<StoreOrder>> getStoreOrder(@Query("reserve_no") String reserveNo);
 
 
+    @POST("cancelOrderShade")
+    Call<ResponseData<Object>> getStoreOrder(@Body CancelOrder cancelOrder);
+
     @FormUrlEncoded
     @POST("getReserveList")
     Call<ReserveGuestList> getReserveGuestList(@Field("reserve_id") int reserveId);
@@ -88,8 +91,8 @@ public interface HttpService {
                                                 @Part MultipartBody.Part clubImage);
 
 
-    @POST("getNoticeList")
-    Call<ResponseData<NoticeItem>> getNoticeList();
+    @POST("getBoardDetail")
+    Call<ResponseData<ArticleItem>> getNoticeList();
 
     @POST("setPlayStatus")
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);

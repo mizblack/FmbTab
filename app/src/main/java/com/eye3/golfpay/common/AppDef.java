@@ -69,10 +69,9 @@ public class AppDef {
     public static final int CaddyPhoto = 1;
 
     public static List<Club> clubList = new ArrayList<>();
-    public static List<OrderItemInvoice> orderItemInvoiceArrayList = new  ArrayList<>();
+    public static List<OrderItemInvoice> gOrderItemInvoiceArrayList = new  ArrayList<>();
     public static List<OrderDetail> orderDetailList = new ArrayList<>();
     public static List<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
-    public static List<StoreOrder> storeOrderArrayList = new ArrayList<>();
     public static int mTempSaveRestaurantIdx ;
 
 //    public static List<String> getGuestList(){

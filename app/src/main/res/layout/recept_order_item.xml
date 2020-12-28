@@ -49,37 +49,61 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_total_price"
         android:layout_width="238dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="6dp"
         android:background="@drawable/shape_zumthor_edge"
-        app:layout_constraintBottom_toTopOf="@+id/btn_extra_order_cancel"
+        app:layout_constraintBottom_toTopOf="@+id/view_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linear_personal_order_container">
 
         <TextView
+            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Bold"
+            android:id="@+id/tv_total_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="총계"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Bold"
             android:id="@+id/tv_total_price"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <Button
-        android:id='@+id/btn_extra_order_cancel'
+    <LinearLayout
+        android:id="@+id/view_cancel"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="#FF5353"
-        android:gravity="center"
-        android:padding="1dp"
-        android:text="주문 취소 하기"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/view_total_price" />
+        app:layout_constraintStart_toStartOf="@+id/view_total_price">
+        <Button
+            android:id='@+id/btn_extra_order_cancel'
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#FF5353"
+            android:gravity="center"
+            android:padding="1dp"
+            android:text="주문 취소 하기"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="6dp"
+            />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

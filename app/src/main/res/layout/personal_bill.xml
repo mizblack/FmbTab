@@ -5,8 +5,7 @@
     android:layout_width="@dimen/personal_bill_unit_width"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="4dp"
-    >
+    android:padding="4dp">
 
     <View
         android:layout_width="@dimen/personal_bill_unit_width"

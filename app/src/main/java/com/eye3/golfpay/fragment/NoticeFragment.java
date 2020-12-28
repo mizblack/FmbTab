@@ -17,24 +17,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
-import com.eye3.golfpay.model.notice.NoticeItem;
+import com.eye3.golfpay.model.notice.ArticleItem;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.net.Uri.withAppendedPath;
+import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
 public class NoticeFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
-    private List<NoticeItem> mNoticeItemList = new ArrayList<>();
+    private List<ArticleItem> mNoticeItemList = new ArrayList<>();
     private NoticeAdapter mNoticeAdapter;
     private RecyclerView mRecyclerNotice;
     private TextView mTitleTextView, mContentTextView, mTimeTextView;
-    private LinearLayout imageLayout;
+    private ImageView mImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,11 +56,11 @@ public class NoticeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fr_notice, container, false);
 
-        imageLayout = v.findViewById(R.id.imageLinearLayout);
         mRecyclerNotice = v.findViewById(R.id.recycler_notice);
         mTitleTextView = v.findViewById(R.id.titleTextView);
         mTimeTextView = v.findViewById(R.id.timeTextView);
         mContentTextView = v.findViewById(R.id.contentTextView);
+        mImageView = v.findViewById(R.id.iv_img);
         getNoticeList(getActivity());
 
         mParentActivity.showMainBottomBar();
@@ -76,7 +82,7 @@ public class NoticeFragment extends BaseFragment {
 
     }
 
-    private void initRecyclerView(List<NoticeItem> noticeList) {
+    private void initRecyclerView(List<ArticleItem> noticeList) {
         LinearLayoutManager mManager;
         if (noticeList == null)
             return;
@@ -86,31 +92,30 @@ public class NoticeFragment extends BaseFragment {
         mNoticeAdapter = new NoticeAdapter(mContext, noticeList);
         mRecyclerNotice.setAdapter(mNoticeAdapter);
         mNoticeAdapter.notifyDataSetChanged();
+
+        if (!noticeList.isEmpty())
+            showNoticeDetail(noticeList.get(0));
     }
 
-    private void showNoticeDetail(NoticeItem item) {
+    private void showNoticeDetail(ArticleItem item) {
+        mTitleTextView.setText(item.title);
+        mTimeTextView.setText(item.created_at);
+        mContentTextView.setText(item.content);
 
-        if(item.mUseYn.equals("Y") ) {
-            item.mUseYn = "y";
-
-        }
-        imageLayout.setVisibility(View.GONE);
-        mTitleTextView.setText(item.mTitle);
-        mTimeTextView.setText("작성일 " + item.mCreatedAt);
-        mContentTextView.setText(Html.fromHtml(item.mContents));
+        Picasso.get()
+                .load(Global.HOST_BASE_ADDRESS_AWS + item.file_url)
+                .placeholder(mImageView.getDrawable())
+                .into(mImageView);
     }
-
 
     private class NoticeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         Context context;
-        List<NoticeItem> noticeList;
+        List<ArticleItem> articleItems;
 
-
-        NoticeAdapter(Context context, List<NoticeItem> noticeList) {
+        NoticeAdapter(Context context, List<ArticleItem> noticeList) {
             this.context = context;
-            this.noticeList = noticeList;
-
+            this.articleItems = noticeList;
         }
 
         @NonNull
@@ -122,40 +127,39 @@ public class NoticeFragment extends BaseFragment {
             viewHolder = new NoticeAdapter.NoticeItemViewHolder(view);
 
             return viewHolder;
-
         }
-
-
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (noticeList == null)
+            if (articleItems == null)
                 return;
             final NoticeItemViewHolder viewHolder = (NoticeItemViewHolder) holder;
-            viewHolder.tvTitle.setText(noticeList.get(position).mTitle);
-            viewHolder.tvContent.setText(Html.fromHtml(noticeList.get(position).mContents));
-            viewHolder.tvDateTime.setText(noticeList.get(position).mCreatedAt);
-            viewHolder.itemView.setTag(noticeList.get(position));
-            if(noticeList.get(position).mUseYn.equals("y")) {
-                viewHolder.imgNew.setVisibility(View.GONE);
-                viewHolder.imgArrow.setVisibility(View.VISIBLE);
-            }
-            else {
-                viewHolder.imgNew.setVisibility(View.VISIBLE);
-                viewHolder.imgArrow.setVisibility(View.GONE);
-            }
+            viewHolder.tvTitle.setText(articleItems.get(position).title);
+            viewHolder.tvContent.setText(Html.fromHtml(articleItems.get(position).content));
+            viewHolder.tvDateTime.setText(articleItems.get(position).created_at);
+            viewHolder.itemView.setTag(articleItems.get(position));
+
+//            if(articleItems.get(position).mUseYn.equals("y")) {
+//                viewHolder.imgNew.setVisibility(View.GONE);
+//                viewHolder.imgArrow.setVisibility(View.VISIBLE);
+//            }
+//            else {
+//                viewHolder.imgNew.setVisibility(View.VISIBLE);
+//                viewHolder.imgArrow.setVisibility(View.GONE);
+//            }
+
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     viewHolder.imgNew.setVisibility(View.INVISIBLE);
-                    showNoticeDetail((NoticeItem) v.getTag());
+                    showNoticeDetail((ArticleItem) v.getTag());
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return noticeList.size();
+            return articleItems.size();
         }
 
 
@@ -170,24 +174,22 @@ public class NoticeFragment extends BaseFragment {
                 tvDateTime = view.findViewById(R.id.tvNoticeDateTime);
                 imgNew = view.findViewById(R.id.imgNew);
                 imgArrow = view.findViewById(R.id.iv_arrow);
-
-
             }
         }
     }
 
-    private void maekeNull(List<NoticeItem> list){
+    private void maekeNull(List<ArticleItem> list){
                list = null;
     }
     private void getNoticeList(Context context) {
         showProgress("공지사항 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getNoticeList(context, new DataInterface.ResponseCallback<ResponseData<NoticeItem>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getNoticeList(context, new DataInterface.ResponseCallback<ResponseData<ArticleItem>>() {
             @Override
-            public void onSuccess(ResponseData<NoticeItem> response) {
+            public void onSuccess(ResponseData<ArticleItem> response) {
                 hideProgress();
                 //나중에 수정할것
                 if (response.getResultCode().equals("ok")) {
-                    mNoticeItemList = (List<NoticeItem>) response.getList();
+                    mNoticeItemList = (List<ArticleItem>) response.getList();
                     AppDef.previousCntOfNotice =  Global.noticeItemArrayList.size();
                     if(Global.noticeItemArrayList.size() == 0)
                         Global.noticeItemArrayList = mNoticeItemList;
@@ -205,9 +207,8 @@ public class NoticeFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(ResponseData<NoticeItem> response) {
+            public void onError(ResponseData<ArticleItem> response) {
                 hideProgress();
-                response.getError();
             }
 
             @Override

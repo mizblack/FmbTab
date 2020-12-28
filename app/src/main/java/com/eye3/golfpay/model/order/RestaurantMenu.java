@@ -19,7 +19,7 @@ public class RestaurantMenu implements Serializable {
     @Expose
     public String price;
 
-    @SerializedName("image")
+    @SerializedName("images")
     @Expose
     public String image;
     //ui용 변수

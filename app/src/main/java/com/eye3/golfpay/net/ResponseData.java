@@ -19,7 +19,6 @@ public class ResponseData<T> {
 //	@Expose
 //	private String detailMessage = "";
 
-
 	@SerializedName("data")
 	@Expose
 	private T data;

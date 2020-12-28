@@ -3,10 +3,9 @@ package com.eye3.golfpay.model.teeup;
 
 import java.io.Serializable;
 
-import io.realm.RealmObject;
 
 @SuppressWarnings("unused")
-public class GuestScoreDB extends RealmObject implements Serializable {
+public class GuestScoreDB implements Serializable {
 
     private String guest_id ;
     private float nearest = -1;

@@ -237,6 +237,15 @@
         <item name="android:text">-</item>
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+    <style name="ItemPosOrderBillHeaderTextStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">현장 주문내역</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@color/ebonyBlack</item>
     </style>
     <style name="GolfClubListTextStyle">
         <item name="android:textColor">@color/gray</item>
@@ -384,6 +393,22 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/notosans_medium</item>
         <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="GlobalTextView.22SP.darkGray.NotoSans.Medium" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="GlobalTextView.22SP.darkGray.NotoSans.Regular" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_regular</item>
+        <item name="android:textColor">@color/darkGray</item>
         <item name="android:textSize">22sp</item>
     </style>
 

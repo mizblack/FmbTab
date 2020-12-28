@@ -9,9 +9,7 @@ import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.model.guest.Guest;
-import com.eye3.golfpay.model.notice.NoticeItem;
-import com.eye3.golfpay.model.order.OrderDetail;
-import com.eye3.golfpay.model.order.RestaurantOrder;
+import com.eye3.golfpay.model.notice.ArticleItem;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
 
@@ -53,7 +51,7 @@ public class Global {
      * 접속 호스트 주소. 운영
      */
     public static final String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
-  //  public static final String HOST_ADDRESS_AWS = "http://deverp.golfpay.co.kr/api/v1/" ;
+    //public static final String HOST_ADDRESS_AWS = "http://deverp.golfpay.co.kr/api/v1/" ;
     public static final String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
   //  public static final String HOST_BASE_ADDRESS_AWS = "http://deverp.golfpay.co.kr/";
     public static final String HOST_BASE_ADDRESS_STORAGE = HOST_BASE_ADDRESS_AWS ;
@@ -87,7 +85,7 @@ public class Global {
     //현재 경기진행중인 코스 정보
     public static Course CurrentCourse;
     public static Hole CurrentHole;
-    public static List<NoticeItem> noticeItemArrayList = new ArrayList<>();
+    public static List<ArticleItem> noticeItemArrayList = new ArrayList<>();
   //  public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
   //  public static ArrayList<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
 

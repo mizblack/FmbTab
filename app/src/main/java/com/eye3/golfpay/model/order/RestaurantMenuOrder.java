@@ -22,9 +22,9 @@ public class RestaurantMenuOrder {
     Context context;
     private int mSelectedRestaurantIdx = 0;
 
-    public RestaurantMenuOrder(Context context, List<OrderDetail> orderDetailList, List<OrderItemInvoice> orderItemInvoiceArrayList) {
+    public RestaurantMenuOrder(Context context, List<OrderDetail> orderDetailList) {
         this.mOrderDetailList = orderDetailList;
-        this.mOrderItemInvoiceArrayList = orderItemInvoiceArrayList;
+        this.mOrderItemInvoiceArrayList = new ArrayList<>();
         this.context = context;
     }
 
@@ -34,6 +34,14 @@ public class RestaurantMenuOrder {
 
     public List<OrderItemInvoice> getOrderItemInvoiceArrayList(){
         return mOrderItemInvoiceArrayList;
+    }
+
+    public void setOrderItemInvoiceArrayList(List<OrderItemInvoice> list){
+        mOrderItemInvoiceArrayList = list;
+    }
+
+    public void clearOrderItemInvoiceArrayList() {
+        mOrderItemInvoiceArrayList.clear();
     }
 
     public void setCurrentOrderedMenuItem(OrderedMenuItem orderedMenuItem) {
