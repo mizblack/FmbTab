@@ -11,7 +11,6 @@ public class ClubInfo {
     public ArrayList<String> wedge = new ArrayList<>();
     public ArrayList<String> wood_cover = new ArrayList<>();
     public ArrayList<String> putter_cover = new ArrayList<>();
-
     public ArrayList<String> cover = new ArrayList<>();
 
     public ArrayList<String> getWood() {

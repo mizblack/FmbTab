@@ -30,6 +30,8 @@ public class EditorDialogFragment extends DialogFragment {
     private EditText memoEditText;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private View view;
+    private String textType;
+    private String textHint;
     OnEditorFinishListener onEditorFinishListener;
 
     public void setGuestId(String guestId) {
@@ -94,13 +96,9 @@ public class EditorDialogFragment extends DialogFragment {
         }
     }
 
-    private void setTextMemoTitle() {
-        TextView memoTitleTextView = view.findViewById(R.id.memoTitleTextView);
-        if (guestId == null) {
-            memoTitleTextView.setText("팀메모");
-        } else {
-            memoTitleTextView.setText("개인메모");
-        }
+    public void setTextType(String textType, String textHint) {
+        this.textType = textType;
+        this.textHint = textHint;
     }
 
     private void setTextMemoContent() {
@@ -131,6 +129,7 @@ public class EditorDialogFragment extends DialogFragment {
         view = inflater.inflate(R.layout.editor_dlg, container, false);
 
         memoEditText = view.findViewById(R.id.memoEditText);
+        memoEditText.setHint(textHint);
         showSoftKeyboard(memoEditText);
 
         view.findViewById(R.id.saveTextView).setOnClickListener(new View.OnClickListener() {
@@ -150,9 +149,9 @@ public class EditorDialogFragment extends DialogFragment {
             }
         });
 
-        setTextMemoTitle();
         setTextMemoContent();
-
+        TextView memoTitleTextView = view.findViewById(R.id.memoTitleTextView);
+        memoTitleTextView.setText(textType);
         return view;
     }
 

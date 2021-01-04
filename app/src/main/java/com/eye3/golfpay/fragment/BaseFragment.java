@@ -51,7 +51,6 @@ public class BaseFragment extends Fragment implements OnKeyBackPressedListener {
         this.mContext = context;
         this.mParentActivity = (BaseActivity) getActivity();
         (mParentActivity).setOnKeyBackPressedListener(this);
-
     }
 
     @Override

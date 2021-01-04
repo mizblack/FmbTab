@@ -1,20 +1,24 @@
 package com.eye3.golfpay.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.order.RestaurantMenu;
 import com.squareup.picasso.Picasso;
@@ -38,12 +42,16 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
         ImageView iv_food_image;
         TextView tv_food_name;
         TextView tv_food_price;
+        ConstraintLayout viewFoodInfo;
+
+
         //onCreateViewHolder 의 mMenuView 임()
         MenuItemViewHolder(@NonNull final View itemView) {
             super(itemView);
             iv_food_image = itemView.findViewById(R.id.iv_food_image);
             tv_food_name = itemView.findViewById(R.id.tv_food_name);
             tv_food_price = itemView.findViewById(R.id.tv_food_price);
+            viewFoodInfo = itemView.findViewById(R.id.view_food_info);
         }
     }
 
@@ -83,16 +91,18 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
         holder.itemView.setTag(mMenuList.get(position));
 
         holder.tv_food_name.setText(mMenuList.get(position).name);
-        holder.tv_food_price.setText(mMenuList.get(position).price);
+        String price = AppDef.priceMapper(Integer.parseInt(mMenuList.get(position).price));
+        holder.tv_food_price.setText(price + "원");
 
         if (mMenuList.get(idx).isSelected) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-            //holder.tvMenuName.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
+            holder.viewFoodInfo.setBackgroundColor(ContextCompat.getColor(mContext, R.color.irisBlue));
+            holder.tv_food_name.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            holder.tv_food_price.setTextColor(ContextCompat.getColor(mContext, R.color.white));
             //holder.tvPrice.setTextColor(getResources().getColor(R.color.black, Objects.requireNonNull(getActivity()).getTheme()));
         } else {
-            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(mContext).getTheme()));
-            //holder.tvMenuName.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
-            //holder.tvPrice.setTextColor(getResources().getColor(R.color.gray, Objects.requireNonNull(getActivity()).getTheme()));
+            holder.viewFoodInfo.setBackgroundColor(Color.parseColor("#ccffffff"));
+            holder.tv_food_name.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
+            holder.tv_food_price.setTextColor(ContextCompat.getColor(mContext, R.color.gray));
         }
 
         String url = "";

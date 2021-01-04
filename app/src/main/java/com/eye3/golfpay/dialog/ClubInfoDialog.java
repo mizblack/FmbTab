@@ -25,6 +25,11 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.Guest;
+import com.eye3.golfpay.model.order.StoreOrder;
+import com.eye3.golfpay.net.DataInterface;
+import com.eye3.golfpay.net.ResponseData;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017-09-22.
@@ -68,7 +73,7 @@ public class ClubInfoDialog extends Dialog {
     }
 
     public interface  IListenerDialog {
-        public void onSave();
+        public void onSave(String guestId, ClubInfo clubInfo);
     }
 
     public ClubInfoDialog() {
@@ -129,9 +134,9 @@ public class ClubInfoDialog extends Dialog {
                 ClubInfo clubInfo = getClubInfo();
                 caddieInfo.getGuestInfo().get(currentIdx).setClubInfo(clubInfo);
                 dismiss();
-
+                caddieInfo.getGuestInfo().get(currentIdx).setClubInfo(clubInfo);
                 if (iListenerDialog != null)
-                    iListenerDialog.onSave();
+                    iListenerDialog.onSave(caddieInfo.getGuestInfo().get(currentIdx).getReserveGuestId(), clubInfo);
             }
         });
 
@@ -146,7 +151,7 @@ public class ClubInfoDialog extends Dialog {
     }
 
     private void initClubInfoUI() {
-        ClubInfo clubInfo = caddieInfo.getGuestInfo().get(currentIdx).getClubInfo();
+        ClubInfo clubInfo = caddieInfo.getGuestInfo().get(currentIdx).clubInfo;
         initRecyclerViews(woodRecyclerView, wood, true, clubInfo, ClubType.eWood);
         initRecyclerViews(utiltyRecyclerView, utility, true, clubInfo, ClubType.eUtility);
         initRecyclerViews(ironRecyclerView, iron, true, clubInfo, ClubType.eIron);
@@ -185,10 +190,6 @@ public class ClubInfoDialog extends Dialog {
         clubInfo.setCover(adapter.getSelectedItems());
 
         return clubInfo;
-    }
-
-    private void setClubInfo() {
-
     }
 
     private void createGuestList() {

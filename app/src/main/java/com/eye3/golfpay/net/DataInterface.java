@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
@@ -605,15 +606,15 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void setGuestPhotos(RequestBody reserveGuestId,
-                               RequestBody photo_type, RequestBody photo_time, RequestBody caddy_id, MultipartBody.Part part, final ResponseCallback<GuestInfoResponse> callback) {
+    public void setGuestPhotos(RequestBody reserveId, RequestBody reserveGuestId,
+                               RequestBody photo_type, RequestBody photo_time, RequestBody caddy_id, MultipartBody.Part part, final ResponseCallback<PhotoResponse> callback) {
 
         try {
-            Call<PhotoResponse> call = service.setGuestPhotos(reserveGuestId, photo_type, photo_time, caddy_id, part);
+            Call<PhotoResponse> call = service.setGuestPhotos(reserveId, reserveGuestId, photo_type, photo_time, caddy_id, part);
             call.enqueue(new Callback<PhotoResponse>() {
                 @Override
                 public void onResponse(Call<PhotoResponse> call, Response<PhotoResponse> response) {
-                    //callback.onSuccess(response.body());
+                    callback.onSuccess(response.body());
                 }
 
                 @Override
@@ -621,6 +622,101 @@ public class DataInterface extends BasicDataInterface {
 
                 }
 
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getCaddyNoteInfo(Context context, String caddy_id, String reserve_id, final ResponseCallback<ResponseCaddyNote> callback) {
+
+        try {
+            Call<ResponseCaddyNote> call = service.getCaddyNote(caddy_id, reserve_id);
+
+            call.enqueue(new Callback<ResponseCaddyNote>() {
+                @Override
+                public void onResponse(Call<ResponseCaddyNote> call, Response<ResponseCaddyNote> response) {
+                    callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<ResponseCaddyNote> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setClubInfo(Context context, String reserve_no, String wood, String utility,
+                            String iron, String wedge, String putter, String wood_cover, String putter_cover, String etc_cover, final ResponseCallback<ResponseData<Object>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.setClubInfo( reserve_no, wood,
+                    utility, iron, wedge, putter, wood_cover, putter_cover, etc_cover);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setPersonalInfo(Context context, String reserve_no, String guestId, String carNumber,
+                            String phoneNumber, String memo, final ResponseCallback<ResponseData<Object>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.setPersonalInfo( reserve_no, guestId, carNumber, phoneNumber, memo);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setTeamMemo(Context context, String reserve_no, String memo, final ResponseCallback<ResponseData<Object>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.setTeamMemo( reserve_no, memo);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
             });
         } catch (Exception ex) {
             ex.printStackTrace();

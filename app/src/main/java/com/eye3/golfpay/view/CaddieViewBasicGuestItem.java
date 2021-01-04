@@ -1,39 +1,24 @@
 package com.eye3.golfpay.view;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.hardware.camera2.CameraCharacteristics;
-import android.icu.text.SimpleDateFormat;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,22 +33,20 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
-import com.eye3.golfpay.dialog.ClubInfoDialog;
-import com.eye3.golfpay.listener.IClubInfoListener;
+import com.eye3.golfpay.listener.ICaddyNoteListener;
 import com.eye3.golfpay.listener.OnEditorFinishListener;
 import com.eye3.golfpay.listener.OnSignatureFinishListener;
-import com.eye3.golfpay.model.gallery.GalleryPicture;
-import com.eye3.golfpay.model.guest.CaddieInfo;
+import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
-import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.GuestInfo;
 import com.eye3.golfpay.util.EditorDialogFragment;
 import com.eye3.golfpay.util.SignatureDialogFragment;
 import com.eye3.golfpay.util.Util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Objects;
 
 import static com.eye3.golfpay.util.Logger.TAG;
@@ -75,7 +58,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
     Context mContext;
     TextView mGuestMemoContentTextView;
-    EditText mCarNumEditTextView, mPhoneNumberEditText;
+    TextView mCarNumTextView, mPhoneNumberText;
     LinearLayout mGuestMemoLinearLayout;
     GuestInfo guestInfo;
 
@@ -98,7 +81,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
     private int guestTotalCount = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     public ImageView mClubImageView, mSignatureImageView;
-    private IClubInfoListener listener;
+    private ICaddyNoteListener listener;
 
     public CaddieViewBasicGuestItem(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -106,7 +89,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
         init(context);
     }
 
-    public CaddieViewBasicGuestItem(Context context, GuestInfo guestInfo, int guestTotalCount, IClubInfoListener listener) {
+    public CaddieViewBasicGuestItem(Context context, GuestInfo guestInfo, int guestTotalCount, ICaddyNoteListener listener) {
         super(context);
         this.mContext = context;
         this.guestInfo = guestInfo;
@@ -130,57 +113,19 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 if (imgview.getDrawable() == null) {
-                    if (ContextCompat.checkSelfPermission(Objects.requireNonNull((MainActivity)mContext), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions((MainActivity)mContext, new String[]{Manifest.permission.CAMERA},
+                    if (ContextCompat.checkSelfPermission(Objects.requireNonNull((MainActivity) mContext), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((MainActivity) mContext, new String[]{Manifest.permission.CAMERA},
                                 0);
                     } else {
-                        sendTakePhotoIntent();
+                        listener.onTakeClubPhoto(guestInfo.getReserveGuestId());
                     }
                 } else {
-                    sendTakePhotoIntent();
-
+                    listener.onTakeClubPhoto(guestInfo.getReserveGuestId());
                 }
             }
         });
     }
 
-    private void sendTakePhotoIntent() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//        if (takePictureIntent.resolveActivity(Objects.requireNonNull(mContext).getPackageManager()) != null) {
-//            File photoFile = null;
-//            photoFile = createImageFile();
-//
-//            if (photoFile != null) {
-//                Uri photoUri = FileProvider.getUriForFile(mContext, mContext.getPackageName(), photoFile);
-//                //takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
-//                takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING", CameraCharacteristics.LENS_FACING_FRONT);
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//                mGuest.getArrClubImageList().add(new GalleryPicture(guestInfo.getReserveGuestId(), "", photoUri.toString(),""));
-//                ((Activity) mContext).startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        }
-    }
-
-//    private File createImageFile()  {
-//        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        //   String imageFileName = "Caddie_Pic" + timeStamp + "_";
-//        String imageFileName = "Caddie_Pic_" + mGuest.getId() + "_";
-//        File storageDir = Objects.requireNonNull(mContext).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File image = null;
-//        try {
-//            image = File.createTempFile(
-//                    imageFileName,      /* prefix */
-//                    ".jpg",         /* suffix */
-//                    storageDir          /* directory */
-//            );
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        AppDef.imageFilePath = image.getAbsolutePath();
-//        AppDef.guestid = mGuest.getId();
-//        return image;
-//    }
 
     public void init(Context context, GuestInfo guest) {
         LayoutInflater inflater = (LayoutInflater)
@@ -189,37 +134,15 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
         if (guestTotalCount == 5) {
             ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
-            layoutParams.width = (int)Util.convertDpToPixel(244, context);
+            layoutParams.width = (int) Util.convertDpToPixel(244, context);
             v.setLayoutParams(layoutParams);
         }
 
         setTag(guest);
 
         mClubImageView = v.findViewById(R.id.clubImageCaddieView);
-        if (guestInfo.getClubImage() != null) {
-            //setImagewithUri(mClubImageView, Global.HOST_BASE_ADDRESS_AWS + mGuest.getClubUrl());
-
-//            Glide.with(mContext)
-//                    .load(Global.HOST_BASE_ADDRESS_AWS + mGuest.getClubUrl())
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .error(R.drawable.camera)
-//                    .centerCrop()
-//                    .listener(new RequestListener<Drawable>() {
-//                        @Override
-//                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-//                            mClubImageView.setScaleType(ImageView.ScaleType.CENTER);
-//                            //mClubImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.camera));
-//                            return false;
-//                        }
-//
-//                        @Override
-//                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-//                            return false;
-//                        }
-//                    })
-//                    .into(mClubImageView);
-        }
         onClickClubImageView(mClubImageView);
+
         mSignatureImageView = v.findViewById(R.id.signatureImageView);
 
 //        if (guestInfo.getSignImage() != null)
@@ -235,6 +158,24 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
                     @Override
                     public void OnSignatureInputFinished(Bitmap bitmap) {
                         mSignatureImageView.setImageBitmap(bitmap);
+
+                        //create a file to write bitmap data
+                        try {
+                            File f = new File(context.getCacheDir(), "temp.jpg");
+                            f.createNewFile();
+
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
+                            byte[] bitmapdata = bos.toByteArray();
+                            FileOutputStream fos = new FileOutputStream(f);
+                            fos.write(bitmapdata);
+                            fos.flush();
+                            fos.close();
+                            listener.onSignatureImage(guestInfo.getReserveGuestId(), f);
+
+                        }catch (IOException ex) {
+
+                        }
                     }
                 });
             }
@@ -247,41 +188,53 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
             }
         });
 
-
-        mCarNumEditTextView = v.findViewById(R.id.carNumberEditText);
-        mCarNumEditTextView.setText(guest.getCarNo());
-        mCarNumEditTextView.addTextChangedListener(new TextWatcher() {
+        mCarNumTextView = v.findViewById(R.id.carNumberText);
+        mCarNumTextView.setText(guest.getCarNo());
+        mCarNumTextView.setOnClickListener(new OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void onClick(View view) {
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                guestInfo.setCarNo(s.toString());
-            }
-        });
-
-        mPhoneNumberEditText = v.findViewById(R.id.phoneNumberEditText);
-        mPhoneNumberEditText.setText(guest.getHp());
-        mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                guestInfo.setHp(s.toString());
+                guestMemoEditorDialogFragment.setGuestId(guestInfo.getGuestName());
+                guestMemoEditorDialogFragment.setTextType("차량번호", "차량번호를 입력하세요");
+                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getGuestMemo());
+                guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
+                    @Override
+                    public void OnEditorInputFinished(String text) {
+                        closeKeyboard();
+                        guestInfo.setCarNo(text);
+                        mCarNumTextView.setText(text);
+                        listener.onInputCarNumber(guestInfo.getReserveGuestId(), text);
+                    }
+                });
+                showDialogFragment(guestMemoEditorDialogFragment);
             }
         });
 
+        mPhoneNumberText = v.findViewById(R.id.phoneNumberText);
+
+        mPhoneNumberText.setText(guest.getHp());
+        mPhoneNumberText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
+
+                guestMemoEditorDialogFragment.setGuestId(guestInfo.getGuestName());
+                guestMemoEditorDialogFragment.setTextType("연락처 입력", "연락처를 입력하세요");
+                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getGuestMemo());
+                guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
+                    @Override
+                    public void OnEditorInputFinished(String text) {
+
+                        closeKeyboard();
+                        guestInfo.setHp(text);
+                        mPhoneNumberText.setText(text);
+                        listener.onInputPhoneNumber(guestInfo.getReserveGuestId(), text);
+                    }
+                });
+                showDialogFragment(guestMemoEditorDialogFragment);
+            }
+        });
 
         tv_clubInfo = v.findViewById(R.id.tv_club_info);
         tv_wood = v.findViewById(R.id.tv_wood);
@@ -297,7 +250,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
         tv_wedgeCount = v.findViewById(R.id.tv_wedgeCount);
         tv_coverCount = v.findViewById(R.id.tv_coverCount);
 
-        drawClubInfo(guestInfo.getClubInfo());
+        drawClubInfo(guestInfo.clubInfo);
 
         mGuestMemoLinearLayout = v.findViewById(R.id.guestMemoLinearLayout);
         guestMemoLinearLayoutOnClick(mGuestMemoLinearLayout);
@@ -305,7 +258,68 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
         mGuestMemoContentTextView.setText(guest.getGuestMemo());
         addView(v);
     }
-    
+
+    public void drawGuestInfo(GuestInfo guestInfo) {
+        mCarNumTextView.setText(guestInfo.getCarNo());
+        mPhoneNumberText.setText(guestInfo.getHp());
+        mGuestMemoContentTextView.setText(guestInfo.getGuestMemo());
+    }
+
+    public void drawClubImage(CaddyNoteInfo caddyNoteInfo) {
+        if (caddyNoteInfo.getClub_before().isEmpty())
+            return;
+
+        String uri = caddyNoteInfo.getClub_before().get(0).photo_url;
+
+        Glide.with(mContext)
+                .load(Global.HOST_BASE_ADDRESS_AWS + uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.camera)
+                .centerCrop()
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        mClubImageView.setScaleType(ImageView.ScaleType.CENTER);
+                        //mClubImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.camera));
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(mClubImageView);
+    }
+
+    public void drawSignImage(CaddyNoteInfo caddyNoteInfo) {
+
+        if (caddyNoteInfo.getSign_before().isEmpty())
+            return;
+
+        String uri = caddyNoteInfo.getSign_before().get(0).photo_url;
+
+        Glide.with(mContext)
+                .load(Global.HOST_BASE_ADDRESS_AWS + uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(R.drawable.camera)
+                .centerCrop()
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        mSignatureImageView.setScaleType(ImageView.ScaleType.CENTER);
+                        //mClubImageView.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.camera));
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(mSignatureImageView);
+    }
+
     public void drawClubInfo(ClubInfo clubInfo) {
         guestInfo.setClubInfo(clubInfo);
 
@@ -337,7 +351,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
         tv_wedge.setTextAppearance(R.style.GlobalTextView_15SP_ebonyBlack_NotoSans_Medium);
         tv_cover.setTextAppearance(R.style.GlobalTextView_15SP_ebonyBlack_NotoSans_Medium);
 
-        tv_clubInfo.setText("클럽" + clubInfo.totalCount() +"개");
+        tv_clubInfo.setText("클럽" + clubInfo.totalCount() + "개");
         tv_woodCount.setText(clubInfo.wood.size() + "개");
         tv_utilityCount.setText(clubInfo.utility.size() + "개");
         tv_ironCount.setText(clubInfo.iron.size() + "개");
@@ -355,12 +369,14 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
                 guestMemoEditorDialogFragment.setGuestId(guestInfo.getGuestName());
                 guestMemoEditorDialogFragment.setMemoContent(guestInfo.getGuestMemo());
+                guestMemoEditorDialogFragment.setTextType("개인메모", "메모를 입력하세요");
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String memoContent) {
                         closeKeyboard();
                         guestInfo.setGuestMemo(memoContent);
                         mGuestMemoContentTextView.setText(memoContent);
+                        listener.onInputMemo(guestInfo.getReserveGuestId(), memoContent);
                     }
                 });
                 showDialogFragment(guestMemoEditorDialogFragment);
@@ -374,10 +390,9 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
     }
 
     private void closeKeyboard() {
-        closeKeyboard(mCarNumEditTextView);
-        closeKeyboard(mPhoneNumberEditText);
+        closeKeyboard(mCarNumTextView);
+        closeKeyboard(mPhoneNumberText);
     }
-
 
     void setImagewithUri(ImageView img, String uri) {
         if (img != null) {

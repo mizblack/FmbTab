@@ -217,7 +217,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto);
+                //((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto);
             }
         });
 
@@ -225,7 +225,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                ((MainActivity)mParentActivity).startCamera(AppDef.CaddyPhoto);
+                //((MainActivity)mParentActivity).startCamera(AppDef.CaddyPhoto);
             }
         });
 

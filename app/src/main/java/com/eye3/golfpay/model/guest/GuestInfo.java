@@ -25,7 +25,8 @@ public class GuestInfo {
     @SerializedName("club_image_end")
     private File clubImage_final = null;
     @SerializedName("club_info")
-    private ReqClubInfo clubInfo = null;
+    private ReqClubInfo reqClubInfo = null;
+    public ClubInfo clubInfo = new ClubInfo();
 
     public String getGuestName() {
         return guestName;
@@ -99,45 +100,39 @@ public class GuestInfo {
         this.clubImage_final = clubImage_final;
     }
 
-    public ClubInfo getClubInfo() {
-        ClubInfo ci = new ClubInfo();
-
-        return ci;
-    }
-
     public void setClubInfo(ClubInfo ci) {
 
-        clubInfo = new ReqClubInfo();
+        reqClubInfo = new ReqClubInfo();
         for (String wood : ci.wood) {
-            clubInfo.wood += (wood + ",");
+            reqClubInfo.wood += (wood + ",");
         }
 
         for (String utility : ci.utility) {
-            clubInfo.utility += (utility + ",");
+            reqClubInfo.utility += (utility + ",");
         }
 
         for (String iron : ci.iron) {
-            clubInfo.iron += (iron + ",");
+            reqClubInfo.iron += (iron + ",");
         }
 
         for (String putter : ci.putter) {
-            clubInfo.putter += (putter + ",");
+            reqClubInfo.putter += (putter + ",");
         }
 
         for (String wedge : ci.wedge) {
-            clubInfo.wedge += (wedge + ",");
+            reqClubInfo.wedge += (wedge + ",");
         }
 
         for (String wood_cover : ci.wood_cover) {
-            clubInfo.wood_cover += (wood_cover + ",");
+            reqClubInfo.wood_cover += (wood_cover + ",");
         }
 
         for (String putter_cover : ci.putter_cover) {
-            clubInfo.putter_cover += (putter_cover + ",");
+            reqClubInfo.putter_cover += (putter_cover + ",");
         }
 
         for (String cover : ci.cover) {
-            clubInfo.cover += (cover + ",");
+            reqClubInfo.cover += (cover + ",");
         }
     }
 }

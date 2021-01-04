@@ -38,7 +38,6 @@
                 android:autofillHints=""
                 android:background="@null"
                 android:gravity="start"
-                android:hint="메모를 입력하세요."
                 android:inputType="text"
                 android:privateImeOptions="defaultInputmode=korean"
                 tools:ignore="HardcodedText,TextFields" />

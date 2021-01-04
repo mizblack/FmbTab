@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,20 +46,16 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.PopupDialog;
 import com.eye3.golfpay.dialog.RestaurantsPopupDialog;
-import com.eye3.golfpay.fragment.CaddieFragment;
 import com.eye3.golfpay.fragment.CaddieMainFragment;
 import com.eye3.golfpay.fragment.ControlFragment;
-import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.LoginFragment;
-import com.eye3.golfpay.fragment.ScoreFragment;
-import com.eye3.golfpay.fragment.ViewMenuFragment;
+import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.LaravelModel;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.GuestInfo;
-import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -78,11 +73,6 @@ import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -101,6 +91,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     Echo echo;
     TextView currentTime;
     private int photoType = -1;
+    ITakePhotoListener iTakePhotoListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -385,8 +376,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             new StoreUriAsTempFileAsyncTask(this, new StoreUriAsTempFileAsyncTask.ICompleteFileSace() {
                 @Override
                 public void onComplete(String path) {
-                    imagePath = path;
-                    camera(path);
+
+                    if (iTakePhotoListener != null)
+                        iTakePhotoListener.onTakePhoto(path);
 
                 }
             }).execute(mCameraTempUri);
@@ -632,10 +624,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private Uri mCameraTempUri = null;
     public static final int RC_TAKE_PICTURE = 3333;
-    private Handler mHandler = new Handler();
-    private String imagePath;
-
-    public void startCamera(int photoType) {
+    public void startCamera(int photoType, ITakePhotoListener listener) {
+        iTakePhotoListener = listener;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
 
@@ -653,36 +643,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 e.printStackTrace();
             }
         }
-    }
-
-    private void camera(String path) {
-
-        RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), "44852");
-        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "event");
-        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "normal");
-        RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), "1");
-
-        File file = new File(path);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
-
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveGuestId,
-                photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<GuestInfoResponse>() {
-            @Override
-            public void onSuccess(GuestInfoResponse response) {
-
-            }
-
-            @Override
-            public void onError(GuestInfoResponse response) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
     }
 }
 

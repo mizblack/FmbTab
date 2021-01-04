@@ -9,29 +9,51 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
-import com.eye3.golfpay.listener.IClubInfoListener;
+import com.eye3.golfpay.listener.ICaddyNoteListener;
+import com.eye3.golfpay.listener.ITakePhotoListener;
+import com.eye3.golfpay.listener.OnEditorFinishListener;
+import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
+import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
 import com.eye3.golfpay.model.guest.CaddieInfo;
+import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.GuestInfo;
+import com.eye3.golfpay.model.info.GuestInfoResponse;
+import com.eye3.golfpay.model.photo.PhotoResponse;
+import com.eye3.golfpay.net.DataInterface;
+import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.util.EditorDialogFragment;
 import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.CaddieViewBasicGuestItem;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.File;
 import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+
+import static com.eye3.golfpay.util.Logger.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CaddieMainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaddieMainFragment extends Fragment implements IClubInfoListener {
+public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TAG = "CaddieMainFragment";
@@ -46,8 +68,10 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private ImageView ivGrab;
     private CaddieInfo caddieInfo;
+    private LinearLayout viewMain;
     protected static ProgressDialog pd; // 프로그레스바 선언
     public static LinearLayout mGuestViewContainerLinearLayout;
+    private TextView tvTeamMemo, tvTeamMemoContent;
 
     public CaddieMainFragment() {
         // Required empty public constructor
@@ -97,15 +121,41 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fr_caddie_main, container, false);
-        createGuestBasicView(view.findViewById(R.id.view_main));
+        viewMain = view.findViewById(R.id.view_main);
+        createGuestBasicView();
 
         view.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setReserveGuestInfo();
+
             }
         });
 
+        tvTeamMemo = view.findViewById(R.id.tv_team_memo);
+        tvTeamMemoContent = view.findViewById(R.id.tv_team_memo_content);
+
+        tvTeamMemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
+
+                guestMemoEditorDialogFragment.setTextType("팀메모", "메모를 입력하세요");
+                guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
+                    @Override
+                    public void OnEditorInputFinished(String memoContent) {
+                        setTeamMemo(memoContent);
+                    }
+                });
+
+                FragmentManager supportFragmentManager = ((MainActivity) (mContext)).getSupportFragmentManager();
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                guestMemoEditorDialogFragment.show(transaction, TAG);
+                assert guestMemoEditorDialogFragment.getFragmentManager() != null;
+                guestMemoEditorDialogFragment.getFragmentManager().executePendingTransactions();
+            }
+        });
+
+        getCaddyNote();
         return view;
     }
 
@@ -113,12 +163,12 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
-    private void createGuestBasicView(LinearLayout container) {
+    private void createGuestBasicView() {
 
-        mGuestViewContainerLinearLayout = container;
+        mGuestViewContainerLinearLayout = viewMain;
         guestList = Global.guestList;
         for (int i = 0; caddieInfo.getGuestInfo().size() > i; i++) {
-            container.addView(createGuestItemView(caddieInfo.getGuestInfo().get(i)));
+            viewMain.addView(createGuestItemView(caddieInfo.getGuestInfo().get(i)));
         }
     }
 
@@ -139,10 +189,74 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
 
         dlg.setiListenerDialog(new ClubInfoDialog.IListenerDialog() {
             @Override
-            public void onSave() {
+            public void onSave(String guestId, ClubInfo clubInfo) {
                 for (int i = 0; i < mGuestViewContainerLinearLayout.getChildCount(); i++) {
-                    ((CaddieViewBasicGuestItem)mGuestViewContainerLinearLayout.getChildAt(i)).drawClubInfo(caddieInfo.getGuestInfo().get(i).getClubInfo());
+                    ((CaddieViewBasicGuestItem)mGuestViewContainerLinearLayout.getChildAt(i)).drawClubInfo(caddieInfo.getGuestInfo().get(i).clubInfo);
                 }
+
+                setClubInfo(guestId, clubInfo);
+            }
+        });
+    }
+
+    @Override
+    public void onInputCarNumber(String guestId, String text) {
+        int guestIndex = findGuestId(guestId);
+        caddieInfo.getGuestInfo().get(guestIndex).setCarNo(text);
+        setPersonalInfo(caddieInfo.getGuestInfo().get(guestIndex));
+    }
+
+    @Override
+    public void onInputPhoneNumber(String guestId, String text) {
+        int guestIndex = findGuestId(guestId);
+        caddieInfo.getGuestInfo().get(guestIndex).setHp(text);
+        setPersonalInfo(caddieInfo.getGuestInfo().get(guestIndex));
+    }
+
+    @Override
+    public void onInputMemo(String guestId, String text) {
+        int guestIndex = findGuestId(guestId);
+        caddieInfo.getGuestInfo().get(guestIndex).setGuestMemo(text);
+        setPersonalInfo(caddieInfo.getGuestInfo().get(guestIndex));
+    }
+
+    @Override
+    public void onSignatureImage(String guestId, File signatureFile) {
+        setGuestPhotos(guestId, signatureFile);
+    }
+
+    @Override
+    public void onTakeClubPhoto(String guestId) {
+        ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
+            @Override
+            public void onTakePhoto(String path) {
+                RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
+                RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), guestId);
+                RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "club");
+                RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "before");
+                RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), Global.CaddyNo);
+
+                File file = new File(path);
+                RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
+
+                DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveId, reserveGuestId,
+                        photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
+                            @Override
+                            public void onSuccess(PhotoResponse response) {
+                                getCaddyNote();
+                            }
+
+                            @Override
+                            public void onError(PhotoResponse response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Throwable t) {
+
+                            }
+                        });
             }
         });
     }
@@ -161,35 +275,174 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
         return 0;
     }
 
-    private void setReserveGuestInfo() {
-//        showProgress("데이터를 전송중입니다." );
-//        RequestBody reserveGuestId = null, carNo = null, hp = null, guestMemo = null, teamMemo = null, requestFile = null, requestFile2 = null;
-//
-//        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setReserveGuestInfo(reserveGuestId, carNo, hp, guestMemo, teamMemo, signImage, clubImage, new DataInterface.ResponseCallback<GuestInfoResponse>() {
-//            @Override
-//            public void onSuccess(GuestInfoResponse response) {
-//                if ("ok".equals(response.getRetCode())) {
-//                    if (Global.guestList.size() - 1 > sendCountNum) {
-//                        sendCountNum++;
-//                    } else if (sendCountNum == Global.guestList.size() - 1) {
-//                        Toast.makeText(getContext(), "전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-//                        hideProgress();
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(GuestInfoResponse response) {
-//                hideProgress();
-//                Toast.makeText(getContext(), response.getRetMsg(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                hideProgress();
-//            }
-//        });
+    private String getClubInfoText(String str) {
+        str = str.replace("[", "");
+        str = str.replace("]", "");
+        str = str.replace(" ", "");
+        return str;
+    }
+
+    private void getCaddyNote() {
+        setProgressMessage("캐디수첩을 불러오는 중입니다.");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCaddyNoteInfo(getActivity(), Global.CaddyNo, Global.reserveId, new DataInterface.ResponseCallback<ResponseCaddyNote>() {
+            @Override
+            public void onSuccess(ResponseCaddyNote response) {
+                hideProgress();
+
+                for (int i = 0; i < response.getData().size(); i++) {
+                    CaddyNoteInfo caddyNoteInfo = response.getData().get(i);
+                    CaddieViewBasicGuestItem view = (CaddieViewBasicGuestItem)viewMain.getChildAt(i);
+                    ClubInfo clubInfo = makeClubInfo(caddyNoteInfo);
+                    caddieInfo.getGuestInfo().get(i).clubInfo = clubInfo;
+                    view.drawClubInfo(clubInfo);
+                    view.drawGuestInfo(caddieInfo.getGuestInfo().get(i));
+                    view.drawSignImage(caddyNoteInfo);
+                    view.drawClubImage(caddyNoteInfo);
+                }
+            }
+
+            @Override
+            public void onError(ResponseCaddyNote response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+    }
+
+    private ClubInfo makeClubInfo(CaddyNoteInfo caddyNoteInfo) {
+        ClubInfo clubInfo = new ClubInfo();
+        clubInfo.wood = Util.stringTokenizer(caddyNoteInfo.getWood());
+        clubInfo.utility = Util.stringTokenizer(caddyNoteInfo.getUtility());
+        clubInfo.iron = Util.stringTokenizer(caddyNoteInfo.getIron());
+        clubInfo.putter = Util.stringTokenizer(caddyNoteInfo.getPutter());
+        clubInfo.wedge = Util.stringTokenizer(caddyNoteInfo.getWedge());
+        clubInfo.putter_cover = Util.stringTokenizer(caddyNoteInfo.getPutter_cover());
+        clubInfo.cover = Util.stringTokenizer(caddyNoteInfo.getEtc_cover());
+        clubInfo.wood_cover = Util.stringTokenizer(caddyNoteInfo.getWood_cover());
+        return clubInfo;
+    }
+
+    private void setClubInfo(String guestId, ClubInfo clubInfo) {
+        setProgressMessage("클럽 정보를 저장하는 중입니다.");
+
+        String wood = getClubInfoText(clubInfo.wood.toString());
+        String utility = getClubInfoText(clubInfo.utility.toString());
+        String iron = getClubInfoText(clubInfo.iron.toString());
+        String wedge = getClubInfoText(clubInfo.wedge.toString());
+        String putter = getClubInfoText(clubInfo.putter.toString());
+        String wood_cover = getClubInfoText(clubInfo.wood_cover.toString());
+        String putter_cover = getClubInfoText(clubInfo.putter_cover.toString());
+        String etc_cover = getClubInfoText(clubInfo.cover.toString());
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setClubInfo(getActivity(), guestId, wood, utility, iron, wedge,
+                putter, wood_cover, putter_cover, etc_cover, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+            @Override
+            public void onSuccess(ResponseData<Object> response) {
+                hideProgress();
+
+                //화면을 갱신한
+                getCaddyNote();
+            }
+
+            @Override
+            public void onError(ResponseData<Object> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
+    }
+
+    private void setPersonalInfo(GuestInfo guestInfo) {
+        setProgressMessage("클럽 정보를 저장하는 중입니다.");
+
+        String guest_id = guestInfo.getReserveGuestId();
+        String carNumber = guestInfo.getCarNo();
+        String phoneNumber = guestInfo.getHp();
+        String memo = guestInfo.getGuestMemo();
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPersonalInfo(getActivity(), Global.reserveId, guest_id, carNumber, phoneNumber, memo,
+               new DataInterface.ResponseCallback<ResponseData<Object>>() {
+                    @Override
+                    public void onSuccess(ResponseData<Object> response) {
+                        hideProgress();
+
+                        //화면을 갱신한
+                        getCaddyNote();
+                    }
+
+                    @Override
+                    public void onError(ResponseData<Object> response) {
+                        hideProgress();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        hideProgress();
+                    }
+                });
+    }
+
+    private void setTeamMemo(String teamMemo) {
+        setProgressMessage("팀 메모를 저장하는 중입니다.");
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setTeamMemo(getActivity(), Global.reserveId, teamMemo,
+                new DataInterface.ResponseCallback<ResponseData<Object>>() {
+                    @Override
+                    public void onSuccess(ResponseData<Object> response) {
+                        hideProgress();
+
+                        //화면을 갱신한
+                        getCaddyNote();
+                    }
+
+                    @Override
+                    public void onError(ResponseData<Object> response) {
+                        hideProgress();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        hideProgress();
+                    }
+                });
+    }
+
+    private void setGuestPhotos(String guestId, File file) {
+        setProgressMessage("클럽사진을 저장하는 중입니다.");
+        RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
+        RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), guestId);
+        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "sign");
+        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "before");
+        RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), Global.CaddyNo);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", file.getAbsolutePath(), requestBody);
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveId, reserveGuestId,
+                photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
+                    @Override
+                    public void onSuccess(PhotoResponse response) {
+
+                    }
+
+                    @Override
+                    public void onError(PhotoResponse response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
     }
 
     protected void showProgress(final String msg) {
@@ -208,9 +461,7 @@ public class CaddieMainFragment extends Fragment implements IClubInfoListener {
                 // 화면에 띠워라
             }
         });
-
     }
-
 
     // 프로그레스 다이얼로그 숨기기
     protected void hideProgress() {

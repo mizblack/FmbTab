@@ -28,6 +28,7 @@ public class CaddieInfo {
     @Expose
     private ArrayList<String> teamPhotos = new ArrayList<>();
 
+
     public String getCaddie_id() {
         return caddie_id;
     }

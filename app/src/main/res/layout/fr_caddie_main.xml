@@ -39,9 +39,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
                     android:background="@color/zumthor" />
 
                 <TextView
+                    android:id="@+id/tv_team_memo"
                     style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,8 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="42dp"
-                    android:text="무슨 메모가 필요한지 모르겠습니다. 내용 확인해 주세요. 내용을 확인해주세요. 무슨 메모가 필요한지 모르겠습니다.무슨 메모가 필요한지 모르겠습니다. 내용 확인해 주세요. 내용을 확인해주세요. 무슨 메모가 필요한지 모르겠습니다.
-내용 확인해 주세요. 내용을 확인해주세요. 무슨 메모가 필요한지 모르겠습니다.무슨 메모가 필요한지 모르겠습니다. 내용 확인해 주세요. 내용을 확인해주세요. 무슨 메모가 필요한지 모르겠습니다.무슨 메모가 필요한지 모르겠습니다. 내용 확인해 주세요. 내용을 확인해주세요. 무슨 메모가 필요한지 모르겠습니다." />
+                    android:text="" />
 
             </LinearLayout>
 

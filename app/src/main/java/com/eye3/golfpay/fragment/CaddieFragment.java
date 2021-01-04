@@ -76,8 +76,6 @@ public class CaddieFragment extends BaseFragment {
     private void closeKeyboard() {
         for (int i = 0; i < mGuestViewContainerLinearLayout.getChildCount(); i++) {
             CaddieViewGuestItem caddieViewGuestItem = (CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i);
-            closeKeyboard(caddieViewGuestItem.findViewById(R.id.carNumberEditText));
-            closeKeyboard(caddieViewGuestItem.findViewById(R.id.phoneNumberEditText));
         }
     }
 

@@ -1,11 +1,11 @@
-package com.eye3.golfpay.net;
+package com.eye3.golfpay.model.caddyNote;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ResponseData<T> {
+public class ResponseCaddyNote {
 	@SerializedName("ret_code")
 	@Expose
 	private String  resultCode = "";
@@ -14,60 +14,36 @@ public class ResponseData<T> {
 	@Expose
 	private String resultMessage = "";
 
+
 //	@SerializedName("detailMessage")
 //	@Expose
 //	private String detailMessage = "";
 
 	@SerializedName("data")
 	@Expose
-	private T data;
-
-	@SerializedName("list")
-	@Expose
-	private List<T> list;
+	private List<CaddyNoteInfo> data;
 
 	public String getResultCode() {
 		return resultCode;
+	}
+
+	public void setResultCode(String resultCode) {
+		this.resultCode = resultCode;
 	}
 
 	public String getResultMessage() {
 		return resultMessage;
 	}
 
-
-	public void setResultCode(String resultCode) {
-		this.resultCode = resultCode;
+	public void setResultMessage(String resultMessage) {
+		this.resultMessage = resultMessage;
 	}
 
-	public String getError() {
-		return resultMessage;
-	}
-
-	public void setError(String error) {
-		this.resultMessage = error;
-	}
-
-//	public String getMessage() {
-//		return detailMessage;
-//	}
-//
-//	public void setMessage(String message) {
-//		this.detailMessage = message;
-//	}
-
-	public T getData() {
+	public List<CaddyNoteInfo> getData() {
 		return data;
 	}
 
-	public void setData(T data) {
+	public void setData(List<CaddyNoteInfo> data) {
 		this.data = data;
-	}
-
-	public List<T> getList(){
-		return list;
-	}
-
-	public void setList(List<T> list){
-		this.list = list;
 	}
 }

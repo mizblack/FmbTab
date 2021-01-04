@@ -63,6 +63,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -72,6 +73,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,6 +81,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -1859,6 +1862,20 @@ public class Util {
 //            timeString = time.split(":")[0] + ":" + time.split(":")[1] + amOrPm;
         timeString = time.split(":")[0] + ":" + time.split(":")[1];
         return timeString;
+    }
+
+    public static ArrayList<String> stringTokenizer(String str) {
+        ArrayList<String> arr = new ArrayList<>();
+
+        if (str == null)
+            return arr;
+
+        StringTokenizer tokenizer = new StringTokenizer(str, ",");
+        while (tokenizer.hasMoreTokens()) {
+            arr.add(tokenizer.nextToken());
+        }
+
+        return arr;
     }
 
     public static int DlgUIFalg =

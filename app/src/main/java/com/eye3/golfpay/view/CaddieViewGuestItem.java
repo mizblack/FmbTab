@@ -69,7 +69,7 @@ public class CaddieViewGuestItem extends RelativeLayout {
     Guest mGuest;
     Context mContext;
     TextView mMemberNameTextView, mGuestMemoContentTextView;
-    EditText mCarNumEditTextView, mPhoneNumberEditText;
+    TextView mCarNumTextView, mPhoneNumberText;
     LinearLayout mGuestMemoLinearLayout;
     private static final int REQUEST_IMAGE_CAPTURE = 672;
     public ImageView mClubImageView, mSignatureImageView;
@@ -198,26 +198,28 @@ public class CaddieViewGuestItem extends RelativeLayout {
             setImagewithUri(mSignatureImageView, Global.HOST_BASE_ADDRESS_AWS + mGuest.getSignUrl());
         mMemberNameTextView = v.findViewById(R.id.memberNameTextView);
         mMemberNameTextView.setText(guest.getGuestName());
-        mCarNumEditTextView = v.findViewById(R.id.carNumberEditText);
-        mCarNumEditTextView.setText(guest.getCarNumber());
-        mCarNumEditTextView.addTextChangedListener(new TextWatcher() {
+        mCarNumTextView = v.findViewById(R.id.carNumberText);
+        mCarNumTextView.setText(guest.getCarNumber());
+        mCarNumTextView.setOnClickListener(new OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void onClick(View view) {
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                guestMemoEditorDialogFragment.setGuestId(mGuest.getGuestName());
+                guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
+                    @Override
+                    public void OnEditorInputFinished(String text) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                mGuest.setCarNumber(s.toString());
+                        mPhoneNumberText.setText(text);
+                    }
+                });
+                showDialogFragment(guestMemoEditorDialogFragment);
             }
         });
 
-        mPhoneNumberEditText = v.findViewById(R.id.phoneNumberEditText);
-        mPhoneNumberEditText.setText(guest.getPhoneNumber());
-        mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+        mPhoneNumberText = v.findViewById(R.id.phoneNumberEditText);
+        mPhoneNumberText.setText(guest.getPhoneNumber());
+        mPhoneNumberText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -289,15 +291,13 @@ public class CaddieViewGuestItem extends RelativeLayout {
         guestMemoLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeKeyboard();
-                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
 
+                EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
                 guestMemoEditorDialogFragment.setGuestId(mGuest.getGuestName());
                 guestMemoEditorDialogFragment.setMemoContent(mGuest.getMemo());
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String memoContent) {
-                        closeKeyboard();
                         mGuest.setMemo(memoContent);
                         mGuestMemoContentTextView.setText(memoContent);
                     }
@@ -313,14 +313,8 @@ public class CaddieViewGuestItem extends RelativeLayout {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         //  systemUIHide();
     }
-
-    private void closeKeyboard() {
-        closeKeyboard(mCarNumEditTextView);
-        closeKeyboard(mPhoneNumberEditText);
-    }
-
     private void showDialogFragment(DialogFragment dialogFragment) {
-        closeKeyboard();
+
         FragmentManager supportFragmentManager = ((MainActivity) (mContext)).getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
         dialogFragment.show(transaction, TAG);

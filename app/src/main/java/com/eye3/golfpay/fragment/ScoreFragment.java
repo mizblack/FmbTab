@@ -236,6 +236,7 @@ public class ScoreFragment extends BaseFragment {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();
+
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
                //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);

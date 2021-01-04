@@ -225,14 +225,13 @@
             android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/carNumberEditText"
+            <TextView
+                android:id="@+id/carNumberText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="차량번호"
-                android:inputType="textShortMessage"
                 android:maxLines="1"
                 android:textColor="@color/ebonyBlack"
                 android:textSize="18sp"
@@ -253,15 +252,14 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/phoneNumberEditText"
+            <TextView
+                android:id="@+id/phoneNumberText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="연락처 입력"
-                android:inputType="phone"
                 android:maxLines="1"
                 android:textColor="@color/ebonyBlack"
                 android:textSize="18sp"

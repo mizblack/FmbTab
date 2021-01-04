@@ -1,5 +1,6 @@
 package com.eye3.golfpay.net;
 
+import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
@@ -131,10 +132,40 @@ public interface HttpService {
     Call<ReserveGameType> getReserveGameType(@Field("res_id") int res_id);
 
     @Multipart
-    @POST("http://deverp.golfpay.co.kr/api/v1/setGuestPhotos")
-    Call<PhotoResponse> setGuestPhotos(@Part("reserve_guest_id") RequestBody reserveGuestId,
-                                       @Part("photo_type") RequestBody photo_type,
-                                       @Part("photo_time") RequestBody photo_time,
-                                       @Part("caddy_id") RequestBody caddy_id,
-                                       @Part MultipartBody.Part img_file);
+    @POST("setGuestPhotos")
+    Call<PhotoResponse> setGuestPhotos(@Part("reserve_id") RequestBody reserve_id,
+                                        @Part("reserve_guest_id") RequestBody reserveGuestId,
+                                        @Part("photo_type") RequestBody photo_type,
+                                        @Part("photo_time") RequestBody photo_time,
+                                        @Part("caddy_id") RequestBody caddy_id,
+                                        @Part MultipartBody.Part img_file);
+
+    @FormUrlEncoded
+    @POST("getCaddyNotebook")
+    Call<ResponseCaddyNote> getCaddyNote(@Field("caddy_id") String caddy_id,
+                                         @Field("reserve_id") String reserve_id);
+
+    @FormUrlEncoded
+    @POST("setClubInfo")
+    Call<ResponseData<Object>> setClubInfo(@Field("reserve_guest_id") String reserve_guest_id,
+                                      @Field("wood") String wood,
+                                      @Field("utility") String utility,
+                                      @Field("iron") String iron,
+                                      @Field("wedge") String wedge,
+                                      @Field("putter") String putter,
+                                      @Field("wood_cover") String wood_cover,
+                                      @Field("putter_cover") String putter_cover,
+                                      @Field("etc_cover") String etc_cover);
+
+    @FormUrlEncoded
+    @POST("setPersonalInfo")
+    Call<ResponseData<Object>> setPersonalInfo(@Field("reserve_id") String reserve_id,
+                                               @Field("guest_id") String guest_id,
+                                               @Field("carNumber") String carNumber,
+                                               @Field("phoneNumber") String phoneNumber,
+                                               @Field("memo") String memo);
+
+    @FormUrlEncoded
+    @POST("setTeamMemo")
+    Call<ResponseData<Object>> setTeamMemo(@Field("reserve_id") String reserve_id, @Field("team_memo") String team_memo);
 }
