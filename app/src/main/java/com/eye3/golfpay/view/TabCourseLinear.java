@@ -34,6 +34,7 @@ import com.eye3.golfpay.model.score.Score;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.util.ScoreDialog;
 import com.eye3.golfpay.util.Util;
+import com.google.zxing.client.result.TextParsedResult;
 
 import java.util.List;
 
@@ -56,6 +57,11 @@ public class TabCourseLinear extends LinearLayout {
     ArrayAdapter arrayAdapter;
     public ScoreDialog sDialog;
     ScoreInputFinishListener inputFinishListener;
+
+    TextView tvCourseName1;
+    TextView tvCourseName2;
+    TextView tvTotalPar1;
+    TextView tvTotalPar2;
     //ctype 에따라 정렬된 코스
     Course mCtypeArrangedCourse ;
 
@@ -64,22 +70,24 @@ public class TabCourseLinear extends LinearLayout {
 
     }
 
-    public static int getmHoleScoreLayoutIdx() {
+    public static int getHoleScoreLayoutIdx() {
         return mHoleScoreLayoutIdx;
     }
 
-    public static void setmHoleScoreLayoutIdx(int Idx) {
+    public static void setHoleScoreLayoutIdx(int Idx) {
         mHoleScoreLayoutIdx = Idx;
     }
 
-    private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx, int mHoleScoreLayoutIdx) {
+    private boolean isPreviousHoleScoreFilledUp(List<Player> playerList, int mTabIdx) {
 
-        int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx;
+        if (mTabIdx == 0 && mHoleScoreLayoutIdx == 0)
+            return true;
+
+        int previousHoleScoreLayoutIdx = mHoleScoreLayoutIdx-1;
         if (playerList == null)
             return false;
         //최초 홀은 무조건 통과
-        if (mTabIdx == 0 && mHoleScoreLayoutIdx == 0)
-            return true;
+
         for (int i = 0; playerList.size() > i; i++) {
 
             if (mTabIdx == 0) {
@@ -128,12 +136,15 @@ public class TabCourseLinear extends LinearLayout {
         this.mPlayerList = playerList;
         this.mCtypeArrangedCourse = ctyped;
         this.removeAllViewsInLayout();
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.tab_course, this, false);
         mHolderLinear = v.findViewById(R.id.scoreColumn).findViewById(R.id.holderInfoLinear);
         mDistanceSpinner = v.findViewById(R.id.spinn_distance);
         arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.spinn_array)) ;
+        tvCourseName1 = v.findViewById(R.id.tvCourseName1);
+        tvCourseName2 = v.findViewById(R.id.tvCourseName2);
+        tvTotalPar1 = v.findViewById(R.id.tvTotalPar1);
+        tvTotalPar2 = v.findViewById(R.id.tvTotalPar2);
 
         mDistanceSpinner.setAdapter(arrayAdapter);
         mDistanceSpinner.setSelection(0);
@@ -213,7 +224,6 @@ public class TabCourseLinear extends LinearLayout {
             else if (k == nearest_hole) {
                 holeInfoLinear[k].findViewById(R.id.hole_nearest).setVisibility(View.VISIBLE);
             }
-
         }
 
         //홀인포 전체를 나타내는 마지막 셀정보 입력
@@ -311,7 +321,7 @@ public class TabCourseLinear extends LinearLayout {
 
                             }
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            if (isPreviousHoleScoreFilledUp(playerList, mTabIdx, mHoleScoreLayoutIdx)) {
+                            if (isPreviousHoleScoreFilledUp(playerList, mTabIdx)) {
                                 notifyDataSetChanged();
                                 sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mTabIdx, mHoleScoreLayoutIdx);
                                 WindowManager.LayoutParams wmlp = sDialog.getWindow().getAttributes();
@@ -454,7 +464,7 @@ public class TabCourseLinear extends LinearLayout {
             }
             //전체토탈
            // playerList.get(i).totalRankingPutting을 totalPutt으로
-            Score wholeTotalScore = new Score(playerList.get(i).totalPar, playerList.get(i).totalRankingPutting, playerList.get(i).totalTar);
+            Score wholeTotalScore = new Score(playerList.get(i).totalPar, playerList.get(i).totalRankingPutting, playerList.get(i).totalTar, "teeShot");
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText( playerList.get(i).totalRankingPutting);
 

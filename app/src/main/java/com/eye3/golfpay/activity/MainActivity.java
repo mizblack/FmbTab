@@ -364,9 +364,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
             Bitmap clubImageBitmap = rotate(bitmap, exifDegree);
 
-            CaddieViewBasicGuestItem guestItem = (CaddieViewBasicGuestItem) CaddieMainFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
-            setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
-            guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
+            //CaddieViewBasicGuestItem guestItem = (CaddieViewBasicGuestItem) CaddieMainFragment.mGuestViewContainerLinearLayout.getChildAt(traversalByGuestId(AppDef.guestid));
+            //setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
+            //guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
             ;
         } else if (requestCode == RC_TAKE_PICTURE) {

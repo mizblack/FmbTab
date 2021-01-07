@@ -10,9 +10,8 @@ public class ScoreSend extends Score {
     @Expose
     public String guest_id = "";
 
-    public ScoreSend(String guest_id, String par, String putting, String tar){
-        super(par, putting, tar);
+    public ScoreSend(String guest_id, String par, String putting, String tar, String teeShot){
+        super(par, putting, tar, teeShot);
         this.guest_id = guest_id;
-
     }
 }

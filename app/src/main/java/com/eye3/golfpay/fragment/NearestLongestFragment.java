@@ -24,6 +24,7 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.model.login.Login;
+import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.teeup.GuestDatum;
 import com.eye3.golfpay.model.teeup.GuestScoreDB;
@@ -56,6 +57,9 @@ public class NearestLongestFragment extends BaseFragment {
     private ArrayList<TextView> longestRankTextViews = new ArrayList<>();
     private ArrayList<TextView> nearestScoreTextViews = new ArrayList<>();
     private ArrayList<TextView> longestScoreTextViews = new ArrayList<>();
+
+    private TextView tvNearHolePar;
+    private TextView tvLongHolePar;
 
     public NearestLongestFragment() {
         // Required empty public constructor
@@ -117,7 +121,10 @@ public class NearestLongestFragment extends BaseFragment {
 
 
         //loadGuestScore();
+        tvNearHolePar = view.findViewById(R.id.tv_near_hole_par);
+        tvLongHolePar = view.findViewById(R.id.tv_long_hole_par);
         loadGuestScoreFromAPI();
+        getNearLongHole();
 
         for (int i = 0; i < guestArrayList.size(); i++) {
             addPlayerList(view.findViewById(R.id.view_list), i, guestArrayList.size());
@@ -296,6 +303,34 @@ public class NearestLongestFragment extends BaseFragment {
 
             @Override
             public void onError(NearLongScoreBoard response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void getNearLongHole() {
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveGameType(getContext(), new DataInterface.ResponseCallback<ReserveGameType>() {
+            @Override
+            public void onSuccess(ReserveGameType response) {
+                if (response.ret_code.equals("ok")) {
+                    int holeNear = response.hole_no_near;
+                    int holeLong = response.hole_no_long;
+                    int parNear = response.par_near;
+                    int parLong = response.par_long;
+
+                    tvNearHolePar.setText(String.format("Hole %d / Par %d", holeNear, parNear));
+                    tvLongHolePar.setText(String.format("Hole %d / Par %d", holeLong, parLong));
+                }
+            }
+
+            @Override
+            public void onError(ReserveGameType response) {
 
             }
 

@@ -106,53 +106,27 @@
             sothree:layout_constraintStart_toEndOf="@+id/tv_start_sign"
             sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign" />
 
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="134dp"
-            android:layout_height="42dp"
-            android:background="@drawable/shape_gray_radius_edge"
-            android:layout_marginRight="32dp"
-            android:text="취소"
-            android:textColor="@color/lightGray"
-            android:textStyle="bold"
-            sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
-            sothree:layout_constraintEnd_toEndOf="parent"
-            sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign" />
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="134dp"
-            android:layout_height="42dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/shape_round_irisblue_bg"
-            android:text="저장하기"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
-            sothree:layout_constraintEnd_toStartOf="@+id/btn_cancel"
-            sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign" />
-
         <LinearLayout
             android:id="@+id/btn_team_photo"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:layout_marginRight="24dp"
             android:gravity="center_vertical"
+            android:layout_marginEnd="24dp"
             sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
-            sothree:layout_constraintEnd_toStartOf="@+id/btn_save"
+            sothree:layout_constraintEnd_toEndOf="parent"
             sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/team_camera"/>
+                android:src="@drawable/team_camera" />
 
             <TextView
                 style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="팀 클럽사진"/>
+                android:text="팀 클럽사진" />
 
         </LinearLayout>
 

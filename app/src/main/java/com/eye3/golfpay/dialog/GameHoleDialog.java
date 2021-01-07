@@ -163,8 +163,10 @@ public class GameHoleDialog extends Dialog {
                     allUnSelect(rvLongestOut);
                     allUnSelect(rvLongestIn);
 
-                    response.course_near = response.course_near.toLowerCase();
-                    response.course_long = response.course_long.toLowerCase();
+                    course_near = response.course_near = response.course_near.toLowerCase();
+                    course_long = response.course_long = response.course_long.toLowerCase();
+                    hole_no_near = response.hole_no_near;
+                    hole_no_long = response.hole_no_long;
 
                     if (response.course_near.equals("in")) {
                         ((GameHoleAdapter) rvNearestIn.getAdapter()).select(response.hole_no_near);

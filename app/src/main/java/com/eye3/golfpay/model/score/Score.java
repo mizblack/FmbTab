@@ -21,10 +21,15 @@ public class Score  implements Serializable {
     @Expose
     public String tar = "-";
 
-    public Score(String par, String putting, String tar){
+    @SerializedName("tee_shot")
+    @Expose
+    public String teeShot = "bunker";
+
+    public Score(String par, String putting, String tar, String teeShot){
         this.par = par;
         this.putting = putting ;
         this.tar = tar;
+        this.teeShot = teeShot;
     }
 
 }

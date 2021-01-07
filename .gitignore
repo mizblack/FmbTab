@@ -11,3 +11,9 @@ output/
 build/
 .gradle/
 FmbTab.iml
+.gradle/6.5/fileHashes/resourceHashesCache.bin
+.gradle/6.5/javaCompile/classAnalysis.bin
+.gradle/6.5/javaCompile/jarAnalysis.bin
+.gradle/6.5/javaCompile/javaCompile.lock
+.gradle/6.5/javaCompile/taskHistory.bin
+app/release/output-metadata.json

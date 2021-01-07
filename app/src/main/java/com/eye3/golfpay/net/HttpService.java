@@ -71,7 +71,7 @@ public interface HttpService {
 
 
     @POST("cancelOrderShade")
-    Call<ResponseData<Object>> getStoreOrder(@Body CancelOrder cancelOrder);
+    Call<ResponseData<Object>> cancelOrderShade(@Body CancelOrder cancelOrder);
 
     @FormUrlEncoded
     @POST("getReserveList")
@@ -92,8 +92,13 @@ public interface HttpService {
                                                 @Part MultipartBody.Part clubImage);
 
 
-    @POST("getBoardDetail")
-    Call<ResponseData<ArticleItem>> getNoticeList();
+    @FormUrlEncoded
+    @POST("getCaddyBoard")
+    Call<ResponseData<ArticleItem>> getCaddyBoard(@Field("caddy_id") String caddy_id, @Field("table_name") String table_name);
+
+    @FormUrlEncoded
+    @POST("caddyBoardCheck")
+    Call<ResponseData<Object>> caddyBoardCheck(@Field("caddy_id") String caddy_id, @Field("article_id") int article_id);
 
     @POST("setPlayStatus")
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);

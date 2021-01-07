@@ -15,10 +15,8 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
-import com.eye3.golfpay.listener.OnEditorFinishListener;
 import com.eye3.golfpay.listener.OnSignatureFinishListener;
 import com.eye3.golfpay.model.teeup.GuestDatum;
-import com.eye3.golfpay.view.CaddieViewGuestItem;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ public class SignatureDialogFragment extends DialogFragment {
 
     private String guestId;
     private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
-    private ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList;
     private SignaturePad signaturePad;
     OnSignatureFinishListener onSignatureFinishListener;
 
@@ -43,10 +40,6 @@ public class SignatureDialogFragment extends DialogFragment {
 
     public void setGuestId(String guestId) {
         this.guestId = guestId;
-    }
-
-    public void setCaddieViewGuestItemArrayList(ArrayList<CaddieViewGuestItem> caddieViewGuestItemArrayList) {
-        this.caddieViewGuestItemArrayList = caddieViewGuestItemArrayList;
     }
 
     public SignatureDialogFragment() {
@@ -74,9 +67,7 @@ public class SignatureDialogFragment extends DialogFragment {
             public void onClick(View view) {
 
                 if (signaturePad.getTransparentSignatureBitmap() != null) {
-
-                    // setImageWithGlide(imgView, signaturePad.getTransparentSignatureBitmap());
-                    //  signatureTextView.setVisibility(View.GONE);
+                    onSignatureFinishListener.OnSignatureInputFinished(signaturePad.getSignatureBitmap());
                     dismiss();
                 }
             }
@@ -112,7 +103,6 @@ public class SignatureDialogFragment extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
-        onSignatureFinishListener.OnSignatureInputFinished(signaturePad.getSignatureBitmap());
     }
 
 }

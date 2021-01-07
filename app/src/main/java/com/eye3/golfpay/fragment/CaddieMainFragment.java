@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +31,6 @@ import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.GuestInfo;
-import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -45,8 +45,6 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-
-import static com.eye3.golfpay.util.Logger.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +70,24 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     protected static ProgressDialog pd; // 프로그레스바 선언
     public static LinearLayout mGuestViewContainerLinearLayout;
     private TextView tvTeamMemo, tvTeamMemoContent;
+
+    public enum CaddyNoteType{
+        Before {
+            @NonNull
+            @Override
+            public String toString() {
+                return "before";
+            }
+        },
+        After {
+            @NonNull
+            @Override
+            public String toString() {
+                return "after";
+            }
+        }
+    }
+    private CaddyNoteType caddyNoteType = CaddyNoteType.Before;
 
     public CaddieMainFragment() {
         // Required empty public constructor
@@ -124,13 +140,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         viewMain = view.findViewById(R.id.view_main);
         createGuestBasicView();
 
-        view.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         tvTeamMemo = view.findViewById(R.id.tv_team_memo);
         tvTeamMemoContent = view.findViewById(R.id.tv_team_memo_content);
 
@@ -152,6 +161,29 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                 guestMemoEditorDialogFragment.show(transaction, TAG);
                 assert guestMemoEditorDialogFragment.getFragmentManager() != null;
                 guestMemoEditorDialogFragment.getFragmentManager().executePendingTransactions();
+            }
+        });
+
+        TextView tvStartSign = view.findViewById(R.id.tv_start_sign);
+        TextView tvEndSign = view.findViewById(R.id.tv_end_sign);
+        tvStartSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvStartSign.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+                tvEndSign.setTextAppearance(R.style.GlobalTextView_18SP_zumthor_NotoSans_Bold);
+                caddyNoteType = CaddyNoteType.Before;
+                getCaddyNote();
+            }
+        });
+
+
+        tvEndSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvStartSign.setTextAppearance(R.style.GlobalTextView_18SP_zumthor_NotoSans_Bold);
+                tvEndSign.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+                caddyNoteType = CaddyNoteType.After;
+                getCaddyNote();
             }
         });
 
@@ -230,33 +262,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
             @Override
             public void onTakePhoto(String path) {
-                RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
-                RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), guestId);
-                RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "club");
-                RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "before");
-                RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), Global.CaddyNo);
-
-                File file = new File(path);
-                RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
-
-                DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveId, reserveGuestId,
-                        photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
-                            @Override
-                            public void onSuccess(PhotoResponse response) {
-                                getCaddyNote();
-                            }
-
-                            @Override
-                            public void onError(PhotoResponse response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Throwable t) {
-
-                            }
-                        });
+                sendPhoto(guestId, path, "club");
             }
         });
     }
@@ -288,17 +294,19 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             @Override
             public void onSuccess(ResponseCaddyNote response) {
                 hideProgress();
-
                 for (int i = 0; i < response.getData().size(); i++) {
                     CaddyNoteInfo caddyNoteInfo = response.getData().get(i);
                     CaddieViewBasicGuestItem view = (CaddieViewBasicGuestItem)viewMain.getChildAt(i);
                     ClubInfo clubInfo = makeClubInfo(caddyNoteInfo);
                     caddieInfo.getGuestInfo().get(i).clubInfo = clubInfo;
+                    view.setCaddyNoteType(caddyNoteType);
                     view.drawClubInfo(clubInfo);
-                    view.drawGuestInfo(caddieInfo.getGuestInfo().get(i));
+                    view.drawGuestInfo(caddyNoteInfo);
                     view.drawSignImage(caddyNoteInfo);
                     view.drawClubImage(caddyNoteInfo);
                 }
+
+                tvTeamMemo.setText(response.getTeam_memo());
             }
 
             @Override
@@ -416,21 +424,27 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     }
 
     private void setGuestPhotos(String guestId, File file) {
+        sendPhoto(guestId, file.getAbsolutePath(), "sign");
+    }
+
+    private void sendPhoto(String guestId, String path, String photoType) {
         setProgressMessage("클럽사진을 저장하는 중입니다.");
+
         RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
         RequestBody reserveGuestId = RequestBody.create(MediaType.parse("text/plain"), guestId);
-        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), "sign");
-        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "before");
+        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), photoType);
+        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), caddyNoteType.toString());
         RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), Global.CaddyNo);
 
+        File file = new File(path);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", file.getAbsolutePath(), requestBody);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveId, reserveGuestId,
                 photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
                     @Override
                     public void onSuccess(PhotoResponse response) {
-
+                        getCaddyNote();
                     }
 
                     @Override
@@ -444,6 +458,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                     }
                 });
     }
+
 
     protected void showProgress(final String msg) {
         UIThread.executeInUIThread(new Runnable() {

@@ -14,6 +14,10 @@ public class ResponseCaddyNote {
 	@Expose
 	private String resultMessage = "";
 
+	@SerializedName("team_memo")
+	@Expose
+	private String team_memo = "";
+
 
 //	@SerializedName("detailMessage")
 //	@Expose
@@ -45,5 +49,9 @@ public class ResponseCaddyNote {
 
 	public void setData(List<CaddyNoteInfo> data) {
 		this.data = data;
+	}
+
+	public String getTeam_memo() {
+		return team_memo;
 	}
 }

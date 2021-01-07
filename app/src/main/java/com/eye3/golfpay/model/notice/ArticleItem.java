@@ -23,4 +23,6 @@ public class ArticleItem implements Serializable {
     public String created_at;
     @SerializedName("file_url")
     public String file_url;
+    @SerializedName("read_yn")
+    public String read_yn;
 }

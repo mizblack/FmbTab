@@ -39,7 +39,7 @@ public class ReserveScore implements Serializable {
             Hole aHole = playerList.get(i).playingCourse.get(tabIdx).holes.get(mHoleScoreLayoutIdx);
 
             guest_score_list.add(new ScoreSend(playerList.get(i).guest_id, aHole.playedScore.par,
-                    aHole.playedScore.putting, aHole.playedScore.tar));
+                    aHole.playedScore.putting, aHole.playedScore.tar, aHole.playedScore.teeShot));
 
         }
         this.reserve_id = reserve_id;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="308dp"
@@ -162,13 +163,47 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/clubImageCaddieView"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clubImage"
             android:layout_width="match_parent"
-            android:layout_height="154dp"
-            android:background="@color/aliceBlue"
-            android:scaleType="fitCenter"
-            tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/clubImageCaddieView1"
+                android:layout_width="match_parent"
+                android:layout_height="154dp"
+                android:background="@color/aliceBlue"
+                android:scaleType="fitCenter"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/clubImageCaddieView1">
+
+                <ImageView
+                    android:id="@+id/clubImageCaddieView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/aliceBlue"
+                    android:scaleType="fitCenter"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/clubImageCaddieView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:background="@color/aliceBlue"
+                    android:scaleType="fitCenter"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -178,6 +213,32 @@
             tools:ignore="UselessParent">
 
             <TextView
+                android:id="@+id/signatureTextView"
+                style="@style/GlobalTextView.14SP.E6E6E6.NotoSans.Regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:text="클럽확인 및 정보수집 동의"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <ImageView
+                android:id="@+id/signatureImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/ebonyBlack" />
+
+            <TextView
+                android:id="@+id/tv_sign"
                 style="@style/GlobalTextView.12SP.ebonyBlack.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -192,30 +253,6 @@
                 android:layout_alignParentRight="true"
                 android:src="@drawable/caddie_memo"
                 tools:ignore="ContentDescription" />
-
-            <ImageView
-                android:id="@+id/signatureImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/signatureTextView"
-                style="@style/GlobalTextView.14SP.E6E6E6.NotoSans.Regular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:text="클럽확인 및 정보수집 동의"
-                tools:ignore="HardcodedText,SpUsage" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/ebonyBlack" />
 
         </RelativeLayout>
 

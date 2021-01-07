@@ -98,6 +98,10 @@ public class NoticeFragment extends BaseFragment {
     }
 
     private void showNoticeDetail(ArticleItem item) {
+
+        if (item.read_yn.equalsIgnoreCase("N"))
+            setCaddyBoardCheck(item.article_id);
+
         mTitleTextView.setText(item.title);
         mTimeTextView.setText(item.created_at);
         mContentTextView.setText(item.content);
@@ -106,6 +110,25 @@ public class NoticeFragment extends BaseFragment {
                 .load(Global.HOST_BASE_ADDRESS_AWS + item.file_url)
                 .placeholder(mImageView.getDrawable())
                 .into(mImageView);
+    }
+
+    private void setCaddyBoardCheck(int articleId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).caddyBoardCheck(getContext(), articleId, new DataInterface.ResponseCallback<ResponseData<ArticleItem>>() {
+            @Override
+            public void onSuccess(ResponseData<ArticleItem> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onError(ResponseData<ArticleItem> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
     }
 
     private class NoticeAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -133,11 +156,20 @@ public class NoticeFragment extends BaseFragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (articleItems == null)
                 return;
+
             final NoticeItemViewHolder viewHolder = (NoticeItemViewHolder) holder;
             viewHolder.tvTitle.setText(articleItems.get(position).title);
             viewHolder.tvContent.setText(Html.fromHtml(articleItems.get(position).content));
             viewHolder.tvDateTime.setText(articleItems.get(position).created_at);
             viewHolder.itemView.setTag(articleItems.get(position));
+
+            if (articleItems.get(position).read_yn != null) {
+                if (articleItems.get(position).read_yn.equals("N"))
+                    viewHolder.imgNew.setVisibility(View.VISIBLE);
+                else
+                    viewHolder.imgNew.setVisibility(View.GONE);
+            }
+
 
 //            if(articleItems.get(position).mUseYn.equals("y")) {
 //                viewHolder.imgNew.setVisibility(View.GONE);
@@ -151,7 +183,7 @@ public class NoticeFragment extends BaseFragment {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewHolder.imgNew.setVisibility(View.INVISIBLE);
+                    viewHolder.imgNew.setVisibility(View.GONE);
                     showNoticeDetail((ArticleItem) v.getTag());
                 }
             });
@@ -187,7 +219,7 @@ public class NoticeFragment extends BaseFragment {
             @Override
             public void onSuccess(ResponseData<ArticleItem> response) {
                 hideProgress();
-                //나중에 수정할것
+
                 if (response.getResultCode().equals("ok")) {
                     mNoticeItemList = (List<ArticleItem>) response.getList();
                     AppDef.previousCntOfNotice =  Global.noticeItemArrayList.size();

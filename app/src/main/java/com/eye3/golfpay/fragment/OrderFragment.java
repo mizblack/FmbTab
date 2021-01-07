@@ -781,8 +781,23 @@ public class OrderFragment extends BaseFragment {
             mMenuAdapter.notifyDataSetChanged();
     }
 
+    private boolean isEmptyOrder() {
+
+        for (int i = 0; mOrderDetailList.size() > i; i++) {
+            ArrayList<OrderedMenuItem> orderedMenuItemList = mOrderDetailList.get(i).mOrderedMenuItemList;
+            if (orderedMenuItemList != null && !orderedMenuItemList.isEmpty())
+                return false;
+        }
+        return true;
+    }
+
     private void sendShadeOrders() {
         //여기 다시수정 mSelectedRestaurantTabIdx 가-1일경우
+
+        if (isEmptyOrder()) {
+            Toast.makeText(getContext(), "메뉴를 선택하신 후 주문해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mShadeOrders = new ShadeOrder(mRestaurantList.get(mSelectedRestaurantIdx).id, Global.reserveId, mOrderDetailList);
 

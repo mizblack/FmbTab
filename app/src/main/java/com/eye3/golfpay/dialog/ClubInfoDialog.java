@@ -202,6 +202,7 @@ public class ClubInfoDialog extends Dialog {
         ClubGuestListAdapter adapter = new ClubGuestListAdapter(getContext(), new ClubGuestListAdapter.IOnClickAdapter() {
             @Override
             public void onAdapterItemClicked(Integer id) {
+                caddieInfo.getGuestInfo().get(currentIdx).clubInfo = getClubInfo();
                 currentIdx = id;
                 initClubInfoUI();
             }

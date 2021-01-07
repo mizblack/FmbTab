@@ -25,12 +25,12 @@ import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.view.ScoreInserter;
 
 import java.util.List;
 
 
 public class ScoreDialog extends Dialog {
-
 
     private Button mLeftButton;
     private Button mRightButton;
@@ -40,6 +40,9 @@ public class ScoreDialog extends Dialog {
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;
+    private ScoreInserter score;
+    private ScoreInserter putt;
+    private ScoreInserter teeShot;
 
     RecyclerView recycler;
     List<Player> mPlayerList;
@@ -138,15 +141,32 @@ public class ScoreDialog extends Dialog {
             }
         });
 
-//        recycler = findViewById(R.id.player_score_list);
-//        recycler.setHasFixedSize(true);
-//        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-//        recycler.setLayoutManager(mManager);
-//        mScoreInputAdapter = new ScoreInputAdapter(mContext, mPlayerList, mTabIdx, mHoleScoreLayoutIdx); //?
-//        recycler.setAdapter(mScoreInputAdapter);
-//        mScoreInputAdapter.notifyDataSetChanged();
-//
-//        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
+        score = findViewById(R.id.scoreInserter);
+        putt = findViewById(R.id.putt);
+        teeShot = findViewById(R.id.teeshot);
+
+        score.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
+            @Override
+            public void onClickedScore(int row, int cal) {
+                mReserveScore.guest_score_list.get(row).par = score.getScore(cal).toString();
+            }
+        });
+
+        putt.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
+            @Override
+            public void onClickedScore(int row, int cal) {
+                mReserveScore.guest_score_list.get(row).putting = score.getScore(cal).toString();
+            }
+        });
+
+        teeShot.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
+            @Override
+            public void onClickedScore(int row, int cal) {
+                mReserveScore.guest_score_list.get(row).teeShot = score.getTeeShot(cal);
+            }
+        });
+
+        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
@@ -154,6 +174,20 @@ public class ScoreDialog extends Dialog {
     }
 
     private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
+
+        class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
+            TextView playerName;
+            RecyclerView rv_score;
+            RecyclerView rv_putt;
+
+            public ScoreInputItemViewHolder(@NonNull final View itemView) {
+                super(itemView);
+                playerName = itemView.findViewById(R.id.playerName);
+                rv_score = itemView.findViewById(R.id.rv_score);
+                rv_putt = itemView.findViewById(R.id.rv_putt);
+            }
+        }
+
         List<Player> mPlayerList;
         int mTabIdx;
         int mHoleLayoutIdx;
@@ -168,14 +202,14 @@ public class ScoreDialog extends Dialog {
         @NonNull
         @Override
         //recyclerview가 parent임
-        public ScoreInputAdapter.ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.score_input_row, parent, false);
             ScoreInputAdapter.ScoreInputItemViewHolder viewHolder = new ScoreInputAdapter.ScoreInputItemViewHolder(view);
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final ScoreInputAdapter.ScoreInputItemViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ScoreInputItemViewHolder holder, int position) {
 
             if (holder.rv_score.getAdapter() == null) {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -231,20 +265,6 @@ public class ScoreDialog extends Dialog {
         @Override
         public int getItemCount() {
             return mPlayerList.size();
-        }
-
-        public class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
-            TextView playerName;
-            RecyclerView rv_score;
-            RecyclerView rv_putt;
-
-            //onCreate의 view임(score_input_row)
-            public ScoreInputItemViewHolder(@NonNull final View itemView) {
-                super(itemView);
-                playerName = itemView.findViewById(R.id.playerName);
-                rv_score = itemView.findViewById(R.id.rv_score);
-                rv_putt = itemView.findViewById(R.id.rv_putt);
-            }
         }
     }
 

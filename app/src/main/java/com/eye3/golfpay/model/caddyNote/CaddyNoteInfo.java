@@ -46,6 +46,11 @@ public class CaddyNoteInfo {
     @SerializedName("club_after")
     private List<CaddyImage> club_after = null;
 
+    @SerializedName("carNumber")
+    private String carNumber = null;
+    @SerializedName("phoneNumber")
+    private String phoneNumber = null;
+
     public String getId() {
         return id;
     }
@@ -180,5 +185,13 @@ public class CaddyNoteInfo {
 
     public void setClub_after(List<CaddyImage> club_after) {
         this.club_after = club_after;
+    }
+
+    public String getCarNumber() {
+        return carNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

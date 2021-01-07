@@ -32,4 +32,12 @@ public class ReserveGameType implements Serializable {
     @SerializedName("hole_no_near")
     @Expose
     public int hole_no_near;
+
+    @SerializedName("par_long")
+    @Expose
+    public int par_long;
+
+    @SerializedName("par_near")
+    @Expose
+    public int par_near;
 }

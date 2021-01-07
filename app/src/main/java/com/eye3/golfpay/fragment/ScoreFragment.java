@@ -122,7 +122,6 @@ public class ScoreFragment extends BaseFragment {
         courseLinearLayout = v.findViewById(R.id.courseLinearLayout);
         mParentActivity.showMainBottomBar();
 
-
         //Nearest 클릭릭
         tabBar.findViewById(R.id.pinkNearestOrLongest).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +183,7 @@ public class ScoreFragment extends BaseFragment {
             if (i != selectedTabIdx)
                 CourseTabBar[i].setTextColor(Color.GRAY);
         }
-        TabCourseLinear.setmHoleScoreLayoutIdx(0);
+        TabCourseLinear.setHoleScoreLayoutIdx(0);
         createScoreTab(playerList, selectedTabIdx);
     }
 

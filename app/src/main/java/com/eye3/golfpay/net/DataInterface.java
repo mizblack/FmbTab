@@ -281,7 +281,7 @@ public class DataInterface extends BasicDataInterface {
     public void cancelOrder(final Context context, CancelOrder cancelOrder, final ResponseCallback<ResponseData<StoreOrder>> callback) {
 
         try {
-            Call<ResponseData<Object>> call = service.getStoreOrder( cancelOrder);
+            Call<ResponseData<Object>> call = service.cancelOrderShade( cancelOrder);
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
                 public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
@@ -373,7 +373,7 @@ public class DataInterface extends BasicDataInterface {
 
     public void getNoticeList(final Context context, final ResponseCallback<ResponseData<ArticleItem>> callback) {
         try {
-            Call<ResponseData<ArticleItem>> call = service.getNoticeList();
+            Call<ResponseData<ArticleItem>> call = service.getCaddyBoard(Global.CaddyNo, "caddy");
             call.enqueue(new Callback<ResponseData<ArticleItem>>() {
 
                 @Override
@@ -383,6 +383,28 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<ArticleItem>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void caddyBoardCheck(final Context context, int articleId,final ResponseCallback<ResponseData<ArticleItem>> callback) {
+        try {
+            Call<ResponseData<Object>> call = service.caddyBoardCheck(Global.CaddyNo, articleId);
+            call.enqueue(new Callback<ResponseData<Object>>() {
+
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);

@@ -72,23 +72,22 @@
         android:paddingLeft="10dp">
 
         <TextView
-            android:id="@+id/inOrOutColumn"
+            android:id="@+id/tvCourseName1"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginTop="14dp"
-            android:text="In"/>
+            />
 
         <TextView
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:id="@+id/inOrOutTotal01"
-            android:layout_below="@+id/inOrOutColumn"
-            android:text="36"/>
+            android:id="@+id/tvTotalPar1"
+            android:layout_below="@+id/tvCourseName1"
+            />
 
         <TextView
-            android:id="@+id/inOrOutTotalMeters"
+            android:id="@+id/totalMeters1"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
-            android:layout_alignParentBottom="true"
-            android:text="3,160" />
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 
@@ -104,19 +103,19 @@
         android:paddingLeft="10dp">
 
         <TextView
-            android:id="@+id/inOrOutColumn00"
+            android:id="@+id/tvCourseName2"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:layout_marginTop="14dp"
-            android:text="In"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp" />
 
         <TextView
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:id="@+id/inOrOutTotal00"
-            android:layout_below="@+id/inOrOutColumn00"
-            android:text="36"/>
+            android:id="@+id/tvTotalPar2"
+            android:layout_below="@+id/tvCourseName2" />
 
         <TextView
-            android:id="@+id/inOrOutTotalMeters00"
+            android:id="@+id/totalMeters2"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true"

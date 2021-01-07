@@ -30,6 +30,10 @@ import java.util.ArrayList;
 
 public class ScoreInserter extends RelativeLayout {
 
+    public interface IScoreInserterListenr {
+        void onClickedScore(int row, int cal);
+    }
+
     Context mContext;
     private boolean teeShot = false;
     private String[] teeShotItem = {"Fairway", "Bunker", "Rough", "OB", "Hazard"};
@@ -41,6 +45,7 @@ public class ScoreInserter extends RelativeLayout {
     public ScoreInserter(Context context) {
         super(context);
     }
+    private IScoreInserterListenr iScoreInserterListenr;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public ScoreInserter(Context context, String type) {
@@ -55,6 +60,10 @@ public class ScoreInserter extends RelativeLayout {
         start = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getInteger(R.styleable.ScoreInserter_start, 0);
         end = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getInteger(R.styleable.ScoreInserter_end, 10);
         init(context, "type");
+    }
+
+    public void setIScoreInserterListenr(IScoreInserterListenr listener) {
+        this.iScoreInserterListenr = listener;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -99,11 +108,13 @@ public class ScoreInserter extends RelativeLayout {
 
                 View view = item.findViewById(R.id.view_select);
 
+                final int cal = j;
                 item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         unSelectAllRow(position);
                         view.setVisibility(View.VISIBLE);
+                        iScoreInserterListenr.onClickedScore(position, cal);
                     }
                 });
 
@@ -123,6 +134,18 @@ public class ScoreInserter extends RelativeLayout {
         }
     }
 
+    public Integer getScore(int index) {
+        for (int i = start; i < end; i++) {
+            if (i == index)
+                return i;
+        }
+        return 0;
+    }
+
+    public String getTeeShot(int index) {
+        return teeShotItem[index];
+    }
+
     void createTeeShot() {
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -132,6 +155,7 @@ public class ScoreInserter extends RelativeLayout {
             View childView = inflater.inflate(R.layout.inserter_item, null, false);
             LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
+            int j = 0;
             for (String s : teeShotItem) {
                 FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
 
@@ -145,15 +169,18 @@ public class ScoreInserter extends RelativeLayout {
 
                 View view = item.findViewById(R.id.view_select);
 
+                final int cal = j;
                 item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         unSelectAllRow(position);
                         view.setVisibility(View.VISIBLE);
+                        iScoreInserterListenr.onClickedScore(position, cal);
                     }
                 });
 
                 linearLayout.addView(item);
+                j++;
             }
 
             scores.add(linearLayout);
@@ -175,5 +202,4 @@ public class ScoreInserter extends RelativeLayout {
             childView.findViewById(R.id.view_select).setVisibility(View.GONE);
         }
     }
-
 }

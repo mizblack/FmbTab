@@ -47,18 +47,6 @@
         android:background="@color/ebonyBlack"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-
-    <ImageView
-        android:id="@+id/imgNew"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/new_icon"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/tvNoticeContent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvNoticeTitle"/>
-
     <ImageView
         android:id="@+id/iv_arrow"
         android:layout_width="30dp"
@@ -68,6 +56,16 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/tvNoticeContent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvNoticeTitle" />
+
+    <ImageView
+        android:id="@+id/imgNew"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/new_icon"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNoticeContent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_arrow"
         app:layout_constraintTop_toTopOf="@+id/tvNoticeTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

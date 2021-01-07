@@ -125,6 +125,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_near_hole_par"
                     style="@style/GlobalTextView.17SP.gray.NotoSans.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,6 +166,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_long_hole_par"
                     style="@style/GlobalTextView.17SP.gray.NotoSans.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -21,7 +21,6 @@ import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.EditorDialogFragment;
-import com.eye3.golfpay.view.CaddieViewGuestItem;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +56,6 @@ public class CaddieFragment extends BaseFragment {
         teamMemoLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closeKeyboard();
                 EditorDialogFragment teamMemoEditorDialogFragment = new EditorDialogFragment();
                 teamMemoEditorDialogFragment.setMemoContent(mTeamMemoContentTextView.getText().toString());
                 showDialogFragment(teamMemoEditorDialogFragment);
@@ -71,25 +69,6 @@ public class CaddieFragment extends BaseFragment {
                 systemUIHide();
             }
         });
-    }
-
-    private void closeKeyboard() {
-        for (int i = 0; i < mGuestViewContainerLinearLayout.getChildCount(); i++) {
-            CaddieViewGuestItem caddieViewGuestItem = (CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i);
-        }
-    }
-
-    private View createGuestItemView(Guest guest) {
-        CaddieViewGuestItem guestItemView = new CaddieViewGuestItem(getActivity(), guest);
-
-        return guestItemView;
-    }
-
-    private void createCaddieGuestViews() {
-        guestList = Global.guestList;
-        for (int i = 0; guestList.size() > i; i++) {
-            mGuestViewContainerLinearLayout.addView(createGuestItemView(guestList.get(i)));
-        }
     }
 
     @Override
@@ -141,11 +120,10 @@ public class CaddieFragment extends BaseFragment {
 //                    ((CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i)).setReserveGuestInfo(guestList.get(i));
 //            }
 //        });
-
     }
 
     private void showDialogFragment(DialogFragment dialogFragment) {
-          closeKeyboard();
+
         FragmentManager supportFragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
         dialogFragment.show(transaction, TAG);
