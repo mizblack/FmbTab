@@ -22,11 +22,13 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.score.ReserveScore;
+import com.eye3.golfpay.model.score.ScoreSend;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.view.ScoreInserter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,7 +38,6 @@ public class ScoreDialog extends Dialog {
     private Button mRightButton;
     private String mLeftTitle;
     private String mRightTitle;
-    private ScoreDialog dialog = this;
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;
@@ -47,7 +48,6 @@ public class ScoreDialog extends Dialog {
     RecyclerView recycler;
     List<Player> mPlayerList;
     Course mCurrentCourseInfo;
-    ScoreInputAdapter mScoreInputAdapter;
     Context mContext;
     //선정된 코스텝 인덱스 반드시 있어야함.
     int mTabIdx;
@@ -109,7 +109,7 @@ public class ScoreDialog extends Dialog {
         tvPar.setText("Par" + mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).par);
         tvCourseName = findViewById(R.id.dlg_course_name);
         tvCourseName.setText("    Course(" + mCurrentCourseInfo.courseName + ")");
-
+        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
         // 클릭 이벤트 셋팅
         if (mLeftClickListener != null && mRightClickListener != null) {
             mLeftButton.setOnClickListener(mLeftClickListener);
@@ -145,6 +145,10 @@ public class ScoreDialog extends Dialog {
         putt = findViewById(R.id.putt);
         teeShot = findViewById(R.id.teeshot);
 
+        score.makeScoreBoard(mReserveScore.guest_score_list);
+        putt.makeScoreBoard(mReserveScore.guest_score_list);
+        teeShot.makeScoreBoard(mReserveScore.guest_score_list);
+
         score.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
             @Override
             public void onClickedScore(int row, int cal) {
@@ -165,110 +169,18 @@ public class ScoreDialog extends Dialog {
                 mReserveScore.guest_score_list.get(row).teeShot = score.getTeeShot(cal);
             }
         });
-
-        mReserveScore = new ReserveScore(mPlayerList, Global.reserveId, mCurrentCourseInfo.holes.get(mHoleScoreLayoutIdx).id, mTabIdx, mHoleScoreLayoutIdx);
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
         this.inputFinishListener = listener;
     }
 
-    private class ScoreInputAdapter extends RecyclerView.Adapter<ScoreInputAdapter.ScoreInputItemViewHolder> {
-
-        class ScoreInputItemViewHolder extends RecyclerView.ViewHolder {
-            TextView playerName;
-            RecyclerView rv_score;
-            RecyclerView rv_putt;
-
-            public ScoreInputItemViewHolder(@NonNull final View itemView) {
-                super(itemView);
-                playerName = itemView.findViewById(R.id.playerName);
-                rv_score = itemView.findViewById(R.id.rv_score);
-                rv_putt = itemView.findViewById(R.id.rv_putt);
-            }
-        }
-
-        List<Player> mPlayerList;
-        int mTabIdx;
-        int mHoleLayoutIdx;
-
-        public ScoreInputAdapter(Context context, List<Player> playerList, int mTabIdx, int mHoleLayoutIdx) {
-
-            this.mPlayerList = playerList;
-            this.mTabIdx = mTabIdx;
-            this.mHoleLayoutIdx = mHoleLayoutIdx;
-        }
-
-        @NonNull
-        @Override
-        //recyclerview가 parent임
-        public ScoreInputItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.score_input_row, parent, false);
-            ScoreInputAdapter.ScoreInputItemViewHolder viewHolder = new ScoreInputAdapter.ScoreInputItemViewHolder(view);
-            return viewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull final ScoreInputItemViewHolder holder, int position) {
-
-            if (holder.rv_score.getAdapter() == null) {
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                holder.rv_score.setHasFixedSize(true);
-                holder.rv_score.setLayoutManager(layoutManager);
-
-                ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
-                    @Override
-                    public void onAdapterItemClicked(Integer index, Integer value) {
-                        mReserveScore.guest_score_list.get(position).par = value.toString();
-                        mReserveScore.guest_score_list.get(position).tar = index.toString();
-                    }
-                });
-
-                holder.playerName.setText(mPlayerList.get(position).name);
-
-                int score = -3;
-                for (int i = 0; i < 18; i++) {
-                    adapter.addItem(score++ + "");
-                }
-
-                try {
-                    adapter.select(mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore.par);
-                } catch (Exception e) {
-
-                }
-
-                holder.rv_score.setAdapter(adapter);
-            }
-
-            if (holder.rv_putt.getAdapter() == null) {
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                holder.rv_putt.setHasFixedSize(true);
-                holder.rv_putt.setLayoutManager(layoutManager);
-                ScoreAdapter adapter = new ScoreAdapter(getContext(), new ScoreAdapter.IOnClickAdapter() {
-                    @Override
-                    public void onAdapterItemClicked(Integer index, Integer value) {
-                        mReserveScore.guest_score_list.get(position).putting = value.toString();
-                        mReserveScore.guest_score_list.get(position).tar = index.toString();
-                    }
-                });
-
-                for (int i = 0; i < 15; i++) {
-                    adapter.addItem(i++ + "");
-                }
-
-                adapter.select(mPlayerList.get(position).playingCourse.get(mTabIdx).holes.get(mHoleScoreLayoutIdx).playedScore.putting);
-                holder.rv_putt.setAdapter(adapter);
-            }
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return mPlayerList.size();
-        }
-    }
-
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
+
+        reserveScore.guest_score_list.get(0).tar="-";
+        reserveScore.guest_score_list.get(1).tar="-";
+        reserveScore.guest_score_list.get(2).tar="-";
+        reserveScore.guest_score_list.get(3).tar="-";
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override

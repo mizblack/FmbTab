@@ -318,14 +318,14 @@ public class ScoreFragment extends BaseFragment {
 
                     int nearest = -1;
                     int longest = -1;
-                    if (course.indexOf("IN") >= 0) {
+                    if (course.contains("IN")) {
                         if (response.course_near.equals("IN")) {
                             nearest = response.hole_no_near-1;
                         }
                         else if (response.course_long.equals("IN")) {
                             longest = response.hole_no_long-1;
                         }
-                    } else if (course.indexOf("OUT") >= 0) {
+                    } else if (course.contains("OUT")) {
                         if (response.course_near.equals("OUT")) {
                             nearest = response.hole_no_near-1;
                         }
@@ -334,7 +334,7 @@ public class ScoreFragment extends BaseFragment {
                         }
                     }
 
-                    mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, Global.courseInfoList.get(mTabIdx), mTabIdx, nearest, longest);
+                    mScoreBoard.init(Objects.requireNonNull(getActivity()), mPlayerList, mTabIdx, nearest, longest);
                     mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
                         @Override
                         public void OnScoreInputFinished(List<Player> playerList) {

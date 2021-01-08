@@ -9,6 +9,7 @@
 
     <declare-styleable name="ScoreInserter">
         <attr name="teeshot" format="boolean"/>
+        <attr name="type" format="reference|string"/>
         <attr name="start" format="integer" />
         <attr name="end" format="integer" />
     </declare-styleable>

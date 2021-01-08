@@ -25,6 +25,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.fragment.ControlFragment;
+import com.eye3.golfpay.model.score.ScoreSend;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class ScoreInserter extends RelativeLayout {
     private String[] teeShotItem = {"Fairway", "Bunker", "Rough", "OB", "Hazard"};
     private int start;
     private int end;
+    private String type;
     private LinearLayout mScoreInserterContainer;
     ArrayList<LinearLayout> scores = new ArrayList<>();
     int itemHeightDP = 92;
@@ -46,7 +48,7 @@ public class ScoreInserter extends RelativeLayout {
         super(context);
     }
     private IScoreInserterListenr iScoreInserterListenr;
-
+    ArrayList<ScoreSend> oldScore = null;
     @RequiresApi(api = Build.VERSION_CODES.M)
     public ScoreInserter(Context context, String type) {
         super(context);
@@ -59,7 +61,8 @@ public class ScoreInserter extends RelativeLayout {
         teeShot = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getBoolean(R.styleable.ScoreInserter_teeshot, false);
         start = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getInteger(R.styleable.ScoreInserter_start, 0);
         end = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getInteger(R.styleable.ScoreInserter_end, 10);
-        init(context, "type");
+        type = context.obtainStyledAttributes(attrs, R.styleable.ScoreInserter).getString(R.styleable.ScoreInserter_type);
+        init(context, type);
     }
 
     public void setIScoreInserterListenr(IScoreInserterListenr listener) {
@@ -76,26 +79,30 @@ public class ScoreInserter extends RelativeLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.inserter_layout, this, false);
         mScoreInserterContainer = v.findViewById(R.id.score_insert_container);
+        addView(v);
+    }
+
+    public void makeScoreBoard(ArrayList<ScoreSend> score) {
+        oldScore = score;
 
         if (teeShot)
             createTeeShot();
         else
-            createScore();
-
-        addView(v);
-
+            createScore(type);
     }
 
-    void createScore() {
+    void createScore(String type) {
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        boolean isVisible = false;
         for (int i = 0; i < Global.guestList.size(); i++) {
             final int position = i;
             View childView = inflater.inflate(R.layout.inserter_item, null, false);
             LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
             for (int j = start; j < end; j++) {
+
                 FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
 
                 final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, getResources().getDisplayMetrics());
@@ -107,6 +114,14 @@ public class ScoreInserter extends RelativeLayout {
                 tvItem.setText(j + "");
 
                 View view = item.findViewById(R.id.view_select);
+
+                if (!isVisible) {
+                    if (type.equals("par")) {
+                        isVisible = selectPar(i, j, view);
+                    } else if (type.equals("putt")) {
+                        isVisible = selectPutt(i, j, view);
+                    }
+                }
 
                 final int cal = j;
                 item.setOnClickListener(new OnClickListener() {
@@ -121,6 +136,8 @@ public class ScoreInserter extends RelativeLayout {
                 linearLayout.addView(item);
             }
 
+            isVisible = false;
+
             scores.add(linearLayout);
 
             View separator = inflater.inflate(R.layout.item_separator, null, false);
@@ -132,6 +149,42 @@ public class ScoreInserter extends RelativeLayout {
 
             mScoreInserterContainer.addView(linearLayout);
         }
+    }
+
+    private boolean selectPar(int index, int value, View view) {
+
+        if (oldScore == null)
+            return false;
+
+        ScoreSend score = oldScore.get(index);
+        if (score.par.isEmpty() || score.par.equals("-"))
+            return false;
+
+        if (Integer.parseInt(score.par) == value) {
+            view.setVisibility(View.VISIBLE);
+            return true;
+        }
+
+        view.setVisibility(View.GONE);
+        return false;
+    }
+
+    private boolean selectPutt(int index, int value, View view) {
+
+        if (oldScore == null)
+            return false;
+
+        ScoreSend score = oldScore.get(index);
+        if (score.putting.isEmpty() || score.putting.equals("-"))
+            return false;
+
+        if (Integer.parseInt(score.putting) == value) {
+            view.setVisibility(View.VISIBLE);
+            return true;
+        }
+
+        view.setVisibility(View.GONE);
+        return false;
     }
 
     public Integer getScore(int index) {

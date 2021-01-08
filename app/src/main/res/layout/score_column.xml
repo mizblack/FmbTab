@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="108dp"
     android:background="@color/white"
     android:orientation="horizontal">
@@ -67,7 +67,7 @@
 
     <RelativeLayout
         android:id="@+id/inOrOutLinearLayout"
-        android:layout_width="88dp"
+        android:layout_width="87dp"
         android:layout_height="match_parent"
         android:paddingLeft="10dp">
 
@@ -84,7 +84,7 @@
             />
 
         <TextView
-            android:id="@+id/totalMeters1"
+            android:id="@+id/tvTotalMeters1"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true" />
@@ -115,7 +115,7 @@
             android:layout_below="@+id/tvCourseName2" />
 
         <TextView
-            android:id="@+id/totalMeters2"
+            android:id="@+id/tvTotalMeters2"
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true"

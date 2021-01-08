@@ -1,5 +1,6 @@
 package com.eye3.golfpay.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -62,8 +63,8 @@ public class TabCourseLinear extends LinearLayout {
     TextView tvCourseName2;
     TextView tvTotalPar1;
     TextView tvTotalPar2;
-    //ctype 에따라 정렬된 코스
-    Course mCtypeArrangedCourse ;
+    TextView tvTotalMeters1;
+    TextView tvTotalMeters2;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -111,7 +112,6 @@ public class TabCourseLinear extends LinearLayout {
                         return false;
                 }
             }
-
         }
         return true;
     }
@@ -128,13 +128,11 @@ public class TabCourseLinear extends LinearLayout {
         super(context, attrs);
     }
 
-    public void init(final Context context, final List<Player> playerList, Course ctyped,
-                     int tabIdx, int nearest, int longest) {
+    public void init(final Context context, final List<Player> playerList, int tabIdx, int nearest, int longest) {
 
         this.mContext = context;
         this.mTabIdx = tabIdx;
         this.mPlayerList = playerList;
-        this.mCtypeArrangedCourse = ctyped;
         this.removeAllViewsInLayout();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.tab_course, this, false);
@@ -146,6 +144,9 @@ public class TabCourseLinear extends LinearLayout {
         tvTotalPar1 = v.findViewById(R.id.tvTotalPar1);
         tvTotalPar2 = v.findViewById(R.id.tvTotalPar2);
 
+        tvTotalMeters1 = v.findViewById(R.id.tvTotalMeters1);
+        tvTotalMeters2 = v.findViewById(R.id.tvTotalMeters2);
+
         mDistanceSpinner.setAdapter(arrayAdapter);
         mDistanceSpinner.setSelection(0);
         //거리 환산 적용
@@ -156,11 +157,11 @@ public class TabCourseLinear extends LinearLayout {
                 if ((parent.getItemAtPosition(position)).toString().equals("yard")) {
                     Global.isYard = true;
                     mDistanceSpinner.setSelection(2);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
+                    createHoleInfoLinear(mContext, nearest, longest);
                 } else if ((parent.getItemAtPosition(position)).toString().equals("meter")) {
                     Global.isYard = false;
                     mDistanceSpinner.setSelection(1);
-                    createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
+                    createHoleInfoLinear(mContext, nearest, longest);
                 }
             }
 
@@ -170,19 +171,16 @@ public class TabCourseLinear extends LinearLayout {
             }
         });
 
-        createHoleInfoLinear(mContext, mCtypeArrangedCourse, nearest, longest);
-
+        createHoleInfoLinear(mContext, nearest, longest);
         mScoreRecyclerView = v.findViewById(R.id.scoreRecylerView);
         initRecyclerView(mPlayerList, mTabIdx);
         addView(v);
-
     }
 
     public void setOnScoreInputFinishListener(ScoreInputFinishListener listener) {
         if (listener != null)
             this.inputFinishListener = listener;
     }
-
 
     private void initRecyclerView(List<Player> playerList, int tabIdx) {
         LinearLayoutManager mManager;
@@ -195,34 +193,45 @@ public class TabCourseLinear extends LinearLayout {
         mScoreAdapter.notifyDataSetChanged();
     }
 
+    private int getTotalPar(List<Hole> holes) {
+        int totalPar = 0;
+        for (int i = 0; i < holes.size(); i++) {
+            if (holes.get(i).par != null && Util.isInteger(holes.get(i).par))
+                totalPar = totalPar + Integer.parseInt(holes.get(i).par);
+        }
+        return totalPar;
+    }
+
+    private int getTotalMeter(List<Hole> holes) {
+        int totalMeter = 0;
+        for (int i = 0; i < holes.size(); i++) {
+            if (holes.get(i).hole_total_size != null && Util.isInteger(holes.get(i).hole_total_size))
+                totalMeter = totalMeter + Integer.parseInt(holes.get(i).hole_total_size);
+        }
+        return totalMeter;
+    }
+
     /*
      *  최상단 홀정보 보여주는 뷰생성
      *
      */
-    private void createHoleInfoLinear(Context context, Course course, int nearest_hole, int longest_hole) {
+    private void createHoleInfoLinear(Context context, int nearest_hole, int longest_hole) {
         mHolderLinear.removeAllViewsInLayout();
 
-        List<Hole> holes = course.holes;
+        List<Hole> holes = Global.courseInfoList.get(mTabIdx).holes;
 
         int totalPar = 0;
         int totalMeter = 0;
-        for (int k = 0; holes.size() > k; k++) {
-            holeInfoLinear[k] = new HoleInfoLinear(context, holes.get(k));
-            holeInfoLinear[k].setCourse(course);
-            holeInfoLinear[k].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            mHolderLinear.addView(holeInfoLinear[k]);
-            if (holes.get(k).par != null && Util.isInteger(holes.get(k).par))
-                totalPar = totalPar + Integer.parseInt(holes.get(k).par);
-            if (holes.get(k).hole_total_size != null && Util.isInteger(holes.get(k).hole_total_size))
-                totalMeter = totalMeter + Integer.parseInt(holes.get(k).hole_total_size);
+        for (int i = 0; i < holes.size(); i++) {
+            holeInfoLinear[i] = new HoleInfoLinear(context, holes.get(i));
+            holeInfoLinear[i].setCourse(Global.courseInfoList.get(mTabIdx));
+            holeInfoLinear[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            mHolderLinear.addView(holeInfoLinear[i]);
 
-
-            if (k == longest_hole) {
-                holeInfoLinear[k].findViewById(R.id.hole_longest).setVisibility(View.VISIBLE);
-            }
-
-            else if (k == nearest_hole) {
-                holeInfoLinear[k].findViewById(R.id.hole_nearest).setVisibility(View.VISIBLE);
+            if (i == longest_hole) {
+                holeInfoLinear[i].findViewById(R.id.hole_longest).setVisibility(View.VISIBLE);
+            } else if (i == nearest_hole) {
+                holeInfoLinear[i].findViewById(R.id.hole_nearest).setVisibility(View.VISIBLE);
             }
         }
 
@@ -231,13 +240,19 @@ public class TabCourseLinear extends LinearLayout {
         totalHole.par = String.valueOf(totalPar);
         totalHole.hole_total_size = String.valueOf(totalMeter);
         holeInfoLinear[holeInfoLinear.length - 1] = new HoleInfoLinear(context, totalHole);
-        //TextView tvCourseName = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.course_name);
+
         TextView tvCoursId = holeInfoLinear[holeInfoLinear.length - 1].findViewById(R.id.hole_no);
         tvCoursId.setVisibility(View.GONE);
-        //tvCourseName.setVisibility(View.VISIBLE);
 
-       // tvCourseName.setText(course.courseName);
-        //mHolderLinear.addView(holeInfoLinear[holeInfoLinear.length - 1]);
+        String cType1 = Global.courseInfoList.get(0).ctype;
+        String cType2 = Global.courseInfoList.get(1).ctype;
+        tvCourseName1.setText(cType1);
+        tvCourseName2.setText(cType2);
+
+        tvTotalPar1.setText(String.valueOf(getTotalPar(Global.courseInfoList.get(0).holes)));
+        tvTotalPar2.setText(String.valueOf(getTotalPar(Global.courseInfoList.get(1).holes)));
+        tvTotalMeters1.setText(String.valueOf(getTotalMeter(Global.courseInfoList.get(0).holes)));
+        tvTotalMeters2.setText(String.valueOf(getTotalMeter(Global.courseInfoList.get(1).holes)));
     }
 
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScoreItemViewHolder> {
@@ -257,7 +272,7 @@ public class TabCourseLinear extends LinearLayout {
             RelativeLayout[] courseTotal = new RelativeLayout[2]; //동적생성전 임시처리
             RelativeLayout wholeTotalLinear;
             LinearLayout ll_score_row;
-
+            int[] holeIds = { R.id.hole1_ll,R.id.hole2_ll,R.id.hole3_ll,R.id.hole4_ll,R.id.hole5_ll,R.id.hole6_ll,R.id.hole7_ll,R.id.hole8_ll,R.id.hole9_ll};
             ScoreItemViewHolder(View view) {
                 super(view);
                 ll_score_row = view.findViewById(R.id.ll_score_row);
@@ -269,19 +284,12 @@ public class TabCourseLinear extends LinearLayout {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
                 ll_score_row.setLayoutParams(params);
 
+                for (int i = 0; i < 9; i++) {
+                    holeScoreLayout[i] = view.findViewById(holeIds[i]);
+                }
 
-                holeScoreLayout[0] = view.findViewById(R.id.hole1_ll);
-                holeScoreLayout[1] = view.findViewById(R.id.hole2_ll);
-                holeScoreLayout[2] = view.findViewById(R.id.hole3_ll);
-                holeScoreLayout[3] = view.findViewById(R.id.hole4_ll);
-                holeScoreLayout[4] = view.findViewById(R.id.hole5_ll);
-                holeScoreLayout[5] = view.findViewById(R.id.hole6_ll);
-                holeScoreLayout[6] = view.findViewById(R.id.hole7_ll);
-                holeScoreLayout[7] = view.findViewById(R.id.hole8_ll);
-                holeScoreLayout[8] = view.findViewById(R.id.hole9_ll);
                 courseTotal[0] = view.findViewById(R.id.ll_course0_total);
                 courseTotal[1] = view.findViewById(R.id.ll_course1_total);
-
                 wholeTotalLinear = view.findViewById(R.id.whole_total_linear);
 
                 for (int i = 0; NUM_OF_HOLES > i; i++) {
@@ -289,37 +297,7 @@ public class TabCourseLinear extends LinearLayout {
                         @Override
                         public void onClick(View v) {
 
-                            switch (v.getId()) {
-                                case R.id.hole1_ll:
-                                    mHoleScoreLayoutIdx = 0;
-                                    break;
-                                case R.id.hole2_ll:
-                                    mHoleScoreLayoutIdx = 1;
-                                    break;
-                                case R.id.hole3_ll:
-                                    mHoleScoreLayoutIdx = 2;
-                                    break;
-                                case R.id.hole4_ll:
-                                    mHoleScoreLayoutIdx = 3;
-                                    break;
-                                case R.id.hole5_ll:
-                                    mHoleScoreLayoutIdx = 4;
-                                    break;
-                                case R.id.hole6_ll:
-                                    mHoleScoreLayoutIdx = 5;
-                                    break;
-                                case R.id.hole7_ll:
-                                    mHoleScoreLayoutIdx = 6;
-                                    break;
-                                case R.id.hole8_ll:
-                                    mHoleScoreLayoutIdx = 7;
-                                    break;
-                                case R.id.hole9_ll:
-                                    mHoleScoreLayoutIdx = 8;
-                                    break;
-                                default:
-
-                            }
+                            mHoleScoreLayoutIdx = getFindHoleId(v.getId());
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
                             if (isPreviousHoleScoreFilledUp(playerList, mTabIdx)) {
                                 notifyDataSetChanged();
@@ -328,9 +306,7 @@ public class TabCourseLinear extends LinearLayout {
                                 wmlp.gravity = Gravity.CENTER_VERTICAL;
 
                                 sDialog.getWindow().setAttributes(wmlp);
-
                                 sDialog.setOnScoreInputFinishListener(listener);
-
                                 sDialog.getWindow().
                                         setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                                                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
@@ -340,10 +316,18 @@ public class TabCourseLinear extends LinearLayout {
                             } else {
                                 Toast.makeText(mContext, "이전 플레이어 점수를 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
                 }
+            }
+
+            private int getFindHoleId(int id) {
+                for (int i = 0; i < holeIds.length; i++) {
+                    if (holeIds[i] == id)
+                        return i;
+                }
+
+                return -1;
             }
 
             ScoreInputFinishListener listener = new ScoreInputFinishListener() {
@@ -413,42 +397,19 @@ public class TabCourseLinear extends LinearLayout {
                 }
             }
 
+            int[] tvIds = {R.id.hole1_hit, R.id.hole2_hit, R.id.hole3_hit,R.id.hole4_hit, R.id.hole5_hit ,R.id.hole6_hit ,R.id.hole7_hit ,R.id.hole8_hit ,R.id.hole9_hit};
+            int[] tvHoleIds = {R.id.hole1_putt, R.id.hole2_putt, R.id.hole3_putt,R.id.hole4_putt, R.id.hole5_putt ,R.id.hole6_putt ,R.id.hole7_putt ,R.id.hole8_putt ,R.id.hole9_putt};
+            int[] ivBadgeIds = {R.id.iv_badge1, R.id.iv_badge2, R.id.iv_badge3,R.id.iv_badge4, R.id.iv_badge5 ,R.id.iv_badge6 ,R.id.iv_badge7 ,R.id.iv_badge8 ,R.id.iv_badge9};
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_hit)).setText(AppDef.Par_Tar(course.holes.get(0).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.hole1_putt)).setText(course.holes.get(0).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[0].findViewById(R.id.iv_badge1)), course.holes.get(0));
+            for (int j = 0; j < 9; j++) {
+                TextView tvScore = scoreItemViewHolder.holeScoreLayout[j].findViewById(tvIds[j]);
+                TextView tvPutt = scoreItemViewHolder.holeScoreLayout[j].findViewById(tvHoleIds[j]);
+                tvScore.setText(AppDef.Par_Tar(course.holes.get(j).playedScore, AppDef.isTar));
+                tvPutt.setText(getScorePuttAndTesShot(course.holes.get(j).playedScore));
 
-            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_hit)).setText(AppDef.Par_Tar(course.holes.get(1).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.hole2_putt)).setText(course.holes.get(1).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[1].findViewById(R.id.iv_badge2)), course.holes.get(1));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_hit)).setText(AppDef.Par_Tar(course.holes.get(2).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.hole3_putt)).setText(course.holes.get(2).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[2].findViewById(R.id.iv_badge3)), course.holes.get(2));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_hit)).setText(AppDef.Par_Tar(course.holes.get(3).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.hole4_putt)).setText(course.holes.get(3).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[3].findViewById(R.id.iv_badge4)), course.holes.get(3));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_hit)).setText(AppDef.Par_Tar(course.holes.get(4).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.hole5_putt)).setText(course.holes.get(4).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[4].findViewById(R.id.iv_badge5)), course.holes.get(4));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_hit)).setText(AppDef.Par_Tar(course.holes.get(5).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.hole6_putt)).setText(course.holes.get(5).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[5].findViewById(R.id.iv_badge6)), course.holes.get(5));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_hit)).setText(AppDef.Par_Tar(course.holes.get(6).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.hole7_putt)).setText(course.holes.get(6).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[6].findViewById(R.id.iv_badge7)), course.holes.get(6));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_hit)).setText(AppDef.Par_Tar(course.holes.get(7).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.hole8_putt)).setText(course.holes.get(7).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[7].findViewById(R.id.iv_badge8)), course.holes.get(7));
-
-            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_hit)).setText(AppDef.Par_Tar(course.holes.get(8).playedScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.hole9_putt)).setText(course.holes.get(8).playedScore.putting);
-            setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[8].findViewById(R.id.iv_badge9)), course.holes.get(8));
+                setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[j].findViewById(ivBadgeIds[j])), course.holes.get(j));
+                setTextStyle(tvScore);
+            }
 
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
             ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
@@ -467,13 +428,25 @@ public class TabCourseLinear extends LinearLayout {
             Score wholeTotalScore = new Score(playerList.get(i).totalPar, playerList.get(i).totalRankingPutting, playerList.get(i).totalTar, "teeShot");
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText( playerList.get(i).totalRankingPutting);
+        }
 
+        private void setTextStyle(TextView tvScore) {
+            if (tvScore.getText().equals("-")) {
+                tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+            }
         }
 
         @Override
         public int getItemCount() {
             return playerList.size();
         }
+    }
+
+    private String getScorePuttAndTesShot(Score score) {
+        if (score.teeShot.isEmpty())
+            return score.putting;
+
+        return score.putting + "/" + score.teeShot.substring(0, 1).toUpperCase();
     }
 
     private void setBadge(ImageView iv, Hole playedHole) {
@@ -486,23 +459,23 @@ public class TabCourseLinear extends LinearLayout {
             case "3":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
                 }
                 break;
             case "4":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
                         break;
                     case 3:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
                 }
                 break;
@@ -510,21 +483,19 @@ public class TabCourseLinear extends LinearLayout {
             case "5":
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
                         break;
                     case 2:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
                         break;
                     case 3:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
                         break;
                     case 4:
-                        iv.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
                         break;
-
                 }
                 break;
-
             default:
         }
 

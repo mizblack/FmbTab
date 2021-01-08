@@ -22,7 +22,7 @@
         <com.eye3.golfpay.view.TabCourseLinear
             android:id="@+id/scoreBoard"
             android:layout_gravity="center_horizontal"
-            android:layout_width="1203dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp" />
 
