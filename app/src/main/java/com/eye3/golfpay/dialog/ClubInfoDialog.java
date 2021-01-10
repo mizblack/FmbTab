@@ -131,12 +131,17 @@ public class ClubInfoDialog extends Dialog {
             @Override
             public void onClick(View v) {
 
+                if (iListenerDialog == null)
+                    return;
+
                 ClubInfo clubInfo = getClubInfo();
                 caddieInfo.getGuestInfo().get(currentIdx).setClubInfo(clubInfo);
+
+                for (int i = 0; i < caddieInfo.getGuestInfo().size(); i++) {
+                    iListenerDialog.onSave(caddieInfo.getGuestInfo().get(i).getReserveGuestId(), caddieInfo.getGuestInfo().get(i).getClubInfo());
+                }
+
                 dismiss();
-                caddieInfo.getGuestInfo().get(currentIdx).setClubInfo(clubInfo);
-                if (iListenerDialog != null)
-                    iListenerDialog.onSave(caddieInfo.getGuestInfo().get(currentIdx).getReserveGuestId(), clubInfo);
             }
         });
 

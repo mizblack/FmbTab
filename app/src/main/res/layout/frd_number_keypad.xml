@@ -52,7 +52,6 @@
                 android:layout_marginBottom="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:onClick="onButtonClick"
                 android:text="1" />
 
             <TextView

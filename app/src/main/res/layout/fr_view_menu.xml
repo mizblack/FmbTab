@@ -163,6 +163,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/shape_oval_red"
                         android:layout_marginTop="10dp"
@@ -209,6 +210,7 @@
                         android:background="@drawable/shape_oval_red"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
+                        android:visibility="gone"
                         android:text="22" />
                 </RelativeLayout>
 

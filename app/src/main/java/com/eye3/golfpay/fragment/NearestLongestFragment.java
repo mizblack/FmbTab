@@ -3,6 +3,7 @@ package com.eye3.golfpay.fragment;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -107,6 +108,7 @@ public class NearestLongestFragment extends BaseFragment {
                 close();
             }
         });
+
 
         view.findViewById(R.id.btn_game_hole).setOnClickListener(new View.OnClickListener() {
             @Override

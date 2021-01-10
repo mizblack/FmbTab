@@ -102,6 +102,7 @@ public class GuestInfo {
 
     public void setClubInfo(ClubInfo ci) {
 
+        clubInfo = ci;
         reqClubInfo = new ReqClubInfo();
         for (String wood : ci.wood) {
             reqClubInfo.wood += (wood + ",");
@@ -134,5 +135,9 @@ public class GuestInfo {
         for (String cover : ci.cover) {
             reqClubInfo.cover += (cover + ",");
         }
+    }
+
+    public ClubInfo getClubInfo() {
+        return clubInfo;
     }
 }

@@ -41,10 +41,11 @@
         <ImageButton
             android:id="@+id/btn_close"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_close_24dp"
+            android:layout_height="46dp"
+            android:background="@null"
             android:scaleType="fitCenter"
-            android:background="@null"/>
+            android:visibility="gone"
+            android:src="@drawable/ic_close_24dp" />
     </LinearLayout>
 
     <View

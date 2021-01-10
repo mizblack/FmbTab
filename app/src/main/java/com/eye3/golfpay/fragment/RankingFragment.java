@@ -105,7 +105,6 @@ public class RankingFragment extends BaseFragment {
             holeInfoLinear[j][holeInfoLinear[j].length - 1].setGravity(Gravity.CENTER);
             mLinearHoleNoContainer.addView(holeInfoLinear[j][holeInfoLinear[j].length - 1]);
         }
-
     }
 
     private void rightLinearLayoutOnClick() {
@@ -115,6 +114,7 @@ public class RankingFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("ani_direction", "down");
                 GoNativeScreen(new ScoreFragment(), bundle);
+                mParentActivity.getViewMenuFragment().selectMenu(R.id.view_score);
             }
         });
     }

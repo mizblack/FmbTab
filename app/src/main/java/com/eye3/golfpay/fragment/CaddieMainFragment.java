@@ -222,10 +222,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         dlg.setiListenerDialog(new ClubInfoDialog.IListenerDialog() {
             @Override
             public void onSave(String guestId, ClubInfo clubInfo) {
-                for (int i = 0; i < mGuestViewContainerLinearLayout.getChildCount(); i++) {
-                    ((CaddieViewBasicGuestItem)mGuestViewContainerLinearLayout.getChildAt(i)).drawClubInfo(caddieInfo.getGuestInfo().get(i).clubInfo);
-                }
-
                 setClubInfo(guestId, clubInfo);
             }
         });
@@ -458,7 +454,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                     }
                 });
     }
-
 
     protected void showProgress(final String msg) {
         UIThread.executeInUIThread(new Runnable() {

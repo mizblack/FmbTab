@@ -382,7 +382,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 }
             }).execute(mCameraTempUri);
-
         }
     }
 

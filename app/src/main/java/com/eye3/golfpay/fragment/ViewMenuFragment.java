@@ -25,8 +25,10 @@ import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.LogoutDialog;
+import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
+import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -36,8 +38,13 @@ import com.eye3.golfpay.util.ScoreDialog;
 import com.eye3.golfpay.util.SettingsCustomDialog;
 import com.eye3.golfpay.util.Util;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -217,7 +224,12 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                //((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto);
+                ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
+                    @Override
+                    public void onTakePhoto(String path) {
+                        sendPhoto(path, "normal");
+                    }
+                });
             }
         });
 
@@ -225,7 +237,12 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 drawer_layout.closeDrawer(GravityCompat.END);
-                //((MainActivity)mParentActivity).startCamera(AppDef.CaddyPhoto);
+                ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
+                    @Override
+                    public void onTakePhoto(String path) {
+                        sendPhoto(path, "event");
+                    }
+                });
             }
         });
 
@@ -307,5 +324,36 @@ public class ViewMenuFragment extends BaseFragment {
                 mParentActivity.hideMainBottomBar();
             }
         });
+    }
+
+    private void sendPhoto(String path, String photoType) {
+        setProgressMessage("클럽사진을 저장하는 중입니다.");
+
+        RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
+        RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), photoType);
+        RequestBody photo_time = RequestBody.create(MediaType.parse("text/plain"), "normal");
+        RequestBody caddy_id = RequestBody.create(MediaType.parse("text/plain"), Global.CaddyNo);
+
+        File file = new File(path);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("img_file", path, requestBody);
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGuestPhotos(reserveId, null,
+                photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
+                    @Override
+                    public void onSuccess(PhotoResponse response) {
+
+                    }
+
+                    @Override
+                    public void onError(PhotoResponse response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
     }
 }

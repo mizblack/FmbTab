@@ -350,7 +350,7 @@
 
 
             <TextView
-                android:id="@+id/course0_toatal_putt"
+                android:id="@+id/course0_total_putt"
                 style="@style/GlobalTextView.16SP.Gray.NotoSans.Regular"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"

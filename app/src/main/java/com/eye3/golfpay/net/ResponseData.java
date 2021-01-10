@@ -47,14 +47,6 @@ public class ResponseData<T> {
 		this.resultMessage = error;
 	}
 
-//	public String getMessage() {
-//		return detailMessage;
-//	}
-//
-//	public void setMessage(String message) {
-//		this.detailMessage = message;
-//	}
-
 	public T getData() {
 		return data;
 	}

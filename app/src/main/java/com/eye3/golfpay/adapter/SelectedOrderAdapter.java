@@ -4,23 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.eye3.golfpay.R;
-import com.eye3.golfpay.model.order.GuestNameOrder;
-import com.eye3.golfpay.model.order.OrderItemInvoice;
-import com.eye3.golfpay.view.NameOrderView;
-import com.eye3.golfpay.view.OrderItemInvoiceView;
-
-import java.util.List;
-
-import static com.eye3.golfpay.fragment.OrderFragment.NUM_INVOICEORDER_KEY;
-import static com.eye3.golfpay.fragment.OrderFragment.NUM_MENU_NAME_KEY;
-import static com.eye3.golfpay.fragment.OrderFragment.NUM_NAMEORDER_KEY;
 
 public class SelectedOrderAdapter extends PagerAdapter {
 

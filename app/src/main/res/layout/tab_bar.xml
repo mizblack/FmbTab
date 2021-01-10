@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="40dp"
@@ -25,6 +27,7 @@
         android:orientation="horizontal"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
+        app:layout_constraintStart_toEndOf="@+id/courseLinearLayout"
         tools:ignore="UseCompoundDrawables"
         android:visibility="visible">
 
@@ -72,13 +75,8 @@
             style="@style/GlobalTextView.18SP.zumthor.NotoSans.Bold"
             android:text="  ·  상세보기"
             tools:ignore="HardcodedText" />
-
     </LinearLayout>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:id="@+id/rightLinearLayout"
@@ -86,6 +84,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_gps"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -97,13 +97,26 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
             android:id="@+id/rightButton"
-            android:text="스코어"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
             android:layout_marginStart="10dp"
+            android:text="스코어"
             android:textColor="@color/ebonyBlack"
-            tools:ignore="HardcodedText"/>
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/btn_gps"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        style="@style/GlobalTextView.18SP.gray.NotoSans.Bold"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="GPS"
+        android:background="@drawable/shape_round_dark_bg"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

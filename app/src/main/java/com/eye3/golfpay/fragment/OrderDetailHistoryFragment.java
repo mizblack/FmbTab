@@ -185,11 +185,12 @@ public class OrderDetailHistoryFragment extends BaseFragment {
     @SuppressLint("CutPasteId")
     private View createReceiptOrderView(ReceiptUnit receiptUnit, String storeNo, String storeName) {
         TextView total, orderTime, tv_total_price;
-        TextView orderStatus;
+        TextView tvOrderStatus;
         LinearLayout linearPersonalOrderContainer;
         Button btnOrderCancel;
         LinearLayout view_cancel;
         ConstraintLayout view_total_price;
+        String orderStatus = receiptUnit.recept_list.get(0).order_status;
 
         View receptUnitView = LayoutInflater.from(mContext).inflate(R.layout.recept_order_item, null, false);
         btnOrderCancel = receptUnitView.findViewById(R.id.btn_extra_order_cancel);
@@ -199,7 +200,11 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         String strPrice = AppDef.priceMapper(getTotalReceptUnit(receiptUnit.recept_list));
         tv_total_price.setText(strPrice + "원");
 
-        btnOrderCancel.setOnClickListener(new View.OnClickListener() {
+        if (orderStatus.equals("주문완료")) {
+            btnOrderCancel.setVisibility(View.GONE);
+        }
+
+       btnOrderCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CancelOrder cancelOrder = new CancelOrder();
@@ -221,8 +226,8 @@ public class OrderDetailHistoryFragment extends BaseFragment {
         orderTime.setText(String.format("%s (%s)", storeName, receiptUnit.order_time));
         linearPersonalOrderContainer = receptUnitView.findViewById(R.id.linear_personal_order_container);
         //게스트중 한명만이라도 주문완료면 주문완료로 표시
-        orderStatus = receptUnitView.findViewById(R.id.order_status);
-        orderStatus.setText(receiptUnit.recept_list.get(0).order_status);
+        tvOrderStatus = receptUnitView.findViewById(R.id.order_status);
+        tvOrderStatus.setText(orderStatus);
 
         int itemWidth = 238; //기본 4개
         int itemHeight = 400;

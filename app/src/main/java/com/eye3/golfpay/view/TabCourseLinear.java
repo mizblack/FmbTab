@@ -65,6 +65,8 @@ public class TabCourseLinear extends LinearLayout {
     TextView tvTotalPar2;
     TextView tvTotalMeters1;
     TextView tvTotalMeters2;
+    RelativeLayout inOrOutLinearLayout;
+    RelativeLayout inOrOutLinearLayout00;
 
     public TabCourseLinear(Context context) {
         super(context);
@@ -146,6 +148,9 @@ public class TabCourseLinear extends LinearLayout {
 
         tvTotalMeters1 = v.findViewById(R.id.tvTotalMeters1);
         tvTotalMeters2 = v.findViewById(R.id.tvTotalMeters2);
+
+        inOrOutLinearLayout = v.findViewById(R.id.inOrOutLinearLayout);
+        inOrOutLinearLayout00 = v.findViewById(R.id.inOrOutLinearLayout00);
 
         mDistanceSpinner.setAdapter(arrayAdapter);
         mDistanceSpinner.setSelection(0);
@@ -355,43 +360,43 @@ public class TabCourseLinear extends LinearLayout {
          * course.holes[].playedScore: 홀별스코어 점수데이터
          */
         @Override
-        public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int i) {
-            Course course = playerList.get(i).playingCourse.get(mTabIdx);
+        public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int index) {
+            Course course = playerList.get(index).playingCourse.get(mTabIdx);
 
-            if (playerList.get(i).Ranking.equals("1")) {
+            if (playerList.get(index).Ranking.equals("1")) {
                 scoreItemViewHolder.tvRank.setTextColor(Color.parseColor("#00abc5"));
                 scoreItemViewHolder.tvName.setTextColor(Color.parseColor("#00abc5"));
             }
-            scoreItemViewHolder.tvRank.setText(playerList.get(i).Ranking);
-            scoreItemViewHolder.tvName.setText(playerList.get(i).name);
+            scoreItemViewHolder.tvRank.setText(playerList.get(index).Ranking);
+            scoreItemViewHolder.tvName.setText(playerList.get(index).name);
 
-            for (int j = 0; scoreItemViewHolder.holeScoreLayout.length > j; j++) {
-                if (j == mHoleScoreLayoutIdx) {
+            for (int i = 0; scoreItemViewHolder.holeScoreLayout.length > i; i++) {
+                if (i == mHoleScoreLayoutIdx) {
 
-                    if (i % 2 == 0) {
-                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#d7dcde"));
+                    if (index % 2 == 0) {
+                        scoreItemViewHolder.holeScoreLayout[i].setBackgroundColor(Color.parseColor("#d7dcde"));
                         //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
                     } else {
-                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#e0e3e4"));
+                        scoreItemViewHolder.holeScoreLayout[i].setBackgroundColor(Color.parseColor("#e0e3e4"));
                         //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
                     }
 
-                    holeInfoLinear[j].setBackgroundColor(0xff00abc5);
-                    holeInfoLinear[j].tvHoleNo.setTextColor(0xffffffff);
-                    holeInfoLinear[j].tvPar.setTextColor(0xfff5f7f8);
-                    holeInfoLinear[j].tvMeter.setTextColor(0xfff5f7f8);
+                    holeInfoLinear[i].setBackgroundColor(0xff00abc5);
+                    holeInfoLinear[i].tvHoleNo.setTextColor(0xffffffff);
+                    holeInfoLinear[i].tvPar.setTextColor(0xfff5f7f8);
+                    holeInfoLinear[i].tvMeter.setTextColor(0xfff5f7f8);
                 } else {
-                    scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.WHITE);
-                    holeInfoLinear[j].setBackgroundColor(0xffffffff);
-                    holeInfoLinear[j].tvHoleNo.setTextColor(0xff999999);
-                    holeInfoLinear[j].tvPar.setTextColor(0xff999999);
-                    holeInfoLinear[j].tvMeter.setTextColor(0xff999999);
+                    scoreItemViewHolder.holeScoreLayout[i].setBackgroundColor(Color.WHITE);
+                    holeInfoLinear[i].setBackgroundColor(0xffffffff);
+                    holeInfoLinear[i].tvHoleNo.setTextColor(0xff999999);
+                    holeInfoLinear[i].tvPar.setTextColor(0xff999999);
+                    holeInfoLinear[i].tvMeter.setTextColor(0xff999999);
 
-                    if (i % 2 == 0) {
-                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#EBEFF1"));
+                    if (index % 2 == 0) {
+                        scoreItemViewHolder.holeScoreLayout[i].setBackgroundColor(Color.parseColor("#EBEFF1"));
                         //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#EBEFF1"));
                     } else {
-                        scoreItemViewHolder.holeScoreLayout[j].setBackgroundColor(Color.parseColor("#F5F7F8"));
+                        scoreItemViewHolder.holeScoreLayout[i].setBackgroundColor(Color.parseColor("#F5F7F8"));
                         //scoreItemViewHolder.itemView.setBackgroundColor(Color.parseColor("#F5F7F8"));
                     }
                 }
@@ -407,27 +412,51 @@ public class TabCourseLinear extends LinearLayout {
                 tvScore.setText(AppDef.Par_Tar(course.holes.get(j).playedScore, AppDef.isTar));
                 tvPutt.setText(getScorePuttAndTesShot(course.holes.get(j).playedScore));
 
-                setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[j].findViewById(ivBadgeIds[j])), course.holes.get(j));
+                setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[j].findViewById(ivBadgeIds[j])), course.holes.get(j), tvScore);
                 setTextStyle(tvScore);
             }
 
-            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_total_tar)).setText(Par_Tar_Total(course, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.courseTotal[0].findViewById(R.id.ll_course0_total).findViewById(R.id.course0_toatal_putt)).setText(Putt_Total(course));
-            //코스토탈
-            if(mTabIdx == 0 ) {
-                Course theOtherCourse =  playerList.get(i).playingCourse.get(1);
-                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(theOtherCourse));
-            }else if(mTabIdx == 1){
-                Course theOtherCourse =  playerList.get(i).playingCourse.get(0);
-                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_tar)).setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
-                ((TextView) scoreItemViewHolder.courseTotal[1].findViewById(R.id.ll_course1_total).findViewById(R.id.course1_total_putt)).setText(Putt_Total(theOtherCourse));
+
+            if (index % 2 == 0) {
+                scoreItemViewHolder.courseTotal[0].setBackgroundColor(Color.parseColor("#EBEFF1"));
+                scoreItemViewHolder.courseTotal[1].setBackgroundColor(Color.parseColor("#EBEFF1"));
+            } else {
+                scoreItemViewHolder.courseTotal[0].setBackgroundColor(Color.parseColor("#F5F7F8"));
+                scoreItemViewHolder.courseTotal[1].setBackgroundColor(Color.parseColor("#F5F7F8"));
             }
+
+            //코스토탈
+            if (mTabIdx == 0) {
+                TextView tvCourseTotalTar = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_tar);
+                TextView tvCourseTotalPutt = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_putt);
+                tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
+                tvCourseTotalPutt.setText(Putt_Total(course));
+
+                Course theOtherCourse = playerList.get(index).playingCourse.get(1);
+                TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_tar);
+                TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_putt);
+                tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
+                tvCourseTotalPutt2.setText(Putt_Total(theOtherCourse));
+            } else if (mTabIdx == 1) {
+                TextView tvCourseTotalTar = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_tar);
+                TextView tvCourseTotalPutt = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_putt);
+                tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
+                tvCourseTotalPutt.setText(Putt_Total(course));
+
+                Course theOtherCourse = playerList.get(index).playingCourse.get(0);
+                TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_tar);
+                TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_putt);
+                tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
+                tvCourseTotalPutt2.setText(Putt_Total(theOtherCourse));
+            }
+
+
+
             //전체토탈
-           // playerList.get(i).totalRankingPutting을 totalPutt으로
-            Score wholeTotalScore = new Score(playerList.get(i).totalPar, playerList.get(i).totalRankingPutting, playerList.get(i).totalTar, "teeShot");
+            // playerList.get(i).totalRankingPutting을 totalPutt으로
+            Score wholeTotalScore = new Score(playerList.get(index).totalPar, playerList.get(index).totalRankingPutting, playerList.get(index).totalTar, "teeShot");
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText( playerList.get(i).totalRankingPutting);
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText(playerList.get(index).totalRankingPutting);
         }
 
         private void setTextStyle(TextView tvScore) {
@@ -449,7 +478,7 @@ public class TabCourseLinear extends LinearLayout {
         return score.putting + "/" + score.teeShot.substring(0, 1).toUpperCase();
     }
 
-    private void setBadge(ImageView iv, Hole playedHole) {
+    private void setBadge(ImageView iv, Hole playedHole, TextView tvScore) {
 
         if (!Util.isInteger(playedHole.playedScore.tar) || "-".equals(playedHole.playedScore.tar)) {
             return;
@@ -460,9 +489,11 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                 }
                 break;
@@ -470,12 +501,15 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 3:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                 }
                 break;
@@ -484,21 +518,24 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 3:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                     case 4:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
+                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
                         break;
                 }
                 break;
             default:
         }
-
     }
 
 

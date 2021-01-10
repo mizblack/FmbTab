@@ -134,6 +134,16 @@ public class ScoreFragment extends BaseFragment {
                 GoNativeScreen(new NearestLongestFragment(), null);
             }
         });
+
+        tabBar.findViewById(R.id.btn_gps).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CourseFragment courseFragment = new CourseFragment();
+                GoNativeScreen(courseFragment, null);
+                Global.courseFragment = courseFragment;
+                mParentActivity.getViewMenuFragment().selectMenu(R.id.view_gps);
+            }
+        });
         return v;
     }
 
@@ -153,6 +163,7 @@ public class ScoreFragment extends BaseFragment {
                 Bundle  bundle = new Bundle();
                 bundle.putString("ani_direction", "up");
                 GoNativeScreen(new RankingFragment(), bundle);
+                mParentActivity.getViewMenuFragment().selectMenu(R.id.view_ranking);
             }
         });
     }
