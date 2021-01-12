@@ -15,15 +15,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.listener.OnEditorFinishListener;
 import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
+import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.EditorDialogFragment;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class CaddieFragment extends BaseFragment {
 
@@ -99,6 +108,8 @@ public class CaddieFragment extends BaseFragment {
             tvGuestNames[i].setVisibility(View.VISIBLE);
             tvGuestNames[i++].setText(guest.getGuestName());
         }
+
+
 
         return v;
     }

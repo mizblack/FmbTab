@@ -176,6 +176,6 @@ public interface HttpService {
     Call<ResponseData<Object>> setTeamMemo(@Field("reserve_id") String reserve_id, @Field("team_memo") String team_memo);
 
     @FormUrlEncoded
-    @POST("setTeamMemo")
+    @POST("getCaddyPhotos")
     Call<ResponseData<ResponseGallery>> getCaddyPhotos(@Field("reserve_id") String reserve_id);
 }

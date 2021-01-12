@@ -17,7 +17,7 @@ public class ShadeOrder implements Serializable {
     public String reserve_id ;
     @SerializedName("order_detail")
     @Expose
-    List<OrderDetail> orderDetailArrayList = new ArrayList<>();
+    public List<OrderDetail> orderDetailArrayList = new ArrayList<>();
 
     public ShadeOrder(String shade_id, String reserve_id, List<OrderDetail> orderDetailArrayList){
         this.shade_id = shade_id;

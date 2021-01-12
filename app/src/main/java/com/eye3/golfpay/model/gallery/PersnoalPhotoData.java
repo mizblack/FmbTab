@@ -10,7 +10,7 @@ public class PersnoalPhotoData {
     @Expose
     public int reserve_guest_id;
 
-    @SerializedName("data")
+    @SerializedName("list")
     @Expose
-    public List<PhotoData> data;
+    public List<PhotoData> list;
 }

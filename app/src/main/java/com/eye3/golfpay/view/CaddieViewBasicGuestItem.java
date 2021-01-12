@@ -223,9 +223,8 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
                 listener.onShowClubInfoDlg(guestInfo.getReserveGuestId());
             }
         });
-
+        mGuestMemoContentTextView = v.findViewById(R.id.guestMemoContentTextView);
         mCarNumTextView = v.findViewById(R.id.carNumberText);
-        mCarNumTextView.setText(guest.getCarNo());
         mCarNumTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,7 +232,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
                 guestMemoEditorDialogFragment.setGuestId(guestInfo.getGuestName());
                 guestMemoEditorDialogFragment.setTextType("차량번호", "차량번호를 입력하세요");
-                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getGuestMemo());
+                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getCarNo());
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String text) {
@@ -257,7 +256,7 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
                 guestMemoEditorDialogFragment.setGuestId(guestInfo.getGuestName());
                 guestMemoEditorDialogFragment.setTextType("연락처 입력", "연락처를 입력하세요");
-                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getGuestMemo());
+                guestMemoEditorDialogFragment.setMemoContent(guestInfo.getHp());
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
                     public void OnEditorInputFinished(String text) {
@@ -290,38 +289,29 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
         mGuestMemoLinearLayout = v.findViewById(R.id.guestMemoLinearLayout);
         guestMemoLinearLayoutOnClick(mGuestMemoLinearLayout);
-        mGuestMemoContentTextView = v.findViewById(R.id.guestMemoContentTextView);
-        mGuestMemoContentTextView.setText(guest.getGuestMemo());
         addView(v);
-    }
-
-    public void drawGuestInfo(CaddyNoteInfo caddyNoteInfo) {
-        mCarNumTextView.setText(guestInfo.getCarNo());
-        mPhoneNumberText.setText(guestInfo.getHp());
-        mGuestMemoContentTextView.setText(guestInfo.getGuestMemo());
     }
 
     public void drawClubImage(CaddyNoteInfo caddyNoteInfo) {
         List<CaddyImage> imageList = null;
 
         if (caddyNoteType == CaddieMainFragment.CaddyNoteType.Before) {
-            if (caddyNoteInfo.getSign_before() != null && !caddyNoteInfo.getSign_before().isEmpty())
+            if (caddyNoteInfo.getClub_before() != null && !caddyNoteInfo.getClub_before().isEmpty())
                 imageList = caddyNoteInfo.getClub_before();
         } else {
-            if (caddyNoteInfo.getSign_after() != null && !caddyNoteInfo.getSign_after().isEmpty())
+            if (caddyNoteInfo.getClub_after() != null && !caddyNoteInfo.getClub_after().isEmpty())
                 imageList = caddyNoteInfo.getClub_after();
         }
 
-        if (imageList == null) {
-            drawClubImage(mClubImageView[0], "");
-            drawClubImage(mClubImageView[1], "");
-            drawClubImage(mClubImageView[2], "");
-            return;
-        }
+        drawClubImage(mClubImageView[0], "");
+        drawClubImage(mClubImageView[1], "");
+        drawClubImage(mClubImageView[2], "");
 
-        for (int i = 0; i < imageList.size(); i++) {
-            String uri = caddyNoteInfo.getClub_before().get(0).photo_url;
-            drawClubImage(mClubImageView[i], uri);
+        if (imageList != null) {
+            for (int i = 0; i < imageList.size(); i++) {
+                String uri = imageList.get(i).photo_url;
+                drawClubImage(mClubImageView[i], uri);
+            }
         }
     }
 
@@ -381,6 +371,9 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
 
     public void drawClubInfo(ClubInfo clubInfo) {
         guestInfo.setClubInfo(clubInfo);
+        mCarNumTextView.setText(clubInfo.carNumber);
+        mPhoneNumberText.setText(clubInfo.phoneNumber);
+        mGuestMemoContentTextView.setText(clubInfo.memo);
 
         if (clubInfo == null || clubInfo.totalCount() == 0) {
 

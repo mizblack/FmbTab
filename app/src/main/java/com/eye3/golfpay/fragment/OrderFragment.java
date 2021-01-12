@@ -418,6 +418,7 @@ public class OrderFragment extends BaseFragment {
                     if (menuName.equals(orderedMenuItemList.get(j).menuName) && getGuestName(mOrderDetailList.get(i).reserve_guest_id).equals(deletedGuestNameOrder.mGuestName)) {
 
                         orderedMenuItemList.remove(orderedMenuItemList.get(j));
+                        mOrderDetailList.get(i).paid_total_amount = "0";
                         break;
                     }
                 }
@@ -491,8 +492,19 @@ public class OrderFragment extends BaseFragment {
             GuestNameOrder deletedGuestNameOrder = (GuestNameOrder) v.getTag(NUM_NAMEORDER_KEY);
 
             if (minusNameOrder.qty == 1) {
-                for (OrderItemInvoice order : mRestaurantMenuOrder.getOrderItemInvoiceArrayList()) {
 
+                for (int i = 0; mOrderDetailList.size() > i; i++) {
+                    ArrayList<OrderedMenuItem> orderedMenuItemList = mOrderDetailList.get(i).mOrderedMenuItemList;
+                    for (int j = 0; orderedMenuItemList.size() > j; j++) {
+                        if (menuName.equals(orderedMenuItemList.get(j).menuName) && getGuestName(mOrderDetailList.get(i).reserve_guest_id).equals(deletedGuestNameOrder.mGuestName)) {
+
+                            orderedMenuItemList.remove(orderedMenuItemList.get(j));
+                            break;
+                        }
+                    }
+                }
+
+                for (OrderItemInvoice order : mRestaurantMenuOrder.getOrderItemInvoiceArrayList()) {
                     for (GuestNameOrder guestNameOrder : order.mGuestNameOrders) {
                         if (guestNameOrder.mGuestName.equals(deletedGuestNameOrder.mGuestName) && guestNameOrder.mMenuName.equals(menuName)) {
                             order.mGuestNameOrders.remove(guestNameOrder);

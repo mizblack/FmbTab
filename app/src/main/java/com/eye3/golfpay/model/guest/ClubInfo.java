@@ -13,6 +13,10 @@ public class ClubInfo {
     public ArrayList<String> putter_cover = new ArrayList<>();
     public ArrayList<String> cover = new ArrayList<>();
 
+    public String phoneNumber = "";
+    public String carNumber = "";
+    public String memo = "";
+
     public ArrayList<String> getWood() {
         return wood;
     }

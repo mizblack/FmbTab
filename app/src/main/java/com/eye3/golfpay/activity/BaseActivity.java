@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.fragment.BaseFragment;
+import com.eye3.golfpay.fragment.GalleryFragment;
 import com.eye3.golfpay.fragment.MainWorkFragment;
 import com.eye3.golfpay.fragment.ViewMenuFragment;
 import com.eye3.golfpay.listener.OnKeyBackPressedListener;
@@ -298,6 +299,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof ViewMenuFragment) {
                 return ((ViewMenuFragment) fragment);
+            }
+        }
+        return null;
+    }
+
+    public GalleryFragment getGalleryFragment() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof GalleryFragment) {
+                return ((GalleryFragment) fragment);
             }
         }
         return null;

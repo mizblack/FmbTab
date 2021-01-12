@@ -247,7 +247,7 @@ public class ViewMenuFragment extends BaseFragment {
         });
 
         //시작메뉴
-        //mView.findViewById(R.id.btn_menu_restaurant).performClick();
+        mView.findViewById(R.id.btn_menu_near_caddie_note).performClick();
     }
 
     public void selectMenu(int id) {
@@ -328,6 +328,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void sendPhoto(String path, String photoType) {
         setProgressMessage("클럽사진을 저장하는 중입니다.");
+        closeDrawer();
 
         RequestBody reserveId = RequestBody.create(MediaType.parse("text/plain"), Global.reserveId);
         RequestBody photo_type = RequestBody.create(MediaType.parse("text/plain"), photoType);
@@ -342,7 +343,8 @@ public class ViewMenuFragment extends BaseFragment {
                 photo_type, photo_time, caddy_id, part, new DataInterface.ResponseCallback<PhotoResponse>() {
                     @Override
                     public void onSuccess(PhotoResponse response) {
-
+                        if (mParentActivity.getGalleryFragment() != null)
+                            mParentActivity.getGalleryFragment().update();
                     }
 
                     @Override

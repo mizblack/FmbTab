@@ -142,12 +142,14 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
         tvTeamMemo = view.findViewById(R.id.tv_team_memo);
         tvTeamMemoContent = view.findViewById(R.id.tv_team_memo_content);
+        tvTeamMemo.setVisibility(View.VISIBLE);
 
         tvTeamMemo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();
 
+                guestMemoEditorDialogFragment.setMemoContent(tvTeamMemoContent.getText().toString());
                 guestMemoEditorDialogFragment.setTextType("팀메모", "메모를 입력하세요");
                 guestMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
                     @Override
@@ -176,7 +178,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             }
         });
 
-
         tvEndSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,8 +188,24 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             }
         });
 
+        view.findViewById(R.id.btn_team_photo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeTeamPhoto();
+            }
+        });
+
         getCaddyNote();
         return view;
+    }
+
+    private void takeTeamPhoto() {
+        ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
+            @Override
+            public void onTakePhoto(String path) {
+                sendPhoto("", path, "club");
+            }
+        });
     }
 
     public void slidingDown() {
@@ -297,12 +314,11 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                     caddieInfo.getGuestInfo().get(i).clubInfo = clubInfo;
                     view.setCaddyNoteType(caddyNoteType);
                     view.drawClubInfo(clubInfo);
-                    view.drawGuestInfo(caddyNoteInfo);
                     view.drawSignImage(caddyNoteInfo);
                     view.drawClubImage(caddyNoteInfo);
                 }
 
-                tvTeamMemo.setText(response.getTeam_memo());
+                tvTeamMemoContent.setText(response.getTeam_memo());
             }
 
             @Override
@@ -327,6 +343,10 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         clubInfo.putter_cover = Util.stringTokenizer(caddyNoteInfo.getPutter_cover());
         clubInfo.cover = Util.stringTokenizer(caddyNoteInfo.getEtc_cover());
         clubInfo.wood_cover = Util.stringTokenizer(caddyNoteInfo.getWood_cover());
+
+        clubInfo.phoneNumber = caddyNoteInfo.getPhoneNumber();
+        clubInfo.carNumber = caddyNoteInfo.getCarNumber();
+        clubInfo.memo = caddyNoteInfo.getGuest_memo();
         return clubInfo;
     }
 
