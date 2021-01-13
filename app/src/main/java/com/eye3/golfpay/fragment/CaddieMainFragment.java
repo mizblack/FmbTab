@@ -69,7 +69,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     private LinearLayout viewMain;
     protected static ProgressDialog pd; // 프로그레스바 선언
     public static LinearLayout mGuestViewContainerLinearLayout;
-    private TextView tvTeamMemo, tvTeamMemoContent;
+    private TextView tvTeamMemoContent;
 
     public enum CaddyNoteType{
         Before {
@@ -140,11 +140,8 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         viewMain = view.findViewById(R.id.view_main);
         createGuestBasicView();
 
-        tvTeamMemo = view.findViewById(R.id.tv_team_memo);
         tvTeamMemoContent = view.findViewById(R.id.tv_team_memo_content);
-        tvTeamMemo.setVisibility(View.VISIBLE);
-
-        tvTeamMemo.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.tv_team_memo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditorDialogFragment guestMemoEditorDialogFragment = new EditorDialogFragment();

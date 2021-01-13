@@ -42,13 +42,36 @@
                     android:layout_marginTop="20dp"
                     android:background="@color/zumthor" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/tv_team_memo"
-                    style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:text="팀메모" />
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="팀메모"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/personalImageView"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/caddie_memo"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_team_memo_content"

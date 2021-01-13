@@ -79,6 +79,7 @@ dependencies {
     implementation 'com.github.MrBin99:LaravelEchoAndroid:1.03'
     implementation 'com.github.Johnyoat:non-swipe-view-pager:1.0.0'
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
+    implementation 'com.baoyz.actionsheet:library:1.1.7'
 }
 
 

@@ -39,12 +39,19 @@
                     android:text="전체" />
 
                 <TextView
-                    android:id="@+id/btn_club_photo"
+                    android:id="@+id/btn_club_photo_before"
                     style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:text="클럽사진" />
+                    android:text="클럽사진(시작)" />
+                <TextView
+                    android:id="@+id/btn_club_photo_after"
+                    style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:text="클럽사진(후반)" />
 
                 <TextView
                     android:id="@+id/btn_photo"
@@ -85,6 +92,21 @@
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+        <TextView
+            style="@style/GlobalTextView.22SP.gray.NotoSans.Medium"
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="등록된 이미지가 없습니다"
+            android:gravity="center_vertical"
+            android:padding="40dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"  />
 
         <ScrollView
             android:id="@+id/scrollView"

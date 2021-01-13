@@ -178,4 +178,8 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("getCaddyPhotos")
     Call<ResponseData<ResponseGallery>> getCaddyPhotos(@Field("reserve_id") String reserve_id);
+
+    @FormUrlEncoded
+    @POST("delguestPhotos")
+    Call<ResponseData<Object>> delGuestPhotos(@Field("photo_id") int photo_id);
 }

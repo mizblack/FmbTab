@@ -8,6 +8,10 @@ public class PhotoData {
     @Expose
     public int photo_id;
 
+    @SerializedName("photo_type")
+    @Expose
+    public String photo_type;
+
     @SerializedName("photo_url")
     @Expose
     public String photo_url;

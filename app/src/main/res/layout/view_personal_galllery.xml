@@ -23,4 +23,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name"
         app:layout_constraintTop_toTopOf="@+id/tv_name" />
+
+    <TextView
+        style="@style/GlobalTextView.22SP.gray.NotoSans.Medium"
+        android:id="@+id/tv_empty"
+        android:layout_height="280dp"
+        android:layout_width="0dp"
+        android:text="등록된 이미지가 없습니다"
+        android:gravity="center_vertical"
+        android:padding="40dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

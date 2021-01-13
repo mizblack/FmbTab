@@ -1,7 +1,7 @@
 package com.eye3.golfpay.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.baoyz.actionsheet.ActionSheet;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -42,9 +43,11 @@ import java.util.List;
 public class GalleryFragment extends BaseFragment {
 
     public interface IGalleryListener {
-        void onShowImages(ArrayList<String> images);
+        void onShowImages(ArrayList<String> images, int position);
+        void onLongClick(View v, int position, int photoId);
+        void onEmptyImage();
     }
-    enum GalleryType { All, Club, Normal, Event  }
+    enum GalleryType { All, ClubTeamBefore, ClubTeamAfter, Normal, Event  }
 
     private FrGallleryBinding binding;
     GalleryAdapter galleryAdapter;
@@ -68,7 +71,8 @@ public class GalleryFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fr_galllery, container, false);
         binding.btnAll.setOnClickListener(onClickListener);
-        binding.btnClubPhoto.setOnClickListener(onClickListener);
+        binding.btnClubPhotoBefore.setOnClickListener(onClickListener);
+        binding.btnClubPhotoAfter.setOnClickListener(onClickListener);
         binding.btnPhoto.setOnClickListener(onClickListener);
         binding.btnEventPhoto.setOnClickListener(onClickListener);
         requestPhotos();
@@ -80,11 +84,13 @@ public class GalleryFragment extends BaseFragment {
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
 
             binding.btnAll.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
-            binding.btnClubPhoto.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
+            binding.btnClubPhotoAfter.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
+            binding.btnClubPhotoBefore.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
             binding.btnPhoto.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
             binding.btnEventPhoto.setTextAppearance(R.style.GlobalTextView_18SP_Gray_NotoSans_Medium);
 
@@ -93,9 +99,13 @@ public class GalleryFragment extends BaseFragment {
                     binding.btnAll.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
                     galleryType = GalleryType.All;
                     break;
-                case R.id.btn_club_photo :
-                    binding.btnClubPhoto.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
-                    galleryType = GalleryType.Club;
+                case R.id.btn_club_photo_before :
+                    binding.btnClubPhotoBefore.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+                    galleryType = GalleryType.ClubTeamBefore;
+                    break;
+                case R.id.btn_club_photo_after :
+                    binding.btnClubPhotoAfter.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+                    galleryType = GalleryType.ClubTeamAfter;
                     break;
                 case R.id.btn_photo :
                     binding.btnPhoto.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
@@ -110,7 +120,7 @@ public class GalleryFragment extends BaseFragment {
         }
     };
 
-    private void initRecyclerView(RecyclerView rv, int orientation, List<PhotoData> pictureList, int spanCount) {
+    private void initRecyclerView(RecyclerView rv, TextView tvEmpty, int orientation, List<PhotoData> pictureList, int spanCount) {
         GridLayoutManager mManager = new GridLayoutManager(getActivity(), spanCount);
         int spacing = 0; // 50px
 
@@ -121,24 +131,63 @@ public class GalleryFragment extends BaseFragment {
         rv.setVisibility(View.VISIBLE);
         rv.setLayoutManager(mManager);
         rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
-        galleryAdapter = new GalleryAdapter(mContext, pictureList, new IGalleryListener() {
+        galleryAdapter = new GalleryAdapter(mContext, pictureList, galleryType,new IGalleryListener() {
             @Override
-            public void onShowImages(ArrayList<String> images) {
+            public void onShowImages(ArrayList<String> images, int position) {
 
                 new StfalconImageViewer.Builder<String>(mContext, images, new ImageLoader<String>() {
                     @Override
                     public void loadImage(ImageView imageView, String image) {
                         Glide.with(mContext).load(image).into(imageView);
                     }
-                }).show();
+                }).withStartPosition(position).show();
+            }
+
+            @Override
+            public void onLongClick(View v, int position, int photoId) {
+                ActionSheet.createBuilder(mContext, getFragmentManager())
+                        .setCancelButtonTitle("Cancel")
+                        .setOtherButtonTitles("삭제")
+                        .setCancelableOnTouchOutside(true)
+                        .setListener(new ActionSheet.ActionSheetListener() {
+                            @Override
+                            public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
+
+                            }
+
+                            @Override
+                            public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+                                deletePhoto(photoId);
+                            }
+                        }).show();
+            }
+
+            @Override
+            public void onEmptyImage() {
+                tvEmpty.setVisibility(View.VISIBLE);
             }
         });
         rv.setAdapter(galleryAdapter);
         galleryAdapter.notifyDataSetChanged();
     }
 
-    private void show() {
+    private void deletePhoto(int photoId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).deletePhoto(getContext(), photoId, new DataInterface.ResponseCallback<ResponseData<ResponseGallery>>() {
+            @Override
+            public void onSuccess(ResponseData<ResponseGallery> response) {
+                requestPhotos();
+            }
 
+            @Override
+            public void onError(ResponseData<ResponseGallery> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private void requestPhotos() {
@@ -149,18 +198,19 @@ public class GalleryFragment extends BaseFragment {
                     case All:
                         List<PhotoData> allPhotos = getAllPhotos(response);
                         binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, RecyclerView.VERTICAL, allPhotos, 4);
+                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, allPhotos, 4);
                         break;
-                    case Club:
-                        initPersonalGallery(response.getData().club_photo_personal);
+                    case ClubTeamBefore:
+                    case ClubTeamAfter:
+                        initPersonalGallery(response.getData().club_photo_team, response.getData().club_photo_personal);
                         break;
                     case Normal:
                         binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, RecyclerView.VERTICAL, response.getData().normal_photo, 4);
+                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, response.getData().normal_photo, 4);
                         break;
                     case Event:
                         binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, RecyclerView.VERTICAL, response.getData().event_photo, 4);
+                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, response.getData().event_photo, 4);
                         break;
                 }
             }
@@ -177,20 +227,31 @@ public class GalleryFragment extends BaseFragment {
         });
     }
 
-    private void initPersonalGallery(List<PersnoalPhotoData> pictureList) {
+    private void initPersonalGallery(List<PhotoData> teamList, List<PersnoalPhotoData> pictureList) {
         binding.recyclerGallery.setVisibility(View.GONE);
         binding.scrollView.setVisibility(View.VISIBLE);
-        int guestCount = pictureList.size();
-
         binding.viewPersonalGallery.removeAllViews();
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        //* 팀 클럽 뷰
+        View childView = LayoutInflater.from(mContext).inflate(R.layout.view_personal_galllery, null, false);
+        TextView tvName = childView.findViewById(R.id.tv_name);
+        tvName.setText("팀 클럽사진");
+        RecyclerView rc = childView.findViewById(R.id.recycler_gallery);
+        TextView tvEmpty = childView.findViewById(R.id.tv_empty);
+        initRecyclerView(rc, tvEmpty, RecyclerView.HORIZONTAL, teamList, 1);
+        binding.viewPersonalGallery.addView(childView);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        //* 게스트 이미지 뷰
+        int guestCount = pictureList.size();
         for (int i = 0; i < guestCount; i++) {
-            View childView = LayoutInflater.from(mContext).inflate(R.layout.view_personal_galllery, null, false);
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            childView.setLayoutParams(lllp);
-            TextView tvName = childView.findViewById(R.id.tv_name);
-            tvName.setText(pictureList.get(i).reserve_guest_id + "");
-            RecyclerView rc = childView.findViewById(R.id.recycler_gallery);
-            initRecyclerView(rc, RecyclerView.HORIZONTAL, pictureList.get(i).list, 1);
+            childView = LayoutInflater.from(mContext).inflate(R.layout.view_personal_galllery, null, false);
+            tvName = childView.findViewById(R.id.tv_name);
+            tvName.setText(pictureList.get(i).guest_name);
+            rc = childView.findViewById(R.id.recycler_gallery);
+            tvEmpty = childView.findViewById(R.id.tv_empty);
+            initRecyclerView(rc, tvEmpty, RecyclerView.HORIZONTAL, pictureList.get(i).list, 1);
             binding.viewPersonalGallery.addView(childView);
         }
     }
@@ -255,15 +316,32 @@ public class GalleryFragment extends BaseFragment {
     }
 
     static private class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        ImageView mImage;
         Context mContext;
         List<PhotoData> mPictureList;
         IGalleryListener iGalleryListener;
 
-        public GalleryAdapter(Context context, List<PhotoData> pictureList, IGalleryListener listener) {
+        public GalleryAdapter(Context context, List<PhotoData> pictureList, GalleryType type, IGalleryListener listener) {
             mContext = context;
-            mPictureList = pictureList;
             this.iGalleryListener = listener;
+            if (type == GalleryType.ClubTeamBefore) {
+                mPictureList = new ArrayList<>();
+                for (PhotoData data: pictureList) {
+                    if (data.photo_type.equals("before"))
+                        mPictureList.add(data);
+                }
+            } else if (type == GalleryType.ClubTeamAfter) {
+                mPictureList = new ArrayList<>();
+                for (PhotoData data: pictureList) {
+                    if (data.photo_type.equals("after"))
+                        mPictureList.add(data);
+                }
+            } else {
+                mPictureList = pictureList;
+            }
+
+            if (mPictureList.size() == 0) {
+                iGalleryListener.onEmptyImage();
+            }
         }
 
         @NonNull
@@ -274,7 +352,6 @@ public class GalleryFragment extends BaseFragment {
             view = LayoutInflater.from(mContext).inflate(R.layout.gallery_picture_item, parent, false);
             return new GalleryItemViewHolder(view);
         }
-
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
@@ -287,7 +364,15 @@ public class GalleryFragment extends BaseFragment {
                     for (PhotoData data : mPictureList) {
                         arr.add(Global.HOST_BASE_ADDRESS_AWS + data.photo_url);
                     }
-                    iGalleryListener.onShowImages(arr);
+                    iGalleryListener.onShowImages(arr, position);
+                }
+            });
+
+            viewHolder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    iGalleryListener.onLongClick(v, position, mPictureList.get(position).photo_id);
+                    return true;
                 }
             });
             setClubImage(viewHolder.imageView, mPictureList.get(position).photo_url);
@@ -301,6 +386,7 @@ public class GalleryFragment extends BaseFragment {
                 Glide.with(mContext)
                         .load(Global.HOST_BASE_ADDRESS_AWS + url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .placeholder(R.drawable.ic_noimage)
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -311,7 +397,7 @@ public class GalleryFragment extends BaseFragment {
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                img.setScaleType(ImageView.ScaleType.CENTER);
                                 return false;
                             }
                         })
