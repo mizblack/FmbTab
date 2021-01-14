@@ -24,14 +24,14 @@ public class FmbCustomDialog extends Dialog {
     private ImageButton mClosButton;
     private Button mSingleButton;
     private LinearLayout mLayoutButtons;
-    private String mTitle;
+    private final String mTitle;
     private String mContent;
     private String mSingleTitle;
     private String mLeftTitle;
     private String mRightTitle;
     private Spanned mSpannedContent;
    // private boolean isThemePink = false;
-    private FmbCustomDialog dialog = this;
+    private final FmbCustomDialog dialog = this;
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;

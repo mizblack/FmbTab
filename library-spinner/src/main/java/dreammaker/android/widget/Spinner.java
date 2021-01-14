@@ -83,7 +83,7 @@ public class Spinner extends AppCompatEditText {
     private String dialogPositiveText;
     private String dialogNegativeText;
     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-    private ListView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+    private final ListView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (null != onSpinnerItemClickListener && onSpinnerItemClickListener.onClickSpinnerItem(Spinner.this, position)) return;

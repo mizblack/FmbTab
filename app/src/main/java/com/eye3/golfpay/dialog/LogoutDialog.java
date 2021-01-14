@@ -17,7 +17,7 @@ import com.eye3.golfpay.R;
 public class LogoutDialog extends Dialog {
 
     private TextView mBtnClose;
-    private boolean mIsChecked = false;
+    private final boolean mIsChecked = false;
     private CheckBox mCheckBox;
 
     private String imgscr;

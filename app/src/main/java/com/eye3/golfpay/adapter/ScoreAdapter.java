@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(Integer position, Integer value);
+        void onAdapterItemClicked(Integer position, Integer value);
     }
 
     public class ScorebHolder extends RecyclerView.ViewHolder {
@@ -46,9 +46,9 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
 
     protected static final String TAG = "ScoreAdapter";
 
-    private ArrayList<Item> items;
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
+    private final ArrayList<Item> items;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
     public ScoreAdapter(Context context, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;

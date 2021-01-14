@@ -128,6 +128,7 @@ public class GalleryFragment extends BaseFragment {
         if (pictureList == null)
             return;
 
+        tvEmpty.setVisibility(View.GONE);
         rv.setVisibility(View.VISIBLE);
         rv.setLayoutManager(mManager);
         rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
@@ -282,9 +283,9 @@ public class GalleryFragment extends BaseFragment {
 
     static public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
+        private final int spanCount;
+        private final int spacing;
+        private final boolean includeEdge;
 
         public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
             this.spanCount = spanCount;

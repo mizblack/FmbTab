@@ -82,7 +82,7 @@ public class FileUtils {
         // '/temp' 경로 파일 리스트
         File tempPath = new File(FileUtils.getInstance().getStoragePath(context, Global.STORAGE_PATH.TEMP));
         if (tempPath.isDirectory()) {
-            File fileList[] = tempPath.listFiles();
+            File[] fileList = tempPath.listFiles();
             for (File file : fileList) {
 
             }

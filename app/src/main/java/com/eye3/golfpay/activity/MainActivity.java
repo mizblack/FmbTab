@@ -368,7 +368,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             //setImagewithUri(guestItem.mClubImageView, AppDef.imageFilePath);
             //guestItem.mClubImageView.setImageBitmap(clubImageBitmap);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_CANCELED) {
-            ;
         } else if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == 0)
                 return;
@@ -424,9 +423,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private int LOCATION_REFRESH_DISTANCE = 3; // 30 meters. The Minimum Distance to be changed to get location update
-    private int MY_PERMISSIONS_REQUEST_LOCATION = 100;
-    private int interval = 3;
+    private final int LOCATION_REFRESH_DISTANCE = 3; // 30 meters. The Minimum Distance to be changed to get location update
+    private final int MY_PERMISSIONS_REQUEST_LOCATION = 100;
+    private final int interval = 3;
 
     private void startListeningUserLocation() {
 

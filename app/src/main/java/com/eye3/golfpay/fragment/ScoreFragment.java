@@ -51,7 +51,7 @@ public class ScoreFragment extends BaseFragment {
     TabCourseLinear mScoreBoard;
     int mTabIdx = 0;
 
-    private static ArrayList<String> firstGuestIdList = new ArrayList<>();
+    private static final ArrayList<String> firstGuestIdList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

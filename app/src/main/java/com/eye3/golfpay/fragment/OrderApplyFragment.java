@@ -218,7 +218,7 @@ public class OrderApplyFragment extends BaseFragment {
         lllp.leftMargin = 10;
         TvOneOverN.setLayoutParams(lllp);
         TvOneOverN.setPadding(8, 0, 0, 0);
-        String str = paidPortion + "/" + String.valueOf(TOTAL_PAY_MEMBER);
+        String str = paidPortion + "/" + TOTAL_PAY_MEMBER;
         TvOneOverN.setText(str);
         memberOrderLinearLayout.addView(TvOneOverN);
         return v;

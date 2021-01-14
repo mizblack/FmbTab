@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PrefUtil {
-    private static String PREF_NAME             = "kt_wmms";
+    private static final String PREF_NAME             = "kt_wmms";
 
 //    private static String FLOATING_LOCATION_X   = "floating_location_x";
 //    private static String FLOATING_LOCATION_Y   = "floating_location_y";
 
-    private static String LOGIN_ID              = "login_id";
-    private static String IS_CHECKED             = "is_checked";
+    private static final String LOGIN_ID              = "login_id";
+    private static final String IS_CHECKED             = "is_checked";
 
     public static void setLoginId(Context context, String clicked) {
         SharedPreferences sp = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);

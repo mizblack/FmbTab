@@ -856,7 +856,7 @@ class Angle {
         angleFormat.setMaximumFractionDigits(3);
     }
 
-    private double angleR;
+    private final double angleR;
 
 }
 
@@ -969,7 +969,7 @@ final class Distance {
     /**
      * The distance in metres.
      */
-    private double distanceM;
+    private final double distanceM;
 
 }
 
@@ -1025,8 +1025,8 @@ final class Vector {
         return formatDegMin();
     }
 
-    private Distance distance;
+    private final Distance distance;
 
-    private Azimuth azimuth;
+    private final Azimuth azimuth;
 
 }

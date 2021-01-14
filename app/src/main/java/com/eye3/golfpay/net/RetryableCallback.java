@@ -10,7 +10,7 @@ import retrofit2.Response;
 
 public abstract class RetryableCallback<T> implements Callback<T> {
     private final Call<T> call;
-    private Context context;
+    private final Context context;
 
     public RetryableCallback(Call<T> call, Context context) {
         this.call = call;

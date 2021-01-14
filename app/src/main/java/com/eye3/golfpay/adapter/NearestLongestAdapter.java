@@ -23,7 +23,7 @@ public class NearestLongestAdapter extends RecyclerView.Adapter<NearestLongestAd
     }
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(Integer id);
+        void onAdapterItemClicked(Integer id);
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -48,10 +48,10 @@ public class NearestLongestAdapter extends RecyclerView.Adapter<NearestLongestAd
 
     protected static final String TAG = "LearnOnlineItemAdapter";
 
-    private ArrayList<Item> items;
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
-    private Unit distansceUnit;
+    private final ArrayList<Item> items;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
+    private final Unit distansceUnit;
 
     public NearestLongestAdapter(Context context, Unit unit, IOnClickAdapter listener) {
         this.context = context;

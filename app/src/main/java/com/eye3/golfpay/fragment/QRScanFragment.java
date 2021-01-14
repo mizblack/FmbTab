@@ -89,7 +89,7 @@ public class QRScanFragment extends BaseFragment {
         barcodeView.resume();
     }
 
-    private BarcodeCallback callback = new BarcodeCallback() {
+    private final BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
             if (result.getText() == null || result.getText().equals(lastText)) {

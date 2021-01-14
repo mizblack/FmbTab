@@ -37,7 +37,7 @@ public class ScoreInserter extends RelativeLayout {
 
     Context mContext;
     private boolean teeShot = false;
-    private String[] teeShotItem = {"Fairway", "Bunker", "Rough", "OB", "Hazard"};
+    private final String[] teeShotItem = {"Fairway", "Bunker", "Rough", "OB", "Hazard"};
     private int start;
     private int end;
     private String type;
@@ -102,9 +102,7 @@ public class ScoreInserter extends RelativeLayout {
             LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
             for (int j = start; j < end; j++) {
-
                 FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
-
                 final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, getResources().getDisplayMetrics());
                 final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, itemHeightDP, getResources().getDisplayMetrics());
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
@@ -112,9 +110,10 @@ public class ScoreInserter extends RelativeLayout {
 
                 TextView tvItem = item.findViewById(R.id.tv_item);
                 tvItem.setText(j + "");
-
                 View view = item.findViewById(R.id.view_select);
 
+                ////////////////////////////////////////////////////
+                //*이미 입력된 스코어 선택
                 if (!isVisible) {
                     if (type.equals("par")) {
                         isVisible = selectPar(i, j, view);
@@ -187,6 +186,24 @@ public class ScoreInserter extends RelativeLayout {
         return false;
     }
 
+    private boolean selectTeeShot(int index, String teeShot, View view) {
+
+        if (oldScore == null)
+            return false;
+
+        ScoreSend score = oldScore.get(index);
+        if (score.teeShot.isEmpty() || score.teeShot.equals("-"))
+            return false;
+
+        if (score.teeShot.equalsIgnoreCase(teeShot)) {
+            view.setVisibility(View.VISIBLE);
+            return true;
+        }
+
+        view.setVisibility(View.GONE);
+        return false;
+    }
+
     public Integer getScore(int index) {
         for (int i = start; i < end; i++) {
             if (i == index)
@@ -202,14 +219,14 @@ public class ScoreInserter extends RelativeLayout {
     void createTeeShot() {
 
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        boolean isVisible = false;
         for (int i = 0; i < Global.guestList.size(); i++) {
             final int position = i;
             View childView = inflater.inflate(R.layout.inserter_item, null, false);
             LinearLayout linearLayout = childView.findViewById(R.id.view_item);
 
             int j = 0;
-            for (String s : teeShotItem) {
+            for (String teeShot : teeShotItem) {
                 FrameLayout item = (FrameLayout) inflater.inflate(R.layout.item_score, null, false);
 
                 final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, getResources().getDisplayMetrics());
@@ -218,9 +235,14 @@ public class ScoreInserter extends RelativeLayout {
                 item.setLayoutParams(params);
 
                 TextView tvItem = item.findViewById(R.id.tv_item);
-                tvItem.setText(s);
-
+                tvItem.setText(teeShot);
                 View view = item.findViewById(R.id.view_select);
+
+                ////////////////////////////////////////////////////
+                //*이미 입력된 스코어 선택
+                if (!isVisible) {
+                    isVisible = selectTeeShot(i, teeShot, view);
+                }
 
                 final int cal = j;
                 item.setOnClickListener(new OnClickListener() {
@@ -236,6 +258,7 @@ public class ScoreInserter extends RelativeLayout {
                 j++;
             }
 
+            isVisible = false;
             scores.add(linearLayout);
 
             View separator = inflater.inflate(R.layout.item_separator, null, false);

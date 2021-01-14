@@ -63,14 +63,14 @@ public class ControlFragment extends BaseFragment {
     private LinearLayout ll_menu;
     private LinearLayout ll_caddie_list;
     private ArrayList<MenuItem> menuItems = new ArrayList<>();
-    private ArrayList<String> caddies = new ArrayList<>();
+    private final ArrayList<String> caddies = new ArrayList<>();
 
     private ListView messages_view;
     private ChatMessageAdapter chatMessageAdapter;
     private ImageButton send_message;
     private EditText edit_chat;
     private MemberData memberData;
-    private int itemHeight = 92;
+    private final int itemHeight = 92;
     private String to;
 
     @Override

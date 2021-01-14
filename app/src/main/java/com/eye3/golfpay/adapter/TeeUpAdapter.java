@@ -27,7 +27,7 @@ import java.util.Date;
 public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(Integer id);
+        void onAdapterItemClicked(Integer id);
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -52,8 +52,8 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
 
     protected static final String TAG = "RestaurantListAdapter";
 
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
 
     ArrayList<TodayReserveList> todayReserveList;
 

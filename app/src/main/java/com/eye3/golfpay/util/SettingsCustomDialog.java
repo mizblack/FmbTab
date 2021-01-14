@@ -51,11 +51,7 @@ public class SettingsCustomDialog extends Dialog {
             }
         });
         mTarParSwitch = findViewById(R.id.puttSwitch);
-        if(AppDef.isTar){
-            mTarParSwitch.setChecked(true);
-        }else{
-            mTarParSwitch.setChecked(false);
-        }
+        mTarParSwitch.setChecked(AppDef.isTar);
         mTarParSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

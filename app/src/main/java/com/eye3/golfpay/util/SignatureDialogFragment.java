@@ -26,7 +26,7 @@ import static com.eye3.golfpay.common.Global.signatureBitmapArrayList;
 public class SignatureDialogFragment extends DialogFragment {
 
     private String guestId;
-    private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
+    private final ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private SignaturePad signaturePad;
     OnSignatureFinishListener onSignatureFinishListener;
 

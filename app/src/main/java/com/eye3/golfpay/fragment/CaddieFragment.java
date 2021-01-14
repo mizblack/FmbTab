@@ -38,13 +38,7 @@ public class CaddieFragment extends BaseFragment {
 
     protected String TAG = getClass().getSimpleName();
     View v;
-    private List<Guest> guestList = Global.guestList;
-    public static LinearLayout mGuestViewContainerLinearLayout;
-    private LinearLayout mTeamMemoLinear;
-    TextView mTeamMemoContentTextView;
-    private ImageButton btnSlideDown;
-    private TextView[] tvGuestNames = new TextView[5];
-
+    private final TextView[] tvGuestNames = new TextView[5];
 
     private FragmentManager fragmentManager;
     private CaddieMainFragment caddieMainFragment;
@@ -56,34 +50,9 @@ public class CaddieFragment extends BaseFragment {
         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
     }
 
-    private void setDataTeamMemo(String teamMemo) {
-        mTeamMemoContentTextView.setText(teamMemo);
-    }
-
-    private void teamMemoOnClick(LinearLayout teamMemoLinear) {
-
-        teamMemoLinear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditorDialogFragment teamMemoEditorDialogFragment = new EditorDialogFragment();
-                teamMemoEditorDialogFragment.setMemoContent(mTeamMemoContentTextView.getText().toString());
-                showDialogFragment(teamMemoEditorDialogFragment);
-                teamMemoEditorDialogFragment.setOnEditorFinishListener(new OnEditorFinishListener() {
-                    @Override
-                    public void OnEditorInputFinished(String memoContent) {
-                        setDataTeamMemo(memoContent);
-
-                    }
-                });
-                systemUIHide();
-            }
-        });
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        //closeKeyboard();
     }
 
     @Override
@@ -102,14 +71,11 @@ public class CaddieFragment extends BaseFragment {
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_fragment, caddieMainFragment).commitAllowingStateLoss();
 
-
         int i = 0;
         for (Guest guest : Global.guestList) {
             tvGuestNames[i].setVisibility(View.VISIBLE);
             tvGuestNames[i++].setText(guest.getGuestName());
         }
-
-
 
         return v;
     }
@@ -122,24 +88,6 @@ public class CaddieFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //최종 전송시 클릭버튼
-//        v.findViewById(R.id.saveCadieTextView).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                for (int i = 0; mGuestViewContainerLinearLayout.getChildCount() > i; i++)
-//                    ((CaddieViewGuestItem) mGuestViewContainerLinearLayout.getChildAt(i)).setReserveGuestInfo(guestList.get(i));
-//            }
-//        });
-    }
-
-    private void showDialogFragment(DialogFragment dialogFragment) {
-
-        FragmentManager supportFragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-        dialogFragment.show(transaction, TAG);
-        assert dialogFragment.getFragmentManager() != null;
-        dialogFragment.getFragmentManager().executePendingTransactions();
     }
 
     public void getReserveGuestList(int reserveId) {

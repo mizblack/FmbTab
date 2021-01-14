@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantMenuOrder {
-    private static String STRING_CADDY = "(캐디)";
+    private static final String STRING_CADDY = "(캐디)";
 
-    private List<OrderDetail> mOrderDetailList;
+    private final List<OrderDetail> mOrderDetailList;
     private List<OrderItemInvoice> mOrderItemInvoiceArrayList;
     public OrderedMenuItem mCurrentOrderedMenuItem;
     //주문자 아이디

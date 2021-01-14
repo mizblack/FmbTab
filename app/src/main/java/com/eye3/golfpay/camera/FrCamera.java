@@ -306,7 +306,7 @@ public class FrCamera extends BaseFragment
     /**
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
      */
-    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
+    private final Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
     /**
      * Whether the current camera device supports Flash or not.
@@ -321,7 +321,7 @@ public class FrCamera extends BaseFragment
     /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
-    private CameraCaptureSession.CaptureCallback mCaptureCallback
+    private final CameraCaptureSession.CaptureCallback mCaptureCallback
             = new CameraCaptureSession.CaptureCallback() {
 
         private void process(CaptureResult result) {

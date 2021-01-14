@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count);
+        void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count);
     }
 
     public class ClubHolder extends RecyclerView.ViewHolder {
@@ -47,10 +47,10 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
     protected static final String TAG = "ClubAdapter";
 
-    private ArrayList<Item> items;
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
-    private ClubInfoDialog.ClubType clubType;
+    private final ArrayList<Item> items;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
+    private final ClubInfoDialog.ClubType clubType;
     boolean isMultiSelect;
 
     public ClubAdapter(Context context, ClubInfoDialog.ClubType clubType, boolean isMultiSelect, IOnClickAdapter listener) {

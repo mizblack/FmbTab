@@ -14,7 +14,7 @@ public class CaddieInfo {
 
     @SerializedName("reserve_id")
     @Expose
-    private String reserveId = "";
+    private final String reserveId = "";
 
     @SerializedName("guest_info")
     @Expose

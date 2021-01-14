@@ -35,8 +35,8 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
     Context mContext;
     public String TAG = getClass().getSimpleName();
     private RestaurantMenu selectedMenu = null;
-    private List<RestaurantMenu> mMenuList;
-    private IRestaurantMenuListener iRestaurantMenuListener;
+    private final List<RestaurantMenu> mMenuList;
+    private final IRestaurantMenuListener iRestaurantMenuListener;
 
     static class MenuItemViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_food_image;
@@ -56,7 +56,7 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
     }
 
     public RestaurantMenuAdapter(Context context, List<RestaurantMenu> menuList, IRestaurantMenuListener listener) {
-        Log.d(TAG, "  메뉴 사이즈   " + String.valueOf(menuList.size()));
+        Log.d(TAG, "  메뉴 사이즈   " + menuList.size());
         mContext = context;
         mMenuList = menuList;
         this.iRestaurantMenuListener = listener;

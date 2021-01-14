@@ -141,10 +141,9 @@ public class ViewMenuFragment extends BaseFragment {
         mView.findViewById(R.id.btn_menu_near_long).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoNativeScreen(new ScoreFragment(), null);
+                GoNativeScreen(new NearestLongestFragment(), null);
                 drawer_layout.closeDrawer(GravityCompat.END);
-                NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
-                showDialogFragment(nearestLongestDialogFragment);
+                selectMenu(R.id.view_near_long);
             }
         });
 

@@ -9,7 +9,7 @@ import java.text.ParseException;
 
 public class TestItemTextWatcher implements TextWatcher {
 
-    private EditText et;
+    private final EditText et;
     private String mValue;
 
     public TestItemTextWatcher(EditText et, String value)

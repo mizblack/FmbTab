@@ -37,11 +37,11 @@ public class HotKeyPagerAdapter extends PagerAdapter {
     }
 
     public interface OnAdapterClickListener {
-        public void onClicked(int position);
+        void onClicked(int position);
     }
 
     Context mContext;
-    private ArrayList<ShortcutItem> shortcutList = new ArrayList<>();
+    private final ArrayList<ShortcutItem> shortcutList = new ArrayList<>();
     OnAdapterClickListener onAdapterClickListener;
 
     @SuppressLint("MissingPermission")

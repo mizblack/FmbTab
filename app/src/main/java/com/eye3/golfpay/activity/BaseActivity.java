@@ -39,7 +39,7 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     private ProgressDialog pd; // 프로그레스바 선언
     protected BackPressCloseHandler backPressCloseHandler;
     public DrawerLayout drawer;
-    private boolean isForward = true;
+    private final boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
     RelativeLayout mContentRelativeLayout;
     ConstraintLayout mBottomBarLayout;

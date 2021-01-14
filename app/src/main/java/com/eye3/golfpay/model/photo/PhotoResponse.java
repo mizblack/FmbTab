@@ -7,25 +7,25 @@ public class PhotoResponse {
 
     @SerializedName("ret_code")
     @Expose
-    private String  resultCode = "";
+    private final String  resultCode = "";
 
     @SerializedName("ret_msg")
     @Expose
-    private String resultMessage = "";
+    private final String resultMessage = "";
 
     @SerializedName("file_data")
     @Expose
-    private FileData file_data = null;
+    private final FileData file_data = null;
 
     static class FileData {
         @SerializedName("file_id")
         @Expose
-        private String file_id = "";
+        private final String file_id = "";
         @SerializedName("file_name")
         @Expose
-        private String file_name = "";
+        private final String file_name = "";
         @SerializedName("file_url")
         @Expose
-        private String file_url = "";
+        private final String file_url = "";
     }
 }

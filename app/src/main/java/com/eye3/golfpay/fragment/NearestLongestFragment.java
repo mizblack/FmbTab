@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -53,11 +54,11 @@ public class NearestLongestFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
-    private ArrayList<TextView> nearestRankTextViews = new ArrayList<>();
-    private ArrayList<TextView> longestRankTextViews = new ArrayList<>();
-    private ArrayList<TextView> nearestScoreTextViews = new ArrayList<>();
-    private ArrayList<TextView> longestScoreTextViews = new ArrayList<>();
+    private final ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
+    private final ArrayList<TextView> nearestRankTextViews = new ArrayList<>();
+    private final ArrayList<TextView> longestRankTextViews = new ArrayList<>();
+    private final ArrayList<TextView> nearestScoreTextViews = new ArrayList<>();
+    private final ArrayList<TextView> longestScoreTextViews = new ArrayList<>();
 
     private TextView tvNearHolePar;
     private TextView tvLongHolePar;
@@ -66,35 +67,10 @@ public class NearestLongestFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NearestLongestFragment newInstance(String param1, String param2) {
-        NearestLongestFragment fragment = new NearestLongestFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-            Bundle bundle = getArguments();
-            if (bundle != null) {
-            }
-        }
     }
 
     @Override
@@ -117,10 +93,16 @@ public class NearestLongestFragment extends BaseFragment {
                 WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
                 wmlp.gravity = Gravity.CENTER;
                 dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                dlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getNearLongHole();
+                        getActivity().getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                    }
+                });
                 dlg.show();
             }
         });
-
 
         //loadGuestScore();
         tvNearHolePar = view.findViewById(R.id.tv_near_hole_par);

@@ -19,7 +19,7 @@ import com.eye3.golfpay.R;
 public class RestaurantsPopupDialog extends Dialog {
 
     private TextView mBtnClose;
-    private boolean mIsChecked = false;
+    private final boolean mIsChecked = false;
     private CheckBox mCheckBox;
 
     private String imgscr;
@@ -29,7 +29,7 @@ public class RestaurantsPopupDialog extends Dialog {
 
 
     public interface  IListenerDialogTouch {
-        public void onTouch();
+        void onTouch();
     }
 
     public RestaurantsPopupDialog(Context context) {

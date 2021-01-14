@@ -28,7 +28,7 @@ public class EditorDialogFragment extends DialogFragment {
     private String guestId;
     private String memoContent;
     private EditText memoEditText;
-    private ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
+    private final ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
     private View view;
     private String textType;
     private String textHint;

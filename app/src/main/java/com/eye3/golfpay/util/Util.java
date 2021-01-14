@@ -68,6 +68,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -412,7 +413,7 @@ public class Util {
     public static String getGsfAndroidId(Context context) {
         Uri URI = Uri.parse("content://com.google.android.gsf.gservices");
         String ID_KEY = "android_id";
-        String params[] = {ID_KEY};
+        String[] params = {ID_KEY};
         Cursor c = context.getContentResolver().query(URI, null, null, params, null);
         if (c != null && (!c.moveToFirst() || c.getColumnCount() < 2)) {
             if (!c.isClosed()) {
@@ -952,10 +953,7 @@ public class Util {
      * @return
      */
     public static boolean checkDebug() {
-        if (Debug.isDebuggerConnected()) {
-            return true;
-        }
-        return false;
+        return Debug.isDebuggerConnected();
     }
 
 
@@ -1050,10 +1048,7 @@ public class Util {
      * @return
      */
     public static boolean isNUll(String pStr) {
-        if (pStr == null || "".equals(pStr) || "null".equals(pStr) || pStr.isEmpty()) {
-            return true;
-        }
-        return false;
+        return pStr == null || "".equals(pStr) || "null".equals(pStr) || pStr.isEmpty();
     }
 
     /**
@@ -1468,7 +1463,7 @@ public class Util {
     @SuppressLint("TrulyRandom")
     public static byte[] encryptPassword(String passwdString) {
         try {
-            byte[] cleartext = passwdString.getBytes("UTF8");
+            byte[] cleartext = passwdString.getBytes(StandardCharsets.UTF_8);
 
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -1489,7 +1484,7 @@ public class Util {
             Cipher cipher = Cipher.getInstance("DES");
             cipher.init(Cipher.DECRYPT_MODE, key);  //key값
             byte[] plainTextPwdBytes = cipher.doFinal(encrypedPwdBytes);
-            pw = new String(plainTextPwdBytes, "UTF8");
+            pw = new String(plainTextPwdBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             Logger2.e("Failed decryptPassword", e);
         }
@@ -1499,7 +1494,7 @@ public class Util {
     public static String getHashCode(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+            byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
             StringBuffer hexString = new StringBuffer();
 
             for (int i = 0; i < hash.length; i++) {

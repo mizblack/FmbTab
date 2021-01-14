@@ -20,14 +20,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Logger2 {
 
-	private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ROOT);
+	private static final SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ROOT);
 	private static final String TAG = "MACARON_CHAUFFEUR";
 	private static final int LOG_ARCHIVE_SIZE = 30;
 	
-	private static BlockingQueue<String> msg = new LinkedBlockingQueue<String>(1024);
-	private static Thread logThread = new Thread("Logger2 Thread") {
+	private static final BlockingQueue<String> msg = new LinkedBlockingQueue<String>(1024);
+	private static final Thread logThread = new Thread("Logger2 Thread") {
 		private File logF = null;
-		private SimpleDateFormat fmtYMD = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+		private final SimpleDateFormat fmtYMD = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		private FileWriter writer;
 		
 		@Override
@@ -47,8 +47,8 @@ public class Logger2 {
 					//noop
 				}
 			}
-		};
-		
+		}
+
 		boolean openLog() {
 			if (logF != null) 
 				return true;
@@ -57,13 +57,13 @@ public class Logger2 {
 			storage.mkdirs();
 			
 			List<File> logsAll = new LinkedList<File>();
-			for (File f : Arrays.asList(storage.listFiles(new FilenameFilter() {
-				
+			for (File f : storage.listFiles(new FilenameFilter() {
+
 				@Override
 				public boolean accept(File dir, String filename) {
 					return filename.toLowerCase(Locale.ROOT).endsWith(".log");
 				}
-			}))) logsAll.add(f);
+			})) logsAll.add(f);
 			
 			Collections.sort(logsAll, new Comparator<File>() {
 
@@ -108,7 +108,7 @@ public class Logger2 {
 		String fileName = ste.getFileName();
 		String methodName = ste.getClassName() + "@" + ste.getMethodName();
 		int lineNumber = ste.getLineNumber();
-		info = "(at " + fileName + " " + methodName + " " + Integer.toString(lineNumber) + ")" ;
+		info = "(at " + fileName + " " + methodName + " " + lineNumber + ")" ;
 
 		return info;
 	}

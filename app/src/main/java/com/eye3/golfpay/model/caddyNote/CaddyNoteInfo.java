@@ -47,9 +47,9 @@ public class CaddyNoteInfo {
     private List<CaddyImage> club_after = null;
 
     @SerializedName("carNumber")
-    private String carNumber = null;
+    private final String carNumber = null;
     @SerializedName("phoneNumber")
-    private String phoneNumber = null;
+    private final String phoneNumber = null;
 
     public String getId() {
         return id;

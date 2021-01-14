@@ -16,7 +16,7 @@ import com.eye3.golfpay.R;
 public class PopupDialog extends Dialog {
 
     private TextView mBtnClose;
-    private boolean mIsChecked = false;
+    private final boolean mIsChecked = false;
     private CheckBox mCheckBox;
 
     private String imgscr;
@@ -25,7 +25,7 @@ public class PopupDialog extends Dialog {
     private IListenerDialogTouch mListener;
 
     public interface  IListenerDialogTouch {
-        public void onTouch();
+        void onTouch();
     }
 
     public PopupDialog() {

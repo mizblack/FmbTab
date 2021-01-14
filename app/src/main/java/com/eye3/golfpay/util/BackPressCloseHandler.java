@@ -6,7 +6,7 @@ import android.widget.Toast;
 public class BackPressCloseHandler {
     private long backKeyPressedTime = 0;
     private Toast toast;
-    private Activity activity;
+    private final Activity activity;
 
     public BackPressCloseHandler(Activity context) {
         this.activity = context;

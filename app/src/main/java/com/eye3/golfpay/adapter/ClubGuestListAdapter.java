@@ -21,7 +21,7 @@ import java.util.List;
 public class ClubGuestListAdapter extends RecyclerView.Adapter<ClubGuestListAdapter.ItemHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(Integer id);
+        void onAdapterItemClicked(Integer id);
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -37,8 +37,8 @@ public class ClubGuestListAdapter extends RecyclerView.Adapter<ClubGuestListAdap
 
     protected static final String TAG = "RestaurantListAdapter";
 
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
     public static List<Guest> guestList;
 
     public ClubGuestListAdapter(Context context, IOnClickAdapter listener) {

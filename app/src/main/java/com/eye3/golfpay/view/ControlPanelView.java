@@ -23,14 +23,14 @@ public class ControlPanelView extends ConstraintLayout {
 
 
     public interface OnClickListener {
-        public void onShortcutMessage(String msg);
-        public void onShowShortcutDlg(String option);
+        void onShortcutMessage(String msg);
+        void onShowShortcutDlg(String option);
     }
 
     private ViewPager vp_shortcut;
     private HotKeyPagerAdapter hotKeyPagerAdapter;
     private OnClickListener listener;
-    private TextView[] textViews = new TextView[8];
+    private final TextView[] textViews = new TextView[8];
     private LinearLayout viewIndicator;
     private ImageView indicator1;
     private ImageView indicator2;

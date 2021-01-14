@@ -58,7 +58,7 @@ import static com.eye3.golfpay.util.Logger.TAG;
 
 public class CaddieViewBasicGuestItem extends RelativeLayout {
 
-    private static int sendCountNum = 0;
+    private static final int sendCountNum = 0;
     protected static ProgressDialog pd; // 프로그레스바 선언
 
     Context mContext;

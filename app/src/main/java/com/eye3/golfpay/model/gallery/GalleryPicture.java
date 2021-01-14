@@ -17,11 +17,11 @@ public class GalleryPicture {
 
 //    @SerializedName("id")
 //    @Expose
-    private String id;
+    private final String id;
 
 //    @SerializedName("group_id")
 //    @Expose
-    private String group_id;
+    private final String group_id;
 
 
 //    @SerializedName("url")
@@ -34,7 +34,7 @@ public class GalleryPicture {
 
 //    @SerializedName("created_at")
 //    @Expose
-    private Object created_at;
+    private final Object created_at;
 
     @SerializedName("file_url")
     @Expose

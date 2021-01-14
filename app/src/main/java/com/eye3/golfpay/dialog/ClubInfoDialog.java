@@ -73,7 +73,7 @@ public class ClubInfoDialog extends Dialog {
     }
 
     public interface  IListenerDialog {
-        public void onSave(String guestId, ClubInfo clubInfo);
+        void onSave(String guestId, ClubInfo clubInfo);
     }
 
     public ClubInfoDialog() {

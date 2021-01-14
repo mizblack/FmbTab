@@ -36,8 +36,8 @@ public class ScoreDialog extends Dialog {
 
     private Button mLeftButton;
     private Button mRightButton;
-    private String mLeftTitle;
-    private String mRightTitle;
+    private final String mLeftTitle;
+    private final String mRightTitle;
 
     private View.OnClickListener mLeftClickListener;
     private View.OnClickListener mRightClickListener;

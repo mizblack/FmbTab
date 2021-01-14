@@ -12,7 +12,7 @@ import com.eye3.golfpay.R;
 
 public class SelectedOrderAdapter extends PagerAdapter {
 
-    private Context context;
+    private final Context context;
     private int pagerCount = 0;
     public SelectedOrderAdapter(Context context, int count) {
         super();

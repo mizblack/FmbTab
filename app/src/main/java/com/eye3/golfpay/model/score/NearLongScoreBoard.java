@@ -13,11 +13,11 @@ public class NearLongScoreBoard implements Serializable {
 
    @SerializedName("ret_code")
    @Expose
-   private String  resultCode = "";
+   private final String  resultCode = "";
 
    @SerializedName("ret_msg")
    @Expose
-   private String resultMessage = "";
+   private final String resultMessage = "";
 
    @SerializedName("guest_gametype_ranking")
    @Expose

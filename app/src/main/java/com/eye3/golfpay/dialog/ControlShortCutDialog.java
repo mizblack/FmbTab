@@ -51,9 +51,9 @@ public class ControlShortCutDialog extends Dialog {
     private RecyclerView rvCategory3;
     private RecyclerView rvCategory4;
     private ArrayList<ChatHotKeyOption> options;
-    private int currentCt1Index = -1;
+    private final int currentCt1Index = -1;
 
-    private String[] shortcut = new String[5];
+    private final String[] shortcut = new String[5];
 
     private static final int DURATION = 500;
 

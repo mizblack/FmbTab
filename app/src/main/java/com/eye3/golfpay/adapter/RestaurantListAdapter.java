@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ItemHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(Integer id);
+        void onAdapterItemClicked(Integer id);
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -34,8 +34,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     protected static final String TAG = "RestaurantListAdapter";
 
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
     ArrayList<Restaurant> mRestaurantList;
 
     public RestaurantListAdapter(Context context, IOnClickAdapter listener) {

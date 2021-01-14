@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class HotkeyCategoryAdapter extends RecyclerView.Adapter<HotkeyCategoryAdapter.ClubHolder> {
 
     public interface IOnClickAdapter {
-        public void onAdapterItemClicked(int count);
+        void onAdapterItemClicked(int count);
     }
 
     public class ClubHolder extends RecyclerView.ViewHolder {
@@ -49,9 +49,9 @@ public class HotkeyCategoryAdapter extends RecyclerView.Adapter<HotkeyCategoryAd
 
     protected static final String TAG = "ClubAdapter";
 
-    private ArrayList<Item> items;
-    private Context context;
-    private IOnClickAdapter onClickAdapter;
+    private final ArrayList<Item> items;
+    private final Context context;
+    private final IOnClickAdapter onClickAdapter;
 
     public HotkeyCategoryAdapter(Context context, IOnClickAdapter listener) {
         this.context = context;

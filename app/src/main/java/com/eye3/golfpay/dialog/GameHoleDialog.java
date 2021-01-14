@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +49,6 @@ public class GameHoleDialog extends Dialog {
         String par;
         public boolean selected = false;
     }
-
 
     private RecyclerView rvLongestOut;
     private RecyclerView rvLongestIn;
@@ -98,7 +99,6 @@ public class GameHoleDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 saveNearLongHole();
-
             }
         });
 
@@ -134,7 +134,7 @@ public class GameHoleDialog extends Dialog {
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setReserveGameType(getContext(), reserveGameType, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
-
+                dismiss();
             }
 
             @Override
@@ -147,8 +147,6 @@ public class GameHoleDialog extends Dialog {
 
             }
         });
-
-        dismiss();
     }
 
     private void getNearLongHole() {
@@ -203,42 +201,82 @@ public class GameHoleDialog extends Dialog {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        GameHoleAdapter adapter = new GameHoleAdapter(getContext());
-        adapter.setIListenerDialog(new IListenerDialog() {
+        GameHoleAdapter gameHoleAdapter = new GameHoleAdapter(getContext());
+        gameHoleAdapter.setIListenerDialog(new IListenerDialog() {
             @Override
             public void onSelected(int hole) {
                 if (recyclerView == rvNearestIn) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestIn.getAdapter();
+                    if (sameCourseHole(adapter, hole)) {
+                        return;
+                    }
+
                     course_near = "IN";
                     hole_no_near = hole;
                     allUnSelect(rvNearestOut);
+                    updateUI(gameHoleAdapter, hole);
                 }
                 else if (recyclerView == rvNearestOut) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestOut.getAdapter();
+                    if (sameCourseHole(adapter, hole)) {
+                        return;
+                    }
+
                     course_near = "OUT";
                     hole_no_near = hole;
                     allUnSelect(rvNearestIn);
+                    updateUI(gameHoleAdapter, hole);
                 }
                 else if (recyclerView == rvLongestIn) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestIn.getAdapter();
+                    if (sameCourseHole(adapter, hole)) {
+                        return;
+                    }
+
                     course_long = "IN";
                     hole_no_long = hole;
                     allUnSelect(rvLongestOut);
+                    updateUI(gameHoleAdapter, hole);
                 }
                 else if (recyclerView == rvLongestOut) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestOut.getAdapter();
+                    if (sameCourseHole(adapter, hole)) {
+                        return;
+                    }
+
                     course_long = "OUT";
                     hole_no_long = hole;
                     allUnSelect(rvLongestIn);
+                    updateUI(gameHoleAdapter, hole);
                 }
-                adapter.notifyDataSetChanged();
             }
         });
 
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(gameHoleAdapter);
         for (int i = 0; i < 9; i++) {
             Item item = new Item(hole[i], par[i]);
-            adapter.items.add(item);
+            gameHoleAdapter.items.add(item);
         }
 
         LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         linearLayoutManager.scrollToPositionWithOffset(0, 0);
+    }
+
+    private void updateUI(@NonNull GameHoleAdapter adapter, int hole) {
+        adapter.select(hole);
+        adapter.notifyDataSetChanged();
+    }
+
+    //같은코스 같은홀에 니어/롱을 동시에 설정할 수 없다.
+    private boolean sameCourseHole(@NonNull GameHoleAdapter adapter, int hole) {
+        int select = adapter.getSelectItem();
+
+        if (select == hole) {
+            Toast.makeText(getContext(), "같은홀에 설정할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return false;
     }
 
     private void allUnSelect(RecyclerView recyclerView) {
@@ -276,7 +314,7 @@ public class GameHoleDialog extends Dialog {
 
 
         protected static final String TAG = "ClubAdapter";
-        private Context context;
+        private final Context context;
         public GameHoleAdapter(Context context) {
             this.context = context;
         }
@@ -313,8 +351,6 @@ public class GameHoleDialog extends Dialog {
                         //allSelected(false);
                         allSelected(false);
                         iListenerDialog.onSelected(position+1);
-                        items.get(position).selected = true;
-                        notifyDataSetChanged();
                     }
                 });
             } catch (NullPointerException e) {
@@ -328,6 +364,14 @@ public class GameHoleDialog extends Dialog {
             for (Item item : items) {
                 item.selected = select;
             }
+        }
+
+        public int getSelectItem() {
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).selected)
+                    return i+1;
+            }
+            return -1;
         }
 
         public void select(int index) {

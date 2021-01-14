@@ -108,7 +108,7 @@ public class OrderFragment extends BaseFragment {
         return mainView;
     }
 
-    private View.OnClickListener CaddieClickListener = new View.OnClickListener() {
+    private final View.OnClickListener CaddieClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mMenuAdapter.haveOrder()) {
@@ -381,7 +381,7 @@ public class OrderFragment extends BaseFragment {
             nameOrderView.mNameTv.setText(((GuestNameOrder) nameOrderView.getTag()).mGuestName);
             nameOrderView.menuPrice = orderItemInvoice.mMenuPrice;
 
-            nameOrderView.mQtyTv.setText(String.valueOf(((GuestNameOrder) nameOrderView.getTag()).qty) + "개");
+            nameOrderView.mQtyTv.setText(((GuestNameOrder) nameOrderView.getTag()).qty + "개");
             nameOrderView.deleteLinear.setOnClickListener(deletelistener);
 
             if (orderItemInvoice.mGuestNameOrders.get(i).caddy_id != null && orderItemInvoice.mGuestNameOrders.get(i).caddy_id != "")

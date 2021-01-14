@@ -43,7 +43,7 @@ public class StoreUriAsTempFileAsyncTask extends AsyncTask<Object, Void, String[
             Uri mediaUri = (Uri) objects[i];
 
             // 저장할 파일명 생성.
-            String tmpFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+            String tmpFileName = System.currentTimeMillis() + ".jpg";
             // 저장 경로.
             tmpFileSPath[i] = FileUtils.getInstance().getTempPath(context, tmpFileName);
 

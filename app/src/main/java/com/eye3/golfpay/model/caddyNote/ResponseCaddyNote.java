@@ -16,7 +16,7 @@ public class ResponseCaddyNote {
 
 	@SerializedName("team_memo")
 	@Expose
-	private String team_memo = "";
+	private final String team_memo = "";
 
 
 //	@SerializedName("detailMessage")

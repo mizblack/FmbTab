@@ -24,7 +24,7 @@ public class DateUtils {
     public static SimpleDateFormat HHmmss = new SimpleDateFormat(DATE_FORMATTED_2);
     public static SimpleDateFormat yyyyMMddHHmmss = new SimpleDateFormat(DATE_FORMATTED_3);
  //   public static SimpleDateFormat FORMAT_STANDARD = new SimpleDateFormat(DATE_FORMATTED_6);
-    private String TAG = this.getClass().getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     private static Locale _locale;
 
@@ -437,13 +437,13 @@ public class DateUtils {
         strYear = pYear + "";
 
         if (pMonth < 10) {
-            strMonth = "0" + String.valueOf(pMonth);
+            strMonth = "0" + pMonth;
         } else {
             strMonth = String.valueOf(pMonth);
         }
 
         if (pDate < 10) {
-            strDate = "0" + String.valueOf(pDate);
+            strDate = "0" + pDate;
         } else {
             strDate = String.valueOf(pDate);
         }
