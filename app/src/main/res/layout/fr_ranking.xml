@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -9,37 +11,56 @@
         android:orientation="vertical"
         android:paddingTop="8dp">
 
-        <include
-            android:id="@+id/tab_bar"
-            layout="@layout/tab_bar" />
+        <LinearLayout
+            android:id="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/tab_bar"
+                layout="@layout/tab_bar" />
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/view_rank_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingTop="1dp"
             android:orientation="vertical"
-            tools:ignore="ScrollViewSize">
-
-            <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_top">
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:ignore="UselessParent">
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/player_ranking_recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginLeft="18dp"
-                        android:layout_marginRight="18dp"/>
-
-                </HorizontalScrollView>
-            </LinearLayout>
+                android:layout_height="1dp"
+                android:background="@color/zumthor"/>
+            <include
+                android:id="@+id/ranking_row"
+                layout="@layout/ranking_row" />
+            <include
+                android:id="@+id/ranking_column_detail"
+                layout="@layout/ranking_column_detail"
+                android:visibility="gone"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/zumthor"/>
         </LinearLayout>
-    </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/player_ranking_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_rank_header"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

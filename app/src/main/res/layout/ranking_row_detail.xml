@@ -44,7 +44,7 @@
             android:text="Score" />
 
         <TextView
-            android:id="@+id/tv_out1"
+            android:id="@+id/tv_beginHole1"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -52,7 +52,7 @@
             android:text="1" />
 
         <TextView
-            android:id="@+id/tv_out2"
+            android:id="@+id/tv_beginHole2"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -60,7 +60,7 @@
             android:text="2" />
 
         <TextView
-            android:id="@+id/tv_out3"
+            android:id="@+id/tv_beginHole3"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -68,7 +68,7 @@
             android:text="3" />
 
         <TextView
-            android:id="@+id/tv_out4"
+            android:id="@+id/tv_beginHole4"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             android:text="4" />
 
         <TextView
-            android:id="@+id/tv_out5"
+            android:id="@+id/tv_beginHole5"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -84,7 +84,7 @@
             android:text="5" />
 
         <TextView
-            android:id="@+id/tv_out6"
+            android:id="@+id/tv_beginHole6"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -92,7 +92,7 @@
             android:text="6" />
 
         <TextView
-            android:id="@+id/tv_out7"
+            android:id="@+id/tv_beginHole7"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -100,7 +100,7 @@
             android:text="7" />
 
         <TextView
-            android:id="@+id/tv_out8"
+            android:id="@+id/tv_beginHole8"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -108,7 +108,7 @@
             android:text="8" />
 
         <TextView
-            android:id="@+id/tv_out9"
+            android:id="@+id/tv_beginHole9"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -122,7 +122,7 @@
 
 
         <TextView
-            android:id="@+id/tv_out"
+            android:id="@+id/tv_beginHole"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="50dp"
             android:layout_height="match_parent"
@@ -136,7 +136,7 @@
 
 
         <TextView
-            android:id="@+id/tv_in1"
+            android:id="@+id/tv_endHole1"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -144,7 +144,7 @@
             android:text="1" />
 
         <TextView
-            android:id="@+id/tv_in2"
+            android:id="@+id/tv_endHole2"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -152,7 +152,7 @@
             android:text="2" />
 
         <TextView
-            android:id="@+id/tv_in3"
+            android:id="@+id/tv_endHole3"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -160,7 +160,7 @@
             android:text="3" />
 
         <TextView
-            android:id="@+id/tv_in4"
+            android:id="@+id/tv_endHole4"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -168,7 +168,7 @@
             android:text="4" />
 
         <TextView
-            android:id="@+id/tv_in5"
+            android:id="@+id/tv_endHole5"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -176,7 +176,7 @@
             android:text="5" />
 
         <TextView
-            android:id="@+id/tv_in6"
+            android:id="@+id/tv_endHole6"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -184,7 +184,7 @@
             android:text="6" />
 
         <TextView
-            android:id="@+id/tv_in7"
+            android:id="@+id/tv_endHole7"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -192,7 +192,7 @@
             android:text="7" />
 
         <TextView
-            android:id="@+id/tv_in8"
+            android:id="@+id/tv_endHole8"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -200,7 +200,7 @@
             android:text="8" />
 
         <TextView
-            android:id="@+id/tv_in9"
+            android:id="@+id/tv_endHole9"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -214,7 +214,7 @@
 
 
         <TextView
-            android:id="@+id/tv_in"
+            android:id="@+id/tv_endHole"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
             android:layout_width="50dp"
             android:layout_height="match_parent"

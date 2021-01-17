@@ -9,52 +9,64 @@ import java.util.List;
 
 public class Player implements Serializable, Comparable<Player>{
 
-    @SerializedName("guestName")
-    @Expose
-    public String name;
-
     @SerializedName("id")
     @Expose
     public String guest_id;
 
-    @SerializedName("totalPar")
+    @SerializedName("guestName")
     @Expose
-    public String totalPar;
+    public String guestName;
 
-    @SerializedName("totalTar")
+    @SerializedName("reserve_id")
     @Expose
-    public String totalTar;
+    public String reserve_id;
 
-    @SerializedName("totalRankingTar")
+    @SerializedName("teeoff")
     @Expose
-    public String totalRankingTar;
+    public String teeoff = "";
 
-    @SerializedName("totalRankingPutting")
+    @SerializedName("team_no")
     @Expose
-    public String totalRankingPutting;
-
-    @SerializedName("lastHoleNo")
-    @Expose
-    public String lastHoleNo;
-
-    @SerializedName("Ranking")
-    @Expose
-    public String Ranking;
-
-  //  @SerializedName("team_name")
-  //  @Expose
-    public String team_name = "";
+    public int team_no = 0;
 
     @SerializedName("course")
     @Expose
-    public List<Course> playingCourse ;
+    public List<Course> course;
+
+    @SerializedName("totalPar")
+    @Expose
+    public int totalPar;
+
+    @SerializedName("totalTar")
+    @Expose
+    public int totalTar;
+
+    @SerializedName("totalPutting")
+    @Expose
+    public int totalPutting;
+
+    @SerializedName("lastHoleNo")
+    @Expose
+    public int lastHoleNo;
+
+    @SerializedName("Ranking")
+    @Expose
+    public int ranking;
+
+    @SerializedName("totalRankingTar")
+    @Expose
+    public int totalRankingTar;
+
+    @SerializedName("totalRankingPutting")
+    @Expose
+    public int totalRankingPutting;
 
 
     @Override
     public int compareTo(Player o) {
-        if (Integer.valueOf(this.Ranking) < Integer.valueOf(o.Ranking)) {
+        if (ranking < o.ranking) {
             return -1;
-        } else if (Integer.valueOf(this.Ranking) > Integer.valueOf(o.Ranking)) {
+        } else if (ranking > o.ranking) {
             return 1;
         }
         return 0;

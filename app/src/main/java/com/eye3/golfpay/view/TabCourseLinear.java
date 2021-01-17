@@ -96,21 +96,21 @@ public class TabCourseLinear extends LinearLayout {
             if (mTabIdx == 0) {
 
                 // the last(current) course
-                if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
                     return false;
-                if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
                     return false;
 
             } else {
-                if (playerList.get(i).playingCourse.get(mTabIdx - 1).holes.get(8).playedScore.tar.equals("-"))
+                if (playerList.get(i).course.get(mTabIdx - 1).holes.get(8).playedScore.tar.equals("-"))
                     return false;
-                if (playerList.get(i).playingCourse.get(mTabIdx - 1).holes.get(8).playedScore.putting.equals("-"))
+                if (playerList.get(i).course.get(mTabIdx - 1).holes.get(8).playedScore.putting.equals("-"))
                     return false;
 
                 for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
-                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
+                    if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
                         return false;
-                    if (playerList.get(i).playingCourse.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+                    if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
                         return false;
                 }
             }
@@ -193,7 +193,7 @@ public class TabCourseLinear extends LinearLayout {
         mScoreRecyclerView.setHasFixedSize(true);
         mManager = new LinearLayoutManager(mContext);
         mScoreRecyclerView.setLayoutManager(mManager);
-        mScoreAdapter = new ScoreAdapter(mContext, playerList, playerList.get(0).playingCourse.get(tabIdx));
+        mScoreAdapter = new ScoreAdapter(mContext, playerList, playerList.get(0).course.get(tabIdx));
         mScoreRecyclerView.setAdapter(mScoreAdapter);
         mScoreAdapter.notifyDataSetChanged();
     }
@@ -361,14 +361,14 @@ public class TabCourseLinear extends LinearLayout {
          */
         @Override
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int index) {
-            Course course = playerList.get(index).playingCourse.get(mTabIdx);
+            Course course = playerList.get(index).course.get(mTabIdx);
 
-            if (playerList.get(index).Ranking.equals("1")) {
+            if (playerList.get(index).ranking == 1) {
                 scoreItemViewHolder.tvRank.setTextColor(Color.parseColor("#00abc5"));
                 scoreItemViewHolder.tvName.setTextColor(Color.parseColor("#00abc5"));
             }
-            scoreItemViewHolder.tvRank.setText(playerList.get(index).Ranking);
-            scoreItemViewHolder.tvName.setText(playerList.get(index).name);
+            scoreItemViewHolder.tvRank.setText(String.valueOf(playerList.get(index).ranking));
+            scoreItemViewHolder.tvName.setText(playerList.get(index).guestName);
 
             for (int i = 0; scoreItemViewHolder.holeScoreLayout.length > i; i++) {
                 if (i == mHoleScoreLayoutIdx) {
@@ -432,7 +432,7 @@ public class TabCourseLinear extends LinearLayout {
                 tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
                 tvCourseTotalPutt.setText(Putt_Total(course));
 
-                Course theOtherCourse = playerList.get(index).playingCourse.get(1);
+                Course theOtherCourse = playerList.get(index).course.get(1);
                 TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_tar);
                 TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_putt);
                 tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
@@ -443,20 +443,23 @@ public class TabCourseLinear extends LinearLayout {
                 tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
                 tvCourseTotalPutt.setText(Putt_Total(course));
 
-                Course theOtherCourse = playerList.get(index).playingCourse.get(0);
+                Course theOtherCourse = playerList.get(index).course.get(0);
                 TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_tar);
                 TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_putt);
                 tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
                 tvCourseTotalPutt2.setText(Putt_Total(theOtherCourse));
             }
 
-
-
             //전체토탈
             // playerList.get(i).totalRankingPutting을 totalPutt으로
-            Score wholeTotalScore = new Score(playerList.get(index).totalPar, playerList.get(index).totalRankingPutting, playerList.get(index).totalTar, "teeShot");
+            Score wholeTotalScore = new Score(
+                    String.valueOf(playerList.get(index).totalPar),
+                    String.valueOf(playerList.get(index).totalRankingPutting),
+                    String.valueOf(playerList.get(index).totalTar),
+                    "teeShot");
+
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
-            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText(playerList.get(index).totalRankingPutting);
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText(String.valueOf(playerList.get(index).totalRankingPutting));
         }
 
         private void setTextStyle(TextView tvScore) {

@@ -40,9 +40,7 @@ public class ScoreFragment extends BaseFragment {
     static int NUM_OF_COURSE;
     private View tabBar, nearest, longest;
     private LinearLayout courseLinearLayout;
-    private LinearLayout pinkNearestOrLinearLayout;
     private View rightLinearLayout;
-    private TextView rightButtonTextView;
     List<Player> mPlayerList;
     List<Course> mCourseList;
     //코스탭바
@@ -86,7 +84,7 @@ public class ScoreFragment extends BaseFragment {
 //            }
 //        }
 
-        return playerList.get(0).playingCourse;
+        return playerList.get(0).course;
 
     }
 
@@ -210,11 +208,11 @@ public class ScoreFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         courseLinearLayout = tabBar.findViewById(R.id.courseLinearLayout);
-        pinkNearestOrLinearLayout = tabBar.findViewById(R.id.pinkNearestOrLinearLayout);
-        rightButtonTextView = tabBar.findViewById(R.id.rightButton);
+        LinearLayout ll_lear_long_tab = tabBar.findViewById(R.id.ll_lear_long_tab);
+        TextView rightButtonTextView = tabBar.findViewById(R.id.rightButton);
         rightLinearLayout = tabBar.findViewById(R.id.rightLinearLayout);
         courseLinearLayout.setVisibility(View.VISIBLE);
-        pinkNearestOrLinearLayout.setVisibility(View.VISIBLE);
+        ll_lear_long_tab.setVisibility(View.VISIBLE);
         rightButtonTextView.setText("순위");
 
         rightLinearLayoutOnClick();

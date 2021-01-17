@@ -606,6 +606,21 @@ public class Util {
         return message;
     }
 
+    /**
+     * 다른 색상을 가진 SpannableString 문자열을 만들어서 반환
+     *
+     * @param message 전체 메시지     *
+     * @param startIdx 시작
+     * @param endIdx  끝
+     * @param color   색상
+     * @return SpannableString 문자열
+     */
+    public static SpannableString getColorSpannableString(String message, int startIdx, int endIdx, int color) {
+        SpannableString spannableString = new SpannableString(message);
+        spannableString.setSpan(new ForegroundColorSpan(color), startIdx, endIdx, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
     //greenSpannable.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0,input.length(), 0);
 
     /**
@@ -623,6 +638,16 @@ public class Util {
             startIndex = message.indexOf(value);
             endIndex = startIndex + value.length();
 
+            spannableString.setSpan(new AbsoluteSizeSpan(fontSize, true), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch (Exception e) {
+            //IMLog.d("UTIL", "getSpannableString " + e.getLocalizedMessage());
+        }
+        return spannableString;
+    }
+
+    public static SpannableString getFontSizeSpannableString(String message, int startIndex, int endIndex, int fontSize) {
+        SpannableString spannableString = new SpannableString(message);
+        try {
             spannableString.setSpan(new AbsoluteSizeSpan(fontSize, true), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         } catch (Exception e) {
             //IMLog.d("UTIL", "getSpannableString " + e.getLocalizedMessage());
