@@ -13,8 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Guest implements Serializable {
     //새로 추가됨
-    @SerializedName("arr_club_image")
-    private ArrayList<GalleryPicture> arrClubImageList;
+
     @Expose
     private String carNumber;
     @SerializedName("cart_bill")
@@ -41,12 +40,9 @@ public class Guest implements Serializable {
     private String id;
     @SerializedName("member_type")
     private Object memberType;
-    @Expose
-    private String memo;
+
     @SerializedName("paid_amount")
     private String paidAmount;
-    @SerializedName("pay_location")
-    private Object payLocation;
     @Expose
     private String phoneNumber;
     @SerializedName("proshop_bill")
@@ -59,12 +55,6 @@ public class Guest implements Serializable {
     private String roomBill;
     @SerializedName("shade_bill")
     private String shadeBill;
-    @SerializedName("sign_image")
-    private String signImage;
-    @SerializedName("sign_url")
-    private String signUrl;
-    @SerializedName("team_memo")
-    private String teamMemo;
     @SerializedName("total_price")
     private String totalPrice;
    //새로 추가됨
@@ -73,14 +63,6 @@ public class Guest implements Serializable {
 
     //UI에서 사용
     public boolean selected = false;
-
-    public ArrayList<GalleryPicture> getArrClubImageList() {
-        return arrClubImageList;
-    }
-
-    public void setArrClubImage(ArrayList<GalleryPicture> arrClubImage) {
-        this.arrClubImageList = arrClubImage;
-    }
 
     public String getCarNumber() {
         return carNumber;
@@ -186,28 +168,12 @@ public class Guest implements Serializable {
         this.memberType = memberType;
     }
 
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
     public String getPaidAmount() {
         return paidAmount;
     }
 
     public void setPaidAmount(String paidAmount) {
         this.paidAmount = paidAmount;
-    }
-
-    public Object getPayLocation() {
-        return payLocation;
-    }
-
-    public void setPayLocation(Object payLocation) {
-        this.payLocation = payLocation;
     }
 
     public String getPhoneNumber() {
@@ -258,29 +224,29 @@ public class Guest implements Serializable {
         this.shadeBill = shadeBill;
     }
 
-    public String getSignImage() {
-        return signImage;
-    }
-
-    public void setSignImage(String signImage) {
-        this.signImage = signImage;
-    }
-
-    public String getSignUrl() {
-        return signUrl;
-    }
-
-    public void setSignUrl(String signUrl) {
-        this.signUrl = signUrl;
-    }
-
-    public String getTeamMemo() {
-        return teamMemo;
-    }
-
-    public void setTeamMemo(String teamMemo) {
-        this.teamMemo = teamMemo;
-    }
+//    public String getSignImage() {
+//        return signImage;
+//    }
+//
+//    public void setSignImage(String signImage) {
+//        this.signImage = signImage;
+//    }
+//
+//    public String getSignUrl() {
+//        return signUrl;
+//    }
+//
+//    public void setSignUrl(String signUrl) {
+//        this.signUrl = signUrl;
+//    }
+//
+//    public String getTeamMemo() {
+//        return teamMemo;
+//    }
+//
+//    public void setTeamMemo(String teamMemo) {
+//        this.teamMemo = teamMemo;
+//    }
 
     public String getTotalPrice() {
         return totalPrice;

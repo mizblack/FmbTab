@@ -46,21 +46,10 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CaddieMainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TAG = "CaddieMainFragment";
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private List<Guest> guestList = Global.guestList;
     private SlidingUpPanelLayout slidingUpPanelLayout;
@@ -93,31 +82,9 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CaddieMainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CaddieMainFragment newInstance(String param1, String param2) {
-        CaddieMainFragment fragment = new CaddieMainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         caddieInfo = new CaddieInfo();
 
@@ -125,7 +92,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             GuestInfo gi = new GuestInfo();
             gi.setReserveGuestId(guest.getId());
             gi.setCarNo(guest.getCarNumber());
-            gi.setGuestMemo(guest.getMemo());
             gi.setHp(guest.getPhoneNumber());
             caddieInfo.getGuestInfo().add(gi);
         }
@@ -203,10 +169,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                 sendPhoto("", path, "club");
             }
         });
-    }
-
-    public void slidingDown() {
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     private void createGuestBasicView() {

@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:text="클럽사진(후반)" />
+                    android:text="클럽사진(종료)" />
 
                 <TextView
                     android:id="@+id/btn_photo"
@@ -101,7 +101,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:text="등록된 이미지가 없습니다"
+            android:text="등록된 이미지가 없습니다."
             android:gravity="center_vertical"
             android:padding="40dp"
             android:visibility="gone"

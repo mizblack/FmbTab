@@ -39,8 +39,6 @@ public class GuestDatum implements Serializable {
 
     @SerializedName("paid_amount")
     private Long paidAmount;
-    @SerializedName("pay_location")
-    private Object payLocation;
     @SerializedName("proshop_bill")
     private Long proshopBill;
     @SerializedName("rent_bill")
@@ -173,14 +171,6 @@ public class GuestDatum implements Serializable {
 
     public void setPaidAmount(Long paidAmount) {
         this.paidAmount = paidAmount;
-    }
-
-    public Object getPayLocation() {
-        return payLocation;
-    }
-
-    public void setPayLocation(Object payLocation) {
-        this.payLocation = payLocation;
     }
 
     public Long getProshopBill() {

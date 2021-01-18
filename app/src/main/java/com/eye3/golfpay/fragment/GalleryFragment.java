@@ -129,6 +129,7 @@ public class GalleryFragment extends BaseFragment {
             return;
 
         tvEmpty.setVisibility(View.GONE);
+        binding.tvEmpty.setVisibility(View.GONE);
         rv.setVisibility(View.VISIBLE);
         rv.setLayoutManager(mManager);
         rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
@@ -166,6 +167,7 @@ public class GalleryFragment extends BaseFragment {
             @Override
             public void onEmptyImage() {
                 tvEmpty.setVisibility(View.VISIBLE);
+                binding.tvEmpty.setVisibility(View.VISIBLE);
             }
         });
         rv.setAdapter(galleryAdapter);

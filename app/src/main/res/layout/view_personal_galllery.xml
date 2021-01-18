@@ -29,7 +29,7 @@
         android:id="@+id/tv_empty"
         android:layout_height="280dp"
         android:layout_width="0dp"
-        android:text="등록된 이미지가 없습니다"
+        android:text="등록된 이미지가 없습니다."
         android:gravity="center_vertical"
         android:padding="40dp"
         android:visibility="gone"

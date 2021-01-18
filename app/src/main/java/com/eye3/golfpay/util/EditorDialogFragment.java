@@ -54,31 +54,12 @@ public class EditorDialogFragment extends DialogFragment {
 
     private void setTeamMemoData() {
         for (int i = 0; i < Global.guestList.size(); i++) {
-            Global.guestList.get(i).setTeamMemo(memoContent);
+            //Global.guestList.get(i).setTeamMemo(memoContent);
         }
-    }
-
-    private void setGuestDataMemo(String memoContent) {
-        Global.guestList.get(traversalByGuestId()).setMemo(memoContent);
     }
 
     private void setGuestData() {
-        Global.guestList.get(traversalByGuestId()).setMemo(memoContent);
-    }
-
-    private void setData(String memo) {
-        if (memoEditText.getText() == null || "".equals(memoEditText.getText().toString())) {
-            Toast.makeText(getActivity(), "텍스트 없슴", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        memoContent = memoEditText.getText().toString();
-
-        if (guestId == null) {
-            setTeamMemoData();
-        } else {
-            setGuestDataMemo(memo);
-        }
+        //Global.guestList.get(traversalByGuestId()).setMemo(memoContent);
     }
 
     private void setData() {
@@ -166,6 +147,4 @@ public class EditorDialogFragment extends DialogFragment {
         Util.hideSoftKey(memoEditText, getActivity());
         onEditorFinishListener.OnEditorInputFinished(memoContent);
     }
-
-
 }
