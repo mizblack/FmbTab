@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.view.GpsView;
 import com.eye3.golfpay.view.TeeShotSpotView;
 import com.litetech.libs.nonswipeviewpager.ViewPager;
 
@@ -40,14 +43,17 @@ import static android.content.Context.LOCATION_SERVICE;
 public class CourseFragment extends BaseFragment {
     protected String TAG = getClass().getSimpleName();
 
-    public ViewPager mMapPager;
     private ArrayList<Course> mCourseInfoList;
-    public CoursePagerAdapter mCoursePagerAdapter;
     private TextView mTvCourseName;
     View mainView;
 
     private TextView tv_hole_par, tv_time;
     private TeeShotSpotView tbox1, tbox2, tbox3, tbox4, tbox5;
+    private GpsView gpsView;
+    private TextView tvDistance1;
+    private TextView tvDistance2;
+    private ImageView ivAdvertising1, ivAdvertising2, ivAdvertising3;
+    private int advertisingCount = 0;
 
     public CourseFragment() {
     }
@@ -63,7 +69,6 @@ public class CourseFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.fr_course, container, false);
 
-        mMapPager = mainView.findViewById(R.id.map_pager);
         mTvCourseName = mainView.findViewById(R.id.courseName);
 
 //        closeLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +87,24 @@ public class CourseFragment extends BaseFragment {
         tbox4 = mainView.findViewById(R.id.tbox4);
         tbox5 = mainView.findViewById(R.id.tbox5);
 
+
+        gpsView = mainView.findViewById(R.id.view_gps);
+        tvDistance1 = mainView.findViewById(R.id.textView);
+        tvDistance2 = mainView.findViewById(R.id.textView2);
+        ivAdvertising1 = mainView.findViewById(R.id.iv_ad1);
+        ivAdvertising2 = mainView.findViewById(R.id.iv_ad2);
+        ivAdvertising3 = mainView.findViewById(R.id.iv_ad3);
+
+        gpsView.setDistanceListener(new GpsView.IDistanceListener() {
+            @Override
+            public void onDistance(double distance1, double distance2) {
+                String text1 = String.format("손오반 <-> 오천크스 : %dM", (int)distance1);
+                String text2 = String.format("오천스크 <-> 드래곤볼 : %dM", (int)distance2);
+                tvDistance1.setText(text1);
+                tvDistance2.setText(text2);
+            }
+        });
+
         mainView.findViewById(R.id.tv_score).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +115,7 @@ public class CourseFragment extends BaseFragment {
         (mParentActivity).showMainBottomBar();
 
         startTimerThread();
+        startAdvertisingTimerThread();
         return mainView;
     }
 
@@ -124,24 +148,6 @@ public class CourseFragment extends BaseFragment {
                         return;
                     }
 
-                    mCoursePagerAdapter = new CoursePagerAdapter(getActivity(), Global.CurrentCourse.holes);
-                    mMapPager.setAdapter(mCoursePagerAdapter);
-                    mMapPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                        }
-
-                        @Override
-                        public void onPageSelected(int position) {
-                            setDrawPage(position);
-                        }
-
-                        @Override
-                        public void onPageScrollStateChanged(int state) {
-
-                        }
-                    });
                     //초기화
                     // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
@@ -302,6 +308,35 @@ public class CourseFragment extends BaseFragment {
         }.start();
     }
 
+    private void startAdvertisingTimerThread() {
+
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                switch(advertisingCount%3) {
+                    case 0 :
+                        changeAdvertising(ivAdvertising1, ivAdvertising2);
+                        break;
+                    case 1 :
+                        changeAdvertising(ivAdvertising2, ivAdvertising3);
+                        break;
+                    case 2 :
+                        changeAdvertising(ivAdvertising3, ivAdvertising1);
+                        break;
+                }
+
+                advertisingCount++;
+
+            }
+        }.start();
+    }
+
     private void updateTimer() {
         UIThread.executeInUIThread(new Runnable() {
             @Override
@@ -314,8 +349,21 @@ public class CourseFragment extends BaseFragment {
         startTimerThread();
     }
 
+    private void changeAdvertising(ImageView ivOut, ImageView ivIn) {
 
+        UIThread.executeInUIThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation slowly_appear,slowlyDisappear;
+                slowlyDisappear = AnimationUtils.loadAnimation(getContext(),R.anim.slowly_fadeout);
+                slowly_appear = AnimationUtils.loadAnimation(getContext(),R.anim.slowly_fadein);
+                ivOut.setAnimation(slowlyDisappear);
+                ivOut.setVisibility(View.GONE);
+                ivIn.setAnimation(slowly_appear);
+                ivIn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        startAdvertisingTimerThread();
+    }
 }
-
-
-

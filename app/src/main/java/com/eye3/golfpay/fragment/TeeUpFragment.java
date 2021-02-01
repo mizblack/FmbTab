@@ -179,6 +179,11 @@ public class TeeUpFragment extends BaseFragment {
             @Override
             public void onAdapterItemClicked(Integer position) {
                 int reserveId = Global.teeUpTime.getTodayReserveList().get(position).getId();
+                if (Global.teeUpTime.getTodayReserveList().get(position).getPlayStatus().equals("준비")) {
+                    Toast.makeText(mContext, "내장완료 시에만 입장 가능합니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                    
                 DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(mContext, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
                     @Override
                     public void onSuccess(ResponseData<Object> response) {

@@ -177,10 +177,10 @@ public class ScoreDialog extends Dialog {
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
 
-        reserveScore.guest_score_list.get(0).tar="-";
-        reserveScore.guest_score_list.get(1).tar="-";
-        reserveScore.guest_score_list.get(2).tar="-";
-        reserveScore.guest_score_list.get(3).tar="-";
+
+        for (int i = 0; i < reserveScore.guest_score_list.size(); i++) {
+            reserveScore.guest_score_list.get(i).tar="-";
+        }
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override

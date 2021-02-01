@@ -166,6 +166,16 @@ public class RankingFragment extends BaseFragment {
         viewRankingText.setTextColor(0xff000000);
         viewDetailText.setTextColor(0xffcccccc);
 
+        tabBar.findViewById(R.id.btn_gps).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CourseFragment courseFragment = new CourseFragment();
+                GoNativeScreen(courseFragment, null);
+                Global.courseFragment = courseFragment;
+                mParentActivity.getViewMenuFragment().selectMenu(R.id.view_gps);
+            }
+        });
+
         viewRankingTextOnClick();
         viewDetailTextOnClick();
         rightLinearLayoutOnClick();

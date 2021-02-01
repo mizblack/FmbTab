@@ -1,33 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_advertising"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="#55585c"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_ad1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ad2" />
+        <ImageView
+            android:id="@+id/iv_ad2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/ad3" />
+        <ImageView
+            android:id="@+id/iv_ad3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/ad4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/map_info_title"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="116dp"
         android:background="#55585c"
         android:orientation="horizontal"
         android:paddingLeft="32dp"
-        android:paddingTop="12dp"
-        android:paddingRight="23dp">
-
+        android:paddingRight="23dp"
+        app:layout_constraintTop_toBottomOf="@+id/view_advertising">
 
         <TextView
             android:id="@+id/tv_hole_par"
-            style="@style/GlobalTextView.32SP.white.NotoSans.Medium"
+            style="@style/GlobalTextView.36SP.white.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="1 Hole Par 4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/courseName"
-            style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
+            style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OUTCOURSE"
@@ -36,10 +67,11 @@
 
         <TextView
             android:id="@+id/tv_time"
-            style="@style/GlobalTextView.32SP.white.NotoSans.Medium"
+            style="@style/GlobalTextView.36SP.white.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
+            android:layout_marginStart="64dp"
+            android:text="02:18"
             app:layout_constraintBottom_toBottomOf="@+id/tv_hole_par"
             app:layout_constraintStart_toEndOf="@+id/tv_hole_par"
             app:layout_constraintTop_toTopOf="@+id/tv_hole_par"
@@ -56,7 +88,7 @@
             app:layout_constraintTop_toTopOf="@+id/courseName">
 
             <TextView
-                style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
+                style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전 07:08"
@@ -67,121 +99,104 @@
                 style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="8dp"
                 android:text="후 07:08"
                 tools:ignore="HardcodedText,SpUsage" />
 
         </LinearLayout>
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toEndOf="@+id/linearLayout10"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox1"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:meter="375/356"
                 app:oval_color="#6c2126"
                 app:title="Black" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox2"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbox1"
                 app:meter="338/320"
                 app:oval_color="#ffffff"
                 app:title="White" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox3"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tbox2"
                 app:meter="286/263"
                 app:oval_color="#dc3053"
                 app:title="Ladies" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox4"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
+                app:layout_constraintStart_toEndOf="@+id/tbox1"
+                app:layout_constraintTop_toTopOf="parent"
                 app:meter="338/320"
                 app:oval_color="#416f9d"
                 app:title="Championship" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox5"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintStart_toStartOf="@+id/tbox4"
+                app:layout_constraintTop_toBottomOf="@+id/tbox4"
                 app:meter="286/263"
                 app:oval_color="#dc763e"
                 app:title="Front" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_score"
             style="@style/GlobalTextView.17SP.999999.NotoSans.Medium"
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="36dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/ripple_blend_score_button"
             android:gravity="center"
             android:text="스코어"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:layout_editor_absoluteY="16dp">
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_monarch_circle" />
-
-        </LinearLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.litetech.libs.nonswipeviewpager.ViewPager
-        android:id="@+id/map_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/map_info_title"
-        android:background="@color/zumthor" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_below="@+id/map_info_title"
-        android:background="@android:color/transparent"
-        tools:ignore="DisableBaselineAlignment">
+        android:background="#cdd8db"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_info_title">
 
         <TextView
-            style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
             android:id="@+id/textView8"
+            style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
@@ -192,8 +207,8 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_marginTop="12dp"
             android:src="@drawable/hole_cup_image"
             app:layout_constraintStart_toStartOf="@+id/textView8"
@@ -212,13 +227,69 @@
 
         <TextView
             android:id="@+id/tv_distance"
-            style="@style/GlobalTextView.78SP.irisBlue.NotoSans.Medium"
+            style="@style/GlobalTextView.74SP.irisBlue.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="273M"
             android:layout_marginTop="8dp"
+            android:text="273M"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toTopOf="@+id/textView9" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view_map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#cdd8db"
+            android:padding="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tv_distance"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/iv_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/map" />
+
+            <com.eye3.golfpay.view.GpsView
+                android:id="@+id/view_gps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="220dp"
+                android:layout_height="80dp"
+                android:background="@color/ebonyBlack"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/iv_map">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="@+id/textView"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

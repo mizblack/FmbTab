@@ -230,25 +230,7 @@ public class CartLocationService extends Service {
         public void onLocationChanged(Location location) {
          //   Log.e(TAG, "onLocationChanged: " + showLogOfLocationInfo(location));
 
-            mLastLocation.set(location);
-            if (Global.courseFragment == null || Global.courseFragment.mCoursePagerAdapter == null)
-                return;
 
-            if (Global.courseFragment.mCoursePagerAdapter.mLocation == null)
-                return;
-            if (Global.courseFragment != null && Global.courseFragment.isVisible()) {
-                Global.courseFragment.mMapPager.setCurrentItem(Global.viewPagerPosition);
-                if (Global.courseFragment.mCoursePagerAdapter.mLocation != null &&
-                        Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat != null &&
-                        Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon != null) {
-
-//                    Global.courseFragment.mTvHereToHole.setText(String.valueOf(GPSUtil.DistanceByDegreeAndroid(
-//                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLatitude(),
-//                            Global.courseFragment.mCoursePagerAdapter.mLocation.getLongitude(),
-//                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lat),
-//                            Double.parseDouble(Global.courseFragment.mCoursePagerAdapter.mHoleList.get(Global.viewPagerPosition).gps_lon)) + "M"));
-                }
-            }
         }
 
         @Override
