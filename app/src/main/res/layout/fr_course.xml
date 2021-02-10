@@ -194,6 +194,133 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_info_title">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view_map"
+            android:layout_width="1100dp"
+            android:layout_height="401.4dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_map"
+                android:layout_width="1100dp"
+                android:layout_height="401.4dp"
+                android:background="#cdd8db"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.eye3.golfpay.view.GpsView
+                android:id="@+id/view_gps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="44sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/iv_map">
+
+                <ImageView
+                    android:id="@+id/iv_spot1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/spot1"/>
+
+                <ImageView
+                    android:id="@+id/iv_arrow1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_arrow_gray_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_spot1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot1" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="274M"
+                    android:gravity="center"
+                    android:textColor="@color/ebonyBlack"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_arrow1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_arrow1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_arrow1" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot1"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot1" />
+
+                <ImageView
+                    android:id="@+id/iv_spot2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/spot2"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_arrow2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot1" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_arrow_gray_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_spot2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot1" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="243M"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot2"
+                    app:layout_constraintStart_toEndOf="@+id/iv_arrow3"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot2" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_spot1"
+                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_spot1" />
+
+                <ImageView
+                    android:id="@+id/iv_goal"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/goal"
+                    app:layout_constraintStart_toEndOf="@+id/iv_arrow4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.eye3.golfpay.view.CartPosView
+                android:id="@+id/view_cartPos"
+                android:layout_width="400dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/textView8"
             style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
@@ -206,11 +333,21 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/iv_holeCup"
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_marginTop="12dp"
-            android:src="@drawable/hole_cup_image"
+            android:background="@color/black"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            tools:ignore="ContentDescription" />
+
+        <com.eye3.golfpay.view.HoleCupPointView
+            android:id="@+id/holeCup_point"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toBottomOf="@+id/textView8"
             tools:ignore="ContentDescription" />
@@ -221,12 +358,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Hole to hole"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+            android:text="Here to hole"
+            app:layout_constraintStart_toStartOf="@+id/iv_holeCup"
+            app:layout_constraintTop_toBottomOf="@+id/iv_holeCup" />
 
         <TextView
-            android:id="@+id/tv_distance"
+            android:id="@+id/tv_here_to_hole"
             style="@style/GlobalTextView.74SP.irisBlue.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -235,59 +372,7 @@
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toTopOf="@+id/textView9" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/view_map"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#cdd8db"
-            android:padding="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/tv_distance"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
 
-            <ImageView
-                android:id="@+id/iv_map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/map" />
-
-            <com.eye3.golfpay.view.GpsView
-                android:id="@+id/view_gps"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="220dp"
-                android:layout_height="80dp"
-                android:background="@color/ebonyBlack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/iv_map">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

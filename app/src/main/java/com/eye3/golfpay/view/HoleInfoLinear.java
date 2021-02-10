@@ -64,22 +64,15 @@ public class HoleInfoLinear extends LinearLayout {
         } else
             tvMeter.setText(hole.hole_total_size);
 
+        //변경된 UI로 미터 표시 안함
+        tvMeter.setVisibility(View.INVISIBLE);
+
         if (hole.gameType != null ) {
             if (hole.gameType.equals(AppDef.NEAREST))
                 viewGameType.setBackgroundColor(Color.parseColor("#FF0000"));
             else if (hole.gameType.equals(AppDef.LONGEST))
                 viewGameType.setBackgroundColor(Color.BLUE);
         }
-
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(hole.gameType != null) {
-
-                }
-                return false;
-            }
-        });
 
         addView(v);
     }

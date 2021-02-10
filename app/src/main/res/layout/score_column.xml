@@ -2,21 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="108dp"
+    android:layout_height="70dp"
     android:background="@color/white"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="59dp"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
         <TextView
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="14dp"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
+            android:layout_marginTop="9dp"
             android:text="Rank" />
 
         <Spinner
@@ -34,14 +32,15 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:layout_marginTop="14dp"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
+            android:layout_marginTop="9dp"
             android:text="Hole" />
 
         <TextView
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:text="Meters" />
 
     </RelativeLayout>
@@ -73,21 +72,23 @@
 
         <TextView
             android:id="@+id/tvCourseName1"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
-            android:layout_marginTop="14dp"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
+            android:layout_marginTop="9dp"
             />
 
         <TextView
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:id="@+id/tvTotalPar1"
             android:layout_below="@+id/tvCourseName1"
+            android:layout_marginTop="4dp"
             />
 
         <TextView
             android:id="@+id/tvTotalMeters1"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:layout_marginBottom="13dp"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -104,21 +105,23 @@
 
         <TextView
             android:id="@+id/tvCourseName2"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp" />
+            android:layout_marginTop="9dp" />
 
         <TextView
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:id="@+id/tvTotalPar2"
-            android:layout_below="@+id/tvCourseName2" />
+            android:layout_below="@+id/tvCourseName2"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/tvTotalMeters2"
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:text="3,160" />
 
     </RelativeLayout>
@@ -132,14 +135,15 @@
 
         <TextView
             android:id="@+id/inOrOutColumnTotal"
-            style="@style/GlobalTextView.14SP.White.NotoSans.Bold"
-            android:layout_marginTop="14dp"
+            style="@style/GlobalTextView.14SP.White.NotoSans.Medium"
+            android:layout_marginTop="9dp"
             android:text="Total"/>
 
         <TextView
-            style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
+            style="@style/GlobalTextView.14SP.gray.NotoSans.Medium"
             android:id="@+id/inOrOutTotal"
             android:layout_below="@+id/inOrOutColumnTotal"
+            android:layout_marginTop="4dp"
             android:text="72"/>
 
         <TextView
@@ -147,6 +151,7 @@
             style="@style/MainRankOrHoleOrPuttOrMeterTextViewNew"
             android:layout_marginBottom="13dp"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:text="6,530" />
     </RelativeLayout>
 

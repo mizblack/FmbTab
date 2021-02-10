@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_container"
+    android:layout_width="342dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dp"
+    android:background="@color/white"
+    android:elevation="20dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="4343434343"
+        app:layout_constraintStart_toStartOf="@+id/btn_confirm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_confirm"
+        style="@style/GlobalTextView.20SP.White.NotoSans.Medium"
+        android:layout_width="308dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="62dp"
+        android:background="@color/irisBlue"
+        android:gravity="center"
+        android:text="확인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        style="@style/GlobalTextView.20SP.White.NotoSans.Medium"
+        android:layout_width="308dp"
+        android:layout_height="70dp"
+        android:background="@color/zumthor"
+        android:gravity="center"
+        android:text="취소"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

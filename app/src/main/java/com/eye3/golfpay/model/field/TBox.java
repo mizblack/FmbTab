@@ -12,6 +12,8 @@ public class TBox {
     private String mTboxName;
     @SerializedName("tbox_value")
     private String mTboxValue;
+    @SerializedName("tbox_color")
+    private String mTboxColor;
 
     public Long getId() {
         return mId;
@@ -37,4 +39,7 @@ public class TBox {
         mTboxValue = tboxValue;
     }
 
+    public String getmTboxColor() {
+        return mTboxColor;
+    }
 }

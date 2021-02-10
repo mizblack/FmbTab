@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.fragment.BaseFragment;
+import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.GalleryFragment;
 import com.eye3.golfpay.fragment.MainWorkFragment;
 import com.eye3.golfpay.fragment.ViewMenuFragment;
@@ -41,7 +42,7 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     public DrawerLayout drawer;
     private final boolean isForward = true;
     protected OnKeyBackPressedListener mOnKeyBackPressedListener;
-    RelativeLayout mContentRelativeLayout;
+    ConstraintLayout mContentConstrainLayout;
     ConstraintLayout mBottomBarLayout;
 
     public void setOnKeyBackPressedListener(BaseFragment listener) {
@@ -69,15 +70,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     }
 
     public void showMainBottomBar() {
-        mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
-        mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.content_view_height)));
+        mContentConstrainLayout = findViewById(R.id.vw_NativeContent);
+        mContentConstrainLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.content_view_height)));
         mBottomBarLayout = findViewById(R.id.main_bottom_bar);
         mBottomBarLayout.setVisibility(View.VISIBLE);
     }
 
     public void hideMainBottomBar() {
-        mContentRelativeLayout = findViewById(R.id.vw_NativeContent);
-        mContentRelativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        mContentConstrainLayout = findViewById(R.id.vw_NativeContent);
+        mContentConstrainLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         mBottomBarLayout = findViewById(R.id.main_bottom_bar);
         mBottomBarLayout.setVisibility(View.GONE);
     }
@@ -308,6 +309,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             if (fragment instanceof GalleryFragment) {
                 return ((GalleryFragment) fragment);
+            }
+        }
+        return null;
+    }
+
+    public CourseFragment getCourseFragment() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof CourseFragment) {
+                return ((CourseFragment) fragment);
             }
         }
         return null;

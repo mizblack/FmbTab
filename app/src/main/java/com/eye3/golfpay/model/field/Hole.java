@@ -17,7 +17,7 @@ public class Hole implements Serializable {
     @SerializedName("id")
     @Expose
     public String id;
-    //countryclub Id
+
     @SerializedName("cc_id")
     @Expose
     public String cc_id;
@@ -118,6 +118,26 @@ public class Hole implements Serializable {
     @SerializedName("tbox")
     @Expose
     public ArrayList<TBox> tBox = new ArrayList<>();
+
+    @SerializedName("course_hole_width_per")
+    @Expose
+    public int course_hole_width_per;
+
+    @SerializedName("course_hole_height_per")
+    @Expose
+    public int course_hole_height_per;
+
+    @SerializedName("hole_pin_width_per")
+    @Expose
+    public int hole_pin_width_per;
+
+    @SerializedName("hole_pin_height_per")
+    @Expose
+    public int hole_pin_height_per;
+
+    @SerializedName("hole_image_meter")
+    @Expose
+    public int hole_image_meter;
 
     //*************************************
     @SerializedName("score")

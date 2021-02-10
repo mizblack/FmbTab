@@ -61,22 +61,22 @@ public class GpsView extends View {
 
         paint.setAlpha(255);
         paint.setStrokeWidth(3);
-        paint.setColor(Color.DKGRAY);
+        paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setPathEffect(new DashPathEffect(new float[]{10,4},50));
         paint.setAntiAlias(true);
 
-        bmObject1 = BitmapFactory.decodeResource(getResources(), R.drawable.onban);
-        bmObject2 = BitmapFactory.decodeResource(getResources(), R.drawable.fusion);
-        bmHole = BitmapFactory.decodeResource(getResources(), R.drawable.pngegg);
+        bmObject1 = BitmapFactory.decodeResource(getResources(), R.drawable.spot1);
+        bmObject2 = BitmapFactory.decodeResource(getResources(), R.drawable.spot2);
+        bmHole = BitmapFactory.decodeResource(getResources(), R.drawable.goal);
 
         rcObject1 = new Rect(0, 0, bmObject1.getWidth(), bmObject1.getHeight());
         rcObject2 = new Rect(0, 0, bmObject2.getWidth(), bmObject2.getHeight());
         rcHole = new Rect(0, 0, bmHole.getWidth(), bmHole.getHeight());
-        sizeObject1 = new Size(120, 120);
-        sizeObject2 = new Size(100, 100);
+        sizeObject1 = new Size(70, 70);
+        sizeObject2 = new Size(70, 70);
         sizeHole = new Size(50, 50);
-        ptObject1 = new Point(80, 50);
+        ptObject1 = new Point(300, 50);
         ptObject2 = new Point(700, 200);
         ptHole = new Point(1400, 35);
     }
@@ -84,6 +84,21 @@ public class GpsView extends View {
     public GpsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+    }
+
+    public void setHolePos (Point posHole, int meter, int mapOrgWidth) {
+        float ratio = (float)mapOrgWidth / (float)rect.width();
+        int x = (int)((float)rect.width() * (posHole.x / 100.0f));
+        int y = (int)((float)rect.height() * (posHole.y / 100.0f));
+        ptHole = new Point((int)(x * ratio), (int)(y * ratio));
+
+        if (x <= rect.width()/2) {
+            ptObject1 = new Point(rect.width()-200, 80);
+        } else
+            ptObject1 = new Point(300, 50);
+
+        ptObject2 = new Point(rect.width()/2, rect.height()/2);
+        invalidate();
     }
 
     public void setDistanceListener(IDistanceListener listener) {

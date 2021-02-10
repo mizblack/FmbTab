@@ -30,7 +30,7 @@ public class TeeShotSpotView extends ConstraintLayout {
 
     private TextView tvText;
     private TextView tvMeter;
-
+    private ImageView ivOval;
     public TeeShotSpotView(Context context) {
         super(context);
     }
@@ -55,12 +55,7 @@ public class TeeShotSpotView extends ConstraintLayout {
         this.mContext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.teeshot_spot_layout, this, false);
-
-        ImageView ivOval = v.findViewById(R.id.iv_oval);
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.shape_oval);
-        drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-        ivOval.setBackground(drawable);
-
+        ivOval = v.findViewById(R.id.iv_oval);
         tvText = v.findViewById(R.id.tv_text);
         tvText.setText(mText);
         tvMeter = v.findViewById(R.id.tv_meter);
@@ -69,8 +64,17 @@ public class TeeShotSpotView extends ConstraintLayout {
         addView(v);
     }
 
-    public void setValue(String text, String meter) {
+    public void setValue(String text, String meter, String colorText) {
         tvText.setText(text);
         tvMeter.setText(meter);
+        try {
+            colorText = "#" + colorText;
+            color = Color.parseColor(colorText);
+            Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.shape_oval);
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            ivOval.setBackground(drawable);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

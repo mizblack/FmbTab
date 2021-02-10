@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
@@ -49,6 +53,10 @@ public class ScoreFragment extends BaseFragment {
     TabCourseLinear mScoreBoard;
     int mTabIdx = 0;
 
+    private int advertisingCount = 0;
+    private boolean advertsingContinue = true;
+    private ImageView ivAdvertising1, ivAdvertising2, ivAdvertising3;
+
     private static final ArrayList<String> firstGuestIdList = new ArrayList<>();
 
     @Override
@@ -56,6 +64,12 @@ public class ScoreFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         getReserveScore();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        advertsingContinue = false;
     }
 
     //스코어 보드를 생성한다.
@@ -85,7 +99,6 @@ public class ScoreFragment extends BaseFragment {
 //        }
 
         return playerList.get(0).course;
-
     }
 
     private List<Course> getCtypedCourseforCourseList(List<Course> courseList) {
@@ -119,6 +132,10 @@ public class ScoreFragment extends BaseFragment {
         tabBar = v.findViewById(R.id.tab_bar);
         courseLinearLayout = v.findViewById(R.id.courseLinearLayout);
         mParentActivity.showMainBottomBar();
+        ivAdvertising1 = v.findViewById(R.id.iv_ad1);
+        ivAdvertising2 = v.findViewById(R.id.iv_ad2);
+        ivAdvertising3 = v.findViewById(R.id.iv_ad3);
+        startAdvertisingTimerThread();
 
         //Nearest 클릭릭
         tabBar.findViewById(R.id.pinkNearestOrLongest).setOnClickListener(new View.OnClickListener() {
@@ -331,14 +348,14 @@ public class ScoreFragment extends BaseFragment {
                         if (response.course_near.equals("IN")) {
                             nearest = response.hole_no_near-1;
                         }
-                        else if (response.course_long.equals("IN")) {
+                        if (response.course_long.equals("IN")) {
                             longest = response.hole_no_long-1;
                         }
                     } else if (course.contains("OUT")) {
                         if (response.course_near.equals("OUT")) {
                             nearest = response.hole_no_near-1;
                         }
-                        else if (response.course_long.equals("OUT")) {
+                        if (response.course_long.equals("OUT")) {
                             longest = response.hole_no_long-1;
                         }
                     }
@@ -365,5 +382,60 @@ public class ScoreFragment extends BaseFragment {
 
             }
         });
+    }
+
+
+    private void startAdvertisingTimerThread() {
+
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                if (!advertsingContinue)
+                    return;
+
+                switch(advertisingCount%3) {
+                    case 0 :
+                        changeAdvertising(ivAdvertising1, ivAdvertising2);
+                        break;
+                    case 1 :
+                        changeAdvertising(ivAdvertising2, ivAdvertising3);
+                        break;
+                    case 2 :
+                        changeAdvertising(ivAdvertising3, ivAdvertising1);
+                        break;
+                }
+
+                advertisingCount++;
+
+            }
+        }.start();
+    }
+
+    private void changeAdvertising(ImageView ivOut, ImageView ivIn) {
+
+        UIThread.executeInUIThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Animation slowly_appear, slowlyDisappear;
+                    slowlyDisappear = AnimationUtils.loadAnimation(getContext(), R.anim.slowly_fadeout);
+                    slowly_appear = AnimationUtils.loadAnimation(getContext(), R.anim.slowly_fadein);
+                    ivOut.setAnimation(slowlyDisappear);
+                    ivOut.setVisibility(View.GONE);
+                    ivIn.setAnimation(slowly_appear);
+                    ivIn.setVisibility(View.VISIBLE);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        startAdvertisingTimerThread();
     }
 }

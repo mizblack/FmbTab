@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.net.DataInterface;
@@ -32,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginFragment extends BaseFragment {
     TextView mStartTextView;
-    EditText mPhoneNumberEditText, mNameEditText;
+    EditText editGolfId, editId, editPwd;
     ImageView mCancelIcon;
     CheckBox cbSave;
 
@@ -46,19 +47,22 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fr_drawer_login, container, false);
-        mPhoneNumberEditText = v.findViewById(R.id.phoneNumberEditText);
-        mNameEditText = v.findViewById(R.id.nameEditText);
+        editGolfId = v.findViewById(R.id.edit_GolfId);
+        editPwd = v.findViewById(R.id.phoneNumberEditText);
+        editId = v.findViewById(R.id.nameEditText);
         mStartTextView = v.findViewById(R.id.startTextView);
         mCancelIcon = v.findViewById(R.id.cancelIcon);
         cbSave = v.findViewById(R.id.cb_save);
         init(v);
 
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+        String golfId  = pref.getString("golf_id", "");
         String id  = pref.getString("id", "");
         String pwd = pref.getString("password", "");
         boolean check = pref.getBoolean("save", false);
-        mNameEditText.setText(id);
-        mPhoneNumberEditText.setText(pwd);
+        editGolfId.setText(golfId);
+        editId.setText(id);
+        editPwd.setText(pwd);
         cbSave.setChecked(check);
 
 //        if (BuildConfig.DEBUG) {
@@ -89,8 +93,13 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
+                if (editGolfId.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "골프장 ID를 입력해 주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 try {
-                    login(mNameEditText.getText().toString().trim(), Security.encrypt(mPhoneNumberEditText.getText().toString()));
+                    login(editGolfId.getText().toString(), editId.getText().toString().trim(), Security.encrypt(editPwd.getText().toString()));
                 } catch (NoSuchPaddingException
                         | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException
@@ -100,10 +109,10 @@ public class LoginFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
-                closeKeyboard(mNameEditText);
-                closeKeyboard(mPhoneNumberEditText);
-                mNameEditText.setEnabled(false);
-                mPhoneNumberEditText.setEnabled(false);
+                closeKeyboard(editId);
+                closeKeyboard(editPwd);
+                editId.setEnabled(false);
+                editPwd.setEnabled(false);
             }
         });
 
@@ -115,10 +124,10 @@ public class LoginFragment extends BaseFragment {
         });
     }
 
-    private void login(String id, String pwd) {
+    private void login(String golfId, String id, String pwd) {
         //   showProgress("로그인 중입니다....");
 
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).login(id, pwd, new DataInterface.ResponseCallback<Login>() {
+        DataInterface.getInstance(golfId+"/api/v1/").login(id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
                 hideProgress();
@@ -129,17 +138,22 @@ public class LoginFragment extends BaseFragment {
                     changeDrawerViewToMenuView();
 
                     if (cbSave.isChecked()) {
-                        saveAccount(id, mPhoneNumberEditText.getText().toString(), true);
+                        saveAccount(golfId, id, editPwd.getText().toString(), true);
                     } else {
-                        saveAccount("", "", false);
+                        saveAccount("", "", "", false);
                     }
+
+                    Global.HOST_BASE_ADDRESS_AWS = golfId + "/";
+                    Global.HOST_ADDRESS_AWS = golfId + "/api/v1/";
+                    Global.tabletLogo = response.getTabletLogo();
+                    ((MainActivity)getActivity()).updateUI();
 
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
-                    mNameEditText.setEnabled(true);
-                    mPhoneNumberEditText.setEnabled(true);
-                    mNameEditText.setText("");
-                    mPhoneNumberEditText.setText("");
+                    editId.setEnabled(true);
+                    editPwd.setEnabled(true);
+                    editId.setText("");
+                    editPwd.setText("");
                 }
             }
 
@@ -157,10 +171,11 @@ public class LoginFragment extends BaseFragment {
         });
     }
 
-    private void saveAccount(String id, String pwd, boolean check) {
+    private void saveAccount(String golfId, String id, String pwd, boolean check) {
         try {
             SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
+            editor.putString("golf_id", golfId);
             editor.putString("id", id);
             editor.putString("password", pwd);
             editor.putBoolean("save", check);

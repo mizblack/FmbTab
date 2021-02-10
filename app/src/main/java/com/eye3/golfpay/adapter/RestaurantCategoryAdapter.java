@@ -145,11 +145,23 @@ public class RestaurantCategoryAdapter extends RecyclerView.Adapter<RestaurantCa
     public void firstSelect() {
         try {
 
-            categoryList.get(0).isSelected = true;
-            notifyDataSetChanged();
+            //기존에 선택해 놓은 게 있으면 첫번째 아이템 선택 안함.
+            if (isAllUnChecked()) {
+                categoryList.get(0).isSelected = true;
+                notifyDataSetChanged();
+            }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isAllUnChecked() {
+        for (Category item : categoryList) {
+            if (item.isSelected)
+                return false;
+        }
+
+        return true;
     }
 
     public Category getSelectedMenu() {

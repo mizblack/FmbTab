@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -125,6 +128,10 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
                         listener.onTakeClubPhoto(guestInfo.getReserveGuestId());
                     }
                 } else {
+                    if(isFullImage()) {
+                        Toast.makeText(getContext(), "클럽사진은 최대 3장까지 추가할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     listener.onTakeClubPhoto(guestInfo.getReserveGuestId());
                 }
             }
@@ -466,6 +473,27 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
                     .placeholder(R.drawable.ic_noimage)
                     .into(img);
         }
+    }
+
+    private boolean isFullImage() {
+        return hasImage(mClubImageView[0]) && hasImage(mClubImageView[1]) && hasImage(mClubImageView[2]);
+    }
+
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+
+            //빈이미지로 간주
+            int height = ((BitmapDrawable) drawable).getBitmap().getHeight();
+            if (((BitmapDrawable) drawable).getBitmap().getHeight() == 30) {
+                return false;
+            }
+        }
+
+        return hasImage;
     }
 
 

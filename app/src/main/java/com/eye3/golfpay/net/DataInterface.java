@@ -10,6 +10,7 @@ import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gallery.ResponseGallery;
 import com.eye3.golfpay.model.gps.GpsInfo;
+import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
@@ -346,18 +347,18 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void sendGpsInfo(final Context context, String caddy_num, double lat, double lng, int reserve_id, final ResponseCallback<ResponseData<GpsInfo>> callback) {
+    public void sendGpsInfo(final Context context, String caddy_num, double lat, double lng, String reserve_id, final ResponseCallback<ResponseData<ResponseCartInfo>> callback) {
         try {
 
-            Call<ResponseData<GpsInfo>> call = service.sendGpsInfo(caddy_num, lat, lng, reserve_id);
-            call.enqueue(new Callback<ResponseData<GpsInfo>>() {
+            Call<ResponseData<ResponseCartInfo>> call = service.sendGpsInfo(caddy_num, lat, lng, reserve_id);
+            call.enqueue(new Callback<ResponseData<ResponseCartInfo>>() {
                 @Override
-                public void onResponse(Call<ResponseData<GpsInfo>> call, Response<ResponseData<GpsInfo>> response) {
+                public void onResponse(Call<ResponseData<ResponseCartInfo>> call, Response<ResponseData<ResponseCartInfo>> response) {
                     solveCommonError(context, callback, response, false);
                 }
 
                 @Override
-                public void onFailure(Call<ResponseData<GpsInfo>> call, Throwable t) {
+                public void onFailure(Call<ResponseData<ResponseCartInfo>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);

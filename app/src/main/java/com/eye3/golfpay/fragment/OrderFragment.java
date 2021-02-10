@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.adapter.RestaurantCategoryAdapter;
 import com.eye3.golfpay.adapter.RestaurantListAdapter;
 import com.eye3.golfpay.adapter.RestaurantMenuAdapter;
@@ -28,6 +31,8 @@ import com.eye3.golfpay.adapter.SelectedOrderAdapter;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.databinding.FrRestaurantOrderBinding;
+import com.eye3.golfpay.dialog.LogoutDialog;
+import com.eye3.golfpay.dialog.YesNoDialog;
 import com.eye3.golfpay.model.order.Category;
 import com.eye3.golfpay.model.order.GuestNameOrder;
 import com.eye3.golfpay.model.order.OrderDetail;
@@ -41,6 +46,7 @@ import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.teeup.GuestScoreDB;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.NameOrderView;
 import com.eye3.golfpay.view.OrderItemInvoiceView;
 import com.eye3.golfpay.view.SnappingLinearLayoutManager;
@@ -198,9 +204,27 @@ public class OrderFragment extends BaseFragment {
         binding.orderOrApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendShadeOrders();
 
+                YesNoDialog dlg = new YesNoDialog(getContext(), R.style.DialogTheme);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
 
+                // Set alertDialog "not focusable" so nav bar still hiding:
+                dlg.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                dlg.show();
+                dlg.setContentTitle("해당 그늘집의 확인 후 \n" +
+                        "바로 조리가 시작됩니다.\n" +
+                        "진행하시겠습니까?");
+                dlg.setListener(new YesNoDialog.IListenerYesNo() {
+                    @Override
+                    public void onConfirm() {
+                        sendShadeOrders();
+                    }
+                });
             }
         });
 
@@ -328,15 +352,17 @@ public class OrderFragment extends BaseFragment {
 //                    preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
 //                }
 
-                preSelectedGuestView = v;
-                tvName = v.findViewById(R.id.tv_name);
-                tvCount = v.findViewById(R.id.tv_count);
-                tvName.setTextAppearance(R.style.GlobalTextView_20SP_White_NotoSans_Medium);
-                tvCount.setTextAppearance(R.style.GlobalTextView_17SP_white_NotoSans_Medium);
-                preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
 
                 //주문된 음식이 있다면
                 if (mMenuAdapter.haveOrder()) {
+
+                    preSelectedGuestView = v;
+                    tvName = v.findViewById(R.id.tv_name);
+                    tvCount = v.findViewById(R.id.tv_count);
+                    tvName.setTextAppearance(R.style.GlobalTextView_20SP_White_NotoSans_Medium);
+                    tvCount.setTextAppearance(R.style.GlobalTextView_17SP_white_NotoSans_Medium);
+                    preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
+
                     RestaurantMenu item = mMenuAdapter.getSelectedMenu();
                     OrderedMenuItem menu = new OrderedMenuItem(item.id, "1", item.price, item.name, "");
 
@@ -424,6 +450,7 @@ public class OrderFragment extends BaseFragment {
                 }
             }
 
+            int orderItemInvoiceListIndex = 0;
             for (OrderItemInvoice order : mRestaurantMenuOrder.getOrderItemInvoiceArrayList()) {
                 for (GuestNameOrder guestNameOrder : order.mGuestNameOrders) {
                     if (guestNameOrder.mGuestName.equals(deletedGuestNameOrder.mGuestName) && guestNameOrder.mMenuName.equals(menuName)) {
@@ -432,13 +459,15 @@ public class OrderFragment extends BaseFragment {
 
                         //전부 지웠으면 메뉴 아이템도 삭제시킨다.
                         if (order.mGuestNameOrders.isEmpty())
-                            mRestaurantMenuOrder.getOrderItemInvoiceArrayList().clear();
+                            mRestaurantMenuOrder.getOrderItemInvoiceArrayList().remove(orderItemInvoiceListIndex);
 
                         makeOrderItemInvoiceArrViews(mRestaurantMenuOrder.getOrderItemInvoiceArrayList());
                         resetGuestList();
                         return;
                     }
                 }
+
+                orderItemInvoiceListIndex++;
             }
 
             setTotalInvoice();

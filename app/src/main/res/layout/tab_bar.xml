@@ -32,8 +32,8 @@
         android:visibility="visible">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:background="@drawable/nearest_longest"
             tools:ignore="ContentDescription" />
 
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginStart="10dp"
             android:text="Nearest / Longest"
             android:textColor="@color/FMB_Color_F05D6C"
@@ -90,8 +90,8 @@
 
         <ImageView
             android:id="@+id/rightButtonIcon"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/score_down"
             tools:ignore="ContentDescription" />
@@ -108,15 +108,15 @@
 
     <TextView
         android:id="@+id/btn_gps"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
         style="@style/GlobalTextView.18SP.gray.NotoSans.Bold"
-        android:gravity="center"
-        android:textSize="20dp"
-        android:layout_marginStart="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="GPS"
+        android:layout_width="80dp"
+        android:layout_height="34dp"
         android:background="@drawable/shape_round_dark_bg"
+        android:gravity="center"
+        android:text="GPS"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

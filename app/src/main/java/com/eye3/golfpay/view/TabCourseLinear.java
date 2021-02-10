@@ -264,6 +264,13 @@ public class TabCourseLinear extends LinearLayout {
         List<Player> playerList;
         Course mCurrentCourse;
         Context mContext;
+        int nameTextStyle = R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Medium;
+        int puttNameTextStyle = R.style.GlobalTextView_16SP_ebonyBlack_NotoSans_Medium;
+        int scoreTextStyle = R.style.GlobalTextView_28SP_ebonyBlack_NotoSans_Medium;
+        int scoreTotalTextStyle = R.style.GlobalTextView_28SP_white_NotoSans_Medium;
+        int puttTextStyle = R.style.GlobalTextView_16SP_Gray_NotoSans_Regular;
+        int emptyScoreTextStyle = R.style.GlobalTextView_28SP_Gray_NotoSans_Regular;
+
 
         ScoreAdapter(Context context, List<Player> playerList, Course mCourse) {
             this.playerList = playerList;
@@ -277,6 +284,8 @@ public class TabCourseLinear extends LinearLayout {
             RelativeLayout[] courseTotal = new RelativeLayout[2]; //동적생성전 임시처리
             RelativeLayout wholeTotalLinear;
             LinearLayout ll_score_row;
+
+
             int[] holeIds = { R.id.hole1_ll,R.id.hole2_ll,R.id.hole3_ll,R.id.hole4_ll,R.id.hole5_ll,R.id.hole6_ll,R.id.hole7_ll,R.id.hole8_ll,R.id.hole9_ll};
             ScoreItemViewHolder(View view) {
                 super(view);
@@ -284,8 +293,19 @@ public class TabCourseLinear extends LinearLayout {
                 tvRank = view.findViewById(R.id.rank);
                 tvName = view.findViewById(R.id.name);
 
+                int h = 89;
+                if (playerList.size() > 4) {
+                    h = 72;
+                    nameTextStyle = R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Medium;
+                    puttNameTextStyle = R.style.GlobalTextView_12SP_ebonyBlack_NotoSans_Medium;
+                    scoreTextStyle = R.style.GlobalTextView_24SP_ebonyBlack_NotoSans_Medium;
+                    puttTextStyle = R.style.GlobalTextView_12SP_Gray_NotoSans_Regular;
+                    emptyScoreTextStyle = R.style.GlobalTextView_24SP_Gray_NotoSans_Regular;
+                    scoreTotalTextStyle = R.style.GlobalTextView_24SP_White_NotoSans_Medium;
+                }
+
                 final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, LayoutParams.MATCH_PARENT, getResources().getDisplayMetrics());
-                final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 112, getResources().getDisplayMetrics());
+                final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, h, getResources().getDisplayMetrics());
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
                 ll_score_row.setLayoutParams(params);
 
@@ -363,6 +383,9 @@ public class TabCourseLinear extends LinearLayout {
         public void onBindViewHolder(@NonNull ScoreAdapter.ScoreItemViewHolder scoreItemViewHolder, int index) {
             Course course = playerList.get(index).course.get(mTabIdx);
 
+            scoreItemViewHolder.tvRank.setTextAppearance(nameTextStyle);
+            scoreItemViewHolder.tvName.setTextAppearance(nameTextStyle);
+
             if (playerList.get(index).ranking == 1) {
                 scoreItemViewHolder.tvRank.setTextColor(Color.parseColor("#00abc5"));
                 scoreItemViewHolder.tvName.setTextColor(Color.parseColor("#00abc5"));
@@ -409,10 +432,14 @@ public class TabCourseLinear extends LinearLayout {
             for (int j = 0; j < 9; j++) {
                 TextView tvScore = scoreItemViewHolder.holeScoreLayout[j].findViewById(tvIds[j]);
                 TextView tvPutt = scoreItemViewHolder.holeScoreLayout[j].findViewById(tvHoleIds[j]);
+
+                tvScore.setTextAppearance(scoreTextStyle);
+                tvPutt.setTextAppearance(puttTextStyle);
+
                 tvScore.setText(AppDef.Par_Tar(course.holes.get(j).playedScore, AppDef.isTar));
                 tvPutt.setText(getScorePuttAndTesShot(course.holes.get(j).playedScore));
 
-                setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[j].findViewById(ivBadgeIds[j])), course.holes.get(j), tvScore);
+                setBadge(((ImageView) scoreItemViewHolder.holeScoreLayout[j].findViewById(ivBadgeIds[j])), course.holes.get(j), tvScore, emptyScoreTextStyle);
                 setTextStyle(tvScore);
             }
 
@@ -429,23 +456,31 @@ public class TabCourseLinear extends LinearLayout {
             if (mTabIdx == 0) {
                 TextView tvCourseTotalTar = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_tar);
                 TextView tvCourseTotalPutt = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_putt);
+                tvCourseTotalTar.setTextAppearance(scoreTextStyle);
+                tvCourseTotalPutt.setTextAppearance(puttTextStyle);
                 tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
                 tvCourseTotalPutt.setText(Putt_Total(course));
 
                 Course theOtherCourse = playerList.get(index).course.get(1);
                 TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_tar);
                 TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_putt);
+                tvCourseTotalTar2.setTextAppearance(scoreTextStyle);
+                tvCourseTotalPutt2.setTextAppearance(puttTextStyle);
                 tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
                 tvCourseTotalPutt2.setText(Putt_Total(theOtherCourse));
             } else if (mTabIdx == 1) {
                 TextView tvCourseTotalTar = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_tar);
                 TextView tvCourseTotalPutt = scoreItemViewHolder.courseTotal[1].findViewById(R.id.course1_total_putt);
+                tvCourseTotalTar.setTextAppearance(scoreTextStyle);
+                tvCourseTotalPutt.setTextAppearance(puttTextStyle);
                 tvCourseTotalTar.setText(Par_Tar_Total(course, AppDef.isTar));
                 tvCourseTotalPutt.setText(Putt_Total(course));
 
                 Course theOtherCourse = playerList.get(index).course.get(0);
                 TextView tvCourseTotalTar2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_tar);
                 TextView tvCourseTotalPutt2 = scoreItemViewHolder.courseTotal[0].findViewById(R.id.course0_total_putt);
+                tvCourseTotalTar2.setTextAppearance(scoreTextStyle);
+                tvCourseTotalPutt2.setTextAppearance(puttTextStyle);
                 tvCourseTotalTar2.setText(Par_Tar_Total(theOtherCourse, AppDef.isTar));
                 tvCourseTotalPutt2.setText(Putt_Total(theOtherCourse));
             }
@@ -458,13 +493,16 @@ public class TabCourseLinear extends LinearLayout {
                     String.valueOf(playerList.get(index).totalTar),
                     "teeShot");
 
+
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setTextAppearance(scoreTotalTextStyle);
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setTextAppearance(puttTextStyle);
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText(String.valueOf(playerList.get(index).totalRankingPutting));
         }
 
         private void setTextStyle(TextView tvScore) {
             if (tvScore.getText().equals("-")) {
-                tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                tvScore.setTextAppearance(emptyScoreTextStyle);
             }
         }
 
@@ -481,7 +519,7 @@ public class TabCourseLinear extends LinearLayout {
         return score.putting + "/" + score.teeShot.substring(0, 1).toUpperCase();
     }
 
-    private void setBadge(ImageView iv, Hole playedHole, TextView tvScore) {
+    private void setBadge(ImageView iv, Hole playedHole, TextView tvScore, int textStyle) {
 
         if (!Util.isInteger(playedHole.playedScore.tar) || "-".equals(playedHole.playedScore.tar)) {
             return;
@@ -492,11 +530,11 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                 }
                 break;
@@ -504,15 +542,15 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 3:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                 }
                 break;
@@ -521,19 +559,19 @@ public class TabCourseLinear extends LinearLayout {
                 switch (Integer.parseInt(playedHole.playedScore.tar)) {
                     case 1:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.holeinone, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 2:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.alba, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 3:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.eagle, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                     case 4:
                         iv.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.birdie, null));
-                        tvScore.setTextAppearance(R.style.GlobalTextView_40SP_Gray_NotoSans_Regular);
+                        tvScore.setTextAppearance(textStyle);
                         break;
                 }
                 break;

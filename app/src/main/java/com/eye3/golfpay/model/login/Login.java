@@ -19,6 +19,10 @@ public class Login implements Serializable {
     @Expose
     private String mRetMsg;
 
+    @SerializedName("tablet_logo")
+    @Expose
+    private String mTabletLogo;
+
     public int getCaddyNo() {
         return mCaddyNo;
     }
@@ -43,4 +47,7 @@ public class Login implements Serializable {
         mRetMsg = retMsg;
     }
 
+    public String getTabletLogo() {
+        return mTabletLogo;
+    }
 }

@@ -33,6 +33,7 @@ public class Global {
     public static String SavedPictureName = "";
     public static String SavedPicturePath = SavedDir + File.separator + SavedPictureName;
 
+    public static String tabletLogo;
     public static String Token = "";
 //    public static int saveIdx = -1;
 
@@ -50,23 +51,15 @@ public class Global {
     /**
      * 접속 호스트 주소. 운영
      */
-    public static final String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
-    //public static final String HOST_ADDRESS_AWS = "http://deverp.golfpay.co.kr/api/v1/" ;
-    public static final String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
-  //  public static final String HOST_BASE_ADDRESS_AWS = "http://deverp.golfpay.co.kr/";
-    public static final String HOST_BASE_ADDRESS_STORAGE = HOST_BASE_ADDRESS_AWS ;
+    public static String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
+    public static String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
 
-    public static final String HOST_ADDRESS_DEV_AWS = "http://deverp.golfpay.co.kr/api/v1/";
+
     /**
      * 접속 호스트 주소. 개발계
      */
-    public static final String HOST_BASE_ADDRESS_DEV = "http://10.50.21.62:8000/";
-
-    public static final String HOST_ADDRESS_DEV = HOST_BASE_ADDRESS_DEV + "api/v1/";
 
     public static String appToken;
-
-    public static String imageBaseDir = HOST_ADDRESS_DEV + "/attachments";
 
     public static int selectedTeeUpIndex = -1;
     public static String reserveId = "0";
@@ -83,7 +76,7 @@ public class Global {
     public static List<Course> courseInfoList = new ArrayList<Course>();
 
     //현재 경기진행중인 코스 정보
-    public static Course CurrentCourse;
+    public static Course CurrentCourse = null;
     public static Hole CurrentHole;
     public static List<ArticleItem> noticeItemArrayList = new ArrayList<>();
   //  public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();

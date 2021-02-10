@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -231,6 +232,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
     @Override
     public void onTakeClubPhoto(String guestId) {
+
         ((MainActivity)mParentActivity).startCamera(AppDef.GuestPhoto, new ITakePhotoListener() {
             @Override
             public void onTakePhoto(String path) {

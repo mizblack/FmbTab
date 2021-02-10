@@ -270,7 +270,7 @@ public class ViewMenuFragment extends BaseFragment {
 
     private void getAllCourseInfo(Context context) {
         showProgress("코스 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
+        DataInterface.getInstance().getCourseInfo(context, "1", new DataInterface.ResponseCallback<ResponseData<Course>>() {
 
             @Override
             public void onSuccess(ResponseData<Course> response) {

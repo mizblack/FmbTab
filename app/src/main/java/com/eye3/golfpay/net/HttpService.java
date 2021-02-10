@@ -6,6 +6,7 @@ import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gallery.ResponseGallery;
 import com.eye3.golfpay.model.gps.GpsInfo;
+import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
@@ -105,10 +106,10 @@ public interface HttpService {
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);
 
     @GET("setCartPos")
-    Call<ResponseData<GpsInfo>> sendGpsInfo(@Query("caddy_num") String caddy_num,
-                                            @Query("lat") double lat,
-                                            @Query("lng") double lng,
-                                            @Query("reserve_id") int reserve_id);
+    Call<ResponseData<ResponseCartInfo>> sendGpsInfo(@Query("caddy_id") String caddy_num,
+                                                     @Query("lat") double lat,
+                                                     @Query("lng") double lng,
+                                                     @Query("reserve_id") String reserve_id);
 
     @GET("http://deverp.golfpay.co.kr/api/v1/getChatHotkey")
     Call<ChatHotKey> getChatHotkey();

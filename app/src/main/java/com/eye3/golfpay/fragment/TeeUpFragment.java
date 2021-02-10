@@ -194,6 +194,8 @@ public class TeeUpFragment extends BaseFragment {
                         Global.selectedReservation = item;
                         Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
                         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
+
+                        ((MainActivity)mParentActivity).startListeningUserLocationDebug();
                     }
 
                     @Override
