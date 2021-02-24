@@ -19,18 +19,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="12dp"
             android:layout_marginRight="15dp"
-            android:paddingBottom="4dp"
-            android:text="Rose"
-            android:textSize="18dp"
-            android:textColor="@color/ebonyBlack"
-            android:textStyle="bold" />
+            android:layout_marginTop="12dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rose"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/GlobalTextView.18SP.FF5353.NotoSans.Medium"
+                android:id="@+id/tv_emergency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(긴급)"
+                android:layout_marginStart="8dp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/message_body"
@@ -49,8 +63,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
         android:layout_marginTop="4dp"
+        android:background="@null"
         android:text="08:24"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/linearLayout4"

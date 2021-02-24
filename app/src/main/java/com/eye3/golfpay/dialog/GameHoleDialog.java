@@ -21,6 +21,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.adapter.ClubAdapter;
 import com.eye3.golfpay.adapter.ClubGuestListAdapter;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.order.ReserveGameType;
@@ -29,6 +30,7 @@ import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017-09-22.
@@ -37,7 +39,6 @@ import java.util.ArrayList;
 public class GameHoleDialog extends Dialog {
 
     String[] hole = {"1홀", "2홀", "3홀", "4홀", "5홀", "6홀", "7홀", "8홀", "9홀"};
-    String[] par = {"Par3", "Par4", "Par2", "Par3", "Par3", "Par5", "Par4", "Par2", "Par3"};
 
     public class Item {
 
@@ -49,6 +50,11 @@ public class GameHoleDialog extends Dialog {
         String par;
         public boolean selected = false;
     }
+
+    private TextView tv_nearest_out;
+    private TextView tv_nearest_in;
+    private TextView tv_longest_out;
+    private TextView tv_longest_in;
 
     private RecyclerView rvLongestOut;
     private RecyclerView rvLongestIn;
@@ -88,9 +94,18 @@ public class GameHoleDialog extends Dialog {
         setContentView(R.layout.frd_game_hole);
         rvLongestOut = findViewById(R.id.rv_longest_out);
         rvLongestIn = findViewById(R.id.rv_longest_in);
-
         rvNearestOut = findViewById(R.id.rv_nearest_out);
         rvNearestIn = findViewById(R.id.rv_nearest_in);
+
+        tv_nearest_out = findViewById(R.id.tv_nearest_out);
+        tv_nearest_in = findViewById(R.id.tv_nearest_in);
+        tv_longest_out = findViewById(R.id.tv_longest_out);
+        tv_longest_in = findViewById(R.id.tv_longest_in);
+
+        tv_nearest_out.setText(Global.courseInfoList.get(0).courseName);
+        tv_nearest_in.setText(Global.courseInfoList.get(1).courseName);
+        tv_longest_out.setText(Global.courseInfoList.get(0).courseName);
+        tv_longest_in.setText(Global.courseInfoList.get(1).courseName);
 
         tvSave = findViewById(R.id.tv_save);
         tvCancel = findViewById(R.id.tv_cancel);
@@ -109,10 +124,10 @@ public class GameHoleDialog extends Dialog {
             }
         });
 
-        initRecyclerViews(rvLongestOut);
-        initRecyclerViews(rvLongestIn);
-        initRecyclerViews(rvNearestOut);
-        initRecyclerViews(rvNearestIn);
+        initRecyclerViews(rvLongestOut, 0);
+        initRecyclerViews(rvLongestIn, 1);
+        initRecyclerViews(rvNearestOut, 0);
+        initRecyclerViews(rvNearestIn, 1);
 
         getNearLongHole();
     }
@@ -161,28 +176,27 @@ public class GameHoleDialog extends Dialog {
                     allUnSelect(rvLongestOut);
                     allUnSelect(rvLongestIn);
 
-                    course_near = response.course_near = response.course_near.toLowerCase();
-                    course_long = response.course_long = response.course_long.toLowerCase();
+                    course_near = response.course_near;
+                    course_long = response.course_long;
                     hole_no_near = response.hole_no_near;
                     hole_no_long = response.hole_no_long;
 
-                    if (response.course_near.equals("in")) {
+                    if (response.course_near.equals(Global.courseInfoList.get(0).courseName)) {
                         ((GameHoleAdapter) rvNearestIn.getAdapter()).select(response.hole_no_near);
                         rvNearestIn.getAdapter().notifyDataSetChanged();
-                    } else if (response.course_near.equals("out")) {
+                    } else if (response.course_near.equals(Global.courseInfoList.get(1).courseName)) {
                         ((GameHoleAdapter) rvNearestOut.getAdapter()).select(response.hole_no_near);
                         rvNearestIn.getAdapter().notifyDataSetChanged();
                     }
 
-                    if (response.course_long.equals("in")) {
+                    if (response.course_long.equals(Global.courseInfoList.get(0).courseName)) {
                         ((GameHoleAdapter) rvLongestIn.getAdapter()).select(response.hole_no_long);
                         rvNearestIn.getAdapter().notifyDataSetChanged();
-                    } else if (response.course_long.equals("out")) {
+                    } else if (response.course_long.equals(Global.courseInfoList.get(1).courseName)) {
                         ((GameHoleAdapter) rvLongestOut.getAdapter()).select(response.hole_no_long);
                         rvNearestIn.getAdapter().notifyDataSetChanged();
                     }
                 }
-
             }
 
             @Override
@@ -197,7 +211,7 @@ public class GameHoleDialog extends Dialog {
         });
     }
 
-    private void initRecyclerViews(RecyclerView recyclerView) {
+    private void initRecyclerViews(RecyclerView recyclerView, int type) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -211,7 +225,7 @@ public class GameHoleDialog extends Dialog {
                         return;
                     }
 
-                    course_near = "IN";
+                    course_near = Global.courseInfoList.get(type).courseName;
                     hole_no_near = hole;
                     allUnSelect(rvNearestOut);
                     updateUI(gameHoleAdapter, hole);
@@ -222,7 +236,7 @@ public class GameHoleDialog extends Dialog {
                         return;
                     }
 
-                    course_near = "OUT";
+                    course_near = Global.courseInfoList.get(type).courseName;
                     hole_no_near = hole;
                     allUnSelect(rvNearestIn);
                     updateUI(gameHoleAdapter, hole);
@@ -233,7 +247,7 @@ public class GameHoleDialog extends Dialog {
                         return;
                     }
 
-                    course_long = "IN";
+                    course_long = Global.courseInfoList.get(type).courseName;
                     hole_no_long = hole;
                     allUnSelect(rvLongestOut);
                     updateUI(gameHoleAdapter, hole);
@@ -244,7 +258,7 @@ public class GameHoleDialog extends Dialog {
                         return;
                     }
 
-                    course_long = "OUT";
+                    course_long = Global.courseInfoList.get(type).courseName;
                     hole_no_long = hole;
                     allUnSelect(rvLongestIn);
                     updateUI(gameHoleAdapter, hole);
@@ -253,8 +267,10 @@ public class GameHoleDialog extends Dialog {
         });
 
         recyclerView.setAdapter(gameHoleAdapter);
+
+        List<Hole> holes = Global.courseInfoList.get(type).holes;
         for (int i = 0; i < 9; i++) {
-            Item item = new Item(hole[i], par[i]);
+            Item item = new Item(hole[i], "Par" + holes.get(i).par);
             gameHoleAdapter.items.add(item);
         }
 
@@ -332,14 +348,14 @@ public class GameHoleDialog extends Dialog {
         public void onBindViewHolder(GameHoleHolder holder, final int position) {
 
             try {
-                if (items.get(position).selected == true) {
+                if (items.get(position).selected) {
                     holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.irisBlue));
-                    holder.tv_hole.setTextAppearance(context, R.style.GlobalTextView_20SP_White_NotoSans_Medium);
-                    holder.tv_par.setTextAppearance(context, R.style.GlobalTextView_12SP_White_NotoSans_Medium);
+                    holder.tv_hole.setTextAppearance(R.style.GlobalTextView_20SP_White_NotoSans_Medium);
+                    holder.tv_par.setTextAppearance(R.style.GlobalTextView_12SP_White_NotoSans_Medium);
                 } else {
                     holder.itemView.setBackgroundColor(Color.WHITE);
-                    holder.tv_hole.setTextAppearance(context, R.style.GlobalTextView_20SP_ebonyBlack_NotoSans_Medium);
-                    holder.tv_par.setTextAppearance(context, R.style.GlobalTextView_12SP_ebonyBlack_NotoSans_Medium);
+                    holder.tv_hole.setTextAppearance(R.style.GlobalTextView_20SP_ebonyBlack_NotoSans_Medium);
+                    holder.tv_par.setTextAppearance(R.style.GlobalTextView_12SP_ebonyBlack_NotoSans_Medium);
                 }
 
                 holder.tv_hole.setText(items.get(position).hole);

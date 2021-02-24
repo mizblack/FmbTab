@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.ControlPanelView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class ControlFragment extends BaseFragment {
@@ -62,6 +64,7 @@ public class ControlFragment extends BaseFragment {
     private boolean isCaddieVisible = false;
     private LinearLayout ll_menu;
     private LinearLayout ll_caddie_list;
+    private TextView tvEmergencyMessage;
     private ArrayList<MenuItem> menuItems = new ArrayList<>();
     private final ArrayList<String> caddies = new ArrayList<>();
 
@@ -72,6 +75,7 @@ public class ControlFragment extends BaseFragment {
     private MemberData memberData;
     private final int itemHeight = 92;
     private String to;
+    private boolean emergencyOn = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,7 @@ public class ControlFragment extends BaseFragment {
         return inflater.inflate(R.layout.fr_control, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -98,6 +103,7 @@ public class ControlFragment extends BaseFragment {
         view_caddie_list = view.findViewById(R.id.view_caddie_list);
         ll_menu = view.findViewById(R.id.ll_menu);
         ll_caddie_list = view.findViewById(R.id.ll_caddie_list);
+        tvEmergencyMessage = view.findViewById(R.id.tv_emergency_msg);
         addMenuItem();
         createCaddieList();
         requestHotKeyList();
@@ -124,6 +130,21 @@ public class ControlFragment extends BaseFragment {
                 return false;
             }
         });
+
+        tvEmergencyMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emergencyOn ^= true;
+
+                if (emergencyOn) {
+                    tvEmergencyMessage.setTextAppearance(R.style.GlobalTextView_Emergency_on);
+                    tvEmergencyMessage.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.shape_emergency_on_bg));
+                } else {
+                    tvEmergencyMessage.setTextAppearance(R.style.GlobalTextView_Emergency_off);
+                    tvEmergencyMessage.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.shape_emergency_off_bg));
+                }
+            }
+        });
     }
 
     private void showControlShortDialog(ArrayList<ChatHotKeyOption> getOptions) {
@@ -132,6 +153,12 @@ public class ControlFragment extends BaseFragment {
             @Override
             public void onApplyShortcut(String shortcut) {
                 edit_chat.setText(shortcut);
+            }
+
+            @Override
+            public void onClose() {
+                edit_chat.setText("");
+                controlPanelView.unSelectAll();
             }
         });
 
@@ -154,7 +181,6 @@ public class ControlFragment extends BaseFragment {
     private void addMenuItem() {
 
         menuItems = new ArrayList<>();
-
         menuItems.add(new MenuItem("통제소", true, false));
         menuItems.add(new MenuItem("전체", true, false));
         menuItems.add(new MenuItem("전반코스", true, false));
@@ -162,6 +188,7 @@ public class ControlFragment extends BaseFragment {
         menuItems.add(new MenuItem("앞카트", true, true));
         menuItems.add(new MenuItem("뒤카트", true, true));
         menuItems.add(new MenuItem("캐디선택", true, false));
+        menuItems.add(new MenuItem("호랭이회", true, false));
 
         for (MenuItem mi : menuItems) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -175,8 +202,8 @@ public class ControlFragment extends BaseFragment {
             ImageView checkIn = mi.view.findViewById(R.id.iv_checkin);
             tvTitle.setText(mi.title);
 
-            if (mi.isDisable == true) {
-                tvTitle.setTextAppearance(getContext(), R.style.GlobalTextView_18SP_martini_NotoSans_Medium);
+            if (mi.isDisable) {
+                tvTitle.setTextAppearance(R.style.GlobalTextView_18SP_martini_NotoSans_Medium);
                 bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.martini));
                 checkIn.setVisibility(View.GONE);
             }
@@ -185,13 +212,13 @@ public class ControlFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
 
-                    if (mi.isDisable == true) {
+                    if (mi.isDisable) {
                         return;
                     }
 
                     if (mi.title.equals("캐디선택")) {
 
-                        if (isCaddieVisible == false)
+                        if (!isCaddieVisible)
                             view_caddie_list.setVisibility(View.VISIBLE);
                         else
                             view_caddie_list.setVisibility(View.GONE);
@@ -201,7 +228,7 @@ public class ControlFragment extends BaseFragment {
                     }
 
                     unSelectAll();
-                    tvTitle.setTextAppearance(getContext(), R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
+                    tvTitle.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
                     bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
                     checkIn.setVisibility(View.VISIBLE);
                     mi.isActive = true;
@@ -219,7 +246,7 @@ public class ControlFragment extends BaseFragment {
     private void unSelectAll() {
         for (MenuItem mi : menuItems) {
 
-            if (mi.isDisable == true) {
+            if (mi.isDisable) {
                 continue;
             }
 
@@ -228,8 +255,8 @@ public class ControlFragment extends BaseFragment {
             ImageView checkIn = mi.view.findViewById(R.id.iv_checkin);
             ImageView iv_arrow = mi.view.findViewById(R.id.iv_arrow);
 
-            tvTitle.setTextAppearance(getContext(), R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Medium);
-            bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.ebonyBlack));
+            tvTitle.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Medium);
+            bar.setBackgroundColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.ebonyBlack));
             checkIn.setVisibility(View.GONE);
             mi.isActive = false;
 
@@ -420,7 +447,7 @@ public class ControlFragment extends BaseFragment {
 //                    memberData = new MemberData("상봉이", "#434343");
 //                }
 
-                Message msg = new Message(response.getMsg(), memberData, true);
+                Message msg = new Message(response.getMsg(), memberData, true, emergencyOn);
                 chatMessageAdapter.add(msg);
                 //messages_view.setSelection(messages_view.getCount() - 1);
                 messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
@@ -442,7 +469,7 @@ public class ControlFragment extends BaseFragment {
 
     public void receiveMessage(String sender, String message) {
         memberData = new MemberData(sender, "#434343");
-        Message msg = new Message(message, memberData, false);
+        Message msg = new Message(message, memberData, false, false);
         chatMessageAdapter.add(msg);
         //messages_view.setSelection(messages_view.getCount() - 1);
         messages_view.smoothScrollToPosition(messages_view.getCount() - 1);

@@ -56,7 +56,7 @@ public class ControlPanelView extends ConstraintLayout {
             @Override
             public void onClicked(int position) {
                 HotKeyPagerAdapter.ShortcutItem item = hotKeyPagerAdapter.getShortcutItem(position);
-                if (item.multi == true)
+                if (item.multi)
                     listener.onShowShortcutDlg(item.option);
                 else
                     listener.onShortcutMessage(item.descr);
@@ -126,6 +126,10 @@ public class ControlPanelView extends ConstraintLayout {
 
             }
         });
+    }
+
+    public void unSelectAll() {
+        hotKeyPagerAdapter.unSelectAll();
     }
 
     public void setOnClickListener(OnClickListener listener) {

@@ -25,21 +25,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ad2" />
+                android:src="@drawable/ad_golfpay" />
             <ImageView
                 android:id="@+id/iv_ad2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:visibility="gone"
-                android:src="@drawable/ad3" />
+                android:src="@drawable/ad_golfpay" />
             <ImageView
                 android:id="@+id/iv_ad3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:visibility="gone"
-                android:src="@drawable/ad4" />
+                android:src="@drawable/ad_golfpay" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

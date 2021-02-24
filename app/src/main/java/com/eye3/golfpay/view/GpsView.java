@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.Global;
 
 public class GpsView extends View {
 
@@ -86,7 +87,7 @@ public class GpsView extends View {
 
     }
 
-    public void setHolePos (Point posHole, int meter, int mapOrgWidth) {
+    public void setHolePos(Point posHole, int meter, int mapOrgWidth) {
         float ratio = (float)mapOrgWidth / (float)rect.width();
         int x = (int)((float)rect.width() * (posHole.x / 100.0f));
         int y = (int)((float)rect.height() * (posHole.y / 100.0f));
@@ -137,7 +138,9 @@ public class GpsView extends View {
     }
 
     private void calcHole() {
-        rcDestHole = new Rect(ptHole.x, ptHole.y, ptHole.x + sizeHole.getWidth(), ptHole.y + sizeHole.getHeight());
+        int x = ptHole.x;// - sizeHole.getWidth()/2;
+        int y = ptHole.y - 30;//sizeHole.getHeight()/2;
+        rcDestHole = new Rect(x, y, x + sizeHole.getWidth(), y + sizeHole.getHeight());
     }
 
     private void drawLine(Canvas canvas) {
@@ -206,10 +209,7 @@ public class GpsView extends View {
         invalidate();
     }
 
-    private double getDistance(int x, int y, int x1, int y1){
-
+    private double getDistance(int x, int y, int x1, int y1) {
         return Math.sqrt(Math.pow(Math.abs(x1-x), 2) + Math.pow(Math.abs(y1-y), 2)) * ratio;
-
     }
-
 }

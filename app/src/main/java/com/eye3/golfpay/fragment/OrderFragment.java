@@ -117,6 +117,10 @@ public class OrderFragment extends BaseFragment {
     private final View.OnClickListener CaddieClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (mMenuAdapter == null)
+                return;
+
             if (mMenuAdapter.haveOrder()) {
 
                 for (RestaurantMenu item : mMenuAdapter.getRestaurantMenus()) {
@@ -144,7 +148,6 @@ public class OrderFragment extends BaseFragment {
                 Toast.makeText(mContext, "주문한 음식이 없습니다. 먼저 음식을 선택해 주세요.", Toast.LENGTH_SHORT).show();
         }
     };
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -342,16 +345,9 @@ public class OrderFragment extends BaseFragment {
                 TextView tvName;
                 TextView tvCount;
 
-//                //이미선택된 게스트가 있다면 초기화하자
-//                if (preSelectedGuestView != null) {
-//                    tvName = preSelectedGuestView.findViewById(R.id.tv_name);
-//                    tvCount = preSelectedGuestView.findViewById(R.id.tv_count);
-//
-//                    tvName.setTextAppearance(R.style.GlobalTextView_20SP_999999_NotoSans_Medium);
-//                    tvCount.setTextAppearance(R.style.GlobalTextView_17SP_999999_NotoSans_Medium);
-//                    preSelectedGuestView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
-//                }
-
+                if (mMenuAdapter == null) {
+                    return;
+                }
 
                 //주문된 음식이 있다면
                 if (mMenuAdapter.haveOrder()) {

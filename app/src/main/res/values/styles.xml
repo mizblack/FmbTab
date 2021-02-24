@@ -588,6 +588,14 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="GlobalTextView.18SP.FF5353.NotoSans.Medium" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">#ff5353</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="GlobalTextView.18SP.white.NotoSans.Regular" parent="AppTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -804,9 +812,36 @@
     <style name="GlobalTextView.18SP.C9D7DC.NotoSans.Bold" parent="AppTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/notosans_bold</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">#c9d7dc</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="GlobalTextView.Emergency_off" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">#c9d7dc</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">@drawable/shape_emergency_off_bg</item>
+    </style>
+
+    <style name="GlobalTextView.Emergency_on" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">@drawable/shape_emergency_on_bg</item>
     </style>
 
     <style name="GlobalTextView.20SP.zumthor.NotoSans.Bold" parent="AppTextView">

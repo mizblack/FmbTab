@@ -50,24 +50,24 @@ public class ChatMessageAdapter extends BaseAdapter {
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
 
-        if (message.isBelongsToCurrentUser()) { // this message was sent by us so let's create a basic chat bubble on the right
+        if (message.isBelongsToCurrentUser()) {
             convertView = messageInflater.inflate(R.layout.my_message, null);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
-
-            holder.name.setText(message.getMemberData().getName());
-            holder.messageBody.setText(message.getText());
-        } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
+        } else {
             convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
-            convertView.setTag(holder);
+        }
 
-            holder.name.setText(message.getMemberData().getName());
-            holder.messageBody.setText(message.getText());
-            //GradientDrawable drawable = (GradientDrawable) holder.avatar.getBackground();
-            //drawable.setColor(Color.parseColor(message.getMemberData().getColor()));
+        holder.name = (TextView) convertView.findViewById(R.id.name);
+        holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
+        holder.tvEmergency = convertView.findViewById(R.id.tv_emergency);
+        convertView.setTag(holder);
+
+        holder.name.setText(message.getMemberData().getName());
+        holder.messageBody.setText(message.getText());
+
+        if (message.isEmergency()) {
+            holder.tvEmergency.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvEmergency.setVisibility(View.GONE);
         }
 
         return convertView;
@@ -78,4 +78,5 @@ class MessageViewHolder {
     public View avatar;
     public TextView name;
     public TextView messageBody;
+    public TextView tvEmergency;
 }

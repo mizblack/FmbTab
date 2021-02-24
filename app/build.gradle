@@ -1,6 +1,9 @@
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 android {
     compileSdkVersion 29
@@ -11,7 +14,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.10(d)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,7 +49,7 @@ ext {
 dependencies {
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     implementation "org.permissionsdispatcher:permissionsdispatcher:${dispatcher_version}"
-    implementation 'com.google.android.material:material:1.3.0-alpha04'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${dispatcher_version}"
@@ -54,14 +57,14 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${supportVersion}"
     implementation "com.android.support:design:${supportVersion}"
     implementation "com.android.support:support-v4:${supportVersion}"
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.squareup:otto:1.3.8'
@@ -80,6 +83,10 @@ dependencies {
     implementation 'com.github.Johnyoat:non-swipe-view-pager:1.0.0'
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
     implementation 'com.baoyz.actionsheet:library:1.1.7'
+
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 }
 
 

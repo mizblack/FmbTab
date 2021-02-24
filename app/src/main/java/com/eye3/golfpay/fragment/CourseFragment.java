@@ -178,8 +178,15 @@ public class CourseFragment extends BaseFragment {
 
 
     public void updateCourse(ResponseCartInfo cartInfo) {
+
+        if (mCourseInfoList == null)
+            return;
+
         Global.CurrentCourse = getCurrentCourse(cartInfo.nearby_hole_list);
         int position = getCurrentHoleIndex(cartInfo.nearby_hole_list);
+        if (position < 0)
+            return;
+
         setDrawPage(position);
         drawHoleCup(position);
         drawMap(position);
@@ -214,6 +221,10 @@ public class CourseFragment extends BaseFragment {
     }
 
     private Course getCurrentCourse(List<GpsInfo> gpsInfoList) {
+
+        if (mCourseInfoList == null)
+            return null;
+
         if (gpsInfoList.size() == 0)
             return null;
 
@@ -233,21 +244,23 @@ public class CourseFragment extends BaseFragment {
 
     private int getCurrentHoleIndex(List<GpsInfo> gpsInfoList) {
         if (gpsInfoList.size() == 0)
-            return 0;
+            return -1;
 
         for (GpsInfo gpsInfo: gpsInfoList) {
             if (gpsInfo.getGubun().equalsIgnoreCase("me")) {
 
                 List<Hole>holeList = getHoleList(gpsInfo.getCtype());
+                if (holeList == null || holeList.size() == 0)
+                    return -1;
 
                 for (int i = 0; i < holeList.size(); i++) {
-                    if (holeList.get(i).id.equalsIgnoreCase(gpsInfo.getHole()))
+                    if (holeList.get(i).id.equalsIgnoreCase(gpsInfo.getHole_id()))
                         return i;
                 }
             }
         }
 
-        return 0;
+        return -1;
     }
 
     private List<Hole> getHoleList(String ctype) {

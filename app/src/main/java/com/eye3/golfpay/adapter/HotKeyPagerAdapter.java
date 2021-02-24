@@ -23,13 +23,13 @@ import java.util.ArrayList;
 
 public class HotKeyPagerAdapter extends PagerAdapter {
 
-
     public class ShortcutItem {
 
         public ShortcutItem(String title, String descr, String option) {
             this.title = title; this.descr = descr; this.option = option;
             multi = !(option == null || option.isEmpty() == true);
         }
+
         public String title;
         public String descr;
         public String option;
@@ -43,6 +43,7 @@ public class HotKeyPagerAdapter extends PagerAdapter {
     Context mContext;
     private final ArrayList<ShortcutItem> shortcutList = new ArrayList<>();
     OnAdapterClickListener onAdapterClickListener;
+    GridLayout gridView;
 
     @SuppressLint("MissingPermission")
     public HotKeyPagerAdapter(Context context, OnAdapterClickListener listener) {
@@ -56,22 +57,9 @@ public class HotKeyPagerAdapter extends PagerAdapter {
             shortcutList.add(new ShortcutItem(item.getTitle(), item.getMessage(), item.getOption()));
         }
 
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-//        shortcutList.add(new ShortcutItem("test", "test", ""));
-
-        int flag = 16;
-        if (shortcutList.size() > 16 && shortcutList.size() <= 32)
-            flag = 32;
+        int flag = 20;
+        if (shortcutList.size() > 20 && shortcutList.size() <= 40)
+            flag = 40;
 
         int size = shortcutList.size();
         for (int i = 0; i < flag - size; i++) {
@@ -86,10 +74,9 @@ public class HotKeyPagerAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.item_shortcut_view, container, false);
 
-
-        GridLayout gridView = view.findViewById(R.id.grid_view);
+        gridView = view.findViewById(R.id.grid_view);
         container.addView(view);
-        createItem(gridView, position == 0 ? 0 : 16);
+        createItem(gridView, position == 0 ? 0 : 20);
         return view;
     }
 
@@ -97,7 +84,7 @@ public class HotKeyPagerAdapter extends PagerAdapter {
 
         for (int i = startPos; i < shortcutList.size(); i++) {
 
-            if (startPos == 0 && i >= 16) {
+            if (startPos == 0 && i >= 20) {
                 break;
             }
 
@@ -106,7 +93,7 @@ public class HotKeyPagerAdapter extends PagerAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.item_shortcut, null, false);
 
-            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams((int) Util.convertDpToPixel(89.5f, mContext), (int)Util.convertDpToPixel(60.f, mContext));
+            LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams((int) Util.convertDpToPixel(93.6f, mContext), (int)Util.convertDpToPixel(60.f, mContext));
             lllp.gravity = Gravity.CENTER_VERTICAL;
             lllp.rightMargin = (int)Util.convertDpToPixel(6.f, mContext);
             lllp.bottomMargin = (int)Util.convertDpToPixel(6.f, mContext);
@@ -117,7 +104,7 @@ public class HotKeyPagerAdapter extends PagerAdapter {
             ImageView multi = view.findViewById(R.id.multi);
             tv.setText(str);
 
-            if (shortcut.multi == true) {
+            if (shortcut.multi) {
                 multi.setVisibility(View.VISIBLE);
             }
 
@@ -130,11 +117,29 @@ public class HotKeyPagerAdapter extends PagerAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (str.isEmpty())
+                        return;
+
+                    unSelectAll();
                     onAdapterClickListener.onClicked(position);
+                    view.setBackgroundResource(R.drawable.shape_shortcut_select_round_bg);
                 }
             });
 
             gridView.addView(view);
+        }
+    }
+
+    public void unSelectAll() {
+        for (int i = 0; i < shortcutList.size(); i++) {
+            ShortcutItem shortcut = shortcutList.get(i);
+            View view = gridView.getChildAt(i);
+
+            if (shortcut.title.isEmpty()) {
+                view.setBackgroundResource(R.drawable.shape_shortcut_empty_round_bg);
+            } else {
+                view.setBackgroundResource(R.drawable.shape_shortcut_round_bg);
+            }
         }
     }
 
@@ -147,10 +152,9 @@ public class HotKeyPagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
 
-        int size = (shortcutList.size() / 16);
+        int size = (shortcutList.size() / 20);
         return size;
     }
-
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {

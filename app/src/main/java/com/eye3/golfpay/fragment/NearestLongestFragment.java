@@ -30,6 +30,7 @@ import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.teeup.GuestDatum;
 import com.eye3.golfpay.model.teeup.GuestScoreDB;
+import com.eye3.golfpay.model.teeup.TodayReserveList;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
@@ -54,7 +55,7 @@ public class NearestLongestFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private final ArrayList<GuestDatum> guestArrayList = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getGuestData();
+    private final ArrayList<GuestDatum> guestArrayList = new ArrayList<>();
     private final ArrayList<TextView> nearestRankTextViews = new ArrayList<>();
     private final ArrayList<TextView> longestRankTextViews = new ArrayList<>();
     private final ArrayList<TextView> nearestScoreTextViews = new ArrayList<>();
@@ -110,6 +111,16 @@ public class NearestLongestFragment extends BaseFragment {
         loadGuestScoreFromAPI();
         getNearLongHole();
 
+        ArrayList<TodayReserveList> todayReserveList = Global.teeUpTime.getTodayReserveList();
+
+        for (int i = 0; i < todayReserveList.size(); i++) {
+            TodayReserveList list = todayReserveList.get(i);
+            for (int j = 0; j < list.getGuestData().size(); j++) {
+                GuestDatum guestDatum = list.getGuestData().get(j);
+                guestArrayList.add(guestDatum);
+            }
+        }
+
         for (int i = 0; i < guestArrayList.size(); i++) {
             addPlayerList(view.findViewById(R.id.view_list), i, guestArrayList.size());
         }
@@ -122,8 +133,8 @@ public class NearestLongestFragment extends BaseFragment {
 
         int height = 120;
 
-        if (playerCount == 5) {
-            height = 90;
+        if (playerCount >= 5) {
+            height = 80;
         }
 
         LinearLayout childView = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.item_nearest_longest, null, false);
@@ -253,20 +264,28 @@ public class NearestLongestFragment extends BaseFragment {
 
     private void updateNearestRank(NearLongScoreBoard response) {
 
-        for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
-            TextView tvRank = nearestRankTextViews.get(i);
-            String rankText = getRankText(response.guest_gametype_ranking.get(i).near_ranking);
-            tvRank.setText(rankText);
-            setScore(response.guest_gametype_ranking.get(i).nearest, nearestScoreTextViews.get(i));
+        try {
+            for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
+                TextView tvRank = nearestRankTextViews.get(i);
+                String rankText = getRankText(response.guest_gametype_ranking.get(i).near_ranking);
+                tvRank.setText(rankText);
+                setScore(response.guest_gametype_ranking.get(i).nearest, nearestScoreTextViews.get(i));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
     }
 
     private void updateLongestRank(NearLongScoreBoard response) {
-        for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
-            TextView tvRank = longestRankTextViews.get(i);
-            String rankText = getRankText(response.guest_gametype_ranking.get(i).long_ranking);
-            tvRank.setText(rankText);
-            setScore(response.guest_gametype_ranking.get(i).longest, longestScoreTextViews.get(i));
+        try {
+            for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
+                TextView tvRank = longestRankTextViews.get(i);
+                String rankText = getRankText(response.guest_gametype_ranking.get(i).long_ranking);
+                tvRank.setText(rankText);
+                setScore(response.guest_gametype_ranking.get(i).longest, longestScoreTextViews.get(i));
+            }
+        }catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
     }
 
@@ -345,14 +364,10 @@ public class NearestLongestFragment extends BaseFragment {
     }
 
     private String getRankText(int rank) {
-        switch(rank) {
-            case 1: return "1위";
-            case 2: return "2위";
-            case 3: return "3위";
-            case 4: return "4위";
-            case 5: return "5위";
+        if (rank == 0) {
+            return "-";
         }
 
-        return "-";
+        return String.format("%d위", rank);
     }
 }

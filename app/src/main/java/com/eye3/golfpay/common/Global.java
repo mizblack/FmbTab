@@ -77,6 +77,7 @@ public class Global {
 
     //현재 경기진행중인 코스 정보
     public static Course CurrentCourse = null;
+    public static Course CurrentScoreCourse = null;
     public static Hole CurrentHole;
     public static List<ArticleItem> noticeItemArrayList = new ArrayList<>();
   //  public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();

@@ -194,7 +194,7 @@ public class ScoreFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     mTabIdx = idx;
-                    Global.CurrentCourse = (Course) tvCourseBarArr[idx].getTag();
+                    Global.CurrentScoreCourse = (Course) tvCourseBarArr[idx].getTag();
                     selectCourse(mPlayerList, idx);
                 }
             });
@@ -268,9 +268,11 @@ public class ScoreFragment extends BaseFragment {
                      mCourseList = getCtypedCourseForPlayerList(mPlayerList);
                      Global.courseInfoList =  getCtypedCourseforCourseList(Global.courseInfoList);
 
-                    Global.CurrentCourse = mCourseList.get(0);
-                    if(Global.CurrentCourse.holes.size() > 0 ) {
-                        Global.CurrentHole = Global.CurrentCourse.holes.get(0);
+                    if (Global.CurrentScoreCourse == null)
+                        Global.CurrentScoreCourse = mCourseList.get(0);
+
+                    if(Global.CurrentScoreCourse.holes.size() > 0 ) {
+                        Global.CurrentHole = Global.CurrentScoreCourse.holes.get(0);
 
                         NUM_OF_COURSE = mCourseList.size();
                         CourseTabBar = new TextView[NUM_OF_COURSE];
@@ -340,22 +342,22 @@ public class ScoreFragment extends BaseFragment {
                     }
                     //mPlayerList.get(i)가 아님
 
-                    String course = Global.CurrentCourse.courseName;
+                    String course = Global.CurrentScoreCourse.courseName;
 
                     int nearest = -1;
                     int longest = -1;
-                    if (course.contains("IN")) {
-                        if (response.course_near.equals("IN")) {
+                    if (course.contains(Global.courseInfoList.get(0).courseName)) {
+                        if (response.course_near.equals(Global.courseInfoList.get(0).courseName)) {
                             nearest = response.hole_no_near-1;
                         }
-                        if (response.course_long.equals("IN")) {
+                        if (response.course_long.equals(Global.courseInfoList.get(0).courseName)) {
                             longest = response.hole_no_long-1;
                         }
-                    } else if (course.contains("OUT")) {
-                        if (response.course_near.equals("OUT")) {
+                    } else if (course.contains(Global.courseInfoList.get(1).courseName)) {
+                        if (response.course_near.equals(Global.courseInfoList.get(1).courseName)) {
                             nearest = response.hole_no_near-1;
                         }
-                        if (response.course_long.equals("OUT")) {
+                        if (response.course_long.equals(Global.courseInfoList.get(1).courseName)) {
                             longest = response.hole_no_long-1;
                         }
                     }

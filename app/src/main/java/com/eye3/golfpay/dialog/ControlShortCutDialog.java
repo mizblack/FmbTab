@@ -36,6 +36,7 @@ public class ControlShortCutDialog extends Dialog {
 
     public interface IListenerApplyShortcut {
         void onApplyShortcut(String shortcut);
+        void onClose();
     }
 
     private IListenerApplyShortcut mListener;
@@ -112,7 +113,6 @@ public class ControlShortCutDialog extends Dialog {
             category4.setVisibility(View.VISIBLE);
         }
 
-
         btnApply = findViewById(R.id.btn_apply);
         btnClose = findViewById(R.id.btn_close);
 
@@ -120,7 +120,12 @@ public class ControlShortCutDialog extends Dialog {
             @Override
             public void onClick(View v) {
 
-                String msg = String.format("%s %s %s에서 %s 분실했습니다.", shortcut[0], shortcut[1], shortcut[2], shortcut[3]);
+                if (!isValid()) {
+                    Toast.makeText(getContext(), "모두 선택해 주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String msg = getShortcutMessage();
                 mListener.onApplyShortcut(msg);
                 dismiss();
             }
@@ -129,7 +134,7 @@ public class ControlShortCutDialog extends Dialog {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "닫기~", Toast.LENGTH_SHORT).show();
+                mListener.onClose();
                 dismiss();
             }
         });
@@ -140,6 +145,29 @@ public class ControlShortCutDialog extends Dialog {
                 showMenu();
             }
         }, 10);
+    }
+
+    private boolean isValid() {
+        if (options.size() == 2) {
+            return shortcut[0] != null && shortcut[1] != null;
+        } else if (options.size() == 3) {
+            return shortcut[0] != null && shortcut[1] != null && shortcut[2] != null;
+        } else if (options.size() == 4) {
+            return shortcut[0] != null && shortcut[1] != null && shortcut[2] != null && shortcut[3] != null;
+        }
+
+        return true;
+    }
+
+    private String getShortcutMessage() {
+        if (options.size() == 2) {
+            return String.format("%s에서 %s 분실했습니다.", shortcut[0], shortcut[1]);
+        } else if (options.size() == 3) {
+            return String.format("%s %s에서 %s 분실했습니다.", shortcut[0], shortcut[1], shortcut[2]);
+        } else if (options.size() == 4) {
+            return String.format("%s %s %s에서 %s 분실했습니다.", shortcut[0], shortcut[1], shortcut[2], shortcut[3]);
+        }
+        return "";
     }
 
     public void setData(ArrayList<Category> categories) {

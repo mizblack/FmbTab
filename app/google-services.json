@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "741045919497",
+    "project_id": "golfpay-a9df8",
+    "storage_bucket": "golfpay-a9df8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741045919497:android:cac98c908e2ebf8d653dd8",
+        "android_client_info": {
+          "package_name": "com.eye3.golfpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741045919497-u15g3ptpmsdpbrfg9arppgqpl364hm2v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eye3.golfpay",
+            "certificate_hash": "b497d39f73286209882a67c4088b3eb8855f2e2d"
+          }
+        },
+        {
+          "client_id": "741045919497-0o56044i67ien212ap5e1jlardvsoh79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoADMgRFDXuXHF437lP2h32VMKyU0XO3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741045919497-0o56044i67ien212ap5e1jlardvsoh79.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

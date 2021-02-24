@@ -60,6 +60,11 @@ public class LoginFragment extends BaseFragment {
         String id  = pref.getString("id", "");
         String pwd = pref.getString("password", "");
         boolean check = pref.getBoolean("save", false);
+
+        if (golfId.isEmpty()) {
+            golfId = "http://silkv.golfpay.co.kr";
+        }
+
         editGolfId.setText(golfId);
         editId.setText(id);
         editPwd.setText(pwd);
