@@ -77,7 +77,7 @@ public class GpsView extends View {
         sizeObject1 = new Size(70, 70);
         sizeObject2 = new Size(70, 70);
         sizeHole = new Size(50, 50);
-        ptObject1 = new Point(300, 50);
+        ptObject1 = new Point(0, 0);
         ptObject2 = new Point(700, 200);
         ptHole = new Point(1400, 35);
     }
@@ -92,13 +92,14 @@ public class GpsView extends View {
         int x = (int)((float)rect.width() * (posHole.x / 100.0f));
         int y = (int)((float)rect.height() * (posHole.y / 100.0f));
         ptHole = new Point((int)(x * ratio), (int)(y * ratio));
-
-        if (x <= rect.width()/2) {
-            ptObject1 = new Point(rect.width()-200, 80);
-        } else
-            ptObject1 = new Point(300, 50);
-
         ptObject2 = new Point(rect.width()/2, rect.height()/2);
+        invalidate();
+    }
+
+    public void setObject1Pos(Point pt) {
+        int x = (int)((float)rect.width() * (pt.x / 100.0f));
+        int y = (int)((float)rect.height() * (pt.y / 100.0f));
+        ptObject1 = new Point(x,y);
         invalidate();
     }
 

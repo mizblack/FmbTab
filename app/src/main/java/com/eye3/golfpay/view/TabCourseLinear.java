@@ -98,14 +98,14 @@ public class TabCourseLinear extends LinearLayout {
                 // the last(current) course
                 if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))
                     return false;
-                if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
-                    return false;
+//                if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.putting.equals("-"))
+//                    return false;
 
             } else {
                 if (playerList.get(i).course.get(mTabIdx - 1).holes.get(8).playedScore.tar.equals("-"))
                     return false;
-                if (playerList.get(i).course.get(mTabIdx - 1).holes.get(8).playedScore.putting.equals("-"))
-                    return false;
+//                if (playerList.get(i).course.get(mTabIdx - 1).holes.get(8).playedScore.putting.equals("-"))
+//                    return false;
 
                 for (int k = 0; previousHoleScoreLayoutIdx > k; k++) {
                     if (playerList.get(i).course.get(mTabIdx).holes.get(previousHoleScoreLayoutIdx).playedScore.tar.equals("-"))

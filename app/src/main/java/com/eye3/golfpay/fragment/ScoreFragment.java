@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
@@ -79,7 +80,21 @@ public class ScoreFragment extends BaseFragment {
     }
 
     private void initScoreBoard() {
-        selectCourse(mPlayerList, 0);
+        selectCourse(mPlayerList, getCurrentCourseIndex());
+    }
+
+    private int getCurrentCourseIndex() {
+
+        if (Global.CurrentScoreCourse == null)
+            return 0;
+
+        for (int i = 0; i < mCourseList.size(); i++) {
+            if (mCourseList.get(i).courseName.equals(Global.CurrentScoreCourse.courseName)) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     private List<Course> getCtypedCourseForPlayerList(List<Player> playerList) {
@@ -193,13 +208,17 @@ public class ScoreFragment extends BaseFragment {
             tvCourseBarArr[idx].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mTabIdx = idx;
-                    Global.CurrentScoreCourse = (Course) tvCourseBarArr[idx].getTag();
-                    selectCourse(mPlayerList, idx);
+                    selectCourse(idx, (Course) tvCourseBarArr[idx].getTag());
                 }
             });
             courseLinearLayout.addView(tvCourseBarArr[i]);
         }
+    }
+
+    private void selectCourse(int idx, Course course) {
+        mTabIdx = idx;
+        Global.CurrentScoreCourse = course;
+        selectCourse(mPlayerList, idx);
     }
 
     //코스바 선택시 스코어보드 생성 함수
@@ -279,6 +298,7 @@ public class ScoreFragment extends BaseFragment {
 
                         createTabBar(CourseTabBar, Global.courseInfoList);
                         initScoreBoard();
+                        getNearLongHole();
                     }else{
                         Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
                     }

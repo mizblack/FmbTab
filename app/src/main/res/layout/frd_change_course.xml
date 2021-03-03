@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="760dp"
+    android:layout_height="520dp"
+    android:background="@color/transparent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_main"
+        android:layout_width="760dp"
+        android:layout_height="360dp"
+        android:background="@color/white"
+        android:padding="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/GlobalTextView.26SP.irisBlue.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="코스변경" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/GlobalTextView.26SP.irisBlue.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="저장"
+            app:layout_constraintEnd_toStartOf="@+id/tv_cancel"
+            tools:layout_editor_absoluteY="-1dp" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/GlobalTextView.26SP.gray.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="42dp"
+            android:text="순서"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="320dp"
+            android:text="코스"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="18dp"
+            android:background="@color/zumthor"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:layout_editor_absoluteX="32dp" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="82dp"
+            android:background="@color/zumthor"
+            app:layout_constraintTop_toBottomOf="@+id/view5"
+            tools:layout_editor_absoluteX="32dp" />
+
+        <View
+            android:id="@+id/view7"
+            android:layout_width="1dp"
+            android:layout_height="162dp"
+            android:background="@color/zumthor"
+            app:layout_constraintEnd_toEndOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/GlobalTextView.26SP.ebonyBlack.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전반"
+            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/view7" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/GlobalTextView.26SP.ebonyBlack.NotoSans.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="후반"
+            app:layout_constraintBottom_toBottomOf="@+id/view7"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+        <TextView
+            android:id="@+id/tv_begin_change_course"
+            style="@style/GlobalTextView.26SP.irisBlue.NotoSans.Bold"
+            android:layout_width="340dp"
+            android:layout_height="80dp"
+            android:drawableRight="@drawable/ic_baseline_expand_more_42"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:text="IN"
+            app:layout_constraintBottom_toTopOf="@+id/view6"
+            app:layout_constraintStart_toEndOf="@+id/view7"
+            app:layout_constraintTop_toTopOf="@+id/view7" />
+
+        <TextView
+            android:id="@+id/tv_end_change_course"
+            style="@style/GlobalTextView.26SP.irisBlue.NotoSans.Bold"
+            android:layout_width="340dp"
+            android:layout_height="80dp"
+            android:drawableRight="@drawable/ic_baseline_expand_more_42"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:text="OUT"
+            app:layout_constraintBottom_toBottomOf="@+id/view7"
+            app:layout_constraintStart_toEndOf="@+id/view7"
+            app:layout_constraintTop_toBottomOf="@+id/tv_begin_change_course" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/popup_menu"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/ebonyBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_current_course"
+            style="@style/GlobalTextView.26SP.irisBlue.NotoSans.Bold"
+            android:layout_width="340dp"
+            android:layout_height="80dp"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:drawableRight="@drawable/ic_baseline_expand_less_24"
+            app:layout_constraintBottom_toBottomOf="@+id/view7"
+            app:layout_constraintStart_toEndOf="@+id/view7"
+            app:layout_constraintTop_toBottomOf="@+id/tv_begin_change_course" />
+
+        <LinearLayout
+            android:id="@+id/view_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

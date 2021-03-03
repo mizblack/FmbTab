@@ -183,6 +183,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_change_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_score"
+            app:layout_constraintEnd_toStartOf="@+id/tv_score"
+            app:layout_constraintTop_toTopOf="@+id/tv_score">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/e_vector_smart_object" />
+
+            <TextView
+                style="@style/GlobalTextView.22SP.irisBlue.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="코스변경"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toEndOf="@+id/imageView3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -192,7 +217,9 @@
         android:layout_below="@+id/map_info_title"
         android:background="#cdd8db"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_info_title">
+        app:layout_constraintTop_toBottomOf="@+id/map_info_title"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="230dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/view_map"
@@ -222,8 +249,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:layout_marginEnd="44sp"
+                android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/iv_map">
 
@@ -231,7 +258,7 @@
                     android:id="@+id/iv_spot1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/spot1"/>
+                    android:src="@drawable/spot1" />
 
                 <ImageView
                     android:id="@+id/iv_arrow1"
@@ -247,8 +274,8 @@
                     style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="274M"
                     android:gravity="center"
+                    android:text="274M"
                     android:textColor="@color/ebonyBlack"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_arrow1"
                     app:layout_constraintStart_toEndOf="@+id/iv_arrow1"
@@ -286,8 +313,8 @@
                     style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="243M"
                     android:gravity="center"
+                    android:text="243M"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_spot2"
                     app:layout_constraintStart_toEndOf="@+id/iv_arrow3"
                     app:layout_constraintTop_toTopOf="@+id/iv_spot2" />

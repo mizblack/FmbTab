@@ -127,6 +127,14 @@ public class Hole implements Serializable {
     @Expose
     public int course_hole_height_per;
 
+    @SerializedName("course_start_width_per")
+    @Expose
+    public int course_start_width_per;
+
+    @SerializedName("course_start_height_per")
+    @Expose
+    public int course_start_height_per;
+
     @SerializedName("hole_pin_width_per")
     @Expose
     public int hole_pin_width_per;

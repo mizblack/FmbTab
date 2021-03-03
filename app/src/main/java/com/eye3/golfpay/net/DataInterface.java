@@ -9,7 +9,9 @@ import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gallery.ResponseGallery;
+import com.eye3.golfpay.model.gps.CType;
 import com.eye3.golfpay.model.gps.GpsInfo;
+import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
@@ -783,6 +785,75 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void checkChangeCourse(final Context context, final ResponseCallback<ResCheckChangeCourse> callback) {
+        try {
+            int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            Call<ResCheckChangeCourse> call = service.checkChangeCourse(reserve_id);
+            call.enqueue(new Callback<ResCheckChangeCourse>() {
+                @Override
+                public void onResponse(Call<ResCheckChangeCourse> call, Response<ResCheckChangeCourse> response) {
+                    callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<ResCheckChangeCourse> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void changeCourse(final Context context, String after_course, ResponseCallback<ResponseData<Object>> callback) {
+        try {
+            int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            Call<ResponseData<Object>> call = service.setChangeCourse( reserve_id, after_course);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void changeCourseList(final Context context, ResponseCallback<ResponseData<CType>> callback) {
+        try {
+            int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
+            Call<ResponseData<CType>> call = service.getAfterCourseList(reserve_id);
+
+            call.enqueue(new Callback<ResponseData<CType>>() {
+                @Override
+                public void onResponse(Call<ResponseData<CType>> call, Response<ResponseData<CType>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<CType>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");

@@ -1,11 +1,14 @@
 package com.eye3.golfpay.net;
 
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gallery.ResponseGallery;
+import com.eye3.golfpay.model.gps.CType;
 import com.eye3.golfpay.model.gps.GpsInfo;
+import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
@@ -183,4 +186,14 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("delguestPhotos")
     Call<ResponseData<Object>> delGuestPhotos(@Field("photo_id") int photo_id);
+
+    @GET("checkChangeCourse")
+    Call<ResCheckChangeCourse> checkChangeCourse(@Query("res_id") int res_id);
+
+    @FormUrlEncoded
+    @POST("setChangeCourse")
+    Call<ResponseData<Object>> setChangeCourse(@Field("res_id") int res_id, @Field("after_course") String after_course);
+
+    @GET("getAfterCourseList")
+    Call<ResponseData<CType>> getAfterCourseList(@Query("res_id") int res_id);
 }

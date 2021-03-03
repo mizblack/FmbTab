@@ -112,7 +112,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.CAMERA},
                     0);
         }
-
     }
 
     public void startLocationService() {

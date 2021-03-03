@@ -2,19 +2,23 @@ package com.eye3.golfpay.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
@@ -31,13 +36,17 @@ import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
+import com.eye3.golfpay.dialog.ChangeCourseDialog;
+import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.model.gps.CartPos;
 import com.eye3.golfpay.model.gps.GpsInfo;
+import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.CartPosView;
 import com.eye3.golfpay.view.GpsView;
 import com.eye3.golfpay.view.HoleCupPointView;
@@ -67,9 +76,11 @@ public class CourseFragment extends BaseFragment {
     private TextView tvHereToHole;
     private ImageView ivAdvertising1, ivAdvertising2, ivAdvertising3, iv_map, iv_holeCup;
     private HoleCupPointView  holeCupPointView;
+    private ConstraintLayout btnChangeCourse;
     private int advertisingCount = 0;
     private boolean advertsingContinue = true;
     int mapPosition = 0;
+    int currentHoleIndex = -1;
     public CourseFragment() {
     }
 
@@ -125,6 +136,7 @@ public class CourseFragment extends BaseFragment {
         ivAdvertising2 = mainView.findViewById(R.id.iv_ad2);
         ivAdvertising3 = mainView.findViewById(R.id.iv_ad3);
         tvHereToHole = mainView.findViewById(R.id.tv_here_to_hole);
+        btnChangeCourse = mainView.findViewById(R.id.btn_change_course);
 
         gpsView.setDistanceListener(new GpsView.IDistanceListener() {
             @Override
@@ -156,6 +168,13 @@ public class CourseFragment extends BaseFragment {
                 setDrawPage(mapPosition);
                 drawHoleCup(mapPosition);
                 drawMap(mapPosition++);
+            }
+        });
+
+        btnChangeCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkChangeCourse(getContext());
             }
         });
 
@@ -218,6 +237,8 @@ public class CourseFragment extends BaseFragment {
         }
 
         cartPosView.invalidate();
+
+        currentHoleIndex = position;
     }
 
     private Course getCurrentCourse(List<GpsInfo> gpsInfoList) {
@@ -292,6 +313,7 @@ public class CourseFragment extends BaseFragment {
                         return;
                     }
 
+
                     //초기화
                     // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
@@ -338,6 +360,9 @@ public class CourseFragment extends BaseFragment {
                      public void onSizeReady(int width, int height) {
                          Hole h = Global.CurrentCourse.holes.get(position);
                          gpsView.setHolePos(new Point(h.course_hole_width_per, h.course_hole_height_per), h.hole_image_meter, width);
+
+                         if (currentHoleIndex != position)
+                            gpsView.setObject1Pos(new Point(h.course_start_width_per, h.course_start_height_per));
                      }
                 });
     }
@@ -467,5 +492,48 @@ public class CourseFragment extends BaseFragment {
         });
 
         startAdvertisingTimerThread();
+    }
+
+    private void checkChangeCourse(Context context) {
+
+        DataInterface.getInstance().checkChangeCourse(context, new DataInterface.ResponseCallback<ResCheckChangeCourse>() {
+
+            @Override
+            public void onSuccess(ResCheckChangeCourse response) {
+                if (response.getResultCode().equals("ok")) {
+
+                    if (response.getChange_yn().equalsIgnoreCase("Y")) {
+
+                        ChangeCourseDialog dlg = new ChangeCourseDialog(getContext(), mCourseInfoList.get(0).courseName,
+                                mCourseInfoList.get(1).courseName, new ChangeCourseDialog.IListenerDialog() {
+                            @Override
+                            public void onChangeCourse() {
+                                getAllCourseInfo(getActivity());
+                            }
+                        });
+                        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                        wmlp.gravity = Gravity.CENTER;
+                        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dlg.show();
+                    } else {
+
+                    }
+
+                } else if (response.getResultCode().equals("fail")) {
+                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ResCheckChangeCourse response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
     }
 }

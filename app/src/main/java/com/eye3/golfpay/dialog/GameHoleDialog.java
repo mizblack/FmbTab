@@ -56,10 +56,10 @@ public class GameHoleDialog extends Dialog {
     private TextView tv_longest_out;
     private TextView tv_longest_in;
 
-    private RecyclerView rvLongestOut;
-    private RecyclerView rvLongestIn;
-    private RecyclerView rvNearestOut;
-    private RecyclerView rvNearestIn;
+    private RecyclerView rvLongestBegin;
+    private RecyclerView rvLongestEnd;
+    private RecyclerView rvNearestBegin;
+    private RecyclerView rvNearestEnd;
 
     private TextView tvCancel;
     private TextView tvSave;
@@ -92,10 +92,10 @@ public class GameHoleDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.frd_game_hole);
-        rvLongestOut = findViewById(R.id.rv_longest_out);
-        rvLongestIn = findViewById(R.id.rv_longest_in);
-        rvNearestOut = findViewById(R.id.rv_nearest_out);
-        rvNearestIn = findViewById(R.id.rv_nearest_in);
+        rvLongestBegin = findViewById(R.id.rv_longest_out);
+        rvLongestEnd = findViewById(R.id.rv_longest_in);
+        rvNearestBegin = findViewById(R.id.rv_nearest_out);
+        rvNearestEnd = findViewById(R.id.rv_nearest_in);
 
         tv_nearest_out = findViewById(R.id.tv_nearest_out);
         tv_nearest_in = findViewById(R.id.tv_nearest_in);
@@ -124,10 +124,10 @@ public class GameHoleDialog extends Dialog {
             }
         });
 
-        initRecyclerViews(rvLongestOut, 0);
-        initRecyclerViews(rvLongestIn, 1);
-        initRecyclerViews(rvNearestOut, 0);
-        initRecyclerViews(rvNearestIn, 1);
+        initRecyclerViews(rvLongestBegin, 0);
+        initRecyclerViews(rvLongestEnd, 1);
+        initRecyclerViews(rvNearestBegin, 0);
+        initRecyclerViews(rvNearestEnd, 1);
 
         getNearLongHole();
     }
@@ -171,10 +171,10 @@ public class GameHoleDialog extends Dialog {
             public void onSuccess(ReserveGameType response) {
                 if (response.ret_code.equals("ok")) {
 
-                    allUnSelect(rvNearestOut);
-                    allUnSelect(rvNearestIn);
-                    allUnSelect(rvLongestOut);
-                    allUnSelect(rvLongestIn);
+                    allUnSelect(rvNearestBegin);
+                    allUnSelect(rvNearestEnd);
+                    allUnSelect(rvLongestBegin);
+                    allUnSelect(rvLongestEnd);
 
                     course_near = response.course_near;
                     course_long = response.course_long;
@@ -182,19 +182,19 @@ public class GameHoleDialog extends Dialog {
                     hole_no_long = response.hole_no_long;
 
                     if (response.course_near.equals(Global.courseInfoList.get(0).courseName)) {
-                        ((GameHoleAdapter) rvNearestIn.getAdapter()).select(response.hole_no_near);
-                        rvNearestIn.getAdapter().notifyDataSetChanged();
+                        ((GameHoleAdapter) rvNearestBegin.getAdapter()).select(response.hole_no_near);
+                        rvNearestBegin.getAdapter().notifyDataSetChanged();
                     } else if (response.course_near.equals(Global.courseInfoList.get(1).courseName)) {
-                        ((GameHoleAdapter) rvNearestOut.getAdapter()).select(response.hole_no_near);
-                        rvNearestIn.getAdapter().notifyDataSetChanged();
+                        ((GameHoleAdapter) rvNearestEnd.getAdapter()).select(response.hole_no_near);
+                        rvNearestEnd.getAdapter().notifyDataSetChanged();
                     }
 
                     if (response.course_long.equals(Global.courseInfoList.get(0).courseName)) {
-                        ((GameHoleAdapter) rvLongestIn.getAdapter()).select(response.hole_no_long);
-                        rvNearestIn.getAdapter().notifyDataSetChanged();
+                        ((GameHoleAdapter) rvLongestBegin.getAdapter()).select(response.hole_no_long);
+                        rvLongestBegin.getAdapter().notifyDataSetChanged();
                     } else if (response.course_long.equals(Global.courseInfoList.get(1).courseName)) {
-                        ((GameHoleAdapter) rvLongestOut.getAdapter()).select(response.hole_no_long);
-                        rvNearestIn.getAdapter().notifyDataSetChanged();
+                        ((GameHoleAdapter) rvLongestEnd.getAdapter()).select(response.hole_no_long);
+                        rvLongestEnd.getAdapter().notifyDataSetChanged();
                     }
                 }
             }
@@ -219,48 +219,48 @@ public class GameHoleDialog extends Dialog {
         gameHoleAdapter.setIListenerDialog(new IListenerDialog() {
             @Override
             public void onSelected(int hole) {
-                if (recyclerView == rvNearestIn) {
-                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestIn.getAdapter();
+                if (recyclerView == rvNearestEnd) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestEnd.getAdapter();
                     if (sameCourseHole(adapter, hole)) {
                         return;
                     }
 
                     course_near = Global.courseInfoList.get(type).courseName;
                     hole_no_near = hole;
-                    allUnSelect(rvNearestOut);
+                    allUnSelect(rvNearestBegin);
                     updateUI(gameHoleAdapter, hole);
                 }
-                else if (recyclerView == rvNearestOut) {
-                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestOut.getAdapter();
+                else if (recyclerView == rvNearestBegin) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvLongestBegin.getAdapter();
                     if (sameCourseHole(adapter, hole)) {
                         return;
                     }
 
                     course_near = Global.courseInfoList.get(type).courseName;
                     hole_no_near = hole;
-                    allUnSelect(rvNearestIn);
+                    allUnSelect(rvNearestEnd);
                     updateUI(gameHoleAdapter, hole);
                 }
-                else if (recyclerView == rvLongestIn) {
-                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestIn.getAdapter();
+                else if (recyclerView == rvLongestEnd) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestEnd.getAdapter();
                     if (sameCourseHole(adapter, hole)) {
                         return;
                     }
 
                     course_long = Global.courseInfoList.get(type).courseName;
                     hole_no_long = hole;
-                    allUnSelect(rvLongestOut);
+                    allUnSelect(rvLongestBegin);
                     updateUI(gameHoleAdapter, hole);
                 }
-                else if (recyclerView == rvLongestOut) {
-                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestOut.getAdapter();
+                else if (recyclerView == rvLongestBegin) {
+                    GameHoleAdapter adapter = (GameHoleAdapter)rvNearestBegin.getAdapter();
                     if (sameCourseHole(adapter, hole)) {
                         return;
                     }
 
                     course_long = Global.courseInfoList.get(type).courseName;
                     hole_no_long = hole;
-                    allUnSelect(rvLongestIn);
+                    allUnSelect(rvLongestEnd);
                     updateUI(gameHoleAdapter, hole);
                 }
             }

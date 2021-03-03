@@ -2,49 +2,34 @@ package com.eye3.golfpay.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
-import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.dialog.GameHoleDialog;
-import com.eye3.golfpay.model.login.Login;
+import com.eye3.golfpay.model.field.NearLong;
 import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.teeup.GuestDatum;
-import com.eye3.golfpay.model.teeup.GuestScoreDB;
-import com.eye3.golfpay.model.teeup.TodayReserveList;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NearestLongestFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NearestLongestFragment extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -55,7 +40,8 @@ public class NearestLongestFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private final ArrayList<GuestDatum> guestArrayList = new ArrayList<>();
+    private ArrayList<NearLong> totalPlayerList;
+    private final ArrayList<GuestDatum> guestArrayList = Global.selectedReservation.getGuestData();
     private final ArrayList<TextView> nearestRankTextViews = new ArrayList<>();
     private final ArrayList<TextView> longestRankTextViews = new ArrayList<>();
     private final ArrayList<TextView> nearestScoreTextViews = new ArrayList<>();
@@ -86,7 +72,6 @@ public class NearestLongestFragment extends BaseFragment {
             }
         });
 
-
         view.findViewById(R.id.btn_game_hole).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,28 +93,20 @@ public class NearestLongestFragment extends BaseFragment {
         //loadGuestScore();
         tvNearHolePar = view.findViewById(R.id.tv_near_hole_par);
         tvLongHolePar = view.findViewById(R.id.tv_long_hole_par);
-        loadGuestScoreFromAPI();
         getNearLongHole();
 
-        ArrayList<TodayReserveList> todayReserveList = Global.teeUpTime.getTodayReserveList();
 
-        for (int i = 0; i < todayReserveList.size(); i++) {
-            TodayReserveList list = todayReserveList.get(i);
-            for (int j = 0; j < list.getGuestData().size(); j++) {
-                GuestDatum guestDatum = list.getGuestData().get(j);
-                guestArrayList.add(guestDatum);
-            }
-        }
 
-        for (int i = 0; i < guestArrayList.size(); i++) {
-            addPlayerList(view.findViewById(R.id.view_list), i, guestArrayList.size());
-        }
+
+
+
+        initScoreBoard(view);
 
         return view;
     }
 
 
-    private void addPlayerList(LinearLayout container, final int index, int playerCount) {
+    private void addPlayerList(LinearLayout container, boolean isActiveUser, final int index, int playerCount) {
 
         int height = 120;
 
@@ -147,6 +124,12 @@ public class NearestLongestFragment extends BaseFragment {
         TextView tvLongestRank = childView.findViewById(R.id.tv_longest_rank);
         TextView tvNearest = childView.findViewById(R.id.tv_nearest);
         TextView tvLongest = childView.findViewById(R.id.tv_longest);
+        String guestId = Integer.toString(totalPlayerList.get(index).id);
+        if (isActiveUser) {
+            tvName.setTextAppearance(R.style.GlobalTextView_22SP_irisBlue_NotoSans_Medium);
+        } else {
+            tvName.setTextAppearance(R.style.GlobalTextView_22SP_ebonyBlack_NotoSans_Medium);
+        }
 
         if (index % 2 == 0) {
             tvName.setBackgroundColor(ContextCompat.getColor(mContext, R.color.lightAliceBlue));
@@ -157,27 +140,24 @@ public class NearestLongestFragment extends BaseFragment {
         tvNearest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNumberKeypad(tvNearest, index, "Nearest");
+                if (isActiveUser(guestId))
+                    showNumberKeypad(tvNearest, index, "Nearest");
+                else
+                    Toast.makeText(mContext, "현재 진행중인 플레이어만 입력할 수 있습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
         tvLongest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNumberKeypad(tvLongest, index, "Longest");
+                if (isActiveUser(guestId))
+                    showNumberKeypad(tvLongest, index, "Longest");
+                else
+                    Toast.makeText(mContext, "현재 진행중인 플레이어만 입력할 수 있습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        tvName.setText(guestArrayList.get(index).getGuestName());
-
-        Float nearest = guestArrayList.get(index).getNearest();
-        if (nearest > 0)
-            tvNearest.setText(nearest.toString() + "M");
-
-        Float longest = guestArrayList.get(index).getLongest();
-        if (longest > 0)
-            tvLongest.setText(longest.toString() + "M");
-
+        tvName.setText(totalPlayerList.get(index).guestName);
         nearestRankTextViews.add(tvNearestRank);
         longestRankTextViews.add(tvLongestRank);
         nearestScoreTextViews.add(tvNearest);
@@ -276,6 +256,18 @@ public class NearestLongestFragment extends BaseFragment {
         }
     }
 
+    private boolean isActiveUser(String id) {
+
+        for (int i = 0; i < Global.selectedReservation.getGuestData().size(); i++) {
+            GuestDatum guestDatum = Global.selectedReservation.getGuestData().get(i);
+            if (guestDatum.getId().equals(id)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     private void updateLongestRank(NearLongScoreBoard response) {
         try {
             for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
@@ -294,6 +286,33 @@ public class NearestLongestFragment extends BaseFragment {
             textView.setText("-");
         else
             textView.setText(score + "M");
+    }
+
+    private void initScoreBoard(View view) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getGameTypeScore(getContext(), new DataInterface.ResponseCallback<NearLongScoreBoard>() {
+            @Override
+            public void onSuccess(NearLongScoreBoard response) {
+
+                totalPlayerList = response.guest_gametype_ranking;
+                for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
+                    NearLong nearLong = response.guest_gametype_ranking.get(i);
+                    String id = Integer.toString(response.guest_gametype_ranking.get(i).id);
+                    addPlayerList(view.findViewById(R.id.view_list), isActiveUser(id), i, response.guest_gametype_ranking.size());
+                }
+
+                loadGuestScoreFromAPI();
+            }
+
+            @Override
+            public void onError(NearLongScoreBoard response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 
     private void loadGuestScoreFromAPI() {
