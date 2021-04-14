@@ -228,6 +228,7 @@ public class ScoreFragment extends BaseFragment {
             if (i != selectedTabIdx)
                 CourseTabBar[i].setTextColor(Color.GRAY);
         }
+        mTabIdx = selectedTabIdx;
         TabCourseLinear.setHoleScoreLayoutIdx(0);
         createScoreTab(playerList, selectedTabIdx);
     }
@@ -324,7 +325,8 @@ public class ScoreFragment extends BaseFragment {
 
     private void refreshScore() {
         showProgress("스코어 정보를 갱신 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId,
+                "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
             @Override
             public void onSuccess(ResponseData<Player> response) {
                 hideProgress();

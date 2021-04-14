@@ -15,13 +15,9 @@ import com.eye3.golfpay.R;
 
 public class PopupDialog extends Dialog {
 
-    private TextView mBtnClose;
-    private final boolean mIsChecked = false;
-    private CheckBox mCheckBox;
-
-    private String imgscr;
-    private String target;
-    private String Idx;
+    private TextView tvMessage;
+    private TextView tvSender;
+    private TextView tvTime;
     private IListenerDialogTouch mListener;
 
     public interface  IListenerDialogTouch {
@@ -40,9 +36,11 @@ public class PopupDialog extends Dialog {
         mListener = listener;
     }
 
-    public void setData(String imgscr, String target, String idx) {
+    public void setData(String message, String sender, String time) {
 
-        setContentView(R.layout.dialog_popup);
+        tvMessage.setText(message);
+        tvSender.setText(sender);
+        tvTime.setText(time);
     }
 
     @Override
@@ -52,6 +50,10 @@ public class PopupDialog extends Dialog {
         setContentView(R.layout.dialog_popup);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        tvMessage = findViewById(R.id.tv_message);
+        tvSender = findViewById(R.id.tv_sender);
+        tvTime = findViewById(R.id.tv_time);
 
         findViewById(R.id.layout_container).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,4 +67,6 @@ public class PopupDialog extends Dialog {
             }
         });
     }
+
+    
 }

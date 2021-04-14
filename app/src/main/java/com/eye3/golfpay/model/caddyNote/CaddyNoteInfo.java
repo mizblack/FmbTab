@@ -5,6 +5,7 @@ import com.eye3.golfpay.model.guest.ReqClubInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CaddyNoteInfo {
@@ -20,22 +21,15 @@ public class CaddyNoteInfo {
     @SerializedName("guest_memo")
     private String guest_memo = "";
     @SerializedName("wood")
-    private String wood = null;
+    private ArrayList<ClubInfo> wood = null;
     @SerializedName("utility")
-    private String utility = null;
+    private ArrayList<ClubInfo> utility = null;
     @SerializedName("iron")
-    private String iron = null;
+    private ArrayList<ClubInfo> iron = null;
     @SerializedName("putter")
-    private String putter = null;
+    private ArrayList<ClubInfo> putter = null;
     @SerializedName("wedge")
-    private String wedge = null;
-
-    @SerializedName("wood_cover")
-    private String wood_cover = null;
-    @SerializedName("putter_cover")
-    private String putter_cover = null;
-    @SerializedName("etc_cover")
-    private String etc_cover = null;
+    private ArrayList<ClubInfo> wedge = null;
 
     @SerializedName("sign_before")
     private List<CaddyImage> sign_before = null;
@@ -91,68 +85,44 @@ public class CaddyNoteInfo {
         this.guest_memo = guest_memo;
     }
 
-    public String getWood() {
+    public ArrayList<ClubInfo> getWood() {
         return wood;
     }
 
-    public void setWood(String wood) {
+    public void setWood(ArrayList<ClubInfo> wood) {
         this.wood = wood;
     }
 
-    public String getUtility() {
+    public ArrayList<ClubInfo> getUtility() {
         return utility;
     }
 
-    public void setUtility(String utility) {
+    public void setUtility(ArrayList<ClubInfo> utility) {
         this.utility = utility;
     }
 
-    public String getIron() {
+    public ArrayList<ClubInfo> getIron() {
         return iron;
     }
 
-    public void setIron(String iron) {
+    public void setIron(ArrayList<ClubInfo> iron) {
         this.iron = iron;
     }
 
-    public String getPutter() {
+    public ArrayList<ClubInfo> getPutter() {
         return putter;
     }
 
-    public void setPutter(String putter) {
+    public void setPutter(ArrayList<ClubInfo> putter) {
         this.putter = putter;
     }
 
-    public String getWedge() {
+    public ArrayList<ClubInfo> getWedge() {
         return wedge;
     }
 
-    public void setWedge(String wedge) {
+    public void setWedge(ArrayList<ClubInfo> wedge) {
         this.wedge = wedge;
-    }
-
-    public String getWood_cover() {
-        return wood_cover;
-    }
-
-    public void setWood_cover(String wood_cover) {
-        this.wood_cover = wood_cover;
-    }
-
-    public String getPutter_cover() {
-        return putter_cover;
-    }
-
-    public void setPutter_cover(String putter_cover) {
-        this.putter_cover = putter_cover;
-    }
-
-    public String getEtc_cover() {
-        return etc_cover;
-    }
-
-    public void setEtc_cover(String etc_cover) {
-        this.etc_cover = etc_cover;
     }
 
     public List<CaddyImage> getSign_before() {
@@ -193,5 +163,10 @@ public class CaddyNoteInfo {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public static class ClubInfo {
+        public String club;
+        public boolean cover;
     }
 }

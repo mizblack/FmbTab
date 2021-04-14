@@ -1,5 +1,7 @@
 package com.eye3.golfpay.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,11 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.login.Login;
+import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.Security;
 
@@ -116,8 +120,6 @@ public class LoginFragment extends BaseFragment {
 
                 closeKeyboard(editId);
                 closeKeyboard(editPwd);
-                editId.setEnabled(false);
-                editPwd.setEnabled(false);
             }
         });
 
@@ -132,6 +134,7 @@ public class LoginFragment extends BaseFragment {
     private void login(String golfId, String id, String pwd) {
         //   showProgress("로그인 중입니다....");
 
+        Global.loginToken = null;
         DataInterface.getInstance(golfId+"/api/v1/").login(id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
@@ -140,18 +143,18 @@ public class LoginFragment extends BaseFragment {
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
                     Global.CaddyNo = String.valueOf(response.getCaddyNo());
-                    changeDrawerViewToMenuView();
+
+                    Global.HOST_BASE_ADDRESS_AWS = golfId + "/";
+                    Global.HOST_ADDRESS_AWS = golfId + "/api/v1/";
+                    Global.tabletLogo = response.getTabletLogo();
+                    Global.loginToken = response.getLoginToken();
+                    getTodayReservesForCaddy(getContext(), Global.CaddyNo);
 
                     if (cbSave.isChecked()) {
                         saveAccount(golfId, id, editPwd.getText().toString(), true);
                     } else {
                         saveAccount("", "", "", false);
                     }
-
-                    Global.HOST_BASE_ADDRESS_AWS = golfId + "/";
-                    Global.HOST_ADDRESS_AWS = golfId + "/api/v1/";
-                    Global.tabletLogo = response.getTabletLogo();
-                    ((MainActivity)getActivity()).updateUI();
 
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
@@ -193,5 +196,37 @@ public class LoginFragment extends BaseFragment {
     public void changeDrawerViewToMenuView() {
         //메뉴fragment활성화 시킨다.
         GoNavigationDrawer(new TeeUpFragment(), null);
+    }
+
+    private void getTodayReservesForCaddy(final Context context, String caddy_id) {
+        //   showProgress("티업시간을 받아오는 중입니다....");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(TeeUpTime response) {
+                hideProgress();
+                systemUIHide();
+
+                if (response == null || response.getTodayReserveList().size() == 0) {
+                    Toast.makeText(context, "배정된 예약이 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                changeDrawerViewToMenuView();
+                ((MainActivity)getActivity()).updateUI();
+            }
+
+            @Override
+            public void onError(TeeUpTime response) {
+                hideProgress();
+                systemUIHide();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+                systemUIHide();
+            }
+        });
     }
 }

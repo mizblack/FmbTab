@@ -58,7 +58,7 @@ public class ResponseChatMsg implements Serializable {
     @SerializedName("receiver_type")
     @Expose
     private String receiver_type;
-    @SerializedName("msg")
+    @SerializedName("message")
     @Expose
     private String msg;
     @SerializedName("display_time")

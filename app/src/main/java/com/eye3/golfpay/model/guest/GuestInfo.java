@@ -1,5 +1,6 @@
 package com.eye3.golfpay.model.guest;
 
+import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
@@ -104,36 +105,34 @@ public class GuestInfo {
 
         clubInfo = ci;
         reqClubInfo = new ReqClubInfo();
-        for (String wood : ci.wood) {
-            reqClubInfo.wood += (wood + ",");
+        for (CaddyNoteInfo.ClubInfo wood : ci.wood) {
+            reqClubInfo.wood += (wood.club + ",");
+            if (wood.cover)
+                reqClubInfo.wood_cover += (wood.club + ",");
         }
 
-        for (String utility : ci.utility) {
-            reqClubInfo.utility += (utility + ",");
+        for (CaddyNoteInfo.ClubInfo utility : ci.utility) {
+            reqClubInfo.utility += (utility.club  + ",");
+            if (utility.cover)
+                reqClubInfo.utility_cover += (utility.club + ",");
         }
 
-        for (String iron : ci.iron) {
-            reqClubInfo.iron += (iron + ",");
+        for (CaddyNoteInfo.ClubInfo iron : ci.iron) {
+            reqClubInfo.iron += (iron.club  + ",");
+            if (iron.cover)
+                reqClubInfo.iron_cover += (iron.club + ",");
         }
 
-        for (String putter : ci.putter) {
-            reqClubInfo.putter += (putter + ",");
+        for (CaddyNoteInfo.ClubInfo putter : ci.putter) {
+            reqClubInfo.putter += (putter.club  + ",");
+            if (putter.cover)
+                reqClubInfo.putter_cover += (putter.club + ",");
         }
 
-        for (String wedge : ci.wedge) {
-            reqClubInfo.wedge += (wedge + ",");
-        }
-
-        for (String wood_cover : ci.wood_cover) {
-            reqClubInfo.wood_cover += (wood_cover + ",");
-        }
-
-        for (String putter_cover : ci.putter_cover) {
-            reqClubInfo.putter_cover += (putter_cover + ",");
-        }
-
-        for (String cover : ci.cover) {
-            reqClubInfo.cover += (cover + ",");
+        for (CaddyNoteInfo.ClubInfo wedge : ci.wedge) {
+            reqClubInfo.wedge += (wedge.club  + ",");
+            if (wedge.cover)
+                reqClubInfo.wedge_cover += (wedge.club + ",");
         }
     }
 

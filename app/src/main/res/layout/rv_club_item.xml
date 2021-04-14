@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/view_item"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="80dp"
     android:layout_height="77dp"
     android:layout_marginLeft="1dp"
@@ -8,11 +10,30 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        style="@style/GlobalTextView.16SP.A3A5A7.NotoSans.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/tv_item"
+        style="@style/GlobalTextView.16SP.A3A5A7.NotoSans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="20"/>
+        android:text="20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_cover"
+        style="@style/GlobalTextView.8SP.irisBlue.NotoSans.Regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_white_bg"
+        android:gravity="center"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="커버 X"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

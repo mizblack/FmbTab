@@ -23,6 +23,10 @@ public class Login implements Serializable {
     @Expose
     private String mTabletLogo;
 
+    @SerializedName("login-token")
+    @Expose
+    private String loginToken;
+
     public int getCaddyNo() {
         return mCaddyNo;
     }
@@ -49,5 +53,9 @@ public class Login implements Serializable {
 
     public String getTabletLogo() {
         return mTabletLogo;
+    }
+
+    public String getLoginToken() {
+        return loginToken;
     }
 }

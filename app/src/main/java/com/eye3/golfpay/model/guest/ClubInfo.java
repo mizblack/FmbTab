@@ -1,84 +1,60 @@
 package com.eye3.golfpay.model.guest;
 
+import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
+import com.eye3.golfpay.model.field.Club;
+
 import java.util.ArrayList;
 
 public class ClubInfo {
 
-    public ArrayList<String> wood = new ArrayList<>();
-    public ArrayList<String> utility = new ArrayList<>();
-    public ArrayList<String> iron = new ArrayList<>();
-    public ArrayList<String> putter = new ArrayList<>();
-    public ArrayList<String> wedge = new ArrayList<>();
-    public ArrayList<String> wood_cover = new ArrayList<>();
-    public ArrayList<String> putter_cover = new ArrayList<>();
-    public ArrayList<String> cover = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> wood = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> utility = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> iron = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> putter = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> wedge = new ArrayList<>();
 
     public String phoneNumber = "";
     public String carNumber = "";
     public String memo = "";
 
-    public ArrayList<String> getWood() {
+    public ArrayList<CaddyNoteInfo.ClubInfo> getWood() {
         return wood;
     }
 
-    public void setWood(ArrayList<String> wood) {
+    public void setWood(ArrayList<CaddyNoteInfo.ClubInfo> wood) {
         this.wood = wood;
     }
 
-    public ArrayList<String> getUtility() {
+    public ArrayList<CaddyNoteInfo.ClubInfo> getUtility() {
         return utility;
     }
 
-    public void setUtility(ArrayList<String> utility) {
+    public void setUtility(ArrayList<CaddyNoteInfo.ClubInfo> utility) {
         this.utility = utility;
     }
 
-    public ArrayList<String> getIron() {
+    public ArrayList<CaddyNoteInfo.ClubInfo> getIron() {
         return iron;
     }
 
-    public void setIron(ArrayList<String> iron) {
+    public void setIron(ArrayList<CaddyNoteInfo.ClubInfo> iron) {
         this.iron = iron;
     }
 
-    public ArrayList<String> getWedge() {
-        return wedge;
-    }
-
-    public void setWedge(ArrayList<String> wedge) {
-        this.wedge = wedge;
-    }
-
-    public ArrayList<String> getPutter() {
+    public ArrayList<CaddyNoteInfo.ClubInfo> getPutter() {
         return putter;
     }
 
-    public void setPutter(ArrayList<String> putter) {
+    public void setPutter(ArrayList<CaddyNoteInfo.ClubInfo> putter) {
         this.putter = putter;
     }
 
-    public ArrayList<String> getWood_cover() {
-        return wood_cover;
+    public ArrayList<CaddyNoteInfo.ClubInfo> getWedge() {
+        return wedge;
     }
 
-    public void setWood_cover(ArrayList<String> wood_cover) {
-        this.wood_cover = wood_cover;
-    }
-
-    public ArrayList<String> getPutter_cover() {
-        return putter_cover;
-    }
-
-    public void setPutter_cover(ArrayList<String> putter_cover) {
-        this.putter_cover = putter_cover;
-    }
-
-    public ArrayList<String> getCover() {
-        return cover;
-    }
-
-    public void setCover(ArrayList<String> cover) {
-        this.cover = cover;
+    public void setWedge(ArrayList<CaddyNoteInfo.ClubInfo> wedge) {
+        this.wedge = wedge;
     }
 
     public int totalCount() {
@@ -87,10 +63,8 @@ public class ClubInfo {
         totalCount += utility.size();
         totalCount += iron.size();
         totalCount += wedge.size();
-        totalCount += getCoverCount(putter);
-        totalCount += getCoverCount(wood_cover);
-        totalCount += getCoverCount(putter_cover);
-        totalCount += getCoverCount(cover);
+        //totalCount += getCoverCount(putter);
+        //totalCount += getCoverCount(cover);
 
         return totalCount;
     }
@@ -106,15 +80,15 @@ public class ClubInfo {
     }
 
     public int getPutterCount() {
-        return getCoverCount(putter);
+        return putter.size();
     }
 
     public int coverCount() {
-        int coverCount = 0;
-        coverCount += getCoverCount(wood_cover);
-        coverCount += getCoverCount(putter_cover);
-        coverCount += getCoverCount(cover);
+//        int coverCount = 0;
+//        coverCount += getCoverCount(cover);
+//
+//        return coverCount;
 
-        return coverCount;
+        return 0;
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -52,7 +53,8 @@ public class GalleryFragment extends BaseFragment {
     private FrGallleryBinding binding;
     GalleryAdapter galleryAdapter;
     GalleryType galleryType = GalleryType.All;
-
+    boolean ceoImageMode = false;
+    ResponseData<ResponseGallery> galleryResponseData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class GalleryFragment extends BaseFragment {
         binding.btnClubPhotoAfter.setOnClickListener(onClickListener);
         binding.btnPhoto.setOnClickListener(onClickListener);
         binding.btnEventPhoto.setOnClickListener(onClickListener);
+        binding.btnCeoImage.setOnClickListener(onClickListener);
         requestPhotos();
         return binding.getRoot();
     }
@@ -115,10 +118,59 @@ public class GalleryFragment extends BaseFragment {
                     binding.btnEventPhoto.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
                     galleryType = GalleryType.Event;
                     break;
+                case R.id.btn_ceo_image :
+                    ceoImageMode ^= true;
+
+                    if (ceoImageMode) {
+                        binding.btnCeoImage.setBackgroundResource(R.drawable.shape_round_irisblue_bg);
+                        binding.btnCeoImage.setTextAppearance(R.style.GlobalTextView_18SP_white_NotoSans_Regular);
+                        binding.btnCeoImage.setText("완료");
+                    } else {
+                        binding.btnCeoImage.setBackgroundResource(R.drawable.shape_round_irisblue_border_bg);
+                        binding.btnCeoImage.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
+                        binding.btnCeoImage.setText("대표 사진 설정");
+                        
+                        int photoId = getCeoImage();
+                        if (photoId == -1) {
+                            Toast.makeText(mContext, "대표 이미지가 선택되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        requestSetCeoImage(photoId);
+                                
+                   }
+
+                    break;
             }
             requestPhotos();
         }
     };
+    
+    private int getCeoImage() {
+        for (PersnoalPhotoData pp : galleryResponseData.getData().club_photo_personal) {
+            for (PhotoData pd : pp.list) {
+                if (pd.select_ceo_image)
+                    return pd.photo_id;
+            }
+        }
+
+        for (PhotoData pd : galleryResponseData.getData().club_photo_team) {
+            if (pd.select_ceo_image)
+                return pd.photo_id;
+        }
+
+        for (PhotoData pd : galleryResponseData.getData().event_photo) {
+            if (pd.select_ceo_image)
+                return pd.photo_id;
+        }
+
+        for (PhotoData pd : galleryResponseData.getData().normal_photo) {
+            if (pd.select_ceo_image)
+                return pd.photo_id;
+        }
+        
+        return -1;
+    }
 
     private void initRecyclerView(RecyclerView rv, TextView tvEmpty, int orientation, List<PhotoData> pictureList, int spanCount) {
         GridLayoutManager mManager = new GridLayoutManager(getActivity(), spanCount);
@@ -133,7 +185,7 @@ public class GalleryFragment extends BaseFragment {
         rv.setVisibility(View.VISIBLE);
         rv.setLayoutManager(mManager);
         rv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, true));
-        galleryAdapter = new GalleryAdapter(mContext, pictureList, galleryType,new IGalleryListener() {
+        galleryAdapter = new GalleryAdapter(mContext, pictureList, galleryType, ceoImageMode, new IGalleryListener() {
             @Override
             public void onShowImages(ArrayList<String> images, int position) {
 
@@ -194,27 +246,33 @@ public class GalleryFragment extends BaseFragment {
     }
 
     private void requestPhotos() {
+
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getCaddyPhotos(getContext(), new DataInterface.ResponseCallback<ResponseData<ResponseGallery>>() {
             @Override
             public void onSuccess(ResponseData<ResponseGallery> response) {
-                switch (galleryType) {
-                    case All:
-                        List<PhotoData> allPhotos = getAllPhotos(response);
-                        binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, allPhotos, 4);
-                        break;
-                    case ClubTeamBefore:
-                    case ClubTeamAfter:
-                        initPersonalGallery(response.getData().club_photo_team, response.getData().club_photo_personal);
-                        break;
-                    case Normal:
-                        binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, response.getData().normal_photo, 4);
-                        break;
-                    case Event:
-                        binding.scrollView.setVisibility(View.GONE);
-                        initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, response.getData().event_photo, 4);
-                        break;
+                galleryResponseData = response;
+                loadPhotos();
+            }
+
+            @Override
+            public void onError(ResponseData<ResponseGallery> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void requestSetCeoImage(int photoId) {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setCeoImage(getContext(), photoId, new DataInterface.ResponseCallback<ResponseData<ResponseGallery>>() {
+            @Override
+            public void onSuccess(ResponseData<ResponseGallery> response) {
+                if (response.getResultCode().equalsIgnoreCase("ok")) {
+                    Toast.makeText(mContext, "대표 이미지가 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    requestPhotos();
                 }
             }
 
@@ -228,6 +286,28 @@ public class GalleryFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void loadPhotos() {
+        switch (galleryType) {
+            case All:
+                List<PhotoData> allPhotos = getAllPhotos(galleryResponseData);
+                binding.scrollView.setVisibility(View.GONE);
+                initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, allPhotos, 4);
+                break;
+            case ClubTeamBefore:
+            case ClubTeamAfter:
+                initPersonalGallery(galleryResponseData.getData().club_photo_team, galleryResponseData.getData().club_photo_personal);
+                break;
+            case Normal:
+                binding.scrollView.setVisibility(View.GONE);
+                initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, galleryResponseData.getData().normal_photo, 4);
+                break;
+            case Event:
+                binding.scrollView.setVisibility(View.GONE);
+                initRecyclerView(binding.recyclerGallery, binding.tvEmpty, RecyclerView.VERTICAL, galleryResponseData.getData().event_photo, 4);
+                break;
+        }
     }
 
     private void initPersonalGallery(List<PhotoData> teamList, List<PersnoalPhotoData> pictureList) {
@@ -318,14 +398,16 @@ public class GalleryFragment extends BaseFragment {
         }
     }
 
-    static private class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Context mContext;
         List<PhotoData> mPictureList;
         IGalleryListener iGalleryListener;
+        boolean ceoImageMode;
 
-        public GalleryAdapter(Context context, List<PhotoData> pictureList, GalleryType type, IGalleryListener listener) {
+        public GalleryAdapter(Context context, List<PhotoData> pictureList, GalleryType type, boolean ceoImageMode, IGalleryListener listener) {
             mContext = context;
             this.iGalleryListener = listener;
+            this.ceoImageMode = ceoImageMode;
             if (type == GalleryType.ClubTeamBefore) {
                 mPictureList = new ArrayList<>();
                 for (PhotoData data: pictureList) {
@@ -378,7 +460,55 @@ public class GalleryFragment extends BaseFragment {
                     return true;
                 }
             });
+
+            if (ceoImageMode) {
+                viewHolder.ceo_thumbnail.setVisibility(View.VISIBLE);
+
+                if (mPictureList.get(position).select_ceo_image)
+                    viewHolder.iv_check.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_in_white));
+                else
+                    viewHolder.iv_check.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.gallery_uncheck));
+            }
+            else
+                viewHolder.ceo_thumbnail.setVisibility(View.GONE);
+
+            viewHolder.ceo_thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.iv_check.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_in_white));
+                    reDrawSelectCeoImage(position, mPictureList.get(position).select_ceo_image ^= true);
+                }
+            });
+
             setClubImage(viewHolder.imageView, mPictureList.get(position).photo_url);
+        }
+
+        private void reDrawSelectCeoImage(int position, boolean check) {
+            allUnCheckCeoImage();
+            mPictureList.get(position).select_ceo_image = check;
+            notifyDataSetChanged();
+        }
+
+        private void allUnCheckCeoImage() {
+            for (PersnoalPhotoData pp : galleryResponseData.getData().club_photo_personal) {
+                for (PhotoData pd : pp.list) {
+                    pd.select_ceo_image = false;
+                }
+            }
+
+            for (PhotoData pd : galleryResponseData.getData().club_photo_team) {
+                pd.select_ceo_image = false;
+            }
+
+            for (PhotoData pd : galleryResponseData.getData().event_photo) {
+                pd.select_ceo_image = false;
+            }
+
+            for (PhotoData pd : galleryResponseData.getData().normal_photo) {
+                pd.select_ceo_image = false;
+            }
+
+            loadPhotos();
         }
 
         private void setClubImage(ImageView img, String url) {
@@ -413,12 +543,16 @@ public class GalleryFragment extends BaseFragment {
             return mPictureList.size();
         }
 
-        static public class GalleryItemViewHolder extends RecyclerView.ViewHolder {
+        public class GalleryItemViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
+            ImageView iv_check;
+            ConstraintLayout ceo_thumbnail;
 
             public GalleryItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.img_gallery);
+                iv_check = itemView.findViewById(R.id.iv_check);
+                ceo_thumbnail = itemView.findViewById(R.id.ceo_thumbnail);
             }
         }
     }

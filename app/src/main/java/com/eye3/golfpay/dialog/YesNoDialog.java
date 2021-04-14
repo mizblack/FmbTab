@@ -39,6 +39,10 @@ public class YesNoDialog extends Dialog {
         tvContent.setText(content);
     }
 
+    public void setDisableCancelButton() {
+        findViewById(R.id.btn_cancel).setVisibility(View.GONE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1906,4 +1906,11 @@ public class Util {
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
+    public static String getDay(long timestamp, String format) {
+        Date date = new Date(timestamp);
+
+        SimpleDateFormat df = new SimpleDateFormat(format, Locale.getDefault());
+        return df.format(date);
+    }
+
 }

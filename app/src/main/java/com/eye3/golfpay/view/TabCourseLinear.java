@@ -496,7 +496,7 @@ public class TabCourseLinear extends LinearLayout {
 
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setTextAppearance(scoreTotalTextStyle);
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setTextAppearance(puttTextStyle);
-            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, AppDef.isTar));
+            ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_tar)).setText(AppDef.Par_Tar(wholeTotalScore, true));
             ((TextView) scoreItemViewHolder.wholeTotalLinear.findViewById(R.id.whole_total_put)).setText(String.valueOf(playerList.get(index).totalRankingPutting));
         }
 

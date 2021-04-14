@@ -177,6 +177,11 @@ public class NearestLongestFragment extends BaseFragment {
             @Override
             public void onConfirm(String number) {
 
+                if (guestArrayList.size() == 0) {
+                    Toast.makeText(mContext, "게스트 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (type.equals("Nearest")) {
                     int guestId = Integer.parseInt(guestArrayList.get(index).getId());
                     setGuestScoreFromAPI(guestId, "near", number);

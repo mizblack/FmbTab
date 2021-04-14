@@ -153,6 +153,30 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/btn_sms_score"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="32dp"
+            sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
+            sothree:layout_constraintEnd_toStartOf="@+id/btn_team_photo"
+            sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/sms_score" />
+
+            <TextView
+                style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="스코어 전송" />
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

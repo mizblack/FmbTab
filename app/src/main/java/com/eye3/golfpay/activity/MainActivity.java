@@ -16,7 +16,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,11 +51,11 @@ import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.LaravelModel;
-import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
+import com.eye3.golfpay.service.GpsTracker;
 import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.util.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -68,6 +67,11 @@ import net.mrbin99.laravelechoandroid.EchoOptions;
 import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int REQUEST_IMAGE_CAPTURE = 672;
@@ -85,6 +89,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private int photoType = -1;
     ITakePhotoListener iTakePhotoListener;
 
+    private GpsTracker gpsTracker;
+    private PopupDialog popupDialog;
+    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,7 +109,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         requestPermission();
         //startListeningUserLocation();지
         drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-
+        popupDialog = new PopupDialog(MainActivity.this, R.style.DialogTheme);
         //화면꺼짐 방
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setLaravel();
@@ -401,6 +412,41 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    public void startListeningUserLocation2() {
+        gpsTracker = new GpsTracker(MainActivity.this);
+        startGPSTimer();
+    }
+
+    TimerTask gpsTimerTask;
+    Timer gpsTimer = new Timer();
+    public void startGPSTimer() {
+        gpsTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                double latitude = gpsTracker.getLatitude();
+                double longitude = gpsTracker.getLongitude();
+
+//                UIThread.executeInUIThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(MainActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
+//                    }
+//                });
+
+                sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
+            }
+        };
+        gpsTimer.schedule(gpsTimerTask, 0, 3000);
+    }
+
+    public void stopGpsTimerTask() {
+        if (gpsTimerTask != null) {
+            gpsTimerTask.cancel();
+            gpsTimerTask = null;
+        }
+    }
+
     private void stopListeningUserLocation() {
         mLocationManager.removeUpdates(locationListener);
     }
@@ -489,16 +535,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
 
 
-        SocketIOPrivateChannel privateChannel = echo.privateChannel("public-event");
-        privateChannel.listen("PublicEvent", new EchoCallback() {
+        SocketIOPrivateChannel privateChannel = echo.privateChannel("Monitorchat");
+        privateChannel.listen("Monitorchat", new EchoCallback() {
             @Override
             public void call(Object... args) {
                 // Event thrown.
             }
         });
 
-        echo.channel("public-event")
-                .listen("PublicEvent", new EchoCallback() {
+        echo.channel("Monitorchat")
+                .listen("Monitorchat", new EchoCallback() {
                     @Override
                     public void call(Object... args) {
                         Gson gson = new Gson();
@@ -515,41 +561,56 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void run() {
 
-                ChatData chatData = laravelModel.nameValuePairs.event.nameValuePairs;
-                if (chatData.mode.equals("chat")) {
+                if (laravelModel.nameValuePairs == null)
+                    return;
 
-                    if (mBaseFragment.TAG.equals("ControlFragment")) {
-                        ((ControlFragment) mBaseFragment).receiveMessage(chatData.member_id, chatData.message);
-                        return;
-                    }
+                ChatData chatData = laravelModel.nameValuePairs;
 
-                    showMessagePopup();
+
+                if (mBaseFragment.TAG.equals("LoginFragment") || mBaseFragment.TAG.equals("TeeUpFragment") || mBaseFragment.TAG.equals("MainWorkFragment")) {
+                    return;
                 }
+                if (mBaseFragment.TAG.equals("ControlFragment")) {
+                    ((ControlFragment) mBaseFragment).receiveMessage(chatData.sender_id, chatData.message, chatData.timestamp);
+                    return;
+                }
+
+                long now = System.currentTimeMillis();
+                Date mDate = new Date(now);
+                SimpleDateFormat simpleDate = new SimpleDateFormat("a hh:mm", Locale.US);
+                String getTime = simpleDate.format(mDate);
+                showMessagePopup(chatData.message, chatData.sender_id, getTime);
             }
         });
     }
 
-    private void showMessagePopup() {
-        PopupDialog dlg = new PopupDialog(MainActivity.this, R.style.DialogTheme);
-        dlg.setListener(new PopupDialog.IListenerDialogTouch() {
+    private void showMessagePopup(String message, String sender, String time) {
+
+        if (popupDialog.isShowing()) {
+            popupDialog.dismiss();
+        }
+
+        popupDialog.setListener(new PopupDialog.IListenerDialogTouch() {
             @Override
             public void onTouch() {
                 GoNativeScreen(new ControlFragment(), null);
             }
         });
 
-        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        WindowManager.LayoutParams wmlp = popupDialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         wmlp.x = 0;   //x position
         wmlp.y = 0;   //y position
 
-        dlg.getWindow().
-                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+//        dlg.getWindow().
+//                setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
 
-        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-        dlg.show();
+        popupDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        popupDialog.show();
+
+        popupDialog.setData(message, sender, time);
     }
 
     public void updateUI() {
@@ -621,6 +682,38 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startListeningUserLocationDebug();
             }
         }.start();
+    }
+
+
+    TimerTask timerTask;
+    Timer timer = new Timer();
+    public interface IGameTimerListener {
+        void onGameTimer();
+    }
+    public void startTimerTask(IGameTimerListener listener) {
+        timerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                if (Global.gameTimeStatus != Global.GameStatus.eNone)
+                    Global.gameSec++;
+                if (Global.gameTimeStatus == Global.GameStatus.eBeforeStart)
+                    Global.gameBeforeSec++;
+                if (Global.gameTimeStatus == Global.GameStatus.eAfterStart)
+                    Global.gameAfterSec++;
+
+                listener.onGameTimer();
+            }
+        };
+        timer.schedule(timerTask, 0, 1000);
+    }
+
+    public void stopTimerTask() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
     }
 
     double[][] latlng = {

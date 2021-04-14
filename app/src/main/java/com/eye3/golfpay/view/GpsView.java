@@ -50,6 +50,7 @@ public class GpsView extends View {
     Point ptObject2;
     Point ptHole;
     Point ptTouchPos;
+    int meter = 0;
 
     double ratio = 592.0 / 1417.0;
     private IDistanceListener iDistanceListener;
@@ -88,6 +89,7 @@ public class GpsView extends View {
     }
 
     public void setHolePos(Point posHole, int meter, int mapOrgWidth) {
+        this.meter = meter;
         float ratio = (float)mapOrgWidth / (float)rect.width();
         int x = (int)((float)rect.width() * (posHole.x / 100.0f));
         int y = (int)((float)rect.height() * (posHole.y / 100.0f));
@@ -126,7 +128,9 @@ public class GpsView extends View {
 
         double distance1 = getDistance(rcDestObject1.centerX(), rcDestObject1.centerY(), rcDestObject2.centerX(), rcDestObject2.centerY());
         double distance2 = getDistance(rcDestObject2.centerX(), rcDestObject2.centerY(), rcDestHole.centerX(), rcDestHole.centerY());
-        iDistanceListener.onDistance(distance1, distance2);
+        float ratio = (float)meter/(float)rect.width();
+
+        iDistanceListener.onDistance(distance1*ratio, distance2*ratio);
         //Log.d("sangbong_log", String.format("distance1: %f, distance2: %f", distance1, distance2));
     }
 
@@ -211,6 +215,6 @@ public class GpsView extends View {
     }
 
     private double getDistance(int x, int y, int x1, int y1) {
-        return Math.sqrt(Math.pow(Math.abs(x1-x), 2) + Math.pow(Math.abs(y1-y), 2)) * ratio;
+        return Math.sqrt(Math.pow(Math.abs(x1-x), 2) + Math.pow(Math.abs(y1-y), 2));
     }
 }

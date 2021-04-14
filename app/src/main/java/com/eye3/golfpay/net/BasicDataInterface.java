@@ -77,8 +77,12 @@ public class BasicDataInterface {
                                     if (Global.Token != null) {  //토큰 설정
                                         requestBuilder.addHeader("Authorization", "abc");
                                      //   requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=" + "utf-8");
-
                                      }
+
+                                    if (Global.loginToken != null) {  //토큰 설정
+                                        requestBuilder.addHeader("login-token", Global.loginToken);
+                                        //   requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=" + "utf-8");
+                                    }
                                     request = requestBuilder.build();
 
                                 return chain.proceed(request);

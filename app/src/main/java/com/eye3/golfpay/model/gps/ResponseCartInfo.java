@@ -20,4 +20,8 @@ public class ResponseCartInfo {
     @SerializedName("here_to_hole")
     @Expose
     public int here_to_hole;
+
+    @SerializedName("time_data")
+    @Expose
+    public TimeData time_data;
 }

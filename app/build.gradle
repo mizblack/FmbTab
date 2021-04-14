@@ -4,7 +4,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -14,7 +13,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.15(d)"
+        versionName "1.0.20(d)"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

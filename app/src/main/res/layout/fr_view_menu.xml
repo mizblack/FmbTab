@@ -391,7 +391,17 @@
         android:id="@+id/btn_logout"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginStart="14dp"
         android:src="@drawable/exit_transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
+        app:layout_constraintStart_toEndOf="@+id/btn_home"
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+
+    <ImageView
+        android:id="@+id/btn_home"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/btn_home"
         android:layout_marginStart="18dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintStart_toEndOf="@+id/tv_caddie"

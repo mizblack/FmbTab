@@ -35,7 +35,15 @@ public class ReqClubInfo {
     @Expose
     public String putter_cover = "";
 
-    @SerializedName("etc_cover")
+    @SerializedName("wood_cover")
     @Expose
-    public String cover = "";
+    public String wedge_cover = "";
+
+    @SerializedName("putter_cover")
+    @Expose
+    public String iron_cover = "";
+
+    @SerializedName("utility_cover")
+    @Expose
+    public String utility_cover = "";
 }

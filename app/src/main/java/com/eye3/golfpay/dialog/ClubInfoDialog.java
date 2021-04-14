@@ -44,22 +44,17 @@ public class ClubInfoDialog extends Dialog {
     private RecyclerView ironRecyclerView;
     private RecyclerView wedgeRecyclerView;
     private RecyclerView putterRecyclerView;
-    private RecyclerView putterCoverRecyclerView;
-    private RecyclerView woodCoverRecyclerView;
-    private RecyclerView etcCoverRecyclerView;
-    private TextView tv_woodCount, tv_utilityCount,tv_ironCount, tv_wedgeCount, tv_putterCount, tv_putterCoverCount, tv_woodCoverCount, tv_etcCoverCount;
+    private TextView tv_woodCount, tv_utilityCount,tv_ironCount, tv_wedgeCount, tv_putterCount;
+    private TextView tv_putterCoverCount, tv_woodCoverCount, tv_utilityCoverCount, tv_wedgeCoverCount, tv_ironCoverCount;
     private TextView tv_save, tv_cancel;
     private CaddieInfo caddieInfo;
     private int currentIdx;
     private int startIdx;
     String[] wood = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    String[] utility = {"1", "2", "3", "4", "5", "6", "7"};
+    String[] utility = {"16도", "17도", "19도", "20도","21도", "22도", "23도", "24도", "25도", "26도"};
     String[] iron = {"3", "4", "5", "6", "7", "8", "9", "10", "11"};
     String[] putter = {"0개", "1개", "2개", "3개"};
     String[] wedge = {"Pw", "Sw", "PSw", "52w", "53w", "54w", "55w", "56w", "57w", "58w", "60w"};
-    String[] putterCover = {"0개", "1개", "2개", "3개", "4개", "5개"};
-    String[] woodCover = {"0개", "1개", "2개", "3개", "4개", "5개", "6개", "7개"};
-    String[] etcCover = {"0개", "1개", "2개", "3개", "4개", "5개"};
 
     public enum ClubType {
         eWood,
@@ -67,9 +62,6 @@ public class ClubInfoDialog extends Dialog {
         eIron,
         eWedge,
         ePutter,
-        ePutterCover,
-        eWoodCover,
-        eEtcCover
     }
 
     public interface  IListenerDialog {
@@ -111,9 +103,6 @@ public class ClubInfoDialog extends Dialog {
         ironRecyclerView = findViewById(R.id.ironRecyclerView);
         wedgeRecyclerView = findViewById(R.id.wedgeRecyclerView);
         putterRecyclerView = findViewById(R.id.putterRecyclerView);
-        putterCoverRecyclerView = findViewById(R.id.putterCoverRecyclerView);
-        woodCoverRecyclerView = findViewById(R.id.woodCoverRecyclerView);
-        etcCoverRecyclerView = findViewById(R.id.etcCoverRecyclerView);
 
         tv_save = findViewById(R.id.tv_save);
         tv_cancel = findViewById(R.id.tv_cancel);
@@ -122,9 +111,13 @@ public class ClubInfoDialog extends Dialog {
         tv_ironCount = findViewById(R.id.tv_ironCount);
         tv_wedgeCount = findViewById(R.id.tv_wedgeCount);
         tv_putterCount = findViewById(R.id.tv_putterCount);
+
         tv_putterCoverCount = findViewById(R.id.tv_putterCoverCount);
         tv_woodCoverCount = findViewById(R.id.tv_woodCoverCount);
-        tv_etcCoverCount  = findViewById(R.id.tv_etcCoverCount);
+        tv_utilityCoverCount = findViewById(R.id.tv_utilityCoverCount);
+        tv_ironCoverCount = findViewById(R.id.tv_ironCoverCount);
+        tv_wedgeCoverCount = findViewById(R.id.tv_wedgeCoverCount);
+
         initClubInfoUI();
 
         tv_save.setOnClickListener(new View.OnClickListener() {
@@ -162,9 +155,6 @@ public class ClubInfoDialog extends Dialog {
         initRecyclerViews(ironRecyclerView, iron, true, clubInfo, ClubType.eIron);
         initRecyclerViews(putterRecyclerView, putter, false, clubInfo, ClubType.ePutter);
         initRecyclerViews(wedgeRecyclerView, wedge, true, clubInfo, ClubType.eWedge);
-        initRecyclerViews(putterCoverRecyclerView, putterCover, false, clubInfo, ClubType.ePutterCover);
-        initRecyclerViews(woodCoverRecyclerView, woodCover, false, clubInfo, ClubType.eWoodCover);
-        initRecyclerViews(etcCoverRecyclerView, etcCover, false, clubInfo, ClubType.eEtcCover);
     }
 
     private ClubInfo getClubInfo() {
@@ -184,16 +174,6 @@ public class ClubInfoDialog extends Dialog {
 
         adapter = (ClubAdapter)putterRecyclerView.getAdapter();
         clubInfo.setPutter(adapter.getSelectedItems());
-
-        adapter = (ClubAdapter)putterCoverRecyclerView.getAdapter();
-        clubInfo.setPutter_cover(adapter.getSelectedItems());
-
-        adapter = (ClubAdapter)woodCoverRecyclerView.getAdapter();
-        clubInfo.setWood_cover(adapter.getSelectedItems());
-
-        adapter = (ClubAdapter)etcCoverRecyclerView.getAdapter();
-        clubInfo.setCover(adapter.getSelectedItems());
-
         return clubInfo;
     }
 
@@ -224,16 +204,28 @@ public class ClubInfoDialog extends Dialog {
         recyclerView.setLayoutManager(layoutManager);
         ClubAdapter adapter = new ClubAdapter(getContext(), clubType, isMultiSelect, new ClubAdapter.IOnClickAdapter() {
             @Override
-            public void onAdapterItemClicked(ClubType clubType, int count) {
+            public void onAdapterItemClicked(ClubType clubType, int count, int coverCount) {
                 switch (clubType) {
-                    case eWood: tv_woodCount.setText(count + "개"); break;
-                    case eUtility: tv_utilityCount.setText(count + "개"); break;
-                    case eIron: tv_ironCount.setText(count + "개"); break;
-                    case eWedge: tv_wedgeCount.setText(count + "개"); break;
-                    case ePutter: tv_putterCount.setText(count + "개"); break;
-                    case ePutterCover: tv_putterCoverCount.setText(count + "개"); break;
-                    case eWoodCover: tv_woodCoverCount.setText(count + "개"); break;
-                    case eEtcCover: tv_etcCoverCount.setText(count + "개"); break;
+                    case eWood: {
+                        tv_woodCount.setText(count + "개");
+                        tv_woodCoverCount.setText(String.format("(커버 %d개)", coverCount));
+                    } break;
+                    case eUtility: {
+                        tv_utilityCount.setText(count + "개");
+                        tv_utilityCoverCount.setText(String.format("(커버 %d개)", coverCount));
+                    } break;
+                    case eIron: {
+                        tv_ironCount.setText(count + "개");
+                        tv_ironCoverCount.setText(String.format("(커버 %d개)", coverCount));
+                    } break;
+                    case eWedge: {
+                        tv_wedgeCount.setText(count + "개");
+                        tv_wedgeCoverCount.setText(String.format("(커버 %d개)", coverCount));
+                    } break;
+                    case ePutter: {
+                        tv_putterCount.setText(count + "개");
+                        tv_putterCoverCount.setText(String.format("(커버 %d개)", coverCount));
+                    } break;
                 }
             }
         });
@@ -263,15 +255,6 @@ public class ClubInfoDialog extends Dialog {
                 case ePutter:
                     adapter.setSelectItem(clubInfo.getPutter());
                     break;
-                case ePutterCover:
-                    adapter.setSelectItem(clubInfo.getPutter_cover());
-                    break;
-                case eWoodCover:
-                    adapter.setSelectItem(clubInfo.getWood_cover());
-                    break;
-                case eEtcCover:
-                    adapter.setSelectItem(clubInfo.getCover());
-                    break;
             }
         }
 
@@ -286,10 +269,6 @@ public class ClubInfoDialog extends Dialog {
             case eUtility: tv_utilityCount.setText(adapter.getSelectedItems().size() + "개"); break;
             case eIron: tv_ironCount.setText(adapter.getSelectedItems().size() + "개"); break;
             case eWedge: tv_wedgeCount.setText(adapter.getSelectedItems().size() + "개"); break;
-            case ePutter: tv_putterCount.setText(adapter.getSelectedCoverCount() + "개"); break;
-            case ePutterCover: tv_putterCoverCount.setText(adapter.getSelectedCoverCount() + "개"); break;
-            case eWoodCover: tv_woodCoverCount.setText(adapter.getSelectedCoverCount() + "개"); break;
-            case eEtcCover: tv_etcCoverCount.setText(adapter.getSelectedCoverCount() + "개"); break;
         }
     }
 }

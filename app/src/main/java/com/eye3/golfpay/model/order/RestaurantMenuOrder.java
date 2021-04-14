@@ -104,6 +104,12 @@ public class RestaurantMenuOrder {
     public int getOrderQty(RestaurantMenu menu, String guestId) {
         for (int i = 0; mOrderItemInvoiceArrayList.size() > i; i++) {
             OrderItemInvoice itemInvoice = mOrderItemInvoiceArrayList.get(i);
+
+            if (menu.id == null) {
+                Toast.makeText(context, "메뉴 아이디가 없습니다.", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
+
             if (itemInvoice.mMenuId.equals(menu.id)) {
                 for (GuestNameOrder guestNameOrder : itemInvoice.mGuestNameOrders) {
                     if (guestNameOrder.mGuestId.equals(guestId)) {

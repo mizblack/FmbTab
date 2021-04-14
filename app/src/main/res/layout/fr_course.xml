@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
-            android:text="02:18"
+            android:text="00:00"
             app:layout_constraintBottom_toBottomOf="@+id/tv_hole_par"
             app:layout_constraintStart_toEndOf="@+id/tv_hole_par"
             app:layout_constraintTop_toTopOf="@+id/tv_hole_par"
@@ -88,19 +88,26 @@
             app:layout_constraintTop_toTopOf="@+id/courseName">
 
             <TextView
-                style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
+                android:id="@+id/tv_before_time"
+                style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="전 07:08"
+                android:text="전 00:00"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shape_time_active_bg"
                 tools:ignore="HardcodedText,SpUsage" />
 
-
             <TextView
-                style="@style/GlobalTextView.18SP.white.NotoSans.Regular"
+                android:id="@+id/tv_after_time"
+                style="@style/GlobalTextView.16SP.white.NotoSans.Regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="후 07:08"
+                android:text="후 00:00"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/shape_time_inactive_bg"
                 tools:ignore="HardcodedText,SpUsage" />
 
         </LinearLayout>

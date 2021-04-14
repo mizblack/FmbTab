@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fragment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
+import com.eye3.golfpay.dialog.GameHoleDialog;
+import com.eye3.golfpay.dialog.SmsScoreDialog;
 import com.eye3.golfpay.listener.ICaddyNoteListener;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.listener.OnEditorFinishListener;
@@ -41,6 +44,7 @@ import com.eye3.golfpay.view.CaddieViewBasicGuestItem;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -91,6 +95,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
         for (Guest guest: guestList) {
             GuestInfo gi = new GuestInfo();
+            gi.setGuestName(guest.getGuestName());
             gi.setReserveGuestId(guest.getId());
             gi.setCarNo(guest.getCarNumber());
             gi.setHp(guest.getPhoneNumber());
@@ -156,6 +161,24 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             @Override
             public void onClick(View v) {
                 takeTeamPhoto();
+            }
+        });
+
+        view.findViewById(R.id.btn_sms_score).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<GuestInfo> guestInfo = caddieInfo.getGuestInfo();
+                SmsScoreDialog dlg = new SmsScoreDialog(getContext(), guestInfo);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                dlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+
+                    }
+                });
+                dlg.show();
             }
         });
 
@@ -296,14 +319,11 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
     private ClubInfo makeClubInfo(CaddyNoteInfo caddyNoteInfo) {
         ClubInfo clubInfo = new ClubInfo();
-        clubInfo.wood = Util.stringTokenizer(caddyNoteInfo.getWood());
-        clubInfo.utility = Util.stringTokenizer(caddyNoteInfo.getUtility());
-        clubInfo.iron = Util.stringTokenizer(caddyNoteInfo.getIron());
-        clubInfo.putter = Util.stringTokenizer(caddyNoteInfo.getPutter());
-        clubInfo.wedge = Util.stringTokenizer(caddyNoteInfo.getWedge());
-        clubInfo.putter_cover = Util.stringTokenizer(caddyNoteInfo.getPutter_cover());
-        clubInfo.cover = Util.stringTokenizer(caddyNoteInfo.getEtc_cover());
-        clubInfo.wood_cover = Util.stringTokenizer(caddyNoteInfo.getWood_cover());
+        clubInfo.wood = caddyNoteInfo.getWood();
+        clubInfo.utility = caddyNoteInfo.getUtility();
+        clubInfo.iron = caddyNoteInfo.getIron();
+        clubInfo.putter = caddyNoteInfo.getPutter();
+        clubInfo.wedge = caddyNoteInfo.getWedge();
 
         clubInfo.phoneNumber = caddyNoteInfo.getPhoneNumber();
         clubInfo.carNumber = caddyNoteInfo.getCarNumber();
@@ -319,12 +339,9 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         String iron = getClubInfoText(clubInfo.iron.toString());
         String wedge = getClubInfoText(clubInfo.wedge.toString());
         String putter = getClubInfoText(clubInfo.putter.toString());
-        String wood_cover = getClubInfoText(clubInfo.wood_cover.toString());
-        String putter_cover = getClubInfoText(clubInfo.putter_cover.toString());
-        String etc_cover = getClubInfoText(clubInfo.cover.toString());
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setClubInfo(getActivity(), guestId, wood, utility, iron, wedge,
-                putter, wood_cover, putter_cover, etc_cover, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+                putter, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 hideProgress();

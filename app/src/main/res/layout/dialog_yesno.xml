@@ -8,15 +8,13 @@
     android:layout_marginTop="0dp"
     android:background="@color/white"
     android:elevation="20dp"
-    android:paddingBottom="8dp">
+    android:padding="36dp">
 
     <TextView
         android:id="@+id/tv_content"
         style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="4343434343"
         app:layout_constraintStart_toStartOf="@+id/btn_confirm"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +23,7 @@
         style="@style/GlobalTextView.20SP.White.NotoSans.Medium"
         android:layout_width="308dp"
         android:layout_height="70dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="82dp"
         android:background="@color/irisBlue"
         android:gravity="center"
         android:text="확인"

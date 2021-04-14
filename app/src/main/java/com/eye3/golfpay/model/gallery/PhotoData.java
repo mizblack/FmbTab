@@ -15,4 +15,10 @@ public class PhotoData {
     @SerializedName("photo_url")
     @Expose
     public String photo_url;
+
+    @SerializedName("ceo_image")
+    @Expose
+    public String ceoImage;
+
+    public boolean select_ceo_image = false;
 }

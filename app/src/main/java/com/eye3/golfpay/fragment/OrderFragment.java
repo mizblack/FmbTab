@@ -137,6 +137,11 @@ public class OrderFragment extends BaseFragment {
                     (v).setBackgroundResource(R.drawable.shape_ebony_black_background_and_edge);
                     OrderedMenuItem orderedMenuItemForCaddy = new OrderedMenuItem(menu.id, "1", menu.price, menu.menuName, Global.CaddyNo);
                     mRestaurantMenuOrder.setCurrentOrderedMenuItem(orderedMenuItemForCaddy);
+
+                    if (mOrderDetailList.size() == 0) {
+                        Toast.makeText(getContext(), "주문 리스트가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     // 캐디주문시 주문자 아이디는 첫 내장객으로 지정한다.
                     mRestaurantMenuOrder.setOrderedGuestId(mOrderDetailList.get(0).reserve_guest_id);
                     mRestaurantMenuOrder.addRestaurantMenuOrder(mSelectedRestaurantIdx, orderedMenuItemForCaddy, mOrderDetailList.get(0).reserve_guest_id);

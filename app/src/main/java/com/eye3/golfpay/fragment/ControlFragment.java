@@ -25,6 +25,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.adapter.ChatMessageAdapter;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.ControlShortCutDialog;
+import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.MemberData;
 import com.eye3.golfpay.model.chat.Message;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
@@ -32,6 +33,7 @@ import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.control.ChatHotKeyItem;
 import com.eye3.golfpay.model.control.ChatHotKeyOption;
 import com.eye3.golfpay.net.DataInterface;
+import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.ControlPanelView;
 
@@ -127,6 +129,9 @@ public class ControlFragment extends BaseFragment {
             public boolean onTouch(View v, MotionEvent event) {
                 view_caddie_list.setVisibility(View.GONE);
                 isCaddieVisible = false;
+
+                closeKeyboard(edit_chat);
+                //edit_chat.setEnabled(true);
                 return false;
             }
         });
@@ -145,6 +150,9 @@ public class ControlFragment extends BaseFragment {
                 }
             }
         });
+
+        String day = Util.getDay(System.currentTimeMillis(), "yyyy-MM-dd");
+        initSetMessage(getContext(), 1, Global.CaddyNo, day);
     }
 
     private void showControlShortDialog(ArrayList<ChatHotKeyOption> getOptions) {
@@ -430,7 +438,13 @@ public class ControlFragment extends BaseFragment {
         }
 
         final String chatMessage = edit_chat.getText().toString();
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).sendChatMessage("2119", "caddie", chatMessage, "ctrltwr",
+        ChatData chatData = new ChatData();
+        chatData.type = "caddy";
+        chatData.receiver_id = "117";
+        chatData.message = chatMessage;
+        chatData.sender_id = Global.CaddyNo;
+        closeKeyboard(edit_chat);
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).sendChatMessage(chatData,
                 new DataInterface.ResponseCallback<ResponseChatMsg>() {
             @Override
             public void onSuccess(ResponseChatMsg response) {
@@ -447,7 +461,7 @@ public class ControlFragment extends BaseFragment {
 //                    memberData = new MemberData("상봉이", "#434343");
 //                }
 
-                Message msg = new Message(response.getMsg(), memberData, true, emergencyOn);
+                Message msg = new Message(response.getMsg(), memberData, response.getTimestamp(), true, emergencyOn);
                 chatMessageAdapter.add(msg);
                 //messages_view.setSelection(messages_view.getCount() - 1);
                 messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
@@ -467,13 +481,44 @@ public class ControlFragment extends BaseFragment {
         });
     }
 
-    public void receiveMessage(String sender, String message) {
+    public void receiveMessage(String sender, String message, long timestamp) {
+
+        if (Global.CaddyNo.equals(sender))
+            return;
+
         memberData = new MemberData(sender, "#434343");
-        Message msg = new Message(message, memberData, false, false);
+        Message msg = new Message(message, memberData, timestamp, false, false);
         chatMessageAdapter.add(msg);
         //messages_view.setSelection(messages_view.getCount() - 1);
         messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
         edit_chat.setText("");
+    }
+
+    private void initSetMessage(Context context, int cc_id, String sender_id, String date) {
+
+        DataInterface.getInstance().initSetMessage(context, cc_id, sender_id, date, new DataInterface.ResponseCallback<ResponseData<ChatData>>() {
+            @Override
+            public void onSuccess(ResponseData<ChatData> response) {
+                 for (ChatData cd: response.getList()) {
+                     memberData = new MemberData(cd.sender_id, "#434343");
+                     boolean itsMe = cd.sender_id.equals(Global.CaddyNo);
+                     Message msg = new Message(cd.message, memberData, cd.timestamp, itsMe, false);
+                     chatMessageAdapter.add(msg);
+                     //messages_view.setSelection(messages_view.getCount() - 1);
+                     messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
+                 }
+            }
+
+            @Override
+            public void onError(ResponseData<ChatData> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }
 

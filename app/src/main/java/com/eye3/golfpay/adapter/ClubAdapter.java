@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
 import com.eye3.golfpay.model.order.Restaurant;
 
 
@@ -22,27 +23,34 @@ import java.util.ArrayList;
 public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
     public interface IOnClickAdapter {
-        void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count);
+        void onAdapterItemClicked(ClubInfoDialog.ClubType clubType, int count, int coverCount);
     }
 
     public class ClubHolder extends RecyclerView.ViewHolder {
 
         public TextView tv_item;
+        public TextView tv_cover;
 
         public ClubHolder(View itemView) {
             super(itemView);
 
             tv_item = itemView.findViewById(R.id.tv_item);
+            tv_cover = itemView.findViewById(R.id.tv_cover);
         }
     }
 
-    public class Item {
+    public static class Item {
         public Item(String s) {
             item = s;
         }
 
         public String item;
-        public boolean selected = false;
+        public SelectType selected = SelectType.eNone;
+        public enum SelectType {
+            eNone,
+            eSelect,
+            eNoneCover
+        }
     }
 
     protected static final String TAG = "ClubAdapter";
@@ -88,31 +96,36 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
         try {
 
-            if (items.get(position).selected == true) {
-                holder.tv_item.setBackgroundColor(ContextCompat.getColor(context, R.color.irisBlue));
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_16SP_White_NotoSans_Medium);
+            if (items.get(position).selected == Item.SelectType.eSelect) {
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.irisBlue));
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_16SP_White_NotoSans_Medium);
+                holder.tv_cover.setVisibility(View.GONE);
+            } else if (items.get(position).selected == Item.SelectType.eNoneCover){
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.irisBlue));
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_16SP_White_NotoSans_Medium);
+                holder.tv_cover.setVisibility(View.VISIBLE);
             } else {
-                holder.tv_item.setBackgroundColor(Color.WHITE);
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_16SP_A3A5A7_NotoSans_Medium);
+                holder.itemView.setBackgroundColor(Color.WHITE);
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_16SP_A3A5A7_NotoSans_Medium);
+                holder.tv_cover.setVisibility(View.GONE);
             }
 
             holder.tv_item.setText(items.get(position).item);
 
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //allSelected(false);
 
-
-                    if (isMultiSelect == true) {
-                        items.get(position).selected ^= true;
-                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount());
+                    if (items.get(position).selected == Item.SelectType.eSelect) {
+                        items.get(position).selected = Item.SelectType.eNoneCover;
+                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount(), getSelectedCoverCount());
+                    } else if (items.get(position).selected == Item.SelectType.eNoneCover){
+                        items.get(position).selected = Item.SelectType.eNone;
+                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount(), getSelectedCoverCount());
                     } else {
-                        allSelected(false);
-                        items.get(position).selected = true;
-
-                        //멀티 셀렉트가 안 되는 항목들은 선택한 인덱스가 갯수가 된다.
-                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCoverCount());
+                        items.get(position).selected = Item.SelectType.eSelect;
+                        onClickAdapter.onAdapterItemClicked(clubType, getSelectedCount(), getSelectedCoverCount());
                     }
 
                     notifyDataSetChanged();
@@ -125,51 +138,60 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
         }
     }
 
-    private void allSelected(boolean select) {
-        for (Item item : items) {
-            item.selected = select;
-        }
-    }
-
     private int getSelectedCount() {
         int count = 0;
         for (Item item : items) {
-            if (item.selected == true)
+            if (item.selected == Item.SelectType.eSelect)
+                count++;
+            if (item.selected == Item.SelectType.eNoneCover)
                 count++;
         }
 
         return count;
     }
 
-    public int getSelectedCoverCount() {
+    private int getSelectedCoverCount() {
+
+        int count = 0;
         for (Item item : items) {
-            if (item.selected == true) {
-                String a = item.item.substring(0, 1);
-                return Integer.parseInt(a);
-            }
+            if (item.selected == Item.SelectType.eSelect)
+                count++;
         }
 
-        return 0;
+        return count;
     }
 
-    public ArrayList<String> getSelectedItems() {
+    public ArrayList<CaddyNoteInfo.ClubInfo> getSelectedItems() {
 
-        ArrayList<String> selectedItms = new ArrayList<>();
+        ArrayList<CaddyNoteInfo.ClubInfo> selectedItems = new ArrayList<>();
+        int idx = 0;
         for (Item item : items) {
-            if (item.selected == true)
-                selectedItms.add(item.item);
+            if (item.selected == Item.SelectType.eSelect) {
+                CaddyNoteInfo.ClubInfo ci = new CaddyNoteInfo.ClubInfo();
+                ci.club = Integer.toString(idx);
+                ci.cover = true;
+                selectedItems.add(ci);
+            }
+            else if (item.selected == Item.SelectType.eNoneCover) {
+                CaddyNoteInfo.ClubInfo ci = new CaddyNoteInfo.ClubInfo();
+                ci.club = Integer.toString(idx);
+                ci.cover = false;
+                selectedItems.add(ci);
+            }
+
+            idx++;
         }
 
-        return selectedItms;
+        return selectedItems;
     }
 
-    public void setSelectItem(ArrayList<String> selectItem) {
-        for (Item item : items) {
+    public void setSelectItem(ArrayList<CaddyNoteInfo.ClubInfo> selectItem) {
 
-            for (String str : selectItem) {
-                if (item.item.equals(str))
-                    item.selected = true;
-            }
+        for (CaddyNoteInfo.ClubInfo ci : selectItem) {
+            if (ci.cover)
+                items.get(Integer.parseInt(ci.club)).selected = Item.SelectType.eSelect;
+            else
+                items.get(Integer.parseInt(ci.club)).selected = Item.SelectType.eNoneCover;
         }
     }
 

@@ -19,7 +19,6 @@ import java.util.List;
 
 public class Global {
 
-
     public static TeeUpTime teeUpTime ;
     public static List<Guest> guestList;
     public static ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<Bitmap>();
@@ -35,8 +34,22 @@ public class Global {
 
     public static String tabletLogo;
     public static String Token = "";
+    public static String loginToken = "";
 //    public static int saveIdx = -1;
 
+
+    //게임 시간
+    public static int gameSec = 0;
+    public static int gameBeforeSec = 0;
+    public static int gameAfterSec = 0;
+    public static GameStatus gameTimeStatus = GameStatus.eNone;
+    public enum GameStatus {
+        eBeforeStart,
+        eBeforeEnd,
+        eAfterStart,
+        eAfterEnd,
+        eNone,
+    };
 
     /**
      * 운영용으로 컴파일 할시에 true 로 세팅해준다. 호스트 접속페이지 처리.

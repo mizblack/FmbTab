@@ -1,5 +1,6 @@
 package com.eye3.golfpay.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.teeup.Player;
+import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
@@ -98,6 +100,13 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 logout();
+            }
+        });
+
+        mView.findViewById(R.id.btn_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getTodayReservesForCaddy(getContext(), Global.CaddyNo);
             }
         });
 
@@ -356,5 +365,41 @@ public class ViewMenuFragment extends BaseFragment {
 
                     }
                 });
+    }
+
+    private void getTodayReservesForCaddy(final Context context, String caddy_id) {
+        //   showProgress("티업시간을 받아오는 중입니다....");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(TeeUpTime response) {
+                hideProgress();
+                systemUIHide();
+
+                if (response == null || response.getTodayReserveList().size() == 0) {
+                    Toast.makeText(context, "배정된 예약이 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
+                mParentActivity.setPreviousBaseFragment(new LoginFragment());
+                mParentActivity.GoRootScreenAdd(null);
+                mParentActivity.hideMainBottomBar();
+                GoNavigationDrawer(new TeeUpFragment(), null);
+                ((MainActivity)getActivity()).updateUI();
+            }
+
+            @Override
+            public void onError(TeeUpTime response) {
+                hideProgress();
+                systemUIHide();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+                systemUIHide();
+            }
+        });
     }
 }

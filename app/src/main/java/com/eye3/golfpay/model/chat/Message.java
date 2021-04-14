@@ -6,12 +6,14 @@ public class Message {
     private final MemberData memberData; // data of the user that sent this message
     private final boolean belongsToCurrentUser; // is this message sent by us?
     private boolean emergency = false;
+    private long timestamp;
 
-    public Message(String text, MemberData memberData, boolean belongsToCurrentUser, boolean emergency) {
+    public Message(String text, MemberData memberData, long timestamp, boolean belongsToCurrentUser, boolean emergency) {
         this.text = text;
         this.memberData = memberData;
         this.belongsToCurrentUser = belongsToCurrentUser;
         this.emergency = emergency;
+        this.timestamp = timestamp;
     }
 
     public String getText() {
@@ -29,4 +31,6 @@ public class Message {
     public boolean isEmergency() {
         return emergency;
     }
+
+    public long getTimestamp() { return timestamp;  }
 }

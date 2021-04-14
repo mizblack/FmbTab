@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
+import com.eye3.golfpay.model.caddyNote.SendSMS;
+import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
@@ -508,9 +510,10 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void sendChatMessage(String sender, String sender_type, String msg, String receiver_type, final ResponseCallback<ResponseChatMsg> callback) {
+    public void sendChatMessage(ChatData chatData, final ResponseCallback<ResponseChatMsg> callback) {
         try {
-            Call<ResponseChatMsg> call = service.sendChatMessage(sender, sender_type, msg, receiver_type);
+            Call<ResponseChatMsg> call = service.sendChatMessage(chatData.type, chatData.sender_id, chatData.sender_name, chatData.receiver_id,
+                    chatData.receiver_name, chatData.group_id, chatData.group_name, chatData.course_id, chatData.course_name, chatData.title, chatData.message);
             call.enqueue(new Callback<ResponseChatMsg>() {
                 @Override
                 public void onResponse(Call<ResponseChatMsg> call, Response<ResponseChatMsg> response) {
@@ -678,11 +681,11 @@ public class DataInterface extends BasicDataInterface {
     }
 
     public void setClubInfo(Context context, String reserve_no, String wood, String utility,
-                            String iron, String wedge, String putter, String wood_cover, String putter_cover, String etc_cover, final ResponseCallback<ResponseData<Object>> callback) {
+                            String iron, String wedge, String putter, final ResponseCallback<ResponseData<Object>> callback) {
 
         try {
             Call<ResponseData<Object>> call = service.setClubInfo( reserve_no, wood,
-                    utility, iron, wedge, putter, wood_cover, putter_cover, etc_cover);
+                    utility, iron, wedge, putter);
 
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
@@ -854,6 +857,74 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<CType>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void sendSMS(final Context context, SendSMS sendSMS, ResponseCallback<ResponseData<CType>> callback) {
+        try {
+            Call<ResponseData<Object>> call = service.sendSmsScore(sendSMS);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setCeoImage(Context context, int photoId, final ResponseCallback<ResponseData<ResponseGallery>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.setCeoImage(photoId);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void initSetMessage(Context context, int cc_id, String sender_id, String date, final ResponseCallback<ResponseData<ChatData>> callback) {
+
+        try {
+            Call<ResponseData<ChatData>> call = service.initSetMessage(cc_id, sender_id, date);
+
+            call.enqueue(new Callback<ResponseData<ChatData>>() {
+                @Override
+                public void onResponse(Call<ResponseData<ChatData>> call, Response<ResponseData<ChatData>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<ChatData>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");

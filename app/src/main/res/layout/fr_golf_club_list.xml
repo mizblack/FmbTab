@@ -92,13 +92,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                    <TextView
-                        android:id="@+id/tv_woodCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_woodCount"
+                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0개" />
+                        <TextView
+                            android:id="@+id/tv_woodCoverCount"
+                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="(커버 0개)" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -139,13 +151,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                    <TextView
-                        android:id="@+id/tv_utilityCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_utilityCount"
+                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0개" />
+                        <TextView
+                            android:id="@+id/tv_utilityCoverCount"
+                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="(커버 0개)" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -184,14 +207,24 @@
                         android:text="아이언"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <TextView
-                        android:id="@+id/tv_ironCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_ironCount"
+                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0개" />
+                        <TextView
+                            android:id="@+id/tv_ironCoverCount"
+                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="(커버 0개)" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -231,13 +264,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                    <TextView
-                        android:id="@+id/tv_wedgeCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_wedgeCount"
+                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0개" />
+                        <TextView
+                            android:id="@+id/tv_wedgeCoverCount"
+                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="(커버 0개)" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -277,13 +321,24 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
-                    <TextView
-                        android:id="@+id/tv_putterCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tv_putterCount"
+                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0개" />
+                        <TextView
+                            android:id="@+id/tv_putterCoverCount"
+                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="(커버 0개)" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -297,145 +352,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
-
-                <LinearLayout
-                    android:id="@+id/putterCover_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/putterCoverRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/putterCoverRecyclerView">
-
-                    <TextView
-                        android:id="@+id/tv_putterCoverTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="퍼터커버"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <TextView
-                        android:id="@+id/tv_putterCoverCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/putterCoverRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/putterCover_view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
-
-                <LinearLayout
-                    android:id="@+id/woodCover_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/woodCoverRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/woodCoverRecyclerView">
-
-                    <TextView
-                        android:id="@+id/tv_woodCoverTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="우드커버"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <TextView
-                        android:id="@+id/tv_woodCoverCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/woodCoverRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/woodCover_view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
-
-                <LinearLayout
-                    android:id="@+id/etcCover_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/etcCoverRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/etcCoverRecyclerView">
-
-                    <TextView
-                        android:id="@+id/tv_etcCoverTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="기타커버"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <TextView
-                        android:id="@+id/tv_etcCoverCount"
-                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:text="0개"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_woodTitle" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/etcCoverRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/etcCover_view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

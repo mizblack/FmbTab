@@ -16,18 +16,18 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginStart="32dp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="32dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginStart="32dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -45,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:text="클럽사진(시작)" />
+
                 <TextView
                     android:id="@+id/btn_club_photo_after"
                     style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
@@ -83,6 +84,29 @@
                 app:layout_constraintTop_toTopOf="@+id/linearLayout13" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout2">
+
+            <TextView
+                android:id="@+id/btn_ceo_image"
+                style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_round_irisblue_border_bg"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginEnd="32dp"
+                android:text="대표 사진 설정"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_gallery"
             android:layout_width="match_parent"
@@ -112,17 +136,18 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="263dp">
 
             <LinearLayout
+                android:id="@+id/view_personal_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/view_personal_gallery"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

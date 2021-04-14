@@ -31,7 +31,6 @@ public class AppDef {
             return score.par;
     }
 
-
     public interface CType {
         String OUT = "OUT";
         String IN = "IN";

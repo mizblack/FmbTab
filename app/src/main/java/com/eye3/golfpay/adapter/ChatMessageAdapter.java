@@ -1,5 +1,6 @@
 package com.eye3.golfpay.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.model.chat.Message;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatMessageAdapter extends BaseAdapter {
 
@@ -59,10 +63,16 @@ public class ChatMessageAdapter extends BaseAdapter {
         holder.name = (TextView) convertView.findViewById(R.id.name);
         holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
         holder.tvEmergency = convertView.findViewById(R.id.tv_emergency);
+        holder.tvTime = convertView.findViewById(R.id.tv_time);
         convertView.setTag(holder);
 
         holder.name.setText(message.getMemberData().getName());
         holder.messageBody.setText(message.getText());
+
+        Date mDate = new Date(message.getTimestamp()*1000);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDate = new SimpleDateFormat("hh:mm");
+        String time = simpleDate.format(mDate);
+        holder.tvTime.setText(time);
 
         if (message.isEmergency()) {
             holder.tvEmergency.setVisibility(View.VISIBLE);
@@ -79,4 +89,5 @@ class MessageViewHolder {
     public TextView name;
     public TextView messageBody;
     public TextView tvEmergency;
+    public TextView tvTime;
 }

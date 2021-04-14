@@ -702,6 +702,14 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="GlobalTextView.14SP.A3A5A7.NotoSans.Medium" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">#a3a5a7</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="GlobalTextView.16SP.White.NotoSans.Medium" parent="AppTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1049,8 +1057,9 @@
     <style name="GlobalTextView.18SP.irisBlue.NotoSans.Bold" parent="AppTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/notosans_bold</item>
+        <item name="android:fontFamily">@font/notosans_regular</item>
         <item name="android:textColor">@color/irisBlue</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -1150,6 +1159,14 @@
         <item name="android:fontFamily">@font/notosans_medium</item>
         <item name="android:textColor">@color/irisBlue</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="GlobalTextView.8SP.irisBlue.NotoSans.Regular" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_regular</item>
+        <item name="android:textColor">@color/irisBlue</item>
+        <item name="android:textSize">8sp</item>
     </style>
 
     <style name="GlobalTextView.14SP.E6E6E6.NotoSans.Regular" parent="AppTextView">

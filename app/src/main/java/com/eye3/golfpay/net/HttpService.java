@@ -1,7 +1,10 @@
 package com.eye3.golfpay.net;
 
 import com.eye3.golfpay.common.AppDef;
+import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
+import com.eye3.golfpay.model.caddyNote.SendSMS;
+import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.ResponseChatMsg;
 import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
@@ -34,6 +37,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -117,11 +121,19 @@ public interface HttpService {
     @GET("http://deverp.golfpay.co.kr/api/v1/getChatHotkey")
     Call<ChatHotKey> getChatHotkey();
 
-    @GET("http://deverp.golfpay.co.kr/api/v1/sendmsg")
-    Call<ResponseChatMsg> sendChatMessage(@Query("sender") String sender,
-                                          @Query("sender_type") String sender_type,
-                                          @Query("msg") String msg,
-                                          @Query("receiver_type") String receiver_type);
+    @FormUrlEncoded
+    @POST("sendmsg")
+    Call<ResponseChatMsg> sendChatMessage(@Field("type") String type,
+                                          @Field("sender_id") String sender_id,
+                                          @Field("sender_name") String sender_name,
+                                          @Field("receiver_id") String receiver_id,
+                                          @Field("receiver_name") String receiver_name,
+                                          @Field("group_id") String group_id,
+                                          @Field("group_name") String group_name,
+                                          @Field("course_id") String course_id,
+                                          @Field("course_name") String course_name,
+                                          @Field("title") String title,
+                                          @Field("message") String message);
 
     @FormUrlEncoded
     @POST("getGameTypeScore")
@@ -162,10 +174,7 @@ public interface HttpService {
                                       @Field("utility") String utility,
                                       @Field("iron") String iron,
                                       @Field("wedge") String wedge,
-                                      @Field("putter") String putter,
-                                      @Field("wood_cover") String wood_cover,
-                                      @Field("putter_cover") String putter_cover,
-                                      @Field("etc_cover") String etc_cover);
+                                      @Field("putter") String putter);
 
     @FormUrlEncoded
     @POST("setPersonalInfo")
@@ -196,4 +205,17 @@ public interface HttpService {
 
     @GET("getAfterCourseList")
     Call<ResponseData<CType>> getAfterCourseList(@Query("res_id") int res_id);
+
+    @POST("sendSmsScore")
+    Call<ResponseData<Object>> sendSmsScore(@Body SendSMS request);
+
+    @FormUrlEncoded
+    @POST("setSmsPhoto")
+    Call<ResponseData<Object>> setCeoImage(@Field("photo_id") int photo_id);
+
+    @FormUrlEncoded
+    @POST("initSetMessage")
+    Call<ResponseData<ChatData>> initSetMessage(@Field("cc_id") int cc_id,
+                                                 @Field("sender_id") String sender_id,
+                                                 @Field("s_date") String s_date);
 }

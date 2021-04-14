@@ -1,19 +1,10 @@
 package com.eye3.golfpay.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,25 +16,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ChangeCourseDialog;
-import com.eye3.golfpay.dialog.GameHoleDialog;
+import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
+import com.eye3.golfpay.model.gallery.ResponseGallery;
 import com.eye3.golfpay.model.gps.CartPos;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
+import com.eye3.golfpay.model.gps.TimeData;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
@@ -51,14 +43,17 @@ import com.eye3.golfpay.view.CartPosView;
 import com.eye3.golfpay.view.GpsView;
 import com.eye3.golfpay.view.HoleCupPointView;
 import com.eye3.golfpay.view.TeeShotSpotView;
-import com.litetech.libs.nonswipeviewpager.ViewPager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import static android.content.Context.LOCATION_SERVICE;
+import static com.eye3.golfpay.common.Global.GameStatus.eAfterStart;
+import static com.eye3.golfpay.common.Global.GameStatus.eBeforeEnd;
+import static com.eye3.golfpay.common.Global.GameStatus.eBeforeStart;
+import static com.eye3.golfpay.common.Global.GameStatus.eNone;
 
 public class CourseFragment extends BaseFragment {
     protected String TAG = getClass().getSimpleName();
@@ -67,7 +62,7 @@ public class CourseFragment extends BaseFragment {
     private TextView mTvCourseName;
     View mainView;
 
-    private TextView tv_hole_par, tv_time;
+    private TextView tv_hole_par, tv_time, tv_before_time, tv_after_time;
     private TeeShotSpotView tbox1, tbox2, tbox3, tbox4, tbox5;
     private GpsView gpsView;
     private CartPosView cartPosView;
@@ -75,19 +70,19 @@ public class CourseFragment extends BaseFragment {
     private TextView tvDistance2;
     private TextView tvHereToHole;
     private ImageView ivAdvertising1, ivAdvertising2, ivAdvertising3, iv_map, iv_holeCup;
-    private HoleCupPointView  holeCupPointView;
+    private HoleCupPointView holeCupPointView;
     private ConstraintLayout btnChangeCourse;
     private int advertisingCount = 0;
     private boolean advertsingContinue = true;
     int mapPosition = 0;
     int currentHoleIndex = -1;
+
     public CourseFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getAllCourseInfo(getActivity());
     }
 
@@ -123,7 +118,8 @@ public class CourseFragment extends BaseFragment {
         tbox3 = mainView.findViewById(R.id.tbox3);
         tbox4 = mainView.findViewById(R.id.tbox4);
         tbox5 = mainView.findViewById(R.id.tbox5);
-
+        tv_before_time = mainView.findViewById(R.id.tv_before_time);
+        tv_after_time = mainView.findViewById(R.id.tv_after_time);
 
         iv_map = mainView.findViewById(R.id.iv_map);
         iv_holeCup = mainView.findViewById(R.id.iv_holeCup);
@@ -141,8 +137,8 @@ public class CourseFragment extends BaseFragment {
         gpsView.setDistanceListener(new GpsView.IDistanceListener() {
             @Override
             public void onDistance(double distance1, double distance2) {
-                String text1 = String.format("%dM", (int)distance1);
-                String text2 = String.format("%dM", (int)distance2);
+                String text1 = String.format("%dM", (int) distance1);
+                String text2 = String.format("%dM", (int) distance2);
                 tvDistance1.setText(text1);
                 tvDistance2.setText(text2);
             }
@@ -178,7 +174,14 @@ public class CourseFragment extends BaseFragment {
             }
         });
 
-        startTimerThread();
+        //Global.gameTimeStatus = eBeforeStart;
+        ((MainActivity)getActivity()).startTimerTask(new MainActivity.IGameTimerListener() {
+            @Override
+            public void onGameTimer() {
+                updateTimer();
+            }
+        });
+
         startAdvertisingTimerThread();
         return mainView;
     }
@@ -223,22 +226,34 @@ public class CourseFragment extends BaseFragment {
                     gpsInfo.getPercent());
 
             switch (gpsInfo.getGubun()) {
-                case "same_hole" :
-                case "me" :
+                case "same_hole":
+                case "me":
                     cartPosView.addCurrentCart(cartPos);
                     break;
-                case "back" :
+                case "back":
                     cartPosView.addPrevCart(cartPos);
                     break;
-                case "front" :
+                case "front":
                     cartPosView.addNextCart(cartPos);
                     break;
             }
         }
 
         cartPosView.invalidate();
-
         currentHoleIndex = position;
+
+        TimeData td = cartInfo.time_data;
+        if (td == null)
+            return;
+
+        if (td.before_start_time != null && !td.before_start_time.isEmpty())
+            Global.gameTimeStatus = eBeforeStart;
+        if (td.before_end_time != null && !td.before_end_time.isEmpty())
+            Global.gameTimeStatus = eBeforeEnd;
+        if (td.after_start_time != null &&  !td.after_start_time.isEmpty())
+            Global.gameTimeStatus = eAfterStart;
+        if (td.after_end_time != null &&  !td.after_end_time.isEmpty())
+            Global.gameTimeStatus = eNone;
     }
 
     private Course getCurrentCourse(List<GpsInfo> gpsInfoList) {
@@ -249,7 +264,7 @@ public class CourseFragment extends BaseFragment {
         if (gpsInfoList.size() == 0)
             return null;
 
-        for (GpsInfo gpsInfo: gpsInfoList) {
+        for (GpsInfo gpsInfo : gpsInfoList) {
             if (gpsInfo.getGubun().equalsIgnoreCase("me")) {
 
                 for (int i = 0; i < mCourseInfoList.size(); i++) {
@@ -267,10 +282,10 @@ public class CourseFragment extends BaseFragment {
         if (gpsInfoList.size() == 0)
             return -1;
 
-        for (GpsInfo gpsInfo: gpsInfoList) {
+        for (GpsInfo gpsInfo : gpsInfoList) {
             if (gpsInfo.getGubun().equalsIgnoreCase("me")) {
 
-                List<Hole>holeList = getHoleList(gpsInfo.getCtype());
+                List<Hole> holeList = getHoleList(gpsInfo.getCtype());
                 if (holeList == null || holeList.size() == 0)
                     return -1;
 
@@ -304,15 +319,17 @@ public class CourseFragment extends BaseFragment {
                 if (response.getResultCode().equals("ok")) {
                     mCourseInfoList = (ArrayList<Course>) response.getList();
                     Global.courseInfoList = mCourseInfoList;
-                    //여기서 초기화
-                    if (Global.CurrentCourse == null)
-                        Global.CurrentCourse = mCourseInfoList.get(0);
 
                     if (mCourseInfoList == null || mCourseInfoList.size() == 0) {
                         Toast.makeText(mContext, "코스 정보가 없습니다.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
+                    //여기서 초기화
+                    if (Global.CurrentCourse == null)
+                        Global.CurrentCourse = mCourseInfoList.get(0);
+                    else
+                        Global.CurrentCourse = findCurrentCourse(Global.CurrentCourse.id, mCourseInfoList);
 
                     //초기화
                     // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
@@ -350,20 +367,30 @@ public class CourseFragment extends BaseFragment {
         });
     }
 
+    private Course findCurrentCourse(String id, ArrayList<Course> courses) {
+        for (Course course : courses) {
+            if (course.id.equals(id)) {
+                return course;
+            }
+        }
+
+        return null;
+    }
+
     private void drawMap(int position) {
         Glide.with(mContext)
                 .load(Global.HOST_BASE_ADDRESS_AWS + Global.CurrentCourse.holes.get(position).img_1_file_url)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(iv_map)
                 .getSize(new SizeReadyCallback() {
-                     @Override
-                     public void onSizeReady(int width, int height) {
-                         Hole h = Global.CurrentCourse.holes.get(position);
-                         gpsView.setHolePos(new Point(h.course_hole_width_per, h.course_hole_height_per), h.hole_image_meter, width);
+                    @Override
+                    public void onSizeReady(int width, int height) {
+                        Hole h = Global.CurrentCourse.holes.get(position);
+                        gpsView.setHolePos(new Point(h.course_hole_width_per, h.course_hole_height_per), h.hole_image_meter, width);
 
-                         if (currentHoleIndex != position)
+                        if (currentHoleIndex != position)
                             gpsView.setObject1Pos(new Point(h.course_start_width_per, h.course_start_height_per));
-                     }
+                    }
                 });
     }
 
@@ -400,7 +427,7 @@ public class CourseFragment extends BaseFragment {
                 tbox4.setValue(Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(3).getTboxValue(), Global.CurrentCourse.holes.get(position).tBox.get(3).getmTboxColor());
                 tbox5.setValue(Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxName(), Global.CurrentCourse.holes.get(position).tBox.get(4).getTboxValue(), Global.CurrentCourse.holes.get(position).tBox.get(4).getmTboxColor());
             }
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
@@ -411,21 +438,6 @@ public class CourseFragment extends BaseFragment {
                 "\n속도 : " + location.getSpeed() +
                 "\n정확도 : " + location.getAccuracy() +
                 "\n제공프로바이더 : " + location.getProvider();
-    }
-
-    private void startTimerThread() {
-
-        new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                updateTimer();
-            }
-        }.start();
     }
 
     private void startAdvertisingTimerThread() {
@@ -442,14 +454,14 @@ public class CourseFragment extends BaseFragment {
                 if (!advertsingContinue)
                     return;
 
-                switch(advertisingCount%3) {
-                    case 0 :
+                switch (advertisingCount % 3) {
+                    case 0:
                         changeAdvertising(ivAdvertising1, ivAdvertising2);
                         break;
-                    case 1 :
+                    case 1:
                         changeAdvertising(ivAdvertising2, ivAdvertising3);
                         break;
-                    case 2 :
+                    case 2:
                         changeAdvertising(ivAdvertising3, ivAdvertising1);
                         break;
                 }
@@ -464,12 +476,21 @@ public class CourseFragment extends BaseFragment {
         UIThread.executeInUIThread(new Runnable() {
             @Override
             public void run() {
-                int hou = Calendar.getInstance(Locale.KOREA).get(Calendar.HOUR);
-                int min = Calendar.getInstance(Locale.KOREA).get(Calendar.MINUTE);
-                tv_time.setText(String.format("%02d:%02d", hou, min));
+
+                try {
+                    int hour = Global.gameSec / 3600;
+                    int min = (Global.gameSec - (hour * 3600)) / 60;
+                    int sec = (Global.gameSec - (hour * 3600) - (min * 60));
+
+                    if (Global.gameSec < 3600)
+                        tv_time.setText(String.format("%02d:%02d", min, sec));
+                    else
+                        tv_time.setText(String.format("%02d:%02d", hour, min));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-        startTimerThread();
     }
 
     private void changeAdvertising(ImageView ivOut, ImageView ivIn) {
@@ -485,7 +506,7 @@ public class CourseFragment extends BaseFragment {
                     ivOut.setVisibility(View.GONE);
                     ivIn.setAnimation(slowly_appear);
                     ivIn.setVisibility(View.VISIBLE);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -536,4 +557,5 @@ public class CourseFragment extends BaseFragment {
             }
         });
     }
+
 }
