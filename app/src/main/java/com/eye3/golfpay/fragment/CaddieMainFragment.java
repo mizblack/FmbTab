@@ -35,6 +35,7 @@ import com.eye3.golfpay.model.guest.CaddieInfo;
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.Guest;
 import com.eye3.golfpay.model.guest.GuestInfo;
+import com.eye3.golfpay.model.guest.ReqClubInfo;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -334,14 +335,12 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     private void setClubInfo(String guestId, ClubInfo clubInfo) {
         setProgressMessage("클럽 정보를 저장하는 중입니다.");
 
-        String wood = getClubInfoText(clubInfo.wood.toString());
-        String utility = getClubInfoText(clubInfo.utility.toString());
-        String iron = getClubInfoText(clubInfo.iron.toString());
-        String wedge = getClubInfoText(clubInfo.wedge.toString());
-        String putter = getClubInfoText(clubInfo.putter.toString());
+        ReqClubInfo reqClubInfo = caddieInfo.getGuestInfo().get(findGuestId(guestId)).getReqClubInfo();
 
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setClubInfo(getActivity(), guestId, wood, utility, iron, wedge,
-                putter, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+
+
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setClubInfo(getActivity(), guestId,
+                reqClubInfo, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 hideProgress();

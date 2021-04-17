@@ -51,6 +51,8 @@ import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.LaravelModel;
+import com.eye3.golfpay.model.field.Course;
+import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -69,6 +71,7 @@ import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -483,15 +486,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     @Override
                     public void onSuccess(ResponseData<ResponseCartInfo> response) {
 
-                        if (response.getResultCode().equalsIgnoreCase("ok")) {
-                            if (getCourseFragment() != null) {
-                                UIThread.executeInUIThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getCourseFragment().updateCourse(response.getData());
-                                    }
-                                });
+                        try {
+                            //글로벌 현재 코스 아이디 저장하기..
+                            //CourseFragment 가 아닌 다른 UI에서 사용하기 위함
+                            Global.CurrentCourseId = getCurrentCourse(response.getData().nearby_hole_list);
+                            if (response.getResultCode().equalsIgnoreCase("ok")) {
+                                if (getCourseFragment() != null) {
+                                    UIThread.executeInUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getCourseFragment().updateCourse(response.getData());
+                                        }
+                                    });
+                                }
                             }
+                        } catch(NullPointerException e) {
+                            e.printStackTrace();
+                            Toast.makeText(gpsTracker, "gps 보내다 죽었는데?", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -505,6 +516,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         //Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private String getCurrentCourse(List<GpsInfo> gpsInfoList) {
+
+        if (Global.courseInfoList == null)
+            return null;
+
+        if (gpsInfoList.size() == 0)
+            return null;
+
+        for (GpsInfo gpsInfo : gpsInfoList) {
+            if (gpsInfo.getGubun().equalsIgnoreCase("me")) {
+
+                for (int i = 0; i < Global.courseInfoList.size(); i++) {
+                    if (Global.courseInfoList.get(i).ctype.equalsIgnoreCase(gpsInfo.getCtype())) {
+                        return Global.courseInfoList.get(i).id;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     private void setLaravel() {
@@ -566,22 +599,52 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 ChatData chatData = laravelModel.nameValuePairs;
 
-
                 if (mBaseFragment.TAG.equals("LoginFragment") || mBaseFragment.TAG.equals("TeeUpFragment") || mBaseFragment.TAG.equals("MainWorkFragment")) {
                     return;
                 }
                 if (mBaseFragment.TAG.equals("ControlFragment")) {
-                    ((ControlFragment) mBaseFragment).receiveMessage(chatData.sender_id, chatData.message, chatData.timestamp);
+                    if (isShowChat(chatData)) {
+                        ((ControlFragment) mBaseFragment).receiveMessage(chatData.sender_name, chatData.message, chatData.timestamp);
+                    }
                     return;
                 }
 
-                long now = System.currentTimeMillis();
-                Date mDate = new Date(now);
-                SimpleDateFormat simpleDate = new SimpleDateFormat("a hh:mm", Locale.US);
-                String getTime = simpleDate.format(mDate);
-                showMessagePopup(chatData.message, chatData.sender_id, getTime);
+                if (isShowChat(chatData)) {
+                    long now = System.currentTimeMillis();
+                    Date mDate = new Date(now);
+                    SimpleDateFormat simpleDate = new SimpleDateFormat("a hh:mm", Locale.US);
+                    String getTime = simpleDate.format(mDate);
+                    showMessagePopup(chatData.message, chatData.sender_name, getTime);
+                }
             }
         });
+    }
+
+    private boolean isShowChat(ChatData chatData) {
+
+        //내가 보낸건 안받음
+        if (chatData.sender_id.equals(Global.CaddyNo))
+            return false;
+
+        if (chatData.type.equals("all")) {
+            return true;
+        }
+
+        if (chatData.type.equals("caddy") && chatData.receiver_id.equals(Global.CaddyNo)) {
+            return true;
+        }
+
+        if (chatData.type.equals("group") && chatData.group_id.equals(Global.selectedReservation.getGroupId())) {
+            return true;
+        }
+
+        if (chatData.type.equals("course") && chatData.course_id.equals(Global.CurrentCourseId)) {
+
+            return true;
+        }
+
+
+        return false;
     }
 
     private void showMessagePopup(String message, String sender, String time) {

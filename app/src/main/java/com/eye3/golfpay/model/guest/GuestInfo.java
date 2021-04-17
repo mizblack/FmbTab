@@ -101,6 +101,10 @@ public class GuestInfo {
         this.clubImage_final = clubImage_final;
     }
 
+    public ReqClubInfo getReqClubInfo() {
+        return reqClubInfo;
+    }
+
     public void setClubInfo(ClubInfo ci) {
 
         clubInfo = ci;

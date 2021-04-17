@@ -15,6 +15,7 @@ import com.eye3.golfpay.model.gps.CType;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
+import com.eye3.golfpay.model.guest.ReqClubInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
 import com.eye3.golfpay.model.login.Login;
@@ -680,12 +681,17 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void setClubInfo(Context context, String reserve_no, String wood, String utility,
-                            String iron, String wedge, String putter, final ResponseCallback<ResponseData<Object>> callback) {
+    public void setClubInfo(Context context, String reserve_guest_id, ReqClubInfo reqClubInfo, final ResponseCallback<ResponseData<Object>> callback) {
 
         try {
-            Call<ResponseData<Object>> call = service.setClubInfo( reserve_no, wood,
-                    utility, iron, wedge, putter);
+
+            Call<ResponseData<Object>> call = service.setClubInfo( reserve_guest_id,
+                    reqClubInfo.wood,
+                    reqClubInfo.putter,
+                    reqClubInfo.wedge,
+                    reqClubInfo.iron,
+                    reqClubInfo.utility,
+                    reqClubInfo.wood_cover, reqClubInfo.putter_cover, reqClubInfo.wedge_cover, reqClubInfo.iron_cover, reqClubInfo.utility_cover);
 
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
@@ -925,6 +931,29 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<ChatData>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void tabletChattingNameList(Context context, final ResponseCallback<ResponseChatNameList> callback) {
+
+        try {
+            Call<ResponseChatNameList> call = service.tabletChattingNameList();
+
+            call.enqueue(new Callback<ResponseChatNameList>() {
+                @Override
+                public void onResponse(Call<ResponseChatNameList> call, Response<ResponseChatNameList> response) {
+                    callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<ResponseChatNameList> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");

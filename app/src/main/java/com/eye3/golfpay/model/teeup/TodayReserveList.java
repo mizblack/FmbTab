@@ -44,7 +44,7 @@ public class TodayReserveList implements Serializable {
     @Expose
     private String group;
     @SerializedName("group_id")
-    private Object groupId;
+    private String groupId;
     @SerializedName("guest_cnt")
     private int guestCnt;
     @SerializedName("guest_data")
@@ -256,11 +256,11 @@ public class TodayReserveList implements Serializable {
         this.group = group;
     }
 
-    public Object getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Object groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

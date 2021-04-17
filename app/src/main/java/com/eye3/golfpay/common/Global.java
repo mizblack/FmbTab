@@ -93,6 +93,7 @@ public class Global {
     public static Course CurrentScoreCourse = null;
     public static Hole CurrentHole;
     public static List<ArticleItem> noticeItemArrayList = new ArrayList<>();
+    public static String CurrentCourseId = null;
   //  public static ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
   //  public static ArrayList<RestaurantOrder> restaurantOrderArrayList = new ArrayList<>();
 

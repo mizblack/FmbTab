@@ -167,14 +167,31 @@ public interface HttpService {
     Call<ResponseCaddyNote> getCaddyNote(@Field("caddy_id") String caddy_id,
                                          @Field("reserve_id") String reserve_id);
 
+    /*
+wood	우드 번호	X	String /ex. (1, 3, 5) 콤마구분
+putter	퍼터 번호	X	String
+wedge	웨지 번호	X	String
+iron	아이언 번호	X	String
+utility	유틸리티 번호	X	String
+wood_cover	우드커버 번호	X	String / ex. (1, 3) 콤마구분
+putter_cover	퍼터커버 번호	X	String
+wedge_cover	웨지커버 번호	X	String
+iron_cover	아이언커퍼 번호	X	String
+utility_cover	유틸리티커버 번호	X	String
+            * */
     @FormUrlEncoded
     @POST("setClubInfo")
     Call<ResponseData<Object>> setClubInfo(@Field("reserve_guest_id") String reserve_guest_id,
                                       @Field("wood") String wood,
-                                      @Field("utility") String utility,
-                                      @Field("iron") String iron,
+                                      @Field("putter") String putter,
                                       @Field("wedge") String wedge,
-                                      @Field("putter") String putter);
+                                      @Field("iron") String iron,
+                                      @Field("utility") String utility,
+                                       @Field("wood_cover") String wood_cover,
+                                       @Field("putter_cover") String putter_cover,
+                                       @Field("wedge_cover") String wedge_cover,
+                                       @Field("iron_cover") String iron_cover,
+                                       @Field("utility_cover") String utility_cover);
 
     @FormUrlEncoded
     @POST("setPersonalInfo")
@@ -218,4 +235,7 @@ public interface HttpService {
     Call<ResponseData<ChatData>> initSetMessage(@Field("cc_id") int cc_id,
                                                  @Field("sender_id") String sender_id,
                                                  @Field("s_date") String s_date);
+
+    @GET("tabletChattingNameList")
+    Call<ResponseChatNameList> tabletChattingNameList();
 }
