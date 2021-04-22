@@ -94,7 +94,7 @@ public class GpsView extends View {
         int x = (int)((float)rect.width() * (posHole.x / 100.0f));
         int y = (int)((float)rect.height() * (posHole.y / 100.0f));
         ptHole = new Point((int)(x * ratio), (int)(y * ratio));
-        ptObject2 = new Point(rect.width()/2, rect.height()/2);
+        //ptObject2 = new Point(rect.width()/2, rect.height()/2);
         invalidate();
     }
 
@@ -131,6 +131,7 @@ public class GpsView extends View {
         float ratio = (float)meter/(float)rect.width();
 
         iDistanceListener.onDistance(distance1*ratio, distance2*ratio);
+        drawDistance(canvas, distance1*ratio, distance2*ratio);
         //Log.d("sangbong_log", String.format("distance1: %f, distance2: %f", distance1, distance2));
     }
 
@@ -152,6 +153,65 @@ public class GpsView extends View {
 
         canvas.drawLine(rcDestObject1.centerX(), rcDestObject1.centerY(), rcDestObject2.centerX(), rcDestObject2.centerY(), paint);
         canvas.drawLine(rcDestObject2.centerX(), rcDestObject2.centerY(), rcDestHole.centerX(), rcDestHole.centerY(), paint);
+    }
+
+    private void drawDistance(Canvas canvas, double distance1, double distance2) {
+
+        int left = rcDestObject2.left+5;
+        int top = rcDestObject2.bottom;
+        int right = left + 80;
+        int bottom = top + 10 + 80;
+        Rect rc = new Rect(left, top, right, bottom);
+
+        String text1 = String.format("%dM", (int) distance1);
+        String text2 = String.format("%dM", (int) distance2);
+
+        if (rcDestObject2.right > rect.right- 50) {
+            rc.offset(-20, 0);
+        }
+
+        if (rcDestObject2.bottom > rect.bottom - 100) {
+            rc.offset(0, -(rcDestObject2.height() + rc.height()+10));
+        }
+
+        int marginTop = 6;
+        int y = drawText(canvas, "거리", 16, rc, Color.parseColor("#ffffff"), Color.parseColor("#cd00abc5"), marginTop).height();
+
+        rc.offset(0, y);
+        y = drawText(canvas, "", 20, rc, Color.parseColor("#ffffff"), Color.parseColor("#cd000000"), 2).height();
+        rc.offset(0, y);
+        marginTop = 8;
+        y = drawText(canvas, text1, 20, rc, Color.parseColor("#ffffff"), Color.parseColor("#cd000000"), marginTop).height();
+
+        rc.offset(0, y);
+        y = drawText(canvas, text2, 20, rc, Color.parseColor("#ffffff"), Color.parseColor("#cd000000"), marginTop).height();
+        rc.offset(0, y);
+        drawText(canvas, "", 20, rc, Color.parseColor("#ffffff"), Color.parseColor("#cd000000"), 2).height();
+    }
+
+    private Rect drawText(Canvas canvas, String text, int textSize, Rect rc, int textColor, int backgroundColor, int marginTop) {
+
+        Paint Textpaint = new Paint();
+        Rect textBound = new Rect();
+        Textpaint.setTextSize(textSize);
+        Textpaint.setColor(textColor);
+        Textpaint.getTextBounds(text, 0, text.length(), textBound);
+        Textpaint.setAntiAlias(true);
+
+        Paint rectPaint = new Paint();
+        rectPaint.setColor(backgroundColor);
+
+        Rect backgroundRect = new Rect();
+        backgroundRect.left = rc.left;
+        backgroundRect.right = rc.right;
+        backgroundRect.top = rc.top;
+
+        int x = rc.left-(textBound.width()/2) + (rc.width()/2);
+        backgroundRect.bottom = rc.top + textBound.height() + (marginTop*2);
+        canvas.drawRect(backgroundRect, rectPaint);
+        canvas.drawText(text, x,rc.top+textBound.height() + marginTop, Textpaint);
+
+        return backgroundRect;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -202,8 +262,8 @@ public class GpsView extends View {
         ptObject.x =  x - ptTouchPos.x;
         ptObject.y = y - ptTouchPos.y;
 
-        if (ptObject.x < 0)
-            ptObject.x = 0;
+        if (ptObject.x < 50)
+            ptObject.x = 50;
         if (ptObject.y < 0)
             ptObject.y = 0;
         if (ptObject.x + rcDest.width() > rect.width())

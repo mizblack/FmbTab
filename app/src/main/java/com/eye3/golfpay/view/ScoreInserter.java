@@ -32,7 +32,8 @@ import java.util.ArrayList;
 public class ScoreInserter extends RelativeLayout {
 
     public interface IScoreInserterListenr {
-        void onClickedScore(int row, int cal);
+        void onClickedScore(Integer row, Integer cal);
+        void onEraseScore(Integer row);
     }
 
     Context mContext;
@@ -126,9 +127,14 @@ public class ScoreInserter extends RelativeLayout {
                 item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        unSelectAllRow(position);
-                        view.setVisibility(View.VISIBLE);
-                        iScoreInserterListenr.onClickedScore(position, cal);
+                        int oldSelectIdx = unSelectAllRow(position);
+                        int score = getScore(oldSelectIdx);
+                        if (score != cal) {
+                            view.setVisibility(View.VISIBLE);
+                            iScoreInserterListenr.onClickedScore(position, cal);
+                        } else {
+                            iScoreInserterListenr.onEraseScore(position);
+                        }
                     }
                 });
 
@@ -205,11 +211,11 @@ public class ScoreInserter extends RelativeLayout {
     }
 
     public Integer getScore(int index) {
-        for (int i = start; i < end; i++) {
-            if (i == index)
+        for (int i = start, j = 0; i < end; i++, j++) {
+            if (j == index)
                 return i;
         }
-        return 0;
+        return -100;
     }
 
     public String getTeeShot(int index) {
@@ -248,9 +254,13 @@ public class ScoreInserter extends RelativeLayout {
                 item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        unSelectAllRow(position);
-                        view.setVisibility(View.VISIBLE);
-                        iScoreInserterListenr.onClickedScore(position, cal);
+                        int oldSelectIdx = unSelectAllRow(position);
+                        if (oldSelectIdx != cal) {
+                            view.setVisibility(View.VISIBLE);
+                            iScoreInserterListenr.onClickedScore(position, cal);
+                        } else {
+                            iScoreInserterListenr.onEraseScore(position);
+                        }
                     }
                 });
 
@@ -271,11 +281,17 @@ public class ScoreInserter extends RelativeLayout {
         }
     }
 
-    private void unSelectAllRow(final int position) {
+    private int unSelectAllRow(final int position) {
+        int oldSelectValue = -100;
         LinearLayout view = scores.get(position);
         for (int i = 0; i < view.getChildCount(); i++) {
             View childView = view.getChildAt(i);
+            if (childView.findViewById(R.id.view_select).getVisibility() == View.VISIBLE) {
+                oldSelectValue = i;
+            }
             childView.findViewById(R.id.view_select).setVisibility(View.GONE);
         }
+
+        return oldSelectValue;
     }
 }

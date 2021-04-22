@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gps.CType;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
@@ -53,6 +55,7 @@ public class ChangeCourseDialog extends Dialog {
     private TextView tvCurrentCourseName;
     private LinearLayout popup_menu;
     private IListenerDialog iListenerDialog;
+    private int gameBeforeAfter = 0; //0:전반 1:후반
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +67,13 @@ public class ChangeCourseDialog extends Dialog {
         tvCurrentCourseName = findViewById(R.id.tv_current_course);
         tvEndChangeCourse = findViewById(R.id.tv_end_change_course);
         tvEndChangeCourse.setText(endCourseName);
-        tvCurrentCourseName.setText(endCourseName);
         tvSave = findViewById(R.id.tv_save);
         tvCancel = findViewById(R.id.tv_cancel);
 
         popup_menu = findViewById(R.id.popup_menu);
+
         changeCourseList(getContext());
+
         viewMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +84,7 @@ public class ChangeCourseDialog extends Dialog {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeCourse(getContext(), tvEndChangeCourse.getText().toString());
+                changeCourse(getContext(), tvBeginChangeCourse.getText().toString(), tvEndChangeCourse.getText().toString());
             }
         });
 
@@ -92,12 +96,24 @@ public class ChangeCourseDialog extends Dialog {
         });
 
 
+        tvBeginChangeCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup_menu.setVisibility(View.VISIBLE);
+                popup_menu.setX(tvBeginChangeCourse.getX()-1);
+                popup_menu.setY(tvBeginChangeCourse.getY()-1);
+                tvCurrentCourseName.setText(beginCourseName);
+                gameBeforeAfter = 0; //전반
+            }
+        });
         tvEndChangeCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popup_menu.setVisibility(View.VISIBLE);
                 popup_menu.setX(tvEndChangeCourse.getX()-1);
                 popup_menu.setY(tvEndChangeCourse.getY()-1);
+                tvCurrentCourseName.setText(endCourseName);
+                gameBeforeAfter = 1;//후반
             }
         });
     }
@@ -117,32 +133,12 @@ public class ChangeCourseDialog extends Dialog {
             public void onClick(View view) {
                 String text = tvCourseItem.getText().toString();
                 popup_menu.setVisibility(View.GONE);
-                tvEndChangeCourse.setText(text);
+                if (gameBeforeAfter == 0) //gameBeforeAfter이 0이면 전반
+                    tvBeginChangeCourse.setText(text);
+                else
+                    tvEndChangeCourse.setText(text);
+
                 tvCurrentCourseName.setText(text);
-            }
-        });
-    }
-
-    private void changeCourse(Context context, String course) {
-
-        DataInterface.getInstance().changeCourse(context, course, new DataInterface.ResponseCallback<ResponseData<Object>>() {
-            @Override
-            public void onSuccess(ResponseData<Object> response) {
-                if (response.getResultCode().equals("ok")) {
-                    Toast.makeText(context, "코스가 변경되었습니다.", Toast.LENGTH_SHORT).show();
-                    iListenerDialog.onChangeCourse();
-                }
-                dismiss();
-            }
-
-            @Override
-            public void onError(ResponseData<Object> response) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
             }
         });
     }
@@ -169,4 +165,30 @@ public class ChangeCourseDialog extends Dialog {
             }
         });
     }
+
+    private void changeCourse(Context context, String before_course, String after_course) {
+
+        DataInterface.getInstance().changeCourse(context, before_course, after_course, new DataInterface.ResponseCallback<ResponseData<Object>>() {
+            @Override
+            public void onSuccess(ResponseData<Object> response) {
+                if (response.getResultCode().equals("ok")) {
+                    Toast.makeText(context, "코스가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                    iListenerDialog.onChangeCourse();
+                }
+                dismiss();
+            }
+
+            @Override
+            public void onError(ResponseData<Object> response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+
 }

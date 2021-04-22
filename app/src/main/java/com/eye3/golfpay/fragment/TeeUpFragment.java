@@ -92,6 +92,8 @@ public class TeeUpFragment extends BaseFragment {
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
+                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopTimerTask();
             }
         });
     }
@@ -197,7 +199,7 @@ public class TeeUpFragment extends BaseFragment {
 
                         //((MainActivity)mParentActivity).startListeningUserLocationDebug();
                         ((MainActivity)mParentActivity).startListeningUserLocation2();
-                        ((MainActivity)mParentActivity).startLocationService();
+//                        ((MainActivity)mParentActivity).startLocationService();
 
                     }
 

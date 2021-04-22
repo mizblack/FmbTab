@@ -151,22 +151,37 @@ public class ScoreDialog extends Dialog {
 
         score.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
             @Override
-            public void onClickedScore(int row, int cal) {
-                mReserveScore.guest_score_list.get(row).par = score.getScore(cal).toString();
+            public void onClickedScore(Integer row, Integer cal) {
+                mReserveScore.guest_score_list.get(row).par = cal.toString();
+            }
+
+            @Override
+            public void onEraseScore(Integer row) {
+                mReserveScore.guest_score_list.get(row).par = "-";
             }
         });
 
         putt.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
             @Override
-            public void onClickedScore(int row, int cal) {
-                mReserveScore.guest_score_list.get(row).putting = score.getScore(cal).toString();
+            public void onClickedScore(Integer row, Integer cal) {
+                mReserveScore.guest_score_list.get(row).putting = cal.toString();
+            }
+
+            @Override
+            public void onEraseScore(Integer row) {
+                mReserveScore.guest_score_list.get(row).putting = "-";
             }
         });
 
         teeShot.setIScoreInserterListenr(new ScoreInserter.IScoreInserterListenr() {
             @Override
-            public void onClickedScore(int row, int cal) {
+            public void onClickedScore(Integer row, Integer cal) {
                 mReserveScore.guest_score_list.get(row).teeShot = score.getTeeShot(cal);
+            }
+
+            @Override
+            public void onEraseScore(Integer row) {
+                mReserveScore.guest_score_list.get(row).teeShot = "";
             }
         });
     }

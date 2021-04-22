@@ -517,45 +517,18 @@ public class CourseFragment extends BaseFragment {
 
     private void checkChangeCourse(Context context) {
 
-        DataInterface.getInstance().checkChangeCourse(context, new DataInterface.ResponseCallback<ResCheckChangeCourse>() {
-
+        ChangeCourseDialog dlg = new ChangeCourseDialog(getContext(), mCourseInfoList.get(0).courseName,
+                mCourseInfoList.get(1).courseName, new ChangeCourseDialog.IListenerDialog() {
             @Override
-            public void onSuccess(ResCheckChangeCourse response) {
-                if (response.getResultCode().equals("ok")) {
-
-                    if (response.getChange_yn().equalsIgnoreCase("Y")) {
-
-                        ChangeCourseDialog dlg = new ChangeCourseDialog(getContext(), mCourseInfoList.get(0).courseName,
-                                mCourseInfoList.get(1).courseName, new ChangeCourseDialog.IListenerDialog() {
-                            @Override
-                            public void onChangeCourse() {
-                                getAllCourseInfo(getActivity());
-                            }
-                        });
-                        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
-                        wmlp.gravity = Gravity.CENTER;
-                        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-                        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        dlg.show();
-                    } else {
-
-                    }
-
-                } else if (response.getResultCode().equals("fail")) {
-                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(ResCheckChangeCourse response) {
-                hideProgress();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideProgress();
+            public void onChangeCourse() {
+                getAllCourseInfo(getActivity());
             }
         });
+        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        wmlp.gravity = Gravity.CENTER;
+        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dlg.show();
     }
 
 }

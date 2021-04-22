@@ -34,6 +34,9 @@ import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.util.FmbCustomDialog;
 
+import java.net.URL;
+
+import io.socket.client.Url;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -808,9 +811,11 @@ public class DataInterface extends BasicDataInterface {
         try {
             int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
             Call<ResCheckChangeCourse> call = service.checkChangeCourse(reserve_id);
+            URL url = call.request().url().url();
             call.enqueue(new Callback<ResCheckChangeCourse>() {
                 @Override
                 public void onResponse(Call<ResCheckChangeCourse> call, Response<ResCheckChangeCourse> response) {
+
                     callback.onSuccess(response.body());
                 }
 
@@ -827,10 +832,10 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void changeCourse(final Context context, String after_course, ResponseCallback<ResponseData<Object>> callback) {
+    public void changeCourse(final Context context, String before_course, String after_course, ResponseCallback<ResponseData<Object>> callback) {
         try {
             int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
-            Call<ResponseData<Object>> call = service.setChangeCourse( reserve_id, after_course);
+            Call<ResponseData<Object>> call = service.setChangeCourse( reserve_id, before_course, after_course);
 
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
@@ -853,7 +858,7 @@ public class DataInterface extends BasicDataInterface {
     public void changeCourseList(final Context context, ResponseCallback<ResponseData<CType>> callback) {
         try {
             int reserve_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
-            Call<ResponseData<CType>> call = service.getAfterCourseList(reserve_id);
+            Call<ResponseData<CType>> call = service.getChangeCourseList(reserve_id);
 
             call.enqueue(new Callback<ResponseData<CType>>() {
                 @Override

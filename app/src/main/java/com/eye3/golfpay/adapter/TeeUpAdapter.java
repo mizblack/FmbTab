@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.model.teeup.GuestDatum;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
 import com.eye3.golfpay.util.DateUtils;
@@ -117,9 +118,9 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
                 holder.viewMask.setVisibility(View.VISIBLE);
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new SingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     onClickAdapter.onAdapterItemClicked(position);
                 }
             });

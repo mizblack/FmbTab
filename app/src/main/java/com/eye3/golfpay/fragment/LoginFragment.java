@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
@@ -98,10 +99,9 @@ public class LoginFragment extends BaseFragment {
 //        }
 
         // 메뉴뷰 이벤트처리
-        mStartTextView.setOnClickListener(new View.OnClickListener() {
+        mStartTextView.setOnClickListener(new SingleClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onSingleClick(View v) {
                 if (editGolfId.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "골프장 ID를 입력해 주세요", Toast.LENGTH_SHORT).show();
                     return;

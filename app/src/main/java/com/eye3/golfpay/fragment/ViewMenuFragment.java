@@ -385,6 +385,10 @@ public class ViewMenuFragment extends BaseFragment {
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
+
+                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopTimerTask();
+
                 GoNavigationDrawer(new TeeUpFragment(), null);
                 ((MainActivity)getActivity()).updateUI();
             }

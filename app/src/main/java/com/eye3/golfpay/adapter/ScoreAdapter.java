@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.model.guest.Guest;
 
@@ -49,6 +50,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
     private final ArrayList<Item> items;
     private final Context context;
     private final IOnClickAdapter onClickAdapter;
+
     public ScoreAdapter(Context context, IOnClickAdapter listener) {
         this.context = context;
         this.onClickAdapter = listener;
@@ -92,9 +94,9 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
 
             holder.tv_item.setText(items.get(position).item);
 
-            holder.tv_item.setOnClickListener(new View.OnClickListener() {
+            holder.tv_item.setOnClickListener(new SingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     //allSelected(false);
                     allSelected(false);
                     items.get(position).selected = true;
@@ -102,6 +104,7 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.ScorebHolder
                     notifyDataSetChanged();
                 }
             });
+
         } catch (NullPointerException e) {
             Log.e(TAG, "NullPointerException : " + e);
         } catch (Exception e) {

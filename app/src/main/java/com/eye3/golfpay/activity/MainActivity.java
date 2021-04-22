@@ -427,6 +427,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void run() {
+                gpsTracker.getLocation();
                 double latitude = gpsTracker.getLatitude();
                 double longitude = gpsTracker.getLongitude();
 
@@ -440,7 +441,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
             }
         };
-        gpsTimer.schedule(gpsTimerTask, 0, 3000);
+        gpsTimer.schedule(gpsTimerTask, 0, 1000);
     }
 
     public void stopGpsTimerTask() {
@@ -477,7 +478,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     };
 
-
     public void sendGpsInfo(String caddy_num, double lat, double lng, String reserve_id) {
 
         DataInterface.getInstance().sendGpsInfo(this, caddy_num, lat, lng, reserve_id,
@@ -489,6 +489,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         try {
                             //글로벌 현재 코스 아이디 저장하기..
                             //CourseFragment 가 아닌 다른 UI에서 사용하기 위함
+
                             Global.CurrentCourseId = getCurrentCourse(response.getData().nearby_hole_list);
                             if (response.getResultCode().equalsIgnoreCase("ok")) {
                                 if (getCourseFragment() != null) {
@@ -502,7 +503,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             }
                         } catch(NullPointerException e) {
                             e.printStackTrace();
-                            Toast.makeText(gpsTracker, "gps 보내다 죽었는데?", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this, "gps 보내다 죽었는데?", Toast.LENGTH_SHORT).show();
                         }
                     }
 

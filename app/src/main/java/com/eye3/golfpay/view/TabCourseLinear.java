@@ -324,7 +324,7 @@ public class TabCourseLinear extends LinearLayout {
 
                             mHoleScoreLayoutIdx = getFindHoleId(v.getId());
                             Global.viewPagerPosition = mHoleScoreLayoutIdx;
-                            if (isPreviousHoleScoreFilledUp(playerList, mTabIdx)) {
+                            if (true || isPreviousHoleScoreFilledUp(playerList, mTabIdx)) { //이전 플레이 점수 가능하게 수정 (정책이 바뀔지도 몰라 임시 수정함.)
                                 notifyDataSetChanged();
                                 sDialog = new ScoreDialog(mContext, "저장", "취소", null, null, playerList, mTabIdx, mHoleScoreLayoutIdx);
                                 WindowManager.LayoutParams wmlp = sDialog.getWindow().getAttributes();

@@ -218,10 +218,10 @@ utility_cover	유틸리티커버 번호	X	String
 
     @FormUrlEncoded
     @POST("setChangeCourse")
-    Call<ResponseData<Object>> setChangeCourse(@Field("res_id") int res_id, @Field("after_course") String after_course);
+    Call<ResponseData<Object>> setChangeCourse(@Field("res_id") int res_id, @Field("before_course") String before_course, @Field("after_course") String after_course);
 
-    @GET("getAfterCourseList")
-    Call<ResponseData<CType>> getAfterCourseList(@Query("res_id") int res_id);
+    @GET("getChangeCourseList")
+    Call<ResponseData<CType>> getChangeCourseList(@Query("res_id") int res_id);
 
     @POST("sendSmsScore")
     Call<ResponseData<Object>> sendSmsScore(@Body SendSMS request);

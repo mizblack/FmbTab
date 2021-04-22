@@ -65,7 +65,6 @@ public class ControlFragment extends BaseFragment {
     private ConstraintLayout view_caddie_list;
     private ConstraintLayout view_group_list;
     private ControlPanelView controlPanelView;
-    private LinearLayout ll_space;
     private boolean isCaddieVisible = false;
     private boolean isGroupVisible = false;
     private LinearLayout ll_menu;
@@ -127,9 +126,7 @@ public class ControlFragment extends BaseFragment {
         ll_group_list = view.findViewById(R.id.ll_group_list);
         tvEmergencyMessage = view.findViewById(R.id.tv_emergency_msg);
         addMenuItem();
-        tabletChattingNameList();
         requestHotKeyList();
-
 
         edit_chat = view.findViewById(R.id.edit_chat);
         send_message = view.findViewById(R.id.send_message);
@@ -250,44 +247,26 @@ public class ControlFragment extends BaseFragment {
 
                     if (mi.title.equals("통제소")) {
 
-                        to = "To." + mi.title;
+                        to = mi.title;
                         chatMode = ChatMode.eMonitor;
                     }
 
                     else if (mi.title.equals("전체")) {
 
-                        to = "To." + mi.title;
+                        to = mi.title;
                         chatMode = ChatMode.eAll;
                     }
 
                     else if (mi.title.equals("캐디선택")) {
 
-                        if (!isCaddieVisible) {
-                            view_caddie_list.setVisibility(View.VISIBLE);
-                            view_group_list.setVisibility(View.GONE);
-                        }
-                        else
-                            view_caddie_list.setVisibility(View.GONE);
+                        tabletChattingNameList("caddy");
 
-                        isCaddieVisible ^= true;
-                        chatMode = ChatMode.eCaddy;
-                        closeKeyboard(edit_chat);
                         return;
                     }
 
                     else if (mi.title.equals("그룹선택")) {
+                        tabletChattingNameList("group");
 
-                        if (!isGroupVisible) {
-                            view_group_list.setVisibility(View.VISIBLE);
-                            view_caddie_list.setVisibility(View.GONE);
-                        }
-                        else {
-                            view_group_list.setVisibility(View.GONE);
-                        }
-
-                        isGroupVisible ^= true;
-                        chatMode = ChatMode.eGroup;
-                        closeKeyboard(edit_chat);
                         return;
                     }
 
@@ -296,7 +275,7 @@ public class ControlFragment extends BaseFragment {
                         if (course_id == null)
                             return;
 
-                        to = "To." + mi.title;
+                        to = mi.title;
                         chatMode = ChatMode.eBefore;
 
                     }
@@ -305,7 +284,7 @@ public class ControlFragment extends BaseFragment {
                         if (course_id == null)
                             return;
 
-                        to = "To." + mi.title;
+                        to = mi.title;
                         chatMode = ChatMode.eAfter;
                     }
 
@@ -313,7 +292,7 @@ public class ControlFragment extends BaseFragment {
                     bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
                     checkIn.setVisibility(View.VISIBLE);
                     mi.isActive = true;
-                    to = "To." + tvTitle.getText().toString();
+                    to = tvTitle.getText().toString();
                 }
             });
 
@@ -361,7 +340,7 @@ public class ControlFragment extends BaseFragment {
             if (mi.title.equals("캐디선택")) {
                 TextView tvTitle = mi.view.findViewById(R.id.tv_title);
                 tvTitle.setText(String.format("캐디선택(%s)", selectedCaddy.getName()));
-                to = "To." + selectedCaddy.getName();
+                to = selectedCaddy.getName();
                 View bar = mi.view.findViewById(R.id.view_bar);
                 tvTitle.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
                 bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
@@ -380,7 +359,7 @@ public class ControlFragment extends BaseFragment {
             if (mi.title.equals("그룹선택")) {
                 TextView tvTitle = mi.view.findViewById(R.id.tv_title);
                 tvTitle.setText(String.format("그룹선택(%s)", selectedGroup.getName()));
-                to = "To." + selectedGroup.getName();
+                to = selectedGroup.getName();
                 View bar = mi.view.findViewById(R.id.view_bar);
                 tvTitle.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Medium);
                 bar.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.irisBlue));
@@ -437,6 +416,17 @@ public class ControlFragment extends BaseFragment {
 
             ll_caddie_list.addView(view);
         }
+
+        if (!isCaddieVisible) {
+            view_caddie_list.setVisibility(View.VISIBLE);
+            view_group_list.setVisibility(View.GONE);
+        }
+        else
+            view_caddie_list.setVisibility(View.GONE);
+
+        isCaddieVisible ^= true;
+        chatMode = ChatMode.eCaddy;
+        closeKeyboard(edit_chat);
     }
 
     private void createGroupList() {
@@ -486,6 +476,18 @@ public class ControlFragment extends BaseFragment {
 
             ll_group_list.addView(view);
         }
+
+        if (!isGroupVisible) {
+            view_group_list.setVisibility(View.VISIBLE);
+            view_caddie_list.setVisibility(View.GONE);
+        }
+        else {
+            view_group_list.setVisibility(View.GONE);
+        }
+
+        isGroupVisible ^= true;
+        chatMode = ChatMode.eGroup;
+        closeKeyboard(edit_chat);
     }
 
     private BasicInfo findSelectedCaddy(String id) {
@@ -595,7 +597,7 @@ public class ControlFragment extends BaseFragment {
                     return;
                 }
 
-                memberData = new MemberData(to, "#434343");
+                memberData = new MemberData("To." + to, "#434343");
 
                 //boolean my = true;
 //                if (chatMessage.indexOf("!") >= 0) {
@@ -639,11 +641,19 @@ public class ControlFragment extends BaseFragment {
 
     private String getReceiverId() {
 
-        switch (chatMode) {
-            case eCaddy: return selectedCaddy.getId();
-            case eGroup: return selectedGroup.getId();
-            case eBefore: return Global.courseInfoList.get(0).id;
-            case eAfter: return Global.courseInfoList.get(1).id;
+        try {
+            switch (chatMode) {
+                case eCaddy:
+                    return selectedCaddy.getId();
+                case eGroup:
+                    return selectedGroup.getId();
+                case eBefore:
+                    return Global.courseInfoList.get(0).id;
+                case eAfter:
+                    return Global.courseInfoList.get(1).id;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         return "";
@@ -696,7 +706,7 @@ public class ControlFragment extends BaseFragment {
         });
     }
 
-    private void tabletChattingNameList() {
+    private void tabletChattingNameList(String type) {
 
         DataInterface.getInstance().tabletChattingNameList(getContext(), new DataInterface.ResponseCallback<ResponseChatNameList>() {
             @Override
@@ -705,6 +715,9 @@ public class ControlFragment extends BaseFragment {
                 if (response.getList() == null)
                     return;
 
+                caddies.clear();
+                groupList.clear();
+
                 for (BasicInfo caddy : response.getList().caddy_list) {
                     caddies.add(caddy);
                 }
@@ -712,8 +725,10 @@ public class ControlFragment extends BaseFragment {
                     groupList.add(group);
                 }
 
-                createCaddieList();
-                createGroupList();
+                if (type.equals("caddy"))
+                    createCaddieList();
+                else if (type.equals("group"))
+                    createGroupList();
             }
 
             @Override

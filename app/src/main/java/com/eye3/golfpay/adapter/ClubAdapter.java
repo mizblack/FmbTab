@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.model.caddyNote.CaddyNoteInfo;
@@ -112,9 +113,9 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
 
             holder.tv_item.setText(items.get(position).item);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new SingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     //allSelected(false);
 
                     if (items.get(position).selected == Item.SelectType.eSelect) {
@@ -131,6 +132,7 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubHolder> {
                     notifyDataSetChanged();
                 }
             });
+
         } catch (NullPointerException e) {
             Log.e(TAG, "NullPointerException : " + e);
         } catch (Exception e) {
