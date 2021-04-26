@@ -1,162 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/rootView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-<!--        android:background="@color/translucentBlack"-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="600dp"
+        android:layout_height="250dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView6"
+            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="24dp"
+            android:text="앱설정"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/GlobalTextView.20SP.Black.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="112dp"
+            android:textStyle="bold"
+            android:text="점수표기"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Bold"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="저장"
+            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintEnd_toStartOf="@+id/tv_cancel"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/GlobalTextView.18SP.Gray.NotoSans.Medium"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="취소"
+            android:layout_marginEnd="32dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_save" />
+
         <LinearLayout
-            android:layout_width="600dp"
-            android:layout_height="300dp"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="36dp">
+            android:id="@+id/view_tar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintEnd_toStartOf="@+id/view_par"
+            app:layout_constraintTop_toTopOf="@+id/textView7">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                tools:ignore="UseCompoundDrawables,UselessParent">
+            <ImageView
+                android:id="@+id/iv_tar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/check_in_white" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="디바이스 설정"
-                    android:textColor="@color/black"
-                    android:textSize="26dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:id="@+id/closeLinearLayout"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/closeImageView"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/menu_close"
-                        tools:ignore="ContentDescription" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_tar"
+                style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Bold"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:ignore="UseCompoundDrawables,UselessParent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="무선데이터(LTE)"
-                    android:textColor="@color/black"
-                    android:textSize="26dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <Switch
-                    android:id="@+id/lteSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:switchMinWidth="70dp"
-                    android:thumb="@drawable/switch_thumb"
-                    android:track="@drawable/switch_track_selector" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:ignore="UseCompoundDrawables,UselessParent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="GPS"
-                    android:textColor="@color/black"
-                    android:textSize="26dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <Switch
-                    android:id="@+id/gpsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:switchMinWidth="70dp"
-                    android:thumb="@drawable/switch_thumb"
-                    android:track="@drawable/switch_track_selector" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:ignore="UseCompoundDrawables,UselessParent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="타수표기"
-                    android:textColor="@color/black"
-                    android:textSize="26dp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <Switch
-                    android:id="@+id/puttSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:switchMinWidth="70dp"
-                    android:textOn="ON"
-                    android:thumb="@drawable/switch_thumb"
-                    android:track="@drawable/switch_track_selector" />
-
-            </LinearLayout>
-
+                android:layout_marginStart="12dp"
+                android:text="타수표기"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/view_par"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cancel"
+            app:layout_constraintTop_toTopOf="@+id/textView7"
+            app:layout_constraintVertical_bias="0.0">
+
+            <ImageView
+                android:id="@+id/iv_par"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/uncheck" />
+
+            <TextView
+                android:id="@+id/tv_par"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="파(Par)표기"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

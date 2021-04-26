@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,10 +23,12 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
+import com.eye3.golfpay.dialog.YesNoDialog;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.Security;
+import com.eye3.golfpay.util.Util;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -61,8 +65,8 @@ public class LoginFragment extends BaseFragment {
         init(v);
 
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
-        String golfId  = pref.getString("golf_id", "");
-        String id  = pref.getString("id", "");
+        String golfId = pref.getString("golf_id", "");
+        String id = pref.getString("id", "");
         String pwd = pref.getString("password", "");
         boolean check = pref.getBoolean("save", false);
 
@@ -75,13 +79,33 @@ public class LoginFragment extends BaseFragment {
         editPwd.setText(pwd);
         cbSave.setChecked(check);
 
-//        if (BuildConfig.DEBUG) {
-////            mNameEditText.setText("roidcaddy@golfpay.co.kr");
-////            mPhoneNumberEditText.setText("@a1234567");
-//
-//            mNameEditText.setText("aaa@aaa.aaa");
-//            mPhoneNumberEditText.setText("aaaa");
-//        }
+        Bundle bundle = getArguments();
+        if (bundle == null)
+            return v;
+
+        boolean isTokenError = bundle.getBoolean("TokenError", false);
+        if (isTokenError) {
+            YesNoDialog dlg = new YesNoDialog(getContext(), R.style.DialogTheme);
+            WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+            wmlp.gravity = Gravity.CENTER;
+
+            // Set alertDialog "not focusable" so nav bar still hiding:
+            dlg.getWindow().
+                    setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+            dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+            dlg.show();
+            dlg.setContentTitle("다른 기기에서 로그인하였습니다.");
+            dlg.setDisableCancelButton();
+            dlg.setListener(new YesNoDialog.IListenerYesNo() {
+                @Override
+                public void onConfirm() {
+
+                }
+            });
+        }
+
 
         return v;
     }
@@ -135,7 +159,7 @@ public class LoginFragment extends BaseFragment {
         //   showProgress("로그인 중입니다....");
 
         Global.loginToken = null;
-        DataInterface.getInstance(golfId+"/api/v1/").login(id, pwd, new DataInterface.ResponseCallback<Login>() {
+        DataInterface.getInstance(golfId + "/api/v1/").login(id, pwd, new DataInterface.ResponseCallback<Login>() {
             @Override
             public void onSuccess(Login response) {
                 hideProgress();
@@ -207,13 +231,13 @@ public class LoginFragment extends BaseFragment {
                 hideProgress();
                 systemUIHide();
 
-                if (response == null || response.getTodayReserveList().size() == 0) {
+                if (response == null || response.getTodayReserveList() == null || response.getTodayReserveList().size() == 0) {
                     Toast.makeText(context, "배정된 예약이 없습니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 changeDrawerViewToMenuView();
-                ((MainActivity)getActivity()).updateUI();
+                ((MainActivity) getActivity()).updateUI();
             }
 
             @Override

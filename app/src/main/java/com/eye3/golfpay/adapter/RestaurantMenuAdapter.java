@@ -123,8 +123,8 @@ public class RestaurantMenuAdapter extends RecyclerView.Adapter<RestaurantMenuAd
             @Override
             public void onClick(View v) {
 
-                if (mMenuList.get(idx).isSelected)
-                    return;
+//                if (mMenuList.get(idx).isSelected)
+//                    return;
 
                 holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.lightAliceBlue, Objects.requireNonNull(mContext).getTheme()));
 

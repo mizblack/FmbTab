@@ -441,7 +441,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
             }
         };
-        gpsTimer.schedule(gpsTimerTask, 0, 1000);
+        gpsTimer.schedule(gpsTimerTask, 0, 3000);
     }
 
     public void stopGpsTimerTask() {
@@ -489,6 +489,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         try {
                             //글로벌 현재 코스 아이디 저장하기..
                             //CourseFragment 가 아닌 다른 UI에서 사용하기 위함
+
+                            if (response.getResultMessage().equals("token error")) {
+                                navigationView.setVisibility(View.VISIBLE);
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("TokenError", true);
+                                GoNavigationDrawer(new LoginFragment(), bundle);
+
+                                setPreviousBaseFragment(new LoginFragment());
+                                GoRootScreenAdd(null);
+                                hideMainBottomBar();
+                                stopGpsTimerTask();
+                                stopTimerTask();
+                                return;
+                            }
 
                             Global.CurrentCourseId = getCurrentCourse(response.getData().nearby_hole_list);
                             if (response.getResultCode().equalsIgnoreCase("ok")) {

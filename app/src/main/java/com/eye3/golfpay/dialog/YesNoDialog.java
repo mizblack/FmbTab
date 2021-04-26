@@ -43,6 +43,7 @@ public class YesNoDialog extends Dialog {
         findViewById(R.id.btn_cancel).setVisibility(View.GONE);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

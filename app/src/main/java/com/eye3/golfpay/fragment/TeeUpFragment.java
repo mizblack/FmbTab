@@ -92,6 +92,7 @@ public class TeeUpFragment extends BaseFragment {
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
+                stopTimer(); //getTodayReservesForCaddy Timer Stop
                 ((MainActivity)mParentActivity).stopGpsTimerTask();
                 ((MainActivity)mParentActivity).stopTimerTask();
             }
@@ -140,6 +141,21 @@ public class TeeUpFragment extends BaseFragment {
 
                 if (response == null)
                     return;
+
+                if (response.getRetMsg().equals("token error")) {
+                    ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("TokenError", true);
+                    GoNavigationDrawer(new LoginFragment(), bundle);
+
+                    mParentActivity.setPreviousBaseFragment(new LoginFragment());
+                    mParentActivity.GoRootScreenAdd(null);
+                    mParentActivity.hideMainBottomBar();
+                    ((MainActivity)mParentActivity).stopGpsTimerTask();
+                    ((MainActivity)mParentActivity).stopTimerTask();
+                    stopTimer();
+                    return;
+                }
 
                 if (response.getRetCode() != null && response.getRetCode().equals("ok")) {
 

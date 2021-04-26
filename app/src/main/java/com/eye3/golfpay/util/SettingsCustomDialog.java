@@ -9,73 +9,101 @@ import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.BaseActivity;
 import com.eye3.golfpay.common.AppDef;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.fragment.ScoreFragment;
 
 
 public class SettingsCustomDialog extends Dialog {
 
     protected String TAG = getClass().getSimpleName();
-    Switch mWifiSwitch;
-    Switch mGPSSwitch;
-    Switch mTarParSwitch;
-    ImageView closeButtonView;
-     Context mContext;
+    private ImageView ivTar, ivPar;
+    private TextView tvTar, tvPar;
+    private boolean isTar = false;
+    Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View decorView = getWindow().getDecorView();
-        final int uiOptions =
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        decorView.setSystemUiVisibility(uiOptions);
-        // 다이얼로그 외부 화면 흐리게 표현
-        WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
-        lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        lpWindow.dimAmount = 0.8f;
-        getWindow().setAttributes(lpWindow);
 
         setContentView(R.layout.settings_custom_dlg);
-        closeButtonView = findViewById(R.id.closeImageView);
-        closeButtonView.setOnClickListener(new View.OnClickListener() {
+        ivTar = findViewById(R.id.iv_tar);
+        tvTar = findViewById(R.id.tv_tar);
+        ivPar = findViewById(R.id.iv_par);
+        tvPar = findViewById(R.id.tv_par);
+        changeTarPar(AppDef.isTar);
+
+        findViewById(R.id.view_tar).setOnClickListener(new SingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
+                changeTarPar(true);
+            }
+        });
+
+        findViewById(R.id.view_par).setOnClickListener(new SingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                changeTarPar(false);
+            }
+        });
+
+        findViewById(R.id.tv_save).setOnClickListener(new SingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                setPar();
                 dismiss();
             }
         });
-        mTarParSwitch = findViewById(R.id.puttSwitch);
-        mTarParSwitch.setChecked(AppDef.isTar);
-        mTarParSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        findViewById(R.id.tv_cancel).setOnClickListener(new SingleClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    AppDef.isTar = true;
-                    //Toast.makeText(mContext, "타수식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
-                    ((BaseActivity)mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
-
-                }else {
-                    AppDef.isTar = false;
-                    //Toast.makeText(mContext, "Par식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
-                    ((BaseActivity)mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
-                }
+            public void onSingleClick(View v) {
+                dismiss();
             }
-
         });
-
     }
 
-    public SettingsCustomDialog(Context context) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+    private void changeTarPar(boolean tar) {
+
+        isTar = tar;
+        if (tar) {
+            ivTar.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_in_white));
+            ivPar.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.uncheck));
+            tvTar.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Bold);
+            tvPar.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+        }
+        else {
+            ivPar.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.check_in_white));
+            ivTar.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.uncheck));
+            tvPar.setTextAppearance(R.style.GlobalTextView_18SP_irisBlue_NotoSans_Bold);
+            tvTar.setTextAppearance(R.style.GlobalTextView_18SP_ebonyBlack_NotoSans_Bold);
+        }
+    }
+
+    private void setPar() {
+        if (isTar) {
+            AppDef.isTar = true;
+            //Toast.makeText(mContext, "타수식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+            ((BaseActivity) mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
+
+        } else {
+            AppDef.isTar = false;
+            //Toast.makeText(mContext, "Par식 점수제로 전환하였습니다.", Toast.LENGTH_SHORT).show();
+            ((BaseActivity) mContext).GoNativeScreenBetweenParTar(new ScoreFragment(), null);
+        }
+    }
+
+    public SettingsCustomDialog(Context context,  int themeResId) {
+        super(context, themeResId);
         this.mContext = context;
     }
-
 
 
 }

@@ -80,7 +80,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_menu"
-                        android:layout_width="746dp"
+                        android:layout_width="766dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/shape_order_list"
                         android:paddingLeft="1dp"
@@ -149,7 +149,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orderBrowserRootLinearLayout"
-            android:layout_width="340dp"
+            android:layout_width="370dp"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:layout_weight="3"

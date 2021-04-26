@@ -89,7 +89,7 @@ public class ScoreFragment extends BaseFragment {
             return 0;
 
         for (int i = 0; i < mCourseList.size(); i++) {
-            if (mCourseList.get(i).courseName.equals(Global.CurrentScoreCourse.courseName)) {
+            if (mCourseList.get(i).id.equals(Global.CurrentScoreCourse.id)) {
                 return i;
             }
         }

@@ -172,6 +172,7 @@ public class ChangeCourseDialog extends Dialog {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 if (response.getResultCode().equals("ok")) {
+                    Global.CurrentCourse = null;//현재 코스 초기화
                     Toast.makeText(context, "코스가 변경되었습니다.", Toast.LENGTH_SHORT).show();
                     iListenerDialog.onChangeCourse();
                 }

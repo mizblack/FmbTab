@@ -326,8 +326,13 @@ public class CourseFragment extends BaseFragment {
                     }
 
                     //여기서 초기화
-                    if (Global.CurrentCourse == null)
-                        Global.CurrentCourse = mCourseInfoList.get(0);
+                    if (Global.CurrentCourse == null) {
+                        if (Global.gameTimeStatus == eBeforeStart || Global.gameTimeStatus == eNone)
+                            Global.CurrentCourse = mCourseInfoList.get(0);
+                        else {
+                            Global.CurrentCourse = mCourseInfoList.get(1);
+                        }
+                    }
                     else
                         Global.CurrentCourse = findCurrentCourse(Global.CurrentCourse.id, mCourseInfoList);
 
@@ -408,10 +413,6 @@ public class CourseFragment extends BaseFragment {
                 });
     }
 
-    private void addCart() {
-
-    }
-
     private void setDrawPage(int position) {
         try {
             mTvCourseName.setText(Global.CurrentCourse.courseName);
@@ -476,21 +477,59 @@ public class CourseFragment extends BaseFragment {
         UIThread.executeInUIThread(new Runnable() {
             @Override
             public void run() {
-
-                try {
-                    int hour = Global.gameSec / 3600;
-                    int min = (Global.gameSec - (hour * 3600)) / 60;
-                    int sec = (Global.gameSec - (hour * 3600) - (min * 60));
-
-                    if (Global.gameSec < 3600)
-                        tv_time.setText(String.format("%02d:%02d", min, sec));
-                    else
-                        tv_time.setText(String.format("%02d:%02d", hour, min));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                updateGameTimer();
+                updateBeforeGameTimer();
+                updateAfterGameTimer();
             }
         });
+    }
+
+    private void updateGameTimer() {
+        try {
+            int hour = Global.gameSec / 3600;
+            int min = (Global.gameSec - (hour * 3600)) / 60;
+            int sec = (Global.gameSec - (hour * 3600) - (min * 60));
+
+            if (Global.gameSec < 3600)
+                tv_time.setText(String.format("%02d:%02d", min, sec));
+            else
+                tv_time.setText(String.format("%02d:%02d", hour, min));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateBeforeGameTimer() {
+        try {
+            int hour = Global.gameBeforeSec / 3600;
+            int min = (Global.gameBeforeSec - (hour * 3600)) / 60;
+            int sec = (Global.gameBeforeSec - (hour * 3600) - (min * 60));
+
+            if (Global.gameBeforeSec < 3600)
+                tv_before_time.setText(String.format("%02d:%02d", min, sec));
+            else
+                tv_before_time.setText(String.format("%02d:%02d", hour, min));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateAfterGameTimer() {
+        try {
+            int hour = Global.gameAfterSec / 3600;
+            int min = (Global.gameAfterSec - (hour * 3600)) / 60;
+            int sec = (Global.gameAfterSec - (hour * 3600) - (min * 60));
+
+            if (Global.gameAfterSec < 3600)
+                tv_after_time.setText(String.format("%02d:%02d", min, sec));
+            else
+                tv_after_time.setText(String.format("%02d:%02d", hour, min));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void changeAdvertising(ImageView ivOut, ImageView ivIn) {

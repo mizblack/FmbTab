@@ -26,6 +26,7 @@ import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.LogoutDialog;
+import com.eye3.golfpay.dialog.PopupDialog;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
@@ -222,7 +223,18 @@ public class ViewMenuFragment extends BaseFragment {
         mView.findViewById(R.id.btn_menu_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                settingsCustomDialog = new SettingsCustomDialog(getActivity());
+                drawer_layout.closeDrawer(GravityCompat.END);
+                settingsCustomDialog = new SettingsCustomDialog(getActivity(), R.style.DialogTheme);
+                WindowManager.LayoutParams wmlp = settingsCustomDialog.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+                // Set alertDialog "not focusable" so nav bar still hiding:
+                settingsCustomDialog.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+                ;
+
+                settingsCustomDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                settingsCustomDialog.setCanceledOnTouchOutside(false);
                 settingsCustomDialog.show();
             }
         });
@@ -376,7 +388,7 @@ public class ViewMenuFragment extends BaseFragment {
                 hideProgress();
                 systemUIHide();
 
-                if (response == null || response.getTodayReserveList().size() == 0) {
+                if (response == null || response.getTodayReserveList() == null || response.getTodayReserveList().size() == 0) {
                     Toast.makeText(context, "배정된 예약이 없습니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -390,7 +402,7 @@ public class ViewMenuFragment extends BaseFragment {
                 ((MainActivity)mParentActivity).stopTimerTask();
 
                 GoNavigationDrawer(new TeeUpFragment(), null);
-                ((MainActivity)getActivity()).updateUI();
+                ((MainActivity)mParentActivity).updateUI();
             }
 
             @Override

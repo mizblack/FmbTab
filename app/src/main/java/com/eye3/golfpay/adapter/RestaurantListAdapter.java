@@ -70,9 +70,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         try {
 
             if (mRestaurantList.get(position).select == true) {
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_22SP_Black_NotoSans_Bold);
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_22SP_Black_NotoSans_Bold);
             } else {
-                holder.tv_item.setTextAppearance(context, R.style.GlobalTextView_22SP_zumthor_NotoSans_Regular);
+                holder.tv_item.setTextAppearance(R.style.GlobalTextView_22SP_zumthor_NotoSans_Regular);
             }
 
             holder.tv_item.setText(mRestaurantList.get(position).name);
@@ -80,10 +80,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    allSelected(false);
-                    mRestaurantList.get(position).select = true;
                     onClickAdapter.onAdapterItemClicked(position);
-                    notifyDataSetChanged();
+
                 }
             });
         } catch (NullPointerException e) {
@@ -91,6 +89,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         } catch (Exception e) {
             Log.e(TAG, "error : " + e);
         }
+    }
+
+    public void selectMenu(int position) {
+        allSelected(false);
+        mRestaurantList.get(position).select = true;
+        notifyDataSetChanged();
     }
 
     private void allSelected(boolean select) {

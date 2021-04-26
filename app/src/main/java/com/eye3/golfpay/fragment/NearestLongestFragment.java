@@ -182,12 +182,11 @@ public class NearestLongestFragment extends BaseFragment {
                     return;
                 }
 
+                int guestId = totalPlayerList.get(index).id;
                 if (type.equals("Nearest")) {
-                    int guestId = Integer.parseInt(guestArrayList.get(index).getId());
                     setGuestScoreFromAPI(guestId, "near", number);
                 }
                 else {
-                    int guestId = Integer.parseInt(guestArrayList.get(index).getId());
                     setGuestScoreFromAPI(guestId, "long", number);
                 }
 
