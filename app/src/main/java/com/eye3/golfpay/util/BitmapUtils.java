@@ -99,12 +99,12 @@ public class BitmapUtils {
 	    return localBitmap;
 	}
 
-	public static void resizeFile(Context context, Uri srcUri, String destPath) throws IOException {
+	public static void resizeFile(Context context, Uri srcUri, String destPath, int quality) throws IOException {
 		OutputStream output = null;
 		try {
 			output = new FileOutputStream(destPath);
 			Bitmap bitmap = DecodeUtils.decode(context, srcUri, MAX_IMAGE_SIZE);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 85, output);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, quality, output);
 			output.flush();
 		} finally {
 			output.close();

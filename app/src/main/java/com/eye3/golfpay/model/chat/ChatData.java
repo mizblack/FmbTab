@@ -20,6 +20,7 @@ public class ChatData {
     public String header;
     public String title;
     public String message;
+    public int emergency;
     public String url;
     public String notice_yn;
     public String event_que_id;

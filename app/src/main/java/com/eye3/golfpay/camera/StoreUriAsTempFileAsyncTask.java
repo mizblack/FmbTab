@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.eye3.golfpay.util.BitmapUtils;
 import com.eye3.golfpay.util.FileUtils;
 
 import java.io.IOException;
@@ -48,8 +49,9 @@ public class StoreUriAsTempFileAsyncTask extends AsyncTask<Object, Void, String[
             tmpFileSPath[i] = FileUtils.getInstance().getTempPath(context, tmpFileName);
 
             try {
+                BitmapUtils.resizeFile(context, mediaUri, tmpFileSPath[i], 100);
                 // '/temp' 경로에 파일 복사.
-                FileUtils.getInstance().copyFile(context, mediaUri, tmpFileSPath[i]);
+                //FileUtils.getInstance().copyFile(context, mediaUri, tmpFileSPath[i]);
                 // '/temp' 경로 파일 리스트 로그 출력.
                 FileUtils.getInstance().showLogTempFileList(context);
 

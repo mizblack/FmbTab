@@ -5,10 +5,10 @@ public class Message {
     private final String text; // message body
     private final MemberData memberData; // data of the user that sent this message
     private final boolean belongsToCurrentUser; // is this message sent by us?
-    private boolean emergency = false;
+    private int emergency;
     private long timestamp;
 
-    public Message(String text, MemberData memberData, long timestamp, boolean belongsToCurrentUser, boolean emergency) {
+    public Message(String text, MemberData memberData, long timestamp, boolean belongsToCurrentUser, int emergency) {
         this.text = text;
         this.memberData = memberData;
         this.belongsToCurrentUser = belongsToCurrentUser;
@@ -28,7 +28,7 @@ public class Message {
         return belongsToCurrentUser;
     }
 
-    public boolean isEmergency() {
+    public int isEmergency() {
         return emergency;
     }
 

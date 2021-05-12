@@ -74,7 +74,7 @@ public class ChatMessageAdapter extends BaseAdapter {
         String time = simpleDate.format(mDate);
         holder.tvTime.setText(time);
 
-        if (message.isEmergency()) {
+        if (message.isEmergency() == 1) {
             holder.tvEmergency.setVisibility(View.VISIBLE);
         } else {
             holder.tvEmergency.setVisibility(View.GONE);

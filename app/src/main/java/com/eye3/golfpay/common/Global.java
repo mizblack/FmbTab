@@ -44,10 +44,10 @@ public class Global {
     public static int gameAfterSec = 0;
     public static GameStatus gameTimeStatus = GameStatus.eNone;
     public enum GameStatus {
-        eBeforeStart,
-        eBeforeEnd,
-        eAfterStart,
-        eAfterEnd,
+        eBefore,
+        eAfter,
+        eEnd,
+        eWait,
         eNone,
     };
 

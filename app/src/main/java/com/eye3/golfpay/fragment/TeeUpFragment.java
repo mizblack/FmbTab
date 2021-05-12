@@ -86,15 +86,7 @@ public class TeeUpFragment extends BaseFragment {
         dlg.setListener(new LogoutDialog.IListenerLogout() {
             @Override
             public void onLogout() {
-                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
-                GoNavigationDrawer(new LoginFragment(), null);
-
-                mParentActivity.setPreviousBaseFragment(new LoginFragment());
-                mParentActivity.GoRootScreenAdd(null);
-                mParentActivity.hideMainBottomBar();
-                stopTimer(); //getTodayReservesForCaddy Timer Stop
-                ((MainActivity)mParentActivity).stopGpsTimerTask();
-                ((MainActivity)mParentActivity).stopTimerTask();
+                requestLogout();
             }
         });
     }
@@ -197,10 +189,10 @@ public class TeeUpFragment extends BaseFragment {
             @Override
             public void onAdapterItemClicked(Integer position) {
                 int reserveId = Global.teeUpTime.getTodayReserveList().get(position).getId();
-                if (Global.teeUpTime.getTodayReserveList().get(position).getPlayStatus().equals("준비")) {
-                    Toast.makeText(mContext, "내장완료 시에만 입장 가능합니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (Global.teeUpTime.getTodayReserveList().get(position).getPlayStatus().equals("준비")) {
+//                    Toast.makeText(mContext, "내장완료 시에만 입장 가능합니다.", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                     
                 DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPlayStatus(mContext, reserveId, "게임중", new DataInterface.ResponseCallback<ResponseData<Object>>() {
                     @Override
@@ -246,6 +238,12 @@ public class TeeUpFragment extends BaseFragment {
                     mParentActivity.getDrawer().closeDrawer(GravityCompat.END, false);
                     hideProgress();
 
+                    //진입시 시간을 모두 초기화
+                    Global.gameSec = 0;
+                    Global.gameBeforeSec = 0;
+                    Global.gameAfterSec = 0;
+                    Global.gameTimeStatus = Global.GameStatus.eNone;
+
                     ((MainActivity)mParentActivity).navigationView.setVisibility(View.GONE);
                     ((MainActivity)mParentActivity).updateUI();
                     //시작메뉴
@@ -264,6 +262,35 @@ public class TeeUpFragment extends BaseFragment {
             @Override
             public void onFailure(Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                hideProgress();
+            }
+        });
+    }
+
+    public void requestLogout() {
+        showProgress("로그아웃 중입니다....");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).logout(getContext(), new DataInterface.ResponseCallback<ResponseData<Object>>() {
+            @Override
+            public void onSuccess(ResponseData<Object> response) {
+                hideProgress();
+                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
+                GoNavigationDrawer(new LoginFragment(), null);
+
+                mParentActivity.setPreviousBaseFragment(new LoginFragment());
+                mParentActivity.GoRootScreenAdd(null);
+                mParentActivity.hideMainBottomBar();
+                stopTimer(); //getTodayReservesForCaddy Timer Stop
+                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopTimerTask();
+            }
+
+            @Override
+            public void onError(ResponseData<Object> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
                 hideProgress();
             }
         });

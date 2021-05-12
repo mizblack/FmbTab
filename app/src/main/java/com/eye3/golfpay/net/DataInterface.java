@@ -517,7 +517,7 @@ public class DataInterface extends BasicDataInterface {
     public void sendChatMessage(ChatData chatData, final ResponseCallback<ResponseChatMsg> callback) {
         try {
             Call<ResponseChatMsg> call = service.sendChatMessage(chatData.type, chatData.sender_id, chatData.sender_name, chatData.receiver_id,
-                    chatData.receiver_name, chatData.group_id, chatData.group_name, chatData.course_id, chatData.course_name, chatData.title, chatData.message);
+                    chatData.receiver_name, chatData.group_id, chatData.group_name, chatData.course_id, chatData.course_name, chatData.title, chatData.message, chatData.emergency);
             call.enqueue(new Callback<ResponseChatMsg>() {
                 @Override
                 public void onResponse(Call<ResponseChatMsg> call, Response<ResponseChatMsg> response) {
@@ -959,6 +959,29 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseChatNameList> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void logout(Context context, final ResponseCallback<ResponseData<Object>> callback) {
+
+        try {
+            Call<ResponseData<Object>> call = service.logout(Global.CaddyNo);
+
+            call.enqueue(new Callback<ResponseData<Object>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Object>> call, Response<ResponseData<Object>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");

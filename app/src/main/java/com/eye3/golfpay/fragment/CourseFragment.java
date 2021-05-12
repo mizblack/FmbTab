@@ -43,16 +43,8 @@ import com.eye3.golfpay.view.CartPosView;
 import com.eye3.golfpay.view.GpsView;
 import com.eye3.golfpay.view.HoleCupPointView;
 import com.eye3.golfpay.view.TeeShotSpotView;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static com.eye3.golfpay.common.Global.GameStatus.eAfterStart;
-import static com.eye3.golfpay.common.Global.GameStatus.eBeforeEnd;
-import static com.eye3.golfpay.common.Global.GameStatus.eBeforeStart;
 import static com.eye3.golfpay.common.Global.GameStatus.eNone;
 
 public class CourseFragment extends BaseFragment {
@@ -175,7 +167,7 @@ public class CourseFragment extends BaseFragment {
         });
 
         //Global.gameTimeStatus = eBeforeStart;
-        ((MainActivity)getActivity()).startTimerTask(new MainActivity.IGameTimerListener() {
+        ((MainActivity) getActivity()).setGameTimerListener(new MainActivity.IGameTimerListener() {
             @Override
             public void onGameTimer() {
                 updateTimer();
@@ -246,14 +238,20 @@ public class CourseFragment extends BaseFragment {
         if (td == null)
             return;
 
-        if (td.before_start_time != null && !td.before_start_time.isEmpty())
-            Global.gameTimeStatus = eBeforeStart;
+        if (td.before_start_time != null && !td.before_start_time.isEmpty()) {
+            if (Global.gameTimeStatus == Global.GameStatus.eEnd) {
+                Global.gameSec = 0;
+                Global.gameBeforeSec = 0;
+                Global.gameAfterSec = 0;
+            }
+            Global.gameTimeStatus = Global.GameStatus.eBefore;
+        }
         if (td.before_end_time != null && !td.before_end_time.isEmpty())
-            Global.gameTimeStatus = eBeforeEnd;
-        if (td.after_start_time != null &&  !td.after_start_time.isEmpty())
-            Global.gameTimeStatus = eAfterStart;
-        if (td.after_end_time != null &&  !td.after_end_time.isEmpty())
-            Global.gameTimeStatus = eNone;
+            Global.gameTimeStatus = Global.GameStatus.eWait;
+        if (td.after_start_time != null && !td.after_start_time.isEmpty())
+            Global.gameTimeStatus = Global.GameStatus.eAfter;
+        if (td.after_end_time != null && !td.after_end_time.isEmpty())
+            Global.gameTimeStatus = Global.GameStatus.eEnd;
     }
 
     private Course getCurrentCourse(List<GpsInfo> gpsInfoList) {
@@ -327,7 +325,7 @@ public class CourseFragment extends BaseFragment {
 
                     //여기서 초기화
                     if (Global.CurrentCourse == null) {
-                        if (Global.gameTimeStatus == eBeforeStart || Global.gameTimeStatus == eNone)
+                        if (Global.gameTimeStatus == Global.GameStatus.eBefore || Global.gameTimeStatus == eNone)
                             Global.CurrentCourse = mCourseInfoList.get(0);
                         else {
                             Global.CurrentCourse = mCourseInfoList.get(1);
@@ -338,6 +336,9 @@ public class CourseFragment extends BaseFragment {
 
                     //초기화
                     // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
+                    if (Global.CurrentCourse.courseName == null)
+                        return;
+
                     mTvCourseName.setText(Global.CurrentCourse.courseName);
                     //mTvHolePar.setText(Global.CurrentCourse.holes.get(0).par);
                     drawMap(0);

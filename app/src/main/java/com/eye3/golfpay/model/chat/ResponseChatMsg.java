@@ -68,6 +68,10 @@ public class ResponseChatMsg implements Serializable {
     @Expose
     private long timestamp;
 
+    @SerializedName("emergency")
+    @Expose
+    private int emergency;
+
     public int getCc_id() {
         return cc_id;
     }
@@ -194,5 +198,9 @@ public class ResponseChatMsg implements Serializable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int isEmergency() {
+        return emergency;
     }
 }

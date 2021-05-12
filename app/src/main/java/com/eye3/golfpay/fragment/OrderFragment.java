@@ -524,11 +524,18 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void clearOrderItemInvoiceArrView() {
+
+        for (int i = 0; i < mOrderDetailList.size(); i++) {
+            mOrderDetailList.get(i).mOrderedMenuItemList.clear();
+        }
+        mRestaurantMenuOrder.getOrderItemInvoiceArrayList().clear();
+
         View view = getCurrentView();
         LinearLayout orderBrowserLinearLayout = view.findViewById(R.id.orderBrowserLinearLayout);
         orderBrowserLinearLayout.removeAllViewsInLayout();
         TextView infoTextView = view.findViewById(R.id.infoTextView);
         infoTextView.setVisibility(View.VISIBLE);
+        setTotalInvoice();
     }
 
     //최종적으로 Orderfragment 인보이스 레이아웃에 add..

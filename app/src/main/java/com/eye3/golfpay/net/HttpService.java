@@ -112,7 +112,7 @@ public interface HttpService {
     @POST("setPlayStatus")
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);
 
-    @GET("setCartPos")
+    @GET("http://silkwebtest.golfpay.co.kr/api/v1/setCartPos")
     Call<ResponseData<ResponseCartInfo>> sendGpsInfo(@Query("caddy_id") String caddy_num,
                                                      @Query("lat") double lat,
                                                      @Query("lng") double lng,
@@ -133,7 +133,8 @@ public interface HttpService {
                                           @Field("course_id") String course_id,
                                           @Field("course_name") String course_name,
                                           @Field("title") String title,
-                                          @Field("message") String message);
+                                          @Field("message") String message,
+                                          @Field("emergency") int emergency);
 
     @FormUrlEncoded
     @POST("getGameTypeScore")
@@ -238,4 +239,8 @@ utility_cover	유틸리티커버 번호	X	String
 
     @GET("tabletChattingNameList")
     Call<ResponseChatNameList> tabletChattingNameList();
+
+    @FormUrlEncoded
+    @POST("caddyLogout")
+    Call<ResponseData<Object>> logout(@Field("caddy_id") String caddy_id);
 }

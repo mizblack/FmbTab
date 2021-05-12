@@ -336,12 +336,36 @@ public class ViewMenuFragment extends BaseFragment {
         dlg.setListener(new LogoutDialog.IListenerLogout() {
             @Override
             public void onLogout() {
+                requestLogout();
+            }
+        });
+    }
+
+    public void requestLogout() {
+        showProgress("로그아웃 중입니다....");
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).logout(getContext(), new DataInterface.ResponseCallback<ResponseData<Object>>() {
+            @Override
+            public void onSuccess(ResponseData<Object> response) {
+                hideProgress();
                 ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
                 GoNavigationDrawer(new LoginFragment(), null);
 
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
+
+                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopTimerTask();
+            }
+
+            @Override
+            public void onError(ResponseData<Object> response) {
+                hideProgress();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
             }
         });
     }

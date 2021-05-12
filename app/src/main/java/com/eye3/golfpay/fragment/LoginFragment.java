@@ -2,8 +2,10 @@ package com.eye3.golfpay.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
@@ -33,6 +35,7 @@ import com.eye3.golfpay.util.Util;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -64,6 +67,26 @@ public class LoginFragment extends BaseFragment {
         cbSave = v.findViewById(R.id.cb_save);
         init(v);
 
+        v.findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = Objects.requireNonNull(getActivity()).getPackageManager().getLaunchIntentForPackage("com.machaboo.apkinstaller");
+                intent.putExtra("update", 0x34);
+                startActivity(intent);
+
+                new Handler().postDelayed(new Runnable() {// 1 초 후에 실행
+                    @Override
+                    public void run() {
+                        // 실행할 동작 코딩
+
+                        getActivity().moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                        getActivity().finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                }, 1000);
+            }
+        });
+
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
         String golfId = pref.getString("golf_id", "");
         String id = pref.getString("id", "");
@@ -72,6 +95,12 @@ public class LoginFragment extends BaseFragment {
 
         if (golfId.isEmpty()) {
             golfId = "http://silkv.golfpay.co.kr";
+        }
+
+        if (BuildConfig.DEBUG) {
+            golfId = "http://erp.silkvalleygc.co.kr";
+            id = "c@c";
+            pwd = "1111";
         }
 
         editGolfId.setText(golfId);
@@ -105,7 +134,6 @@ public class LoginFragment extends BaseFragment {
                 }
             });
         }
-
 
         return v;
     }

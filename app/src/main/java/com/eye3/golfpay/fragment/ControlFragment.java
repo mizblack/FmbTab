@@ -587,6 +587,7 @@ public class ControlFragment extends BaseFragment {
         chatData.message = chatMessage;
         chatData.sender_id = Global.CaddyNo;
         chatData.sender_name = Global.caddieName;
+        chatData.emergency = emergencyOn? 1: 0;
         closeKeyboard(edit_chat);
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).sendChatMessage(chatData,
                 new DataInterface.ResponseCallback<ResponseChatMsg>() {
@@ -605,7 +606,7 @@ public class ControlFragment extends BaseFragment {
 //                    memberData = new MemberData("상봉이", "#434343");
 //                }
 
-                Message msg = new Message(response.getMsg(), memberData, response.getTimestamp(), true, emergencyOn);
+                Message msg = new Message(response.getMsg(), memberData, response.getTimestamp(), true, response.isEmergency());
                 chatMessageAdapter.add(msg);
                 //messages_view.setSelection(messages_view.getCount() - 1);
                 messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
@@ -665,7 +666,7 @@ public class ControlFragment extends BaseFragment {
             return;
 
         memberData = new MemberData(sender, "#434343");
-        Message msg = new Message(message, memberData, timestamp, false, false);
+        Message msg = new Message(message, memberData, timestamp, false, 0);
         chatMessageAdapter.add(msg);
         //messages_view.setSelection(messages_view.getCount() - 1);
         messages_view.smoothScrollToPosition(messages_view.getCount() - 1);
@@ -686,7 +687,7 @@ public class ControlFragment extends BaseFragment {
                          memberData = new MemberData(cd.sender_name, "#434343");
                      }
 
-                     Message msg = new Message(cd.message, memberData, cd.timestamp, itsMe, false);
+                     Message msg = new Message(cd.message, memberData, cd.timestamp, itsMe, 0);
                      chatMessageAdapter.add(msg);
                  }
 

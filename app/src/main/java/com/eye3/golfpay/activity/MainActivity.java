@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
 import com.eye3.golfpay.service.GpsTracker;
+import com.eye3.golfpay.util.BitmapUtils;
 import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.util.Util;
 import com.google.android.material.navigation.NavigationView;
@@ -68,8 +70,10 @@ import net.mrbin99.laravelechoandroid.EchoCallback;
 import net.mrbin99.laravelechoandroid.EchoOptions;
 import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +103,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -116,6 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //화면꺼짐 방
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setLaravel();
+        startTimerTask();
     }
 
     private void requestPermission() {
@@ -342,8 +349,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 @Override
                 public void onComplete(String path) {
 
-                    if (iTakePhotoListener != null)
-                        iTakePhotoListener.onTakePhoto(path);
+                        File f2 = new File(path);
+                        long size = f2.length();
+
+                        if (iTakePhotoListener != null)
+                            iTakePhotoListener.onTakePhoto(path);
 
                 }
             }).execute(mCameraTempUri);
@@ -441,7 +451,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
             }
         };
-        gpsTimer.schedule(gpsTimerTask, 0, 3000);
+        gpsTimer.schedule(gpsTimerTask, 0, 5000);
     }
 
     public void stopGpsTimerTask() {
@@ -489,7 +499,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         try {
                             //글로벌 현재 코스 아이디 저장하기..
                             //CourseFragment 가 아닌 다른 UI에서 사용하기 위함
-
                             if (response.getResultMessage().equals("token error")) {
                                 navigationView.setVisibility(View.VISIBLE);
                                 Bundle bundle = new Bundle();
@@ -559,7 +568,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         EchoOptions options = new EchoOptions();
 
         // Setup host of your Laravel Echo Server
-        options.host = "http://deverp.golfpay.co.kr:6001";
+        //options.host = "http://deverp.golfpay.co.kr:6001";
+        options.host = "http://erp.silkvalleygc.co.kr:6001";
 
         /*
          * Add headers for authorizing your users (private and presence channels).
@@ -581,7 +591,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             }
         });
-
 
         SocketIOPrivateChannel privateChannel = echo.privateChannel("Monitorchat");
         privateChannel.listen("Monitorchat", new EchoCallback() {
@@ -765,26 +774,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     TimerTask timerTask;
     Timer timer = new Timer();
+    IGameTimerListener iGameTimerListener;
     public interface IGameTimerListener {
         void onGameTimer();
     }
-    public void startTimerTask(IGameTimerListener listener) {
+    public void startTimerTask() {
         timerTask = new TimerTask() {
-
             @Override
             public void run() {
 
-                if (Global.gameTimeStatus != Global.GameStatus.eNone)
+                if (Global.gameTimeStatus != Global.GameStatus.eEnd && Global.gameTimeStatus != Global.GameStatus.eNone)
                     Global.gameSec++;
-                if (Global.gameTimeStatus == Global.GameStatus.eBeforeStart)
+                if (Global.gameTimeStatus == Global.GameStatus.eBefore)
                     Global.gameBeforeSec++;
-                if (Global.gameTimeStatus == Global.GameStatus.eAfterStart)
+                if (Global.gameTimeStatus == Global.GameStatus.eAfter)
                     Global.gameAfterSec++;
 
-                listener.onGameTimer();
+                if (iGameTimerListener != null)
+                    iGameTimerListener.onGameTimer();
             }
         };
         timer.schedule(timerTask, 0, 1000);
+    }
+
+    public void setGameTimerListener(IGameTimerListener listener) {
+        iGameTimerListener = listener;
     }
 
     public void stopTimerTask() {
