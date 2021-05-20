@@ -106,6 +106,9 @@ public class CaddieViewBasicGuestItem extends RelativeLayout {
         init(context, guestInfo);
     }
 
+    public void setGuestInfo(GuestInfo guestInfo) {
+        this.guestInfo = guestInfo;
+    }
 
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

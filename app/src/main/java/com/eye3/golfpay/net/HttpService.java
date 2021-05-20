@@ -15,6 +15,7 @@ import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
+import com.eye3.golfpay.model.info.VersionInfo;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.notice.ArticleItem;
 import com.eye3.golfpay.model.order.CancelOrder;
@@ -112,13 +113,13 @@ public interface HttpService {
     @POST("setPlayStatus")
     Call<ResponseData<Object>> setPlayStatus(@Body PlayStatus shadeOrder);
 
-    @GET("http://silkwebtest.golfpay.co.kr/api/v1/setCartPos")
+    @GET("setCartPos")
     Call<ResponseData<ResponseCartInfo>> sendGpsInfo(@Query("caddy_id") String caddy_num,
                                                      @Query("lat") double lat,
                                                      @Query("lng") double lng,
                                                      @Query("reserve_id") String reserve_id);
 
-    @GET("http://deverp.golfpay.co.kr/api/v1/getChatHotkey")
+    @GET("getChatHotkey")
     Call<ChatHotKey> getChatHotkey();
 
     @FormUrlEncoded
@@ -143,7 +144,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("setGameTypeScore")
     Call<ResponseData<Object>> setGameTypeScore(@Field("res_id") int res_id,
-                                              @Field("guest_id") int guest_id,
+                                              @Field("guest_id") String guest_id,
                                               @Field("game_type") String game_type,
                                               @Field("distance") String distance);
 
@@ -200,7 +201,8 @@ utility_cover	유틸리티커버 번호	X	String
                                                @Field("guest_id") String guest_id,
                                                @Field("carNumber") String carNumber,
                                                @Field("phoneNumber") String phoneNumber,
-                                               @Field("memo") String memo);
+                                               @Field("memo") String memo,
+                                               @Field("tabletName") String tabletName);
 
     @FormUrlEncoded
     @POST("setTeamMemo")
@@ -243,4 +245,7 @@ utility_cover	유틸리티커버 번호	X	String
     @FormUrlEncoded
     @POST("caddyLogout")
     Call<ResponseData<Object>> logout(@Field("caddy_id") String caddy_id);
+
+    @GET("http://appup.golfpay.co.kr/app/getLatestVersion")
+    Call<VersionInfo> getLatestVersion();
 }

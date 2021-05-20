@@ -2,6 +2,7 @@ package com.eye3.golfpay.fragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,20 +12,19 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.GuestSettingActivity;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ClubInfoDialog;
-import com.eye3.golfpay.dialog.GameHoleDialog;
+import com.eye3.golfpay.dialog.GuestManageDialog;
 import com.eye3.golfpay.dialog.SmsScoreDialog;
 import com.eye3.golfpay.listener.ICaddyNoteListener;
 import com.eye3.golfpay.listener.ITakePhotoListener;
@@ -46,6 +46,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -57,7 +58,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TAG = "CaddieMainFragment";
 
-    private List<Guest> guestList = Global.guestList;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private ImageView ivGrab;
     private CaddieInfo caddieInfo;
@@ -65,7 +65,8 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     protected static ProgressDialog pd; // 프로그레스바 선언
     public static LinearLayout mGuestViewContainerLinearLayout;
     private TextView tvTeamMemoContent;
-
+    CaddieMainFragment me;
+    GuestManageDialog guestManageDialog;
     public enum CaddyNoteType{
         Before {
             @NonNull
@@ -85,7 +86,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     private CaddyNoteType caddyNoteType = CaddyNoteType.Before;
 
     public CaddieMainFragment() {
-        // Required empty public constructor
+        me = this;
     }
 
     @Override
@@ -94,7 +95,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
         caddieInfo = new CaddieInfo();
 
-        for (Guest guest: guestList) {
+        for (Guest guest: Global.guestList) {
             GuestInfo gi = new GuestInfo();
             gi.setGuestName(guest.getGuestName());
             gi.setReserveGuestId(guest.getId());
@@ -183,8 +184,41 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             }
         });
 
+        view.findViewById(R.id.btn_guest_manage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<GuestInfo> guestInfo = caddieInfo.getGuestInfo();
+                guestManageDialog = new GuestManageDialog(getContext(), guestInfo, me);
+                WindowManager.LayoutParams wmlp = guestManageDialog.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+                guestManageDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                guestManageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //화면을 갱신함
+                        getCaddyNote();
+                        //부모 화면을 갱신함
+                        ((CaddieFragment)getParentFragment()).getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
+                    }
+                });
+                guestManageDialog.show();
+            }
+        });
+
         getCaddyNote();
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GuestSettingActivity.Id && resultCode == 100) {
+            int index = data.getIntExtra("index", 0);
+            String type = data.getStringExtra("type");
+            String value = data.getStringExtra("value");
+            guestManageDialog.onInput(index, type, value);
+        }
     }
 
     private void takeTeamPhoto() {
@@ -199,7 +233,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     private void createGuestBasicView() {
 
         mGuestViewContainerLinearLayout = viewMain;
-        guestList = Global.guestList;
         for (int i = 0; caddieInfo.getGuestInfo().size() > i; i++) {
             viewMain.addView(createGuestItemView(caddieInfo.getGuestInfo().get(i)));
         }
@@ -268,7 +301,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
     private int findGuestId(String id) {
 
         int i = 0;
-        for (Guest guest: guestList) {
+        for (Guest guest: Global.guestList) {
             if (guest.getId().equals(id)) {
                 return i;
             }
@@ -292,6 +325,39 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
             @Override
             public void onSuccess(ResponseCaddyNote response) {
                 hideProgress();
+
+                //swap
+                if (Global.guestOrdering != null) {
+                    for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                        String flag = Global.guestOrdering.get(i);
+                        for (int j = i; j < response.getData().size(); j++) {
+                            if (flag.equals(response.getData().get(j).getId())) {
+                                if (i == j) {
+                                    break;
+                                }
+
+                                Collections.swap(response.getData(), i, j);
+                            }
+                        }
+                    }
+                }
+
+                //swap
+                if (Global.guestOrdering != null) {
+                    for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                        String flag = Global.guestOrdering.get(i);
+                        for (int j = i; j < caddieInfo.getGuestInfo().size(); j++) {
+                            if (flag.equals(caddieInfo.getGuestInfo().get(j).getReserveGuestId())) {
+                                if (i == j) {
+                                    break;
+                                }
+
+                                Collections.swap(caddieInfo.getGuestInfo(), i, j);
+                            }
+                        }
+                    }
+                }
+
                 for (int i = 0; i < response.getData().size(); i++) {
                     CaddyNoteInfo caddyNoteInfo = response.getData().get(i);
                     CaddieViewBasicGuestItem view = (CaddieViewBasicGuestItem)viewMain.getChildAt(i);
@@ -301,6 +367,8 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
                     view.drawClubInfo(clubInfo);
                     view.drawSignImage(caddyNoteInfo);
                     view.drawClubImage(caddyNoteInfo);
+                    CaddieViewBasicGuestItem tempView = (CaddieViewBasicGuestItem)mGuestViewContainerLinearLayout.getChildAt(i);
+                    tempView.setGuestInfo(caddieInfo.getGuestInfo().get(i));
                 }
 
                 tvTeamMemoContent.setText(response.getTeam_memo());
@@ -337,8 +405,6 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
 
         ReqClubInfo reqClubInfo = caddieInfo.getGuestInfo().get(findGuestId(guestId)).getReqClubInfo();
 
-
-
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setClubInfo(getActivity(), guestId,
                 reqClubInfo, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
@@ -368,8 +434,9 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         String carNumber = guestInfo.getCarNo();
         String phoneNumber = guestInfo.getHp();
         String memo = guestInfo.getGuestMemo();
+        String tabletName = guestInfo.getGuestName();
 
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPersonalInfo(getActivity(), Global.reserveId, guest_id, carNumber, phoneNumber, memo,
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setPersonalInfo(getActivity(), Global.reserveId, guest_id, carNumber, phoneNumber, memo, tabletName,
                new DataInterface.ResponseCallback<ResponseData<Object>>() {
                     @Override
                     public void onSuccess(ResponseData<Object> response) {

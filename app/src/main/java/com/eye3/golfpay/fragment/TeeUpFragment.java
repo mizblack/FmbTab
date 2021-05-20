@@ -31,6 +31,7 @@ import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
 import com.eye3.golfpay.util.Util;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -202,11 +203,27 @@ public class TeeUpFragment extends BaseFragment {
                         TodayReserveList item = teeUpAdapter.getItem(position);
                         Global.selectedTeeUpIndex = position;
                         Global.selectedReservation = item;
+
+                        if (Global.guestOrdering != null) {
+                            for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                                String flag = Global.guestOrdering.get(i);
+                                for (int j = i; j < Global.selectedReservation.getGuestData().size(); j++) {
+                                    if (flag.equals(Global.selectedReservation.getGuestData().get(j).getId())) {
+                                        if (i == j) {
+                                            break;
+                                        }
+
+                                        Collections.swap(Global.selectedReservation.getGuestData(), i, j);
+                                    }
+                                }
+                            }
+                        }
                         Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
                         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
 
                         //((MainActivity)mParentActivity).startListeningUserLocationDebug();
                         ((MainActivity)mParentActivity).startListeningUserLocation2();
+                        ((MainActivity)mParentActivity).setLaravel();
 //                        ((MainActivity)mParentActivity).startLocationService();
 
                     }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -26,6 +28,7 @@ import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.dialog.YesNoDialog;
+import com.eye3.golfpay.model.info.VersionInfo;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
@@ -67,25 +70,7 @@ public class LoginFragment extends BaseFragment {
         cbSave = v.findViewById(R.id.cb_save);
         init(v);
 
-        v.findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = Objects.requireNonNull(getActivity()).getPackageManager().getLaunchIntentForPackage("com.machaboo.apkinstaller");
-                intent.putExtra("update", 0x34);
-                startActivity(intent);
-
-                new Handler().postDelayed(new Runnable() {// 1 초 후에 실행
-                    @Override
-                    public void run() {
-                        // 실행할 동작 코딩
-
-                        getActivity().moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-                        getActivity().finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                }, 1000);
-            }
-        });
+        checkUpdate();
 
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
         String golfId = pref.getString("golf_id", "");
@@ -97,11 +82,11 @@ public class LoginFragment extends BaseFragment {
             golfId = "http://silkv.golfpay.co.kr";
         }
 
-        if (BuildConfig.DEBUG) {
-            golfId = "http://erp.silkvalleygc.co.kr";
-            id = "c@c";
-            pwd = "1111";
-        }
+//        if (BuildConfig.DEBUG) {
+//            golfId = "http://erp.silkvalleygc.co.kr";
+//            id = "c@c";
+//            pwd = "1111";
+//        }
 
         editGolfId.setText(golfId);
         editId.setText(id);
@@ -198,6 +183,7 @@ public class LoginFragment extends BaseFragment {
 
                     Global.HOST_BASE_ADDRESS_AWS = golfId + "/";
                     Global.HOST_ADDRESS_AWS = golfId + "/api/v1/";
+                    Global.HOST_LARAVEL_ADDRESS = golfId + ":6001";
                     Global.tabletLogo = response.getTabletLogo();
                     Global.loginToken = response.getLoginToken();
                     getTodayReservesForCaddy(getContext(), Global.CaddyNo);
@@ -280,5 +266,90 @@ public class LoginFragment extends BaseFragment {
                 systemUIHide();
             }
         });
+    }
+
+    private void checkUpdate() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).checkUpdate(new DataInterface.ResponseCallback<VersionInfo>() {
+            @Override
+            public void onSuccess(VersionInfo response) {
+
+                try {
+                    PackageInfo packageInfo = getContext().getApplicationContext()
+                            .getPackageManager()
+                            .getPackageInfo(getContext().getApplicationContext().getPackageName(), 0);
+                    String currentVersion = packageInfo.versionName;
+
+                    if (!compareVersion(response.getVersion(), currentVersion))
+                        update(response.getVersion());
+
+                }catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(VersionInfo response) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private void update(String version) {
+        Intent intent = Objects.requireNonNull(getActivity()).getPackageManager().getLaunchIntentForPackage("com.machaboo.apkinstaller");
+        intent.putExtra("update", 0x34);
+        intent.putExtra("version", version);
+        startActivity(intent);
+
+        new Handler().postDelayed(new Runnable() {// 1 초 후에 실행
+            @Override
+            public void run() {
+                // 실행할 동작 코딩
+
+                getActivity().moveTaskToBack(true);						// 태스크를 백그라운드로 이동
+                getActivity().finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        }, 1000);
+    }
+
+    public static boolean compareVersion(String appVersion, String compareVersion) {
+        boolean isNeedUpdate = false;
+        String[] arrX = appVersion.split("[.]");
+        String[] arrY = compareVersion.split("[.]");
+
+        int length = Math.max(arrX.length, arrY.length);
+
+        for(int i = 0; i < length; i++){
+            int x, y;
+            try {
+                x = Integer.parseInt(arrX[i]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                x = 0;
+            }
+            try {
+                y = Integer.parseInt(arrY[i]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                y = 0;
+            }
+
+            if(x > y) {
+                // 앱 버전이 큼
+                isNeedUpdate = false;
+                break;
+            }else if(x < y){
+                // 비교 버전이 큼
+                isNeedUpdate = true;
+                break;
+            } else {
+                // 버전 동일
+                isNeedUpdate = false;
+            }
+        }
+        return isNeedUpdate;
     }
 }

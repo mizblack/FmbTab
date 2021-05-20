@@ -27,6 +27,7 @@ import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.util.EditorDialogFragment;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,7 +98,24 @@ public class CaddieFragment extends BaseFragment {
             public void onSuccess(ReserveGuestList response) {
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
+
+                    if (Global.guestOrdering != null) {
+                        for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                            String flag = Global.guestOrdering.get(i);
+                            for (int j = i; j < Global.guestList.size(); j++) {
+                                if (flag.equals(Global.guestList.get(j).getId())) {
+                                    if (i == j) {
+                                        break;
+                                    }
+
+                                    Collections.swap(Global.guestList, i, j);
+                                }
+                            }
+                        }
+                    }
+
                     hideProgress();
+                    update();
                 }
             }
 
@@ -113,6 +131,14 @@ public class CaddieFragment extends BaseFragment {
                 hideProgress();
             }
         });
+    }
+
+    public void update() {
+        int i = 0;
+        for (Guest guest : Global.guestList) {
+            tvGuestNames[i].setVisibility(View.VISIBLE);
+            tvGuestNames[i++].setText(guest.getGuestName());
+        }
     }
 
     @Override

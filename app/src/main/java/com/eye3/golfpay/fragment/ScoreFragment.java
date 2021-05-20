@@ -35,6 +35,7 @@ import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.view.TabCourseLinear;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -284,6 +285,23 @@ public class ScoreFragment extends BaseFragment {
 
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
+
+                    //swap
+                    if (Global.guestOrdering != null) {
+                        for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                            String flag = Global.guestOrdering.get(i);
+                            for (int j = i; j < mPlayerList.size(); j++) {
+                                if (flag.equals(mPlayerList.get(j).guest_id)) {
+                                    if (i == j) {
+                                        break;
+                                    }
+
+                                    Collections.swap(mPlayerList, i, j);
+                                }
+                            }
+                        }
+                    }
+
                //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
                      mCourseList = getCtypedCourseForPlayerList(mPlayerList);
                      Global.courseInfoList =  getCtypedCourseforCourseList(Global.courseInfoList);
@@ -332,6 +350,23 @@ public class ScoreFragment extends BaseFragment {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mPlayerList = response.getList();
+
+                    //swap
+                    if (Global.guestOrdering != null) {
+                        for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                            String flag = Global.guestOrdering.get(i);
+                            for (int j = i; j < mPlayerList.size(); j++) {
+                                if (flag.equals(mPlayerList.get(j).guest_id)) {
+                                    if (i == j) {
+                                        break;
+                                    }
+
+                                    Collections.swap(mPlayerList, i, j);
+                                }
+                            }
+                        }
+                    }
+
                     createScoreTab(mPlayerList, mTabIdx);
 
                 } else if (response.getResultCode().equals("fail")) {

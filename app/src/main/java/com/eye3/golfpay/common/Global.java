@@ -66,6 +66,7 @@ public class Global {
      */
     public static String HOST_BASE_ADDRESS_AWS = "http://testerp.golfpay.co.kr/";
     public static String HOST_ADDRESS_AWS = "http://testerp.golfpay.co.kr/api/v1/";
+    public static String HOST_LARAVEL_ADDRESS = "http://testerp.golfpay.co.kr";
 
 
     /**
@@ -116,4 +117,8 @@ public class Global {
     public class STORAGE_PATH {
         public static final String TEMP = "temp";
     }
+
+
+    //고개 순서 변경용
+    public static List<String> guestOrdering = null;
 }

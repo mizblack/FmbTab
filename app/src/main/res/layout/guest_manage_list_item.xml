@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ccd7db"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_up"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_down_button_icon"
+            android:rotation="180"
+            android:layout_marginStart="16dp" />
+
+        <ImageButton
+            android:id="@+id/btn_down"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_down_button_icon"
+            android:layout_marginStart="8dp" />
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="36dp"
+            >
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_down"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_backname"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_down"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_edit_name"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingRight="22dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/caddie_memo"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_car_number"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical" />
+
+        <ImageButton
+            android:id="@+id/btn_edit_car_number"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingRight="22dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/caddie_memo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_phone_number"
+            style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical" />
+
+        <ImageButton
+            android:id="@+id/btn_edit_phone_number"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingRight="22dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/caddie_memo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

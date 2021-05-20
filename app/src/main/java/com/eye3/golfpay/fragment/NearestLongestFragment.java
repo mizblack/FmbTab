@@ -29,6 +29,7 @@ import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NearestLongestFragment extends BaseFragment {
 
@@ -94,12 +95,6 @@ public class NearestLongestFragment extends BaseFragment {
         tvNearHolePar = view.findViewById(R.id.tv_near_hole_par);
         tvLongHolePar = view.findViewById(R.id.tv_long_hole_par);
         getNearLongHole();
-
-
-
-
-
-
         initScoreBoard(view);
 
         return view;
@@ -124,7 +119,7 @@ public class NearestLongestFragment extends BaseFragment {
         TextView tvLongestRank = childView.findViewById(R.id.tv_longest_rank);
         TextView tvNearest = childView.findViewById(R.id.tv_nearest);
         TextView tvLongest = childView.findViewById(R.id.tv_longest);
-        String guestId = Integer.toString(totalPlayerList.get(index).id);
+        String guestId = totalPlayerList.get(index).id;
         if (isActiveUser) {
             tvName.setTextAppearance(R.style.GlobalTextView_22SP_irisBlue_NotoSans_Medium);
         } else {
@@ -182,39 +177,13 @@ public class NearestLongestFragment extends BaseFragment {
                     return;
                 }
 
-                int guestId = totalPlayerList.get(index).id;
+                String guestId = totalPlayerList.get(index).id;
                 if (type.equals("Nearest")) {
                     setGuestScoreFromAPI(guestId, "near", number);
                 }
                 else {
                     setGuestScoreFromAPI(guestId, "long", number);
                 }
-
-                /*
-                if (number.isEmpty()) {
-                    textView.setText("-");
-
-                    if (type.equals("Nearest")) {
-                        guestArrayList.get(index).setNearest(0);
-                        setNearestRank();
-                    }
-                    else {
-                        guestArrayList.get(index).setLongest(0);
-                        setLongestRank();
-                    }
-
-                } else {
-                    textView.setText(number + "M");
-                    if (type.equals("Nearest")) {
-                        guestArrayList.get(index).setNearest(Float.parseFloat(number));
-                        setNearestRank();
-                    }
-                    else {
-                        guestArrayList.get(index).setLongest(Float.parseFloat(number));
-                        setLongestRank();
-                    }
-                }
-        */
             }
 
             @Override
@@ -228,22 +197,6 @@ public class NearestLongestFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString("ani_direction", "down");
         GoNativeScreen(new ScoreFragment(), bundle);
-    }
-
-    private void updateNearestRank() {
-        for (int i = 0; i < nearestRankTextViews.size(); i++) {
-            TextView tvRank = nearestRankTextViews.get(i);
-            String rankText = getRankText(guestArrayList.get(i).getNearestRank());
-            tvRank.setText(rankText);
-        }
-    }
-
-    private void updateLongestRank() {
-        for (int i = 0; i < longestRankTextViews.size(); i++) {
-            TextView tvRank = longestRankTextViews.get(i);
-            String rankText = getRankText(guestArrayList.get(i).getLongestRank());
-            tvRank.setText(rankText);
-        }
     }
 
     private void updateNearestRank(NearLongScoreBoard response) {
@@ -298,9 +251,24 @@ public class NearestLongestFragment extends BaseFragment {
             public void onSuccess(NearLongScoreBoard response) {
 
                 totalPlayerList = response.guest_gametype_ranking;
+                if (Global.guestOrdering != null) {
+                    for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                        String flag = Global.guestOrdering.get(i);
+                        for (int j = i; j < totalPlayerList.size(); j++) {
+                            if (flag.equals(totalPlayerList.get(j).id)) {
+                                if (i == j) {
+                                    break;
+                                }
+
+                                Collections.swap(totalPlayerList, i, j);
+                            }
+                        }
+                    }
+                }
+
                 for (int i = 0; i < response.guest_gametype_ranking.size(); i++) {
                     NearLong nearLong = response.guest_gametype_ranking.get(i);
-                    String id = Integer.toString(response.guest_gametype_ranking.get(i).id);
+                    String id = response.guest_gametype_ranking.get(i).id;
                     addPlayerList(view.findViewById(R.id.view_list), isActiveUser(id), i, response.guest_gametype_ranking.size());
                 }
 
@@ -323,6 +291,23 @@ public class NearestLongestFragment extends BaseFragment {
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getGameTypeScore(getContext(), new DataInterface.ResponseCallback<NearLongScoreBoard>() {
             @Override
             public void onSuccess(NearLongScoreBoard response) {
+
+                //swap
+                if (Global.guestOrdering != null) {
+                    for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                        String flag = Global.guestOrdering.get(i);
+                        for (int j = i; j < response.guest_gametype_ranking.size(); j++) {
+                            if (flag.equals(response.guest_gametype_ranking.get(j).id)) {
+                                if (i == j) {
+                                    break;
+                                }
+
+                                Collections.swap(response.guest_gametype_ranking, i, j);
+                            }
+                        }
+                    }
+                }
+
                 updateNearestRank(response);
                 updateLongestRank(response);
             }
@@ -367,7 +352,7 @@ public class NearestLongestFragment extends BaseFragment {
         });
     }
 
-    private void setGuestScoreFromAPI(int guest_id, String game_type, String distance) {
+    private void setGuestScoreFromAPI(String guest_id, String game_type, String distance) {
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setGameTypeScore(getContext(), guest_id, game_type, distance, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override
             public void onSuccess(ResponseData<Object> response) {

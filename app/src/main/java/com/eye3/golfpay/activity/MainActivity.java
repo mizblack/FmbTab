@@ -121,7 +121,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         popupDialog = new PopupDialog(MainActivity.this, R.style.DialogTheme);
         //화면꺼짐 방
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setLaravel();
         startTimerTask();
     }
 
@@ -451,7 +450,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
             }
         };
-        gpsTimer.schedule(gpsTimerTask, 0, 5000);
+
+        int interval = 5000;
+        if (BuildConfig.DEBUG) {
+            interval = 50000;
+        }
+        gpsTimer.schedule(gpsTimerTask, interval);
     }
 
     public void stopGpsTimerTask() {
@@ -564,13 +568,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return null;
     }
 
-    private void setLaravel() {
+    public void setLaravel() {
         EchoOptions options = new EchoOptions();
 
         // Setup host of your Laravel Echo Server
-        //options.host = "http://deverp.golfpay.co.kr:6001";
-        options.host = "http://erp.silkvalleygc.co.kr:6001";
-
+        options.host = Global.HOST_LARAVEL_ADDRESS;
         /*
          * Add headers for authorizing your users (private and presence channels).
          * This line can change matching how you have configured
@@ -621,24 +623,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 if (laravelModel.nameValuePairs == null)
                     return;
 
-                ChatData chatData = laravelModel.nameValuePairs;
+                try {
+                    ChatData chatData = laravelModel.nameValuePairs;
 
-                if (mBaseFragment.TAG.equals("LoginFragment") || mBaseFragment.TAG.equals("TeeUpFragment") || mBaseFragment.TAG.equals("MainWorkFragment")) {
-                    return;
-                }
-                if (mBaseFragment.TAG.equals("ControlFragment")) {
-                    if (isShowChat(chatData)) {
-                        ((ControlFragment) mBaseFragment).receiveMessage(chatData.sender_name, chatData.message, chatData.timestamp);
+                    if (mBaseFragment.TAG.equals("LoginFragment") || mBaseFragment.TAG.equals("TeeUpFragment") || mBaseFragment.TAG.equals("MainWorkFragment")) {
+                        return;
                     }
-                    return;
-                }
+                    if (mBaseFragment.TAG.equals("ControlFragment")) {
+                        if (isShowChat(chatData)) {
+                            ((ControlFragment) mBaseFragment).receiveMessage(chatData.sender_name, chatData.message, chatData.timestamp);
+                        }
+                        return;
+                    }
 
-                if (isShowChat(chatData)) {
-                    long now = System.currentTimeMillis();
-                    Date mDate = new Date(now);
-                    SimpleDateFormat simpleDate = new SimpleDateFormat("a hh:mm", Locale.US);
-                    String getTime = simpleDate.format(mDate);
-                    showMessagePopup(chatData.message, chatData.sender_name, getTime);
+                    if (isShowChat(chatData)) {
+                        long now = System.currentTimeMillis();
+                        Date mDate = new Date(now);
+                        SimpleDateFormat simpleDate = new SimpleDateFormat("a hh:mm", Locale.US);
+                        String getTime = simpleDate.format(mDate);
+                        showMessagePopup(chatData.message, chatData.sender_name, getTime);
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
         });

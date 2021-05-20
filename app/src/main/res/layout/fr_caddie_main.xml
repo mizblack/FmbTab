@@ -154,13 +154,37 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/btn_sms_score"
+            android:id="@+id/btn_guest_manage"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:gravity="center_vertical"
             android:layout_marginEnd="32dp"
             sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
             sothree:layout_constraintEnd_toStartOf="@+id/btn_team_photo"
+            sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_guest_info" />
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="고객정보 수정" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_sms_score"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="32dp"
+            sothree:layout_constraintBottom_toBottomOf="@+id/tv_start_sign"
+            sothree:layout_constraintEnd_toStartOf="@+id/btn_guest_manage"
             sothree:layout_constraintTop_toTopOf="@+id/tv_start_sign">
 
             <ImageView

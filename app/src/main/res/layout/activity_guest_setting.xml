@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#aa000000"
+    tools:context=".activity.GuestSettingActivity">
+
+    <TextView
+        android:id="@+id/tv_input_guide"
+        style="@style/GlobalTextView.17SP.white.NotoSans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름을 입력하세요"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/edit"
+        app:layout_constraintStart_toStartOf="@+id/edit" />
+
+    <EditText
+        android:id="@+id/edit"
+        android:layout_width="600dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/shape_white_input_box"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:textColorHint="#666666"
+        android:textColor="@color/ebonyBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_confirm"
+        style="@style/GlobalTextView.16SP.white.NotoSans.Bold"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_round_irisblue_bg"
+        android:layout_marginStart="12dp"
+        android:text="적용"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/edit"
+        app:layout_constraintTop_toTopOf="@+id/edit" />
+
+    <TextView
+        android:id="@+id/btn_close"
+        style="@style/GlobalTextView.16SP.white.NotoSans.Bold"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_marginRight="32dp"
+        android:gravity="center"
+        android:text="닫기"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

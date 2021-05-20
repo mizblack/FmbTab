@@ -18,6 +18,7 @@ import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReqClubInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.info.GuestInfoResponse;
+import com.eye3.golfpay.model.info.VersionInfo;
 import com.eye3.golfpay.model.login.Login;
 import com.eye3.golfpay.model.notice.ArticleItem;
 import com.eye3.golfpay.model.order.CancelOrder;
@@ -563,7 +564,7 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-    public void setGameTypeScore(final Context context, int guest_id, String game_type, String distance, final ResponseCallback<ResponseData<Object>> callback) {
+    public void setGameTypeScore(final Context context, String guest_id, String game_type, String distance, final ResponseCallback<ResponseData<Object>> callback) {
         try {
             int res_id = Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId();
             //int reserve_id = 9430;
@@ -715,10 +716,10 @@ public class DataInterface extends BasicDataInterface {
     }
 
     public void setPersonalInfo(Context context, String reserve_no, String guestId, String carNumber,
-                            String phoneNumber, String memo, final ResponseCallback<ResponseData<Object>> callback) {
+                            String phoneNumber, String memo, String tabletName, final ResponseCallback<ResponseData<Object>> callback) {
 
         try {
-            Call<ResponseData<Object>> call = service.setPersonalInfo( reserve_no, guestId, carNumber, phoneNumber, memo);
+            Call<ResponseData<Object>> call = service.setPersonalInfo( reserve_no, guestId, carNumber, phoneNumber, memo, tabletName);
 
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override
@@ -986,6 +987,26 @@ public class DataInterface extends BasicDataInterface {
                     t.printStackTrace();
                     showDialog(context, null, "네트웍상태를 확인해주세요.");
                 }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void checkUpdate(final ResponseCallback<VersionInfo> callback) {
+        try {
+            Call<VersionInfo> call = service.getLatestVersion();
+            call.enqueue(new Callback<VersionInfo>() {
+                @Override
+                public void onResponse(Call<VersionInfo> call, Response<VersionInfo> response) {
+                    callback.onSuccess(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<VersionInfo> call, Throwable t) {
+
+                }
+
             });
         } catch (Exception ex) {
             ex.printStackTrace();

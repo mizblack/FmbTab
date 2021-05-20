@@ -10,7 +10,7 @@ public class NearLong implements Serializable {
 
     @SerializedName("id")
     @Expose
-    public int id;
+    public String id;
 
     @SerializedName("guestName")
     @Expose
