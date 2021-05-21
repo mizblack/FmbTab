@@ -14,9 +14,9 @@ public class PersnoalPhotoData {
     @Expose
     public String guest_name;
 
-    @SerializedName("bag_name")
+    @SerializedName("bagName")
     @Expose
-    public String bag_name;
+    public String bagName;
 
     @SerializedName("list")
     @Expose

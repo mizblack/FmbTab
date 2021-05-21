@@ -32,6 +32,10 @@ public class Guest implements Serializable {
     private String greenfee;
     @Expose
     private String guestName;
+
+    @SerializedName("bagName")
+    @Expose
+    private String bagName;
     @SerializedName("guest_type")
     private Object guestType;
     @SerializedName("hole_add")
@@ -224,7 +228,15 @@ public class Guest implements Serializable {
         this.shadeBill = shadeBill;
     }
 
-//    public String getSignImage() {
+    public String getBagName() {
+        return bagName;
+    }
+
+    public void setBagName(String bagName) {
+        this.bagName = bagName;
+    }
+
+    //    public String getSignImage() {
 //        return signImage;
 //    }
 //

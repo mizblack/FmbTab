@@ -75,7 +75,11 @@ public class CaddieFragment extends BaseFragment {
         int i = 0;
         for (Guest guest : Global.guestList) {
             tvGuestNames[i].setVisibility(View.VISIBLE);
-            tvGuestNames[i++].setText(guest.getGuestName());
+            tvGuestNames[i].setText(guest.getGuestName());
+            if (guest.getBagName() != null && !guest.getBagName().isEmpty()) {
+                tvGuestNames[i].append("(" + guest.getBagName() + ")");
+            }
+            i++;
         }
 
         return v;
@@ -137,7 +141,11 @@ public class CaddieFragment extends BaseFragment {
         int i = 0;
         for (Guest guest : Global.guestList) {
             tvGuestNames[i].setVisibility(View.VISIBLE);
-            tvGuestNames[i++].setText(guest.getGuestName());
+            tvGuestNames[i].setText(guest.getGuestName());
+            if (guest.getBagName() != null && !guest.getBagName().isEmpty()) {
+                tvGuestNames[i].append("(" + guest.getBagName() + ")");
+            }
+            i++;
         }
     }
 

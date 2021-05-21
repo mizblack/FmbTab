@@ -9,6 +9,8 @@ public class GuestInfo {
 
     @SerializedName("guest_name")
     private String guestName = "";
+    @SerializedName("bagName")
+    private String bagName = "";
     @SerializedName("reserve_guest_id")
     private String reserveGuestId = "";
     @SerializedName("car_no")
@@ -103,6 +105,14 @@ public class GuestInfo {
 
     public ReqClubInfo getReqClubInfo() {
         return reqClubInfo;
+    }
+
+    public String getBagName() {
+        return bagName;
+    }
+
+    public void setBagName(String bagName) {
+        this.bagName = bagName;
     }
 
     public void setClubInfo(ClubInfo ci) {

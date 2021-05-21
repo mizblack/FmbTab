@@ -67,7 +67,7 @@ public class GuestManageDialog extends Dialog {
             if (index == guestInfoArrayList.size()-1)
                 isLast = true;
 
-            addView(index++, guest.getReserveGuestId(), guest.getGuestName(), "", guest.getCarNo(), guest.getHp(), isLast);
+            addView(index++, guest.getReserveGuestId(), guest.getGuestName(), guest.getBagName(), guest.getCarNo(), guest.getHp(), isLast);
         }
 
         findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class GuestManageDialog extends Dialog {
         View view = memberContainer.getChildAt(index);
         GuestInfo guestInfo = findGuestInfo((String)view.getTag());
         TextView tvName = view.findViewById(R.id.tv_name);
-        //TextView tvBackName = view.findViewById(R.id.tv_backname);
+        TextView tvBagName = view.findViewById(R.id.tv_bag_name);
         TextView tvCarNumber = view.findViewById(R.id.tv_car_number);
         TextView tvPhoneNumber = view.findViewById(R.id.tv_phone_number);
 
@@ -159,7 +159,7 @@ public class GuestManageDialog extends Dialog {
                 });
     }
 
-    private void addView(int index, String id, String name, String backName, String carNumber, String phoneNumber, boolean isLast) {
+    private void addView(int index, String id, String name, String bagName, String carNumber, String phoneNumber, boolean isLast) {
         ////////////////////////////////////////////////////////////////////////////////////////////
         //* 팀 클럽 뷰
         View childView = LayoutInflater.from(getContext()).inflate(R.layout.guest_manage_list_item, null, false);
@@ -167,13 +167,16 @@ public class GuestManageDialog extends Dialog {
         ImageButton btnUp = childView.findViewById(R.id.btn_up);
         ImageButton btnDown = childView.findViewById(R.id.btn_down);
         TextView tvName = childView.findViewById(R.id.tv_name);
-        TextView tvBackName = childView.findViewById(R.id.tv_backname);
+        TextView tvBagName = childView.findViewById(R.id.tv_bag_name);
         TextView tvCarNumber = childView.findViewById(R.id.tv_car_number);
         TextView tvPhoneNumber = childView.findViewById(R.id.tv_phone_number);
         tvName.setText(name);
-        tvBackName.setText(backName);
         tvCarNumber.setText(carNumber);
         tvPhoneNumber.setText(phoneNumber);
+
+        if (!bagName.isEmpty()) {
+            tvBagName.setText("(" + bagName + ")");
+        }
 
         if (index == 0) {
             btnUp.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_down_button_disable));
@@ -238,7 +241,6 @@ public class GuestManageDialog extends Dialog {
     public void onInput(int index, String type, String value) {
         View view = memberContainer.getChildAt(index);
         TextView tvName = view.findViewById(R.id.tv_name);
-        TextView tvBackName = view.findViewById(R.id.tv_backname);
         TextView tvCarNumber = view.findViewById(R.id.tv_car_number);
         TextView tvPhoneNumber = view.findViewById(R.id.tv_phone_number);
 
@@ -265,7 +267,7 @@ public class GuestManageDialog extends Dialog {
 
             String id = (String)temp.get(i).getTag();
             TextView tvName = temp.get(i).findViewById(R.id.tv_name);
-            TextView tvBackName = temp.get(i).findViewById(R.id.tv_backname);
+            TextView tvBagName = temp.get(i).findViewById(R.id.tv_bag_name);
             TextView tvCarNumber = temp.get(i).findViewById(R.id.tv_car_number);
             TextView tvPhoneNumber = temp.get(i).findViewById(R.id.tv_phone_number);
 
@@ -273,7 +275,7 @@ public class GuestManageDialog extends Dialog {
             if (i == guestInfoArrayList.size()-1)
                 isLast = true;
 
-            addView(i, id, tvName.getText().toString(), tvBackName.getText().toString(), tvCarNumber.getText().toString(), tvPhoneNumber.getText().toString(), isLast);
+            addView(i, id, tvName.getText().toString(), tvBagName.getText().toString(), tvCarNumber.getText().toString(), tvPhoneNumber.getText().toString(), isLast);
         }
     }
 

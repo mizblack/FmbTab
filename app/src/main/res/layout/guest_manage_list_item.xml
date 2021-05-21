@@ -52,7 +52,7 @@
                 app:layout_constraintStart_toEndOf="@+id/btn_down"
                 app:layout_constraintTop_toTopOf="parent" />
             <TextView
-                android:id="@+id/tv_backname"
+                android:id="@+id/tv_bag_name"
                 style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

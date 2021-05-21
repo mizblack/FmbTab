@@ -98,6 +98,7 @@ public class CaddieMainFragment extends BaseFragment implements ICaddyNoteListen
         for (Guest guest: Global.guestList) {
             GuestInfo gi = new GuestInfo();
             gi.setGuestName(guest.getGuestName());
+            gi.setBagName(guest.getBagName());
             gi.setReserveGuestId(guest.getId());
             gi.setCarNo(guest.getCarNumber());
             gi.setHp(guest.getPhoneNumber());
