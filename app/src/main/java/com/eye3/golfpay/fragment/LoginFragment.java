@@ -24,6 +24,8 @@ import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.activity.BaseURLSettingActivity;
+import com.eye3.golfpay.activity.GuestSettingActivity;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
@@ -48,9 +50,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginFragment extends BaseFragment {
     TextView mStartTextView;
-    EditText editGolfId, editId, editPwd;
+    EditText editId, editPwd;
     ImageView mCancelIcon;
     CheckBox cbSave;
+    String golfId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fr_drawer_login, container, false);
-        editGolfId = v.findViewById(R.id.edit_GolfId);
+        //editGolfId = v.findViewById(R.id.edit_GolfId);
         editPwd = v.findViewById(R.id.phoneNumberEditText);
         editId = v.findViewById(R.id.nameEditText);
         mStartTextView = v.findViewById(R.id.startTextView);
@@ -73,14 +76,9 @@ public class LoginFragment extends BaseFragment {
         checkUpdate();
 
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
-        String golfId = pref.getString("golf_id", "");
         String id = pref.getString("id", "");
         String pwd = pref.getString("password", "");
         boolean check = pref.getBoolean("save", false);
-
-        if (golfId.isEmpty()) {
-            golfId = "http://silkv.golfpay.co.kr";
-        }
 
 //        if (BuildConfig.DEBUG) {
 //            golfId = "http://erp.silkvalleygc.co.kr";
@@ -88,7 +86,7 @@ public class LoginFragment extends BaseFragment {
 //            pwd = "1111";
 //        }
 
-        editGolfId.setText(golfId);
+        //editGolfId.setText(golfId);
         editId.setText(id);
         editPwd.setText(pwd);
         cbSave.setChecked(check);
@@ -139,13 +137,9 @@ public class LoginFragment extends BaseFragment {
         mStartTextView.setOnClickListener(new SingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                if (editGolfId.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), "골프장 ID를 입력해 주세요", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 try {
-                    login(editGolfId.getText().toString(), editId.getText().toString().trim(), Security.encrypt(editPwd.getText().toString()));
+                    login(editId.getText().toString().trim(), Security.encrypt(editPwd.getText().toString()));
                 } catch (NoSuchPaddingException
                         | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException
@@ -168,8 +162,20 @@ public class LoginFragment extends BaseFragment {
         });
     }
 
-    private void login(String golfId, String id, String pwd) {
+    private void login(String id, String pwd) {
         //   showProgress("로그인 중입니다....");
+
+        if (id.equals("abcdefg")) {
+            Intent intent = new Intent(getActivity(), BaseURLSettingActivity.class);
+            startActivityForResult(intent, BaseURLSettingActivity.Id);
+            return;
+        }
+
+        SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+        golfId = pref.getString("golf_id", "");
+        if (golfId.isEmpty()) {
+            golfId = "http://erp.silkvalleygc.co.kr/";
+        }
 
         Global.loginToken = null;
         DataInterface.getInstance(golfId + "/api/v1/").login(id, pwd, new DataInterface.ResponseCallback<Login>() {
@@ -279,7 +285,7 @@ public class LoginFragment extends BaseFragment {
                             .getPackageInfo(getContext().getApplicationContext().getPackageName(), 0);
                     String currentVersion = packageInfo.versionName;
 
-                    if (!compareVersion(response.getVersion(), currentVersion))
+                    if (compareVersion(response.getVersion(), currentVersion))
                         update(response.getVersion());
 
                 }catch (PackageManager.NameNotFoundException e) {
@@ -339,11 +345,11 @@ public class LoginFragment extends BaseFragment {
 
             if(x > y) {
                 // 앱 버전이 큼
-                isNeedUpdate = false;
+                isNeedUpdate = true;
                 break;
             }else if(x < y){
                 // 비교 버전이 큼
-                isNeedUpdate = true;
+                isNeedUpdate = false;
                 break;
             } else {
                 // 버전 동일
@@ -351,5 +357,16 @@ public class LoginFragment extends BaseFragment {
             }
         }
         return isNeedUpdate;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == BaseURLSettingActivity.Id && resultCode == 100) {
+            SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+            String id = pref.getString("id", "");
+            editId.setText(id);
+        }
     }
 }

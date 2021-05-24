@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/tv_cancel"
             android:gravity="center"
-            android:text="전송"
+            android:text="수정"
             android:textColor="@color/irisBlue"
             android:textStyle="bold"
             android:textSize="18sp" />

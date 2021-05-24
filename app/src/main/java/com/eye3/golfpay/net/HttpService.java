@@ -67,9 +67,6 @@ public interface HttpService {
     @POST("setReserveScore")
     Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);
 
-    @GET("shadeMenu")
-    Call<ResponseData<Restaurant>> getRestaurantMenu(@Query("caddy_id") String caddyId, @Query("reserve_no") String reserveNo);
-
     @GET("storeCategory")
     Call<ResponseData<Restaurant>> storeCategory();
 
@@ -78,7 +75,6 @@ public interface HttpService {
 
     @GET("orderShadeHistory")
     Call<ResponseData<StoreOrder>> getStoreOrder(@Query("reserve_no") String reserveNo);
-
 
     @POST("cancelOrderShade")
     Call<ResponseData<Object>> cancelOrderShade(@Body CancelOrder cancelOrder);

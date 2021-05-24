@@ -24,10 +24,14 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.fragment.BaseFragment;
 import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.GalleryFragment;
+import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.fragment.MainWorkFragment;
 import com.eye3.golfpay.fragment.ViewMenuFragment;
 import com.eye3.golfpay.listener.OnKeyBackPressedListener;
 import com.eye3.golfpay.util.BackPressCloseHandler;
+import com.fasterxml.jackson.databind.ser.Serializers;
+
+import java.util.Objects;
 
 
 public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
@@ -241,9 +245,15 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
         transaction.remove(fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
+    public void removeFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.push_out_down, R.anim.pull_in_top);
+
+        transaction.remove(fragment);
+        transaction.commit();
+    }
 
     public void GoNativeScreenAdd(BaseFragment fragment, Bundle bundle) {
         if (fragment == null) {
@@ -321,6 +331,18 @@ public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
             }
         }
         return null;
+    }
+
+    public void closeFragment() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            if (fragment instanceof ViewMenuFragment) {
+
+            } else if(fragment instanceof LoginFragment) {
+
+            } else {
+                removeFragment(fragment);
+            }
+        }
     }
 
     /**

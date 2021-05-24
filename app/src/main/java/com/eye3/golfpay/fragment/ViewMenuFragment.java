@@ -350,6 +350,7 @@ public class ViewMenuFragment extends BaseFragment {
                 ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
                 GoNavigationDrawer(new LoginFragment(), null);
 
+                mParentActivity.closeFragment();
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();

@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -48,6 +49,7 @@ import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.PopupDialog;
 import com.eye3.golfpay.dialog.RestaurantsPopupDialog;
 import com.eye3.golfpay.fragment.ControlFragment;
+import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.model.chat.ChatData;
@@ -101,9 +103,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +162,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //최초 로그인fragment를 호출한다.
         GoNavigationDrawer(new LoginFragment(), null);
 
-
         findViewById(R.id.main_bottom_bar).findViewById(R.id.dlgtest1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,19 +210,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         roundingTeeUpTimeTextView = findViewById(R.id.teeUpTimeTextView);
         tv_version = findViewById(R.id.tv_version);
         tv_version.setText("version : " + BuildConfig.VERSION_NAME);
-
-        //inOutTextView00 = findViewById(R.id.inOutTextView00);
-        //inOutTextView01 = findViewById(R.id.inOutTextView01);
-
-//        findViewById(R.id.content_main_inc).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                closeKeyboard(findViewById(R.id.nameEditText));
-//                closeKeyboard(findViewById(R.id.phoneNumberEditText));
-//            }
-//        });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -292,10 +278,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
-        // systemUIHide();
-        //  drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

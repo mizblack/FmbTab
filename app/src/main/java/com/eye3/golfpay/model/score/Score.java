@@ -31,5 +31,4 @@ public class Score  implements Serializable {
         this.tar = tar;
         this.teeShot = teeShot;
     }
-
 }

@@ -9,45 +9,17 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class GpsInfo implements Serializable {
 
-    @SerializedName("id")
-    @Expose
-    String id;
-
-    @SerializedName("cc_id")
-    @Expose
-    int cc_id;
-
-    @SerializedName("reserve_id")
-    @Expose
-    String reserve_id;
-
     @SerializedName("guestName")
     @Expose
     String guestName;
-
-    @SerializedName("caddie_id")
-    @Expose
-    String caddie_id;
 
     @SerializedName("cart_status")
     @Expose
     String cart_status;
 
-    @SerializedName("hole_point_id")
-    @Expose
-    String hole_point_id;
-
-    @SerializedName("course_id")
-    @Expose
-    String course_id;
-
     @SerializedName("hole_id")
     @Expose
     String hole_id;
-
-    @SerializedName("hole")
-    @Expose
-    String hole;
 
     @SerializedName("lat")
     @Expose
@@ -85,44 +57,16 @@ public class GpsInfo implements Serializable {
     @Expose
     int percent;
 
-    public String getId() {
-        return id;
-    }
-
-    public int getCc_id() {
-        return cc_id;
-    }
-
-    public String getReserve_id() {
-        return reserve_id;
-    }
-
     public String getGuestName() {
         return guestName;
-    }
-
-    public String getCaddie_id() {
-        return caddie_id;
     }
 
     public String getCart_status() {
         return cart_status;
     }
 
-    public String getHole_point_id() {
-        return hole_point_id;
-    }
-
-    public String getCourse_id() {
-        return course_id;
-    }
-
     public String getHole_id() {
         return hole_id;
-    }
-
-    public String getHole() {
-        return hole;
     }
 
     public double getLat() {

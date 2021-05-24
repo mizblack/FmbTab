@@ -41,10 +41,6 @@ public class Player implements Serializable, Comparable<Player>{
     @Expose
     public int totalTar;
 
-    @SerializedName("totalPutting")
-    @Expose
-    public int totalPutting;
-
     @SerializedName("lastHoleNo")
     @Expose
     public int lastHoleNo;
@@ -52,10 +48,6 @@ public class Player implements Serializable, Comparable<Player>{
     @SerializedName("Ranking")
     @Expose
     public int ranking;
-
-    @SerializedName("totalRankingTar")
-    @Expose
-    public int totalRankingTar;
 
     @SerializedName("totalRankingPutting")
     @Expose

@@ -39,13 +39,14 @@
                 android:textColorHint="@color/mediumTurquoise"
                 android:textSize="24dp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
-            <!--                android:text="test@test.test"-->
 
             <View
                 android:id="@+id/golfIdDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="gone"
                 android:background="@color/white" />
 
             <EditText
