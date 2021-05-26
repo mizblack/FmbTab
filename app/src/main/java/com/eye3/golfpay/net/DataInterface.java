@@ -380,8 +380,6 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
-
-
     public void getNoticeList(final Context context, final ResponseCallback<ResponseData<ArticleItem>> callback) {
         try {
             Call<ResponseData<ArticleItem>> call = service.getCaddyBoard(Global.CaddyNo, "caddy");

@@ -407,7 +407,7 @@ public class OrderFragment extends BaseFragment {
                 for (int j = 0; orderedMenuItemList.size() > j; j++) {
                     if (menuName.equals(orderedMenuItemList.get(j).menuName)) {
                         orderedMenuItemList.remove(orderedMenuItemList.get(j));
-                        mOrderDetailList.get(i).paid_total_amount = "0";
+                        //mOrderDetailList.get(i).paid_total_amount = "0";
                         break;
                     }
                 }
@@ -859,6 +859,8 @@ public class OrderFragment extends BaseFragment {
                     getStoreOrder();
                     clearOrderItemInvoiceArrView();
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    hideProgress();
                 }
             }
 

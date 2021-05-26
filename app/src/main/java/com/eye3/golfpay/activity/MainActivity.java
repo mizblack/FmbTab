@@ -435,10 +435,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         };
 
         int interval = 5000;
-        if (BuildConfig.DEBUG) {
-            interval = 50000;
-        }
-        gpsTimer.schedule(gpsTimerTask, interval);
+//        if (BuildConfig.DEBUG) {
+//            interval = 50000;
+//        }
+        
+        gpsTimer.schedule(gpsTimerTask, 0, interval);
     }
 
     public void stopGpsTimerTask() {

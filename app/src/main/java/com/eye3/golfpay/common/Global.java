@@ -37,6 +37,10 @@ public class Global {
     public static String loginToken = "";
 //    public static int saveIdx = -1;
 
+    public static final String ASSETS_PATH_SILK   = "file:///android_asset/map/silk/";
+    public static final String ASSETS_PATH_VALLEY   = "file:///android_asset/map/valley/";
+    public static final String ASSETS_PATH_LAKE   = "file:///android_asset/map/lake/";
+
 
     //게임 시간
     public static int gameSec = 0;

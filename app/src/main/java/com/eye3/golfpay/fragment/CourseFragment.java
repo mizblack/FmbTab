@@ -384,8 +384,25 @@ public class CourseFragment extends BaseFragment {
     }
 
     private void drawMap(int position) {
+
+        String mapImageUri = "";
+        try {
+            if (Global.CurrentCourse.courseName.equalsIgnoreCase("lake")) {
+                String fileName = String.format("lake_%d.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_LAKE + fileName;
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("slik")) {
+                String fileName = String.format("silk_%d.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_SILK + fileName;
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("valley")) {
+                String fileName = String.format("valley_%d.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_VALLEY + fileName;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Glide.with(mContext)
-                .load(Global.HOST_BASE_ADDRESS_AWS + Global.CurrentCourse.holes.get(position).img_1_file_url)
+                .load(mapImageUri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(iv_map)
                 .getSize(new SizeReadyCallback() {
@@ -401,8 +418,25 @@ public class CourseFragment extends BaseFragment {
     }
 
     private void drawHoleCup(int position) {
+
+        String mapImageUri = "";
+        try {
+            if (Global.CurrentCourse.courseName.equalsIgnoreCase("lake")) {
+                String fileName = String.format("lake_%d_tee.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_LAKE + "tee/" + fileName;
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("slik")) {
+                String fileName = String.format("silk_%d_tee.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_SILK + "tee/" + fileName;
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("valley")) {
+                String fileName = String.format("valley_%d_tee.png", position+1);
+                mapImageUri = Global.ASSETS_PATH_VALLEY + "tee/" + fileName;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Glide.with(mContext)
-                .load(Global.HOST_BASE_ADDRESS_AWS + Global.CurrentCourse.holes.get(position).img_2_file_url)
+                .load(mapImageUri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(iv_holeCup)
                 .getSize(new SizeReadyCallback() {
