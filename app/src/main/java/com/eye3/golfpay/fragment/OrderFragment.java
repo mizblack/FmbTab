@@ -1,6 +1,7 @@
 package com.eye3.golfpay.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -44,6 +45,7 @@ import com.eye3.golfpay.model.order.RestaurantMenuOrder;
 import com.eye3.golfpay.model.order.ShadeOrder;
 import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.teeup.GuestScoreDB;
+import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
@@ -98,8 +100,9 @@ public class OrderFragment extends BaseFragment {
 
     @Override
     public void onPause() {
-        AppDef.gOrderItemInvoiceArrayList = mRestaurantMenuOrder.getOrderItemInvoiceArrayList();
-        AppDef.orderDetailList = mOrderDetailList;
+        //임시저장 사용안함
+//        AppDef.gOrderItemInvoiceArrayList = mRestaurantMenuOrder.getOrderItemInvoiceArrayList();
+//        AppDef.orderDetailList = mOrderDetailList;
         super.onPause();
     }
 
@@ -710,10 +713,12 @@ public class OrderFragment extends BaseFragment {
                     mRestaurantList = (ArrayList<Restaurant>) response.getList();
                     initOrderViewPager(response.getList().size());
                     initFoodImage();
-                    openTempSavedOrderList();
                     initCategoryRecyclerView(binding.recyclerCategory);
                     initRestaurantRecyclerView();
                     refresh();
+
+                    //임시저장 주문 사용안함
+                    //openTempSavedOrderList();
                     getStoreOrder();
                 } else if (response.getResultCode().equals("fail")) {
                     getActivity().runOnUiThread(new Runnable() {

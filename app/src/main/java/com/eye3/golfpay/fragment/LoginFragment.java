@@ -22,10 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.BaseURLSettingActivity;
-import com.eye3.golfpay.activity.GuestSettingActivity;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;

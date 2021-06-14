@@ -18,12 +18,24 @@
 
     <ImageView
         android:id="@+id/btn_logout"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
         android:layout_marginEnd="32dp"
         android:src="@drawable/exit"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+
+    <ImageView
+        android:id="@+id/btn_refresh"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_baseline_refresh_24"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
         app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
 
     <androidx.recyclerview.widget.RecyclerView

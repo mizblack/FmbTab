@@ -9,14 +9,13 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class CartPos implements Serializable {
 
-    public CartPos(String name, String cart_status, double lat, double lng, int cart_no, String gubun, int distance, int percent) {
+    public CartPos(String name, String cart_status, double lat, double lng, String cart_no, String gubun, int distance, int percent) {
         this.name = name;
         this.cart_status = cart_status;
         this.lat = lat;
         this.lng = lng;
         this.cart_no = cart_no;
         this.gubun = gubun;
-        this.distance = distance;
         this.percent = percent;
     }
 
@@ -24,9 +23,8 @@ public class CartPos implements Serializable {
     String cart_status;
     double lat;
     double lng;
-    int cart_no;
+    String cart_no;
     String gubun;
-    int distance;
     int percent;
 
     public String getName() {
@@ -45,16 +43,12 @@ public class CartPos implements Serializable {
         return lng;
     }
 
-    public int getCart_no() {
+    public String getCart_no() {
         return cart_no;
     }
 
     public String getGubun() {
         return gubun;
-    }
-
-    public int getDistance() {
-        return distance;
     }
 
     public int getPercent() {

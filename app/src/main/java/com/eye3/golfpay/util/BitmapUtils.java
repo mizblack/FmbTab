@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class BitmapUtils {
 
-	private static final int MAX_IMAGE_SIZE = 1024;
+	private static final int MAX_IMAGE_SIZE = 512;
 
 	/**
 	 * Resize a bitmap

@@ -43,6 +43,9 @@ public class GuestSettingActivity extends AppCompatActivity {
         } else if (type.equals("phone")) {
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             textView.setText("연락처를 입력하세요");
+        } else if (type.equals("memo")) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            textView.setText("메모를 입력하세요");
         }
 
         editText.setHint(value);

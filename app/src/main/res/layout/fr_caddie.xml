@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -7,74 +8,127 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_fragment"
         android:layout_width="0dp"
-        android:layout_height="74dp"
-        android:background="@color/white"
+        android:layout_height="88dp"
+        android:background="@color/ebonyBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="40dp"
-            android:paddingRight="12dp"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/tv_guest_name1"
-                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:layout_weight="1"
-                />
+            android:id="@+id/btn_temp_group"
+            android:layout_width="200dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="38dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:background="@drawable/ripple_shape_round_white_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_temp_group"
+                android:layout_marginStart="12dp"/>
 
             <TextView
-                android:id="@+id/tv_guest_name2"
-                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:layout_weight="1"/>
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="임시단체 설정"/>
 
-            <TextView
-                android:id="@+id/tv_guest_name3"
-                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:id="@+id/tv_guest_name4"
-                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/tv_guest_name5"
-                style="@style/GlobalTextView.28SP.ebonyBlack.NotoSans.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:layout_weight="1"
-                android:visibility="gone"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_guest_manager"
+            android:layout_width="200dp"
+            android:layout_height="42dp"
+            android:background="@drawable/ripple_shape_round_white_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_temp_group"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_guest_manager" />
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="고객정보 관리" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_team_photo"
+            android:layout_width="200dp"
+            android:layout_height="42dp"
+            android:background="@drawable/ripple_shape_round_white_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_guest_manager"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="28dp"
+                android:src="@drawable/ic_team_photo" />
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="팀 클럽사진" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_send"
+            android:layout_width="140dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/ripple_shape_round_irisblue_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="32dp">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전송하기" />
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-        android:id="@+id/main_fragment"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/view_main"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
+        android:background="@color/lightGray2"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_fragment" />
-
+        app:layout_constraintTop_toBottomOf="@+id/top_fragment"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

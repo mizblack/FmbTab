@@ -355,8 +355,12 @@ public class ViewMenuFragment extends BaseFragment {
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
 
-                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopLocationUpdates();
+                //((MainActivity)mParentActivity).stopGpsTimerTask();
                 ((MainActivity)mParentActivity).stopTimerTask();
+
+                AppDef.gOrderItemInvoiceArrayList = null;
+                AppDef.orderDetailList = null;
             }
 
             @Override
@@ -423,7 +427,8 @@ public class ViewMenuFragment extends BaseFragment {
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
 
-                ((MainActivity)mParentActivity).stopGpsTimerTask();
+                ((MainActivity)mParentActivity).stopLocationUpdates();
+                //((MainActivity)mParentActivity).stopGpsTimerTask();
                 ((MainActivity)mParentActivity).stopTimerTask();
 
                 GoNavigationDrawer(new TeeUpFragment(), null);

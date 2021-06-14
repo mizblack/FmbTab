@@ -336,6 +336,7 @@ public class CourseFragment extends BaseFragment {
 
                     //초기화
                     // mTvHoleNo.setText(Global.CurrentCourse.holes.get(0).hole_no);
+
                     if (Global.CurrentCourse.courseName == null)
                         return;
 
@@ -390,7 +391,7 @@ public class CourseFragment extends BaseFragment {
             if (Global.CurrentCourse.courseName.equalsIgnoreCase("lake")) {
                 String fileName = String.format("lake_%d.png", position+1);
                 mapImageUri = Global.ASSETS_PATH_LAKE + fileName;
-            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("slik")) {
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("silk")) {
                 String fileName = String.format("silk_%d.png", position+1);
                 mapImageUri = Global.ASSETS_PATH_SILK + fileName;
             } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("valley")) {
@@ -424,7 +425,7 @@ public class CourseFragment extends BaseFragment {
             if (Global.CurrentCourse.courseName.equalsIgnoreCase("lake")) {
                 String fileName = String.format("lake_%d_tee.png", position+1);
                 mapImageUri = Global.ASSETS_PATH_LAKE + "tee/" + fileName;
-            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("slik")) {
+            } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("silk")) {
                 String fileName = String.format("silk_%d_tee.png", position+1);
                 mapImageUri = Global.ASSETS_PATH_SILK + "tee/" + fileName;
             } else if (Global.CurrentCourse.courseName.equalsIgnoreCase("valley")) {

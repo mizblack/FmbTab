@@ -52,8 +52,8 @@ public class TeeUpFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
-        startTimer();
+        getTodayReservesForCaddy(Global.CaddyNo);
+        //startTimer();
     }
 
     @Override
@@ -66,6 +66,13 @@ public class TeeUpFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 logout();
+            }
+        });
+
+        v.findViewById(R.id.btn_refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getTodayReservesForCaddy(Global.CaddyNo);
             }
         });
         return v;
@@ -92,23 +99,23 @@ public class TeeUpFragment extends BaseFragment {
         });
     }
 
-    private void startTimer() {
+//    private void startTimer() {
+//
+//        todayReserveTimer = new Timer();
+//        todayReserveTimer.schedule(new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
+//                //    update();
+//            }
+//
+//        }, 10 * 1000, 1000 * 5);
+//    }
 
-        todayReserveTimer = new Timer();
-        todayReserveTimer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                getTodayReservesForCaddy(getActivity(), Global.CaddyNo);
-                //    update();
-            }
-
-        }, 10 * 1000, 1000 * 5);
-    }
-
-    private void stopTimer() {
-        todayReserveTimer.cancel();
-    }
+//    private void stopTimer() {
+//        todayReserveTimer.cancel();
+//    }
 
     private void setLogout() {
 
@@ -123,7 +130,7 @@ public class TeeUpFragment extends BaseFragment {
 
     }
 
-    private void getTodayReservesForCaddy(final Context context, String caddy_id) {
+    private void getTodayReservesForCaddy(String caddy_id) {
         //   showProgress("티업시간을 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
@@ -144,9 +151,10 @@ public class TeeUpFragment extends BaseFragment {
                     mParentActivity.setPreviousBaseFragment(new LoginFragment());
                     mParentActivity.GoRootScreenAdd(null);
                     mParentActivity.hideMainBottomBar();
-                    ((MainActivity)mParentActivity).stopGpsTimerTask();
+                    ((MainActivity)mParentActivity).stopLocationUpdates();
+                    //((MainActivity)mParentActivity).stopGpsTimerTask();
                     ((MainActivity)mParentActivity).stopTimerTask();
-                    stopTimer();
+                    //stopTimer();
                     return;
                 }
 
@@ -199,7 +207,7 @@ public class TeeUpFragment extends BaseFragment {
                     @Override
                     public void onSuccess(ResponseData<Object> response) {
 
-                        stopTimer();
+                        //stopTimer();
                         TodayReserveList item = teeUpAdapter.getItem(position);
                         Global.selectedTeeUpIndex = position;
                         Global.selectedReservation = item;
@@ -222,10 +230,9 @@ public class TeeUpFragment extends BaseFragment {
                         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
 
                         //((MainActivity)mParentActivity).startListeningUserLocationDebug();
-                        ((MainActivity)mParentActivity).startListeningUserLocation2();
+                        //((MainActivity)mParentActivity).startListeningUserLocation2();
+                        ((MainActivity)mParentActivity).initLocation();
                         ((MainActivity)mParentActivity).setLaravel();
-//                        ((MainActivity)mParentActivity).startLocationService();
-
                     }
 
                     @Override
@@ -296,8 +303,10 @@ public class TeeUpFragment extends BaseFragment {
                 mParentActivity.setPreviousBaseFragment(new LoginFragment());
                 mParentActivity.GoRootScreenAdd(null);
                 mParentActivity.hideMainBottomBar();
-                stopTimer(); //getTodayReservesForCaddy Timer Stop
-                ((MainActivity)mParentActivity).stopGpsTimerTask();
+
+                //stopTimer(); //getTodayReservesForCaddy Timer Stop
+                ((MainActivity)mParentActivity).stopLocationUpdates();
+                //((MainActivity)mParentActivity).stopGpsTimerTask();
                 ((MainActivity)mParentActivity).stopTimerTask();
             }
 

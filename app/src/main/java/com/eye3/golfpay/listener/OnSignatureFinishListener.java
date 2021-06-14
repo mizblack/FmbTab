@@ -6,4 +6,5 @@ import android.widget.ImageView;
 public interface OnSignatureFinishListener {
 
         void OnSignatureInputFinished(Bitmap bitmap);
+        void OnSignatureInputFinished(String svg);
 }

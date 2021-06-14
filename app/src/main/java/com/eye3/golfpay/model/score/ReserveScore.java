@@ -30,6 +30,10 @@ public class ReserveScore implements Serializable {
     @Expose
     public String hole_id;
 
+    @SerializedName("gamenow")
+    @Expose
+    public String gamenow;
+
     @SerializedName("guest_score")
     @Expose
     public ArrayList<ScoreSend> guest_score_list = new ArrayList<>();
@@ -44,19 +48,5 @@ public class ReserveScore implements Serializable {
         }
         this.reserve_id = reserve_id;
         this.hole_id = hole_id;
-
     }
-
-//    public void setReserve_id(String reserve_id) {
-//        this.reserve_id = reserve_id;
-//    }
-//
-//    public void setHole_id(String hole_id) {
-//        this.hole_id = hole_id;
-//    }
-//
-//    //guest = player
-//    public void setGuest_score_list(ArrayList<ScoreSend> guest_score_list) {
-//        this.guest_score_list = guest_score_list;
-//    }
 }

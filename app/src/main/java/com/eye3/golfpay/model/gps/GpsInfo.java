@@ -31,7 +31,7 @@ public class GpsInfo implements Serializable {
 
     @SerializedName("cart_no")
     @Expose
-    int cart_no;
+    String cart_no;
 
     @SerializedName("gubun")
     @Expose
@@ -77,7 +77,7 @@ public class GpsInfo implements Serializable {
         return lng;
     }
 
-    public int getCart_no() {
+    public String getCart_no() {
         return cart_no;
     }
 

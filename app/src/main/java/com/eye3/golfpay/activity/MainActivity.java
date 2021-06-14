@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,11 +25,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +36,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.exifinterface.media.ExifInterface;
-import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -49,21 +48,37 @@ import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.PopupDialog;
 import com.eye3.golfpay.dialog.RestaurantsPopupDialog;
 import com.eye3.golfpay.fragment.ControlFragment;
-import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.fragment.LoginFragment;
 import com.eye3.golfpay.listener.ITakePhotoListener;
 import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.chat.LaravelModel;
-import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
 import com.eye3.golfpay.service.GpsTracker;
-import com.eye3.golfpay.util.BitmapUtils;
 import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.util.Util;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
@@ -75,7 +90,6 @@ import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -103,6 +117,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
+
+    LocationRequest mLocationRequest;
+    FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    private static final int REQUEST_CHECK_SETTINGS = 33;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,14 +154,98 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-    public void startLocationService() {
+    public void initLocation() {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setInterval(5000);
+        //mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
-        } else {
-            startService(new Intent(getApplicationContext(), CartLocationService.class));
-        }
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
+        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+
+            }
+        });
+
+        result.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+
+            }
+        });
+
+        result.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(MainActivity.this, REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
+
+                    Log.d("locationCallback", String.format("%f, %f", latitude, longitude));
+                }
+            }
+        };
+
+        builder.setAlwaysShow(true);
+        startLocationUpdates();
     }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CHECK_SETTINGS);
+            }
+
+            return;
+        }
+
+        fusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, Looper.getMainLooper());
+    }
+
+    public void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+//    public void startLocationService() {
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
+//        } else {
+//            startService(new Intent(getApplicationContext(), CartLocationService.class));
+//        }
+//    }
 
     public void openDrawerLayout() {
         if (drawer_layout != null)
@@ -381,31 +486,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private final int LOCATION_REFRESH_DISTANCE = 1; // 30 meters. The Minimum Distance to be changed to get location update
-    private final int MY_PERMISSIONS_REQUEST_LOCATION = 100;
-    private final int interval = 3;
-
-    public void startListeningUserLocation() {
-
-        // check for permissions
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, interval, LOCATION_REFRESH_DISTANCE, locationListener);
-
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{
-                                Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-        }
-    }
+//    private final int LOCATION_REFRESH_DISTANCE = 1; // 30 meters. The Minimum Distance to be changed to get location update
+//    private final int MY_PERMISSIONS_REQUEST_LOCATION = 100;
+//    private final int interval = 3;
+//    public void startListeningUserLocation() {
+//
+//        // check for permissions
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//
+//            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, interval, LOCATION_REFRESH_DISTANCE, locationListener);
+//
+//        } else {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
+//            } else {
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{
+//                                Manifest.permission.ACCESS_FINE_LOCATION,
+//                                Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        MY_PERMISSIONS_REQUEST_LOCATION);
+//            }
+//        }
+//    }
 
     public void startListeningUserLocation2() {
         gpsTracker = new GpsTracker(MainActivity.this);
@@ -708,10 +812,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 findViewById(R.id.main_bottom_bar).findViewById(R.id.iv_ball).setVisibility(View.GONE);
             }
 
-            ImageView logo = findViewById(R.id.iv_logo);
-            Glide.with(this)
-                    .load(Global.HOST_BASE_ADDRESS_AWS + Global.tabletLogo)
-                    .into(logo);
+            //네트워크 사용량을 줄이기 위한 로고 로컬에서 사용하기
+//            ImageView logo = findViewById(R.id.iv_logo);
+//            Glide.with(this)
+//                    .load(Global.HOST_BASE_ADDRESS_AWS + Global.tabletLogo)
+//                    .into(logo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -746,7 +851,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         new Thread() {
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

@@ -192,10 +192,14 @@ public class ScoreDialog extends Dialog {
 
     private void sendPlayersScores(final Context mContext, ReserveScore reserveScore) {
 
-
         for (int i = 0; i < reserveScore.guest_score_list.size(); i++) {
             reserveScore.guest_score_list.get(i).tar="-";
         }
+
+        if (mTabIdx == 0)
+            reserveScore.gamenow = "before";
+        else
+            reserveScore.gamenow = "after";
 
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).setScore(mContext, reserveScore, new DataInterface.ResponseCallback<ResponseData<Object>>() {
             @Override

@@ -20,11 +20,13 @@
     <color name="ebonyBlack">#2d2e31</color>
     <color name="white">#ffffff</color>
     <color name="gray80">#c4c4c4</color>
+
     <color name="darkGray">#7e8181</color>
     <color name="gray">#999999</color>
     <color name="gray50">#88999999</color>
     <color name="martini">#aeacab</color>
     <color name="zumthor">#ccd7db</color>
+    <color name="lightGray2">#DFDFE0</color>
     <color name="lightGray">#cccccc</color>
     <color name="lightGray50">#88cccccc</color>
     <color name="lightGray20">#00cccccc</color>
