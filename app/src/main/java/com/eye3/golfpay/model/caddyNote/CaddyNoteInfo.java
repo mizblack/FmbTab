@@ -2,6 +2,7 @@ package com.eye3.golfpay.model.caddyNote;
 
 import com.eye3.golfpay.model.guest.ClubInfo;
 import com.eye3.golfpay.model.guest.ReqClubInfo;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
@@ -44,6 +45,26 @@ public class CaddyNoteInfo {
     private final String carNumber = null;
     @SerializedName("phoneNumber")
     private final String phoneNumber = null;
+
+    @SerializedName("wood_memo")
+    @Expose
+    public String wood_memo = "";
+
+    @SerializedName("utility_memo")
+    @Expose
+    public String utility_memo = "";
+
+    @SerializedName("iron_memo")
+    @Expose
+    public String iron_memo = "";
+
+    @SerializedName("wedge_memo")
+    @Expose
+    public String wedge_memo = "";
+
+    @SerializedName("putter_memo")
+    @Expose
+    public String putter_memo = "";
 
     public String getId() {
         return id;

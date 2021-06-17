@@ -235,7 +235,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     public void stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        if (fusedLocationClient != null)
+            fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
 //    public void startLocationService() {

@@ -55,6 +55,7 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
     private CaddieInfo caddieInfo;
     private LinearLayout viewMain;
     private GuestManageDialog guestManageDialog;
+    private ClubInfoDialog clubInfoDialog;
     private CaddieFragment me;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -256,6 +257,11 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
             } else if (type.equals("memo")) {
                 guestItemView.setMemo(value);
             }
+        } else if (requestCode == GuestSettingActivity.Id+20 && resultCode == 100) {
+            int index = data.getIntExtra("index", 0);
+            String value = data.getStringExtra("value");
+            int id = data.getIntExtra("id", 0);
+            clubInfoDialog.onInputMemo(index, value, id);
         }
     }
 
@@ -277,13 +283,13 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
     @Override
     public void onShowClubInfoDlg(String id) {
 
-        ClubInfoDialog dlg = new ClubInfoDialog(getContext(), caddieInfo, findGuestId(id));
-        WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+        clubInfoDialog = new ClubInfoDialog(getContext(), this, caddieInfo, findGuestId(id));
+        WindowManager.LayoutParams wmlp = clubInfoDialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.CENTER;
-        dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
-        dlg.show();
+        clubInfoDialog.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+        clubInfoDialog.show();
 
-        dlg.setiListenerDialog(new ClubInfoDialog.IListenerDialog() {
+        clubInfoDialog.setiListenerDialog(new ClubInfoDialog.IListenerDialog() {
             @Override
             public void onSave(String guestId, ClubInfo clubInfo) {
                 setClubInfo(guestId, clubInfo);

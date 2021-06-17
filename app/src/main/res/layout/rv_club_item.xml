@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/view_item"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="80dp"
-    android:layout_height="77dp"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
     android:layout_marginLeft="1dp"
     android:layout_marginTop="1dp"
     android:background="@color/white"
@@ -11,11 +11,10 @@
 
     <TextView
         android:id="@+id/tv_item"
-        style="@style/GlobalTextView.16SP.A3A5A7.NotoSans.Medium"
+        style="@style/GlobalTextView.18SP.A3A5A7.NotoSans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -21,6 +21,7 @@ public class GuestSettingActivity extends AppCompatActivity {
     private EditText editText;
     private String type;
     private int index;
+    private int viewId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class GuestSettingActivity extends AppCompatActivity {
         type = intent.getStringExtra("type");
         index = intent.getIntExtra("index", 0);
         String value = intent.getStringExtra("value");
+        viewId = intent.getIntExtra("id", 0);
 
         if (type.equals("name")) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -46,6 +48,31 @@ public class GuestSettingActivity extends AppCompatActivity {
         } else if (type.equals("memo")) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT);
             textView.setText("메모를 입력하세요");
+        } else if (type.equals("club")) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+
+            switch (viewId) {
+                case R.id.view_wood_memo : {
+                    textView.setText("우드의 메모를 입력하세요");
+                    break;
+                }
+                case R.id.view_utility_memo : {
+                    textView.setText("유틸리티의 메모를 입력하세요");
+                    break;
+                }
+                case R.id.view_iron_memo : {
+                    textView.setText("아이언의 메모를 입력하세요");
+                    break;
+                }
+                case R.id.view_wedge_memo : {
+                textView.setText("웨지의 메모를 입력하세요");
+                    break;
+                }
+                case R.id.view_putter_memo : {
+                    textView.setText("퍼터의 메모를 입력하세요");
+                    break;
+                }
+            }
         }
 
         editText.setHint(value);
@@ -65,6 +92,11 @@ public class GuestSettingActivity extends AppCompatActivity {
                 i.putExtra("index", index);
                 i.putExtra("type", type);
                 i.putExtra("value", editText.getText().toString());
+
+                if (type.equals("club")) {
+                    i.putExtra("id", viewId);
+                }
+
                 setResult(100, i);
                 closeKeyboard(editText);
                 finish();

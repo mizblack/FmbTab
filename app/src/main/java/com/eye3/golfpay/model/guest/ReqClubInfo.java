@@ -35,7 +35,7 @@ public class ReqClubInfo {
     @Expose
     public String putter_cover = "";
 
-    @SerializedName("wood_cover")
+    @SerializedName("wedge_cover")
     @Expose
     public String wedge_cover = "";
 
@@ -46,4 +46,24 @@ public class ReqClubInfo {
     @SerializedName("utility_cover")
     @Expose
     public String utility_cover = "";
+
+    @SerializedName("wood_memo")
+    @Expose
+    public String wood_memo = "";
+
+    @SerializedName("utility_memo")
+    @Expose
+    public String utility_memo = "";
+
+    @SerializedName("iron_memo")
+    @Expose
+    public String iron_memo = "";
+
+    @SerializedName("wedge_memo")
+    @Expose
+    public String wedge_memo = "";
+
+    @SerializedName("putter_memo")
+    @Expose
+    public String putter_memo = "";
 }

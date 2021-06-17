@@ -209,7 +209,7 @@ public class CourseFragment extends BaseFragment {
         for (GpsInfo gpsInfo : cartInfo.nearby_hole_list) {
 
             CartPos cartPos = new CartPos(
-                    gpsInfo.getGuestName(),
+                    Global.caddieName,
                     gpsInfo.getCart_status(),
                     gpsInfo.getLat(), gpsInfo.getLng(),
                     gpsInfo.getCart_no(),

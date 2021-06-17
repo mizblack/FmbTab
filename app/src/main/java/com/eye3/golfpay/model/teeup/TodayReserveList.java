@@ -14,6 +14,8 @@ public class TodayReserveList implements Serializable {
     @Expose
     @SerializedName("group")
     private String group;
+    @SerializedName("group_name")
+    private String groupName;
     @SerializedName("group_id")
     private String groupId;
     @SerializedName("guest_data")

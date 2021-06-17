@@ -1,358 +1,540 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:layout_height="650dp"
-    android:layout_width="1160dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="1160dp"
+    android:layout_height="665dp"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/view_header"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:gravity="center_vertical"
         android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            style="@style/GlobalTextView.22SP.irisBlue.NotoSans.Medium"
             android:id="@+id/tv_golf_info"
+            style="@style/GlobalTextView.22SP.irisBlue.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="32dp"
             android:gravity="center"
-            android:text="클럽정보"
-            android:layout_marginLeft="32dp" />
+            android:text="클럽정보" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_guests"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/tv_golf_info"/>
-
-        <TextView
-            android:id="@+id/tv_save"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/tv_cancel"
-            android:gravity="center"
-            android:text="저장"
-            android:textColor="@color/irisBlue"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="취소"
-            android:textColor="@color/gray"
-            android:textSize="22sp" />
-    </RelativeLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="22dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_header"
-        app:layout_constraintBottom_toBottomOf="parent">
+            android:layout_marginLeft="28dp"
+            android:layout_toRightOf="@id/tv_golf_info" />
 
         <LinearLayout
+            android:id="@+id/btn_save"
+            android:layout_width="140dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toLeftOf="@+id/btn_cancel"
+            android:background="@drawable/ripple_shape_round_irisblue_bg"
+            android:gravity="center">
+
+            <TextView
+                style="@style/GlobalTextView.18SP.White.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장하기" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_cancel"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_close_24dp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/zumthor"
+        app:layout_constraintTop_toBottomOf="@+id/view_header" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_top_bar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginLeft="32dp"
+            android:background="@color/white">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/wood_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/woodRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/woodRecyclerView">
+
+                <TextView
+                    android:id="@+id/tv_woodTitle"
+                    style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="우드"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
                 <LinearLayout
-                    android:id="@+id/wood_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/woodRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_woodTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="우드"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <LinearLayout
+                        android:id="@+id/tv_woodCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_woodCount"
-                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0개" />
-                        <TextView
-                            android:id="@+id/tv_woodCoverCount"
-                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:text="(커버 0개)" />
-                    </LinearLayout>
+                        android:text="0개" />
 
+                    <TextView
+                        android:id="@+id/tv_woodCoverCount"
+                        style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="(커버 0개)" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/woodRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    android:fadeScrollbars="false"
-                    app:layout_constraintStart_toEndOf="@+id/wood_view"
-                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/woodRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/zumthor"
+                android:fadeScrollbars="false"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/wood_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:id="@+id/view_wood_memo"
+                android:layout_width="420dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/shape_zumthor_edge"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_wood_memo"
+                    style="@style/GlobalTextView.20SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="48dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:hint="메모 입력"
+                    android:lines="1" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/caddie_memo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/utility_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/utiltyRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/utiltyRecyclerView">
+
+                <TextView
+                    android:id="@+id/tv_utilityTitle"
+                    style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="유틸리티"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
                 <LinearLayout
-                    android:id="@+id/utility_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/utiltyRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/utiltyRecyclerView">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_utilityTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="유틸리티"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <LinearLayout
+                        android:id="@+id/tv_utilityCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_utilityCount"
-                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0개" />
-                        <TextView
-                            android:id="@+id/tv_utilityCoverCount"
-                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:text="(커버 0개)" />
-                    </LinearLayout>
+                        android:text="0개" />
+
+                    <TextView
+                        android:id="@+id/tv_utilityCoverCount"
+                        style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="(커버 0개)" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/utiltyRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/utility_view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/utiltyRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/zumthor"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/utility_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:id="@+id/view_utility_memo"
+                android:layout_width="420dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/shape_zumthor_edge"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_utility_memo"
+                    style="@style/GlobalTextView.20SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="48dp"
+                    android:ellipsize="end"
+                    android:hint="메모 입력"
+                    android:gravity="center_vertical"
+                    android:lines="1" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/caddie_memo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/iron_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/ironRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ironRecyclerView">
+
+                <TextView
+                    android:id="@+id/tv_ironTitle"
+                    style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="아이언"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
                 <LinearLayout
-                    android:id="@+id/iron_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/ironRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ironRecyclerView">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_ironTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="아이언"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-                    <LinearLayout
+                        android:id="@+id/tv_ironCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_ironCount"
-                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0개" />
-                        <TextView
-                            android:id="@+id/tv_ironCoverCount"
-                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:text="(커버 0개)" />
-                    </LinearLayout>
+                        android:text="0개" />
+
+                    <TextView
+                        android:id="@+id/tv_ironCoverCount"
+                        style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="(커버 0개)" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ironRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/iron_view"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ironRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/zumthor"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/iron_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ironRecyclerView2"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/zumthor"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/iron_view"
+                app:layout_constraintTop_toBottomOf="@+id/iron_view" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:id="@+id/view_iron_memo"
+                android:layout_width="420dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/shape_zumthor_edge"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_iron_memo"
+                    style="@style/GlobalTextView.20SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="48dp"
+                    android:ellipsize="end"
+                    android:hint="메모 입력"
+                    android:gravity="center_vertical"
+                    android:lines="1" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/caddie_memo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/wedge_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/wedgeRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/wedgeRecyclerView">
+
+                <TextView
+                    android:id="@+id/tv_wedgeTitle"
+                    style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="웨지"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
                 <LinearLayout
-                    android:id="@+id/wedge_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/wedgeRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/wedgeRecyclerView">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_wedgeTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="웨지"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <LinearLayout
+                        android:id="@+id/tv_wedgeCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_wedgeCount"
-                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0개" />
-                        <TextView
-                            android:id="@+id/tv_wedgeCoverCount"
-                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:text="(커버 0개)" />
-                    </LinearLayout>
+                        android:text="0개" />
+
+                    <TextView
+                        android:id="@+id/tv_wedgeCoverCount"
+                        style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="(커버 0개)" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wedgeRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/wedge_view"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wedgeRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/zumthor"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/wedge_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:id="@+id/view_wedge_memo"
+                android:layout_width="420dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/shape_zumthor_edge"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_wedge_memo"
+                    style="@style/GlobalTextView.20SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="48dp"
+                    android:ellipsize="end"
+                    android:hint="메모 입력"
+                    android:gravity="center_vertical"
+                    android:lines="1" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/caddie_memo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="22dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/putter_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="22dp">
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/putterRecyclerView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/putterRecyclerView">
+
+                <TextView
+                    android:id="@+id/tv_putterTitle"
+                    style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="퍼터"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
 
                 <LinearLayout
-                    android:id="@+id/putter_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/putterRecyclerView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/putterRecyclerView">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_putterTitle"
-                        style="@style/GlobalTextView.22SP.ebonyBlack.NotoSans.Regular"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="퍼터"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/woodRecyclerView" />
-
-                    <LinearLayout
+                        android:id="@+id/tv_putterCount"
+                        style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_putterCount"
-                            style="@style/GlobalTextView.18SP.irisBlue.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0개" />
-                        <TextView
-                            android:id="@+id/tv_putterCoverCount"
-                            style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:text="(커버 0개)" />
-                    </LinearLayout>
+                        android:text="0개" />
+
+                    <TextView
+                        android:id="@+id/tv_putterCoverCount"
+                        style="@style/GlobalTextView.14SP.A3A5A7.NotoSans.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="(커버 0개)" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/putterRecyclerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@color/zumthor"
-                    android:paddingRight="1dp"
-                    app:layout_constraintStart_toEndOf="@+id/putter_view"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/putterRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="72.5dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/zumthor"
+                android:paddingRight="1dp"
+                app:layout_constraintStart_toEndOf="@+id/putter_view"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/view_putter_memo"
+                android:layout_width="420dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/shape_zumthor_edge"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_putter_memo"
+                    style="@style/GlobalTextView.20SP.ebonyBlack.NotoSans.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="48dp"
+                    android:ellipsize="end"
+                    android:hint="메모 입력"
+                    android:gravity="center_vertical"
+                    android:lines="1" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/caddie_memo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

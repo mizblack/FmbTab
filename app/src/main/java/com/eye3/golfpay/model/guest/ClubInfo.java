@@ -10,8 +10,15 @@ public class ClubInfo {
     public ArrayList<CaddyNoteInfo.ClubInfo> wood = new ArrayList<>();
     public ArrayList<CaddyNoteInfo.ClubInfo> utility = new ArrayList<>();
     public ArrayList<CaddyNoteInfo.ClubInfo> iron = new ArrayList<>();
+    public ArrayList<CaddyNoteInfo.ClubInfo> iron2 = new ArrayList<>();
     public ArrayList<CaddyNoteInfo.ClubInfo> putter = new ArrayList<>();
     public ArrayList<CaddyNoteInfo.ClubInfo> wedge = new ArrayList<>();
+
+    public String wood_memo = "";
+    public String utility_memo = "";
+    public String iron_memo = "";
+    public String wedge_memo = "";
+    public String putter_memo = "";
 
     public String phoneNumber = "";
     public String carNumber = "";
@@ -37,8 +44,30 @@ public class ClubInfo {
         return iron;
     }
 
+    public ArrayList<CaddyNoteInfo.ClubInfo> getIron2() {
+        return iron2;
+    }
+
     public void setIron(ArrayList<CaddyNoteInfo.ClubInfo> iron) {
         this.iron = iron;
+    }
+
+    public void setIron2(ArrayList<CaddyNoteInfo.ClubInfo> iron) {
+        this.iron2 = iron;
+    }
+
+    public void addIron(ArrayList<CaddyNoteInfo.ClubInfo> iron) {
+
+        for (CaddyNoteInfo.ClubInfo ci : iron) {
+            try {
+                int club = Integer.parseInt(ci.club) + 10;
+                ci.club = Integer.toString(club);
+                this.iron.add(ci);
+            }catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public ArrayList<CaddyNoteInfo.ClubInfo> getPutter() {

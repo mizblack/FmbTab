@@ -92,12 +92,15 @@ public class TeeUpAdapter extends RecyclerView.Adapter<TeeUpAdapter.ItemHolder> 
         String guestName = todayReserveList.get(position).getGuestName();
         String course = todayReserveList.get(position).getInoutCourse() + "코스";
         String group = todayReserveList.get(position).getGroup();
+        String groupName = todayReserveList.get(position).getGuestName();
 
         holder.tv_tee_up_time.setText(DateUtils.removeSecondFromTimeString(teeUpTime));
         holder.tv_course.setText(course);
         holder.tv_name.setText(guestName);
         if (group != null)
             holder.tv_group.setText(group);
+        else
+            holder.tv_group.setText(groupName);
 
         try {
             holder.visitorsGuestItemLinearLayout.removeAllViews();

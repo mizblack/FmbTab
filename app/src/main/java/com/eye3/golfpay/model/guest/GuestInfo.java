@@ -148,6 +148,12 @@ public class GuestInfo {
             if (wedge.cover)
                 reqClubInfo.wedge_cover += (wedge.club + ",");
         }
+
+        reqClubInfo.wood_memo = ci.wood_memo;
+        reqClubInfo.utility_memo = ci.utility_memo;
+        reqClubInfo.iron_memo = ci.iron_memo;
+        reqClubInfo.wedge_memo = ci.wedge_memo;
+        reqClubInfo.putter_memo = ci.putter_memo;
     }
 
     public ClubInfo getClubInfo() {
