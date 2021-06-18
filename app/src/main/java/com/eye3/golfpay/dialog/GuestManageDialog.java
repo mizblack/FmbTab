@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -24,12 +25,14 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.fragment.BaseFragment;
 import com.eye3.golfpay.model.caddyNote.SendSMS;
 import com.eye3.golfpay.model.gps.CType;
+import com.eye3.golfpay.model.guest.GuestDriverYesNo;
 import com.eye3.golfpay.model.guest.GuestInfo;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -104,6 +107,7 @@ public class GuestManageDialog extends Dialog {
         TextView tvPhoneNumber = view.findViewById(R.id.tv_phone_number);
 
         guestInfo.setGuestName(tvName.getText().toString());
+        guestInfo.setBagName(tvBagName.getText().toString());
         guestInfo.setCarNo(tvCarNumber.getText().toString());
         guestInfo.setHp(tvPhoneNumber.getText().toString());
         return guestInfo;
@@ -170,12 +174,34 @@ public class GuestManageDialog extends Dialog {
         TextView tvBagName = childView.findViewById(R.id.tv_bag_name);
         TextView tvCarNumber = childView.findViewById(R.id.tv_car_number);
         TextView tvPhoneNumber = childView.findViewById(R.id.tv_phone_number);
+        TextView tvBagNameBegin = childView.findViewById(R.id.tv_bag_name_begin);
+        TextView tvBagNameEnd = childView.findViewById(R.id.tv_bag_name_end);
+        TextView tvDriverYes = childView.findViewById(R.id.btn_driver_yes);
+        TextView tvDriverNo = childView.findViewById(R.id.btn_driver_no);
+
         tvName.setText(name);
+
         tvCarNumber.setText(carNumber);
-        tvPhoneNumber.setText(phoneNumber);
+        if (carNumber.isEmpty()) {
+            tvCarNumber.setHint("-");
+        }
+
+        String phoneNumberFormat = PhoneNumberUtils.formatNumber(phoneNumber, Locale.getDefault().getCountry());
+        if (phoneNumberFormat == null)
+            phoneNumberFormat = "";
+
+        tvPhoneNumber.setText(phoneNumberFormat);
+        if (phoneNumberFormat.isEmpty()) {
+            tvPhoneNumber.setHint("-");
+        }
 
         if (!bagName.isEmpty()) {
-            tvBagName.setText("(" + bagName + ")");
+            tvBagNameBegin.setVisibility(View.VISIBLE);
+            tvBagNameEnd.setVisibility(View.VISIBLE);
+            tvBagName.setText(bagName);
+        } else {
+            tvBagNameBegin.setVisibility(View.GONE);
+            tvBagNameEnd.setVisibility(View.GONE);
         }
 
         if (index == 0) {
@@ -188,7 +214,19 @@ public class GuestManageDialog extends Dialog {
             btnDown.setEnabled(false);
         }
 
-        childView.findViewById(R.id.btn_edit_name).setOnClickListener(new View.OnClickListener() {
+        if (isDriverYesNo(id)) {
+            tvDriverYes.setTextAppearance(R.style.GlobalTextView_Driver_Yes_Enable);
+            tvDriverYes.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_left_yes_bg));
+            tvDriverNo.setTextAppearance(R.style.GlobalTextView_Driver_No_Disable);
+            tvDriverNo.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_right_no_bg));
+        } else {
+            tvDriverNo.setTextAppearance(R.style.GlobalTextView_Driver_No_Enable);
+            tvDriverYes.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_left_no_bg));
+            tvDriverYes.setTextAppearance(R.style.GlobalTextView_Driver_Yes_Disable);
+            tvDriverNo.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_right_yes_bg));
+        }
+
+        tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), GuestSettingActivity.class);
@@ -198,7 +236,7 @@ public class GuestManageDialog extends Dialog {
                 baseFragment.startActivityForResult(intent, GuestSettingActivity.Id);
             }
         });
-        childView.findViewById(R.id.btn_edit_car_number).setOnClickListener(new View.OnClickListener() {
+        tvCarNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), GuestSettingActivity.class);
@@ -208,7 +246,7 @@ public class GuestManageDialog extends Dialog {
                 baseFragment.startActivityForResult(intent, GuestSettingActivity.Id);
             }
         });
-        childView.findViewById(R.id.btn_edit_phone_number).setOnClickListener(new View.OnClickListener() {
+        tvPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), GuestSettingActivity.class);
@@ -233,9 +271,51 @@ public class GuestManageDialog extends Dialog {
             }
         });
 
+        tvDriverYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvDriverYes.setTextAppearance(R.style.GlobalTextView_Driver_Yes_Enable);
+                tvDriverYes.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_left_yes_bg));
+                tvDriverNo.setTextAppearance(R.style.GlobalTextView_Driver_No_Disable);
+                tvDriverNo.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_right_no_bg));
+
+                setDriverYesNo(id, true);
+            }
+        });
+
+        tvDriverNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tvDriverNo.setTextAppearance(R.style.GlobalTextView_Driver_No_Enable);
+                tvDriverYes.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_left_no_bg));
+                tvDriverYes.setTextAppearance(R.style.GlobalTextView_Driver_Yes_Disable);
+                tvDriverNo.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.shape_right_yes_bg));
+
+                setDriverYesNo(id, false);
+            }
+        });
+
         LinearLayout.LayoutParams lllp = new LinearLayout.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 90);
         childView.setLayoutParams(lllp);
         memberContainer.addView(childView);
+    }
+
+    public void setDriverYesNo(String id, boolean yesNo) {
+        for (GuestDriverYesNo gd : Global.guestDriverYesNo) {
+            if (gd.guestId.equals(id)) {
+                gd.driver = yesNo;
+            }
+        }
+    }
+
+    public boolean isDriverYesNo(String id) {
+        for (GuestDriverYesNo gd : Global.guestDriverYesNo) {
+            if (gd.guestId.equals(id)) {
+                return gd.driver;
+            }
+        }
+
+        return false;
     }
 
     public void onInput(int index, String type, String value) {
@@ -249,7 +329,13 @@ public class GuestManageDialog extends Dialog {
         } else if (type.equals("car")) {
             tvCarNumber.setText(value);
         } else if (type.equals("phone")) {
-            tvPhoneNumber.setText(value);
+            String phoneNumberFormat = PhoneNumberUtils.formatNumber(value, Locale.getDefault().getCountry());
+            if (phoneNumberFormat == null)
+                phoneNumberFormat = "";
+
+            tvPhoneNumber.setText(phoneNumberFormat);
+            if (phoneNumberFormat.isEmpty())
+                tvPhoneNumber.setHint("-");
         }
     }
 

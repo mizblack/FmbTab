@@ -399,8 +399,8 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
                     CaddieGuestItem view = (CaddieGuestItem)viewMain.getChildAt(i);
                     ClubInfo clubInfo = makeClubInfo(caddyNoteInfo);
                     caddieInfo.getGuestInfo().get(i).clubInfo = clubInfo;
+                    view.drawName(caddieInfo.getGuestInfo().get(i).getGuestName(), caddieInfo.getGuestInfo().get(i).getBagName());
                     view.drawClubInfo(clubInfo);
-
                     if (!caddyNoteInfo.getSign_before().isEmpty())
                         view.drawSignImage(caddyNoteInfo.getSign_before().get(0).photo_url);
 
@@ -431,6 +431,12 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
         clubInfo.phoneNumber = caddyNoteInfo.getPhoneNumber();
         clubInfo.carNumber = caddyNoteInfo.getCarNumber();
         clubInfo.memo = caddyNoteInfo.getGuest_memo();
+
+        clubInfo.wood_memo = caddyNoteInfo.wood_memo;
+        clubInfo.utility_memo = caddyNoteInfo.utility_memo;
+        clubInfo.iron_memo = caddyNoteInfo.iron_memo;
+        clubInfo.wedge_memo = caddyNoteInfo.wedge_memo;
+        clubInfo.putter_memo = caddyNoteInfo.putter_memo;
         return clubInfo;
     }
 

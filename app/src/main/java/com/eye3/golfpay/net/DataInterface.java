@@ -687,13 +687,15 @@ public class DataInterface extends BasicDataInterface {
 
         try {
 
-            Call<ResponseData<Object>> call = service.setClubInfo( reserve_guest_id,
+            Call<ResponseData<Object>> call = service.setClubInfo(
+                    reserve_guest_id,
                     reqClubInfo.wood,
                     reqClubInfo.putter,
                     reqClubInfo.wedge,
                     reqClubInfo.iron,
                     reqClubInfo.utility,
-                    reqClubInfo.wood_cover, reqClubInfo.putter_cover, reqClubInfo.wedge_cover, reqClubInfo.iron_cover, reqClubInfo.utility_cover);
+                    reqClubInfo.wood_cover, reqClubInfo.putter_cover, reqClubInfo.wedge_cover, reqClubInfo.iron_cover, reqClubInfo.utility_cover,
+                    reqClubInfo.wood_memo, reqClubInfo.utility_memo, reqClubInfo.iron_memo, reqClubInfo.wedge_memo, reqClubInfo.putter_memo);
 
             call.enqueue(new Callback<ResponseData<Object>>() {
                 @Override

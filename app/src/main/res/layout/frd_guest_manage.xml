@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="800dp"
+    android:layout_width="860dp"
     android:layout_height="wrap_content"
     android:paddingBottom="18dp"
     android:background="@color/white">
@@ -73,13 +73,19 @@
             style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="212dp"
+            android:layout_marginStart="200dp"
             android:text="차량번호"/>
+        <TextView
+            style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="차량기사"/>
         <TextView
             style="@style/GlobalTextView.14SP.Gray.NotoSans.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="94dp"
+            android:layout_marginStart="120dp"
             android:text="연락처"/>
     </LinearLayout>
 

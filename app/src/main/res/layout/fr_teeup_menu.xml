@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/irisBlue">
 
     <TextView
@@ -16,34 +16,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/btn_logout"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:src="@drawable/exit"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie">
 
-    <ImageView
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="8dp"
+            android:src="@drawable/exit" />
+
+        <TextView
+            style="@style/GlobalTextView.14SP.White.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/logout" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/btn_refresh"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="4dp"
-        android:src="@drawable/ic_baseline_refresh_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintEnd_toStartOf="@+id/btn_logout"
-        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_refresh" />
+
+        <TextView
+            style="@style/GlobalTextView.14SP.White.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/refresh"
+            android:layout_marginLeft="4dp"/>
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_team"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="22dp"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="22dp"
         android:layout_marginRight="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_caddie" />

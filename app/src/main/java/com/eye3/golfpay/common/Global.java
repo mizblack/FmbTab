@@ -9,6 +9,7 @@ import com.eye3.golfpay.fragment.CourseFragment;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
 import com.eye3.golfpay.model.guest.Guest;
+import com.eye3.golfpay.model.guest.GuestDriverYesNo;
 import com.eye3.golfpay.model.notice.ArticleItem;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
@@ -21,6 +22,7 @@ public class Global {
 
     public static TeeUpTime teeUpTime ;
     public static List<Guest> guestList;
+    public static List<GuestDriverYesNo> guestDriverYesNo;
     public static ArrayList<Bitmap> signatureBitmapArrayList = new ArrayList<Bitmap>();
     public static String caddieName ;
     public static String DEV_SERVER_IP = "";

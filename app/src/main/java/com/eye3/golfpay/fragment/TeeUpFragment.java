@@ -23,6 +23,8 @@ import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.adapter.TeeUpAdapter;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.dialog.LogoutDialog;
+import com.eye3.golfpay.model.guest.Guest;
+import com.eye3.golfpay.model.guest.GuestDriverYesNo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.model.teeup.TodayReserveList;
@@ -31,6 +33,7 @@ import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.service.CartLocationService;
 import com.eye3.golfpay.util.Util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Timer;
@@ -131,7 +134,7 @@ public class TeeUpFragment extends BaseFragment {
     }
 
     private void getTodayReservesForCaddy(String caddy_id) {
-        //   showProgress("티업시간을 받아오는 중입니다....");
+        showProgress("티업시간을 받아오는 중입니다....");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getTodayReservesForCaddy(caddy_id, new DataInterface.ResponseCallback<TeeUpTime>() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -258,6 +261,14 @@ public class TeeUpFragment extends BaseFragment {
 
                 if (response.getRetMsg().equals("성공")) {
                     Global.guestList = response.getList();
+
+                    //운전기사 유무 체크
+                    Global.guestDriverYesNo = new ArrayList<>();
+                    for (Guest guest : Global.guestList) {
+                        GuestDriverYesNo gd = new GuestDriverYesNo(guest.getId(), false);
+                        Global.guestDriverYesNo.add(gd);
+                    }
+
                     //   GoNativeScreen(new CaddieFragment(), null);
                     mParentActivity.getDrawer().closeDrawer(GravityCompat.END, false);
                     hideProgress();

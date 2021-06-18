@@ -47,58 +47,63 @@
                 style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical" />
+            <TextView
+                android:id="@+id/tv_bag_name_begin"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_down"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="("/>
             <TextView
                 android:id="@+id/tv_bag_name"
                 style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ellipsize="end"
+                android:gravity="center_vertical" />
+            <TextView
+                android:id="@+id/tv_bag_name_end"
+                style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_down"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text=")"/>
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_edit_name"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingRight="22dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/caddie_memo"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_car_number"
             style="@style/GlobalTextView.18SP.ebonyBlack.NotoSans.Reqular"
             android:layout_width="100dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
             android:ellipsize="end"
             android:gravity="center_vertical" />
 
-        <ImageButton
-            android:id="@+id/btn_edit_car_number"
-            android:layout_width="44dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingRight="22dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/caddie_memo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:gravity="center" >
+
+            <TextView
+                style="@style/GlobalTextView.Driver_Yes_Disable"
+                android:id="@+id/btn_driver_yes"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:text="유"
+                android:gravity="center"/>
+            <TextView
+                style="@style/GlobalTextView.Driver_No_Enable"
+                android:id="@+id/btn_driver_no"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:text="무"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_phone_number"
@@ -106,20 +111,8 @@
             android:layout_width="180dp"
             android:layout_height="match_parent"
             android:ellipsize="end"
+            android:layout_marginStart="87dp"
             android:gravity="center_vertical" />
 
-        <ImageButton
-            android:id="@+id/btn_edit_phone_number"
-            android:layout_width="44dp"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:paddingRight="22dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/caddie_memo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

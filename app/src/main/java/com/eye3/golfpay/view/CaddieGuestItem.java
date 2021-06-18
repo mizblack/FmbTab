@@ -128,7 +128,10 @@ public class CaddieGuestItem extends RelativeLayout {
         mBagNameTextView = v.findViewById(R.id.tv_bag_name);
 
         mNameTextView.setText(guestInfo.getGuestName());
-        mBagNameTextView.setText(guestInfo.getBagName());
+        if (!guestInfo.getBagName().isEmpty())
+            mBagNameTextView.setText("("+guestInfo.getBagName()+")");
+        else
+            mBagNameTextView.setText("");
 
         mSignatureImageView.setOnClickListener(new OnClickListener() {
             @Override
@@ -308,6 +311,14 @@ public class CaddieGuestItem extends RelativeLayout {
                     }
                 })
                 .into(mSignatureImageView);
+    }
+
+    public void drawName(String name, String bagName) {
+        mNameTextView.setText(name);
+        if (!guestInfo.getBagName().isEmpty())
+            mBagNameTextView.setText("("+bagName+")");
+        else
+            mBagNameTextView.setText("");
     }
 
     public void drawClubInfo(ClubInfo clubInfo) {

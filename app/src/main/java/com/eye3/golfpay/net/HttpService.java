@@ -187,9 +187,14 @@ utility_cover	유틸리티커버 번호	X	String
                                       @Field("utility") String utility,
                                        @Field("wood_cover") String wood_cover,
                                        @Field("putter_cover") String putter_cover,
-                                       @Field("wedge_cover") String wedge_cover,
-                                       @Field("iron_cover") String iron_cover,
-                                       @Field("utility_cover") String utility_cover);
+                                           @Field("wedge_cover") String wedge_cover,
+                                           @Field("iron_cover") String iron_cover,
+                                           @Field("utility_cover") String utility_cover,
+                                           @Field("wood_memo") String wood_memo,
+                                           @Field("utility_memo") String utility_memo,
+                                           @Field("iron_memo") String iron_memo,
+                                           @Field("wedge_memo") String wedge_memo,
+                                           @Field("putter_memo") String putter_memo);
 
     @FormUrlEncoded
     @POST("setPersonalInfo")

@@ -86,4 +86,8 @@ public class TodayReserveList implements Serializable {
     public String getPlayStatus() {
         return playStatus;
     }
+
+    public String getGroupName() {
+        return groupName;
+    }
 }

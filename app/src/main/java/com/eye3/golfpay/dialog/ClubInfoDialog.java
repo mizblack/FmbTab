@@ -304,9 +304,11 @@ public class ClubInfoDialog extends Dialog {
             switch (clubType) {
                 case eWood:
                     adapter.setSelectItem(clubInfo.getWood());
+                    tv_woodMemo.setText(clubInfo.wood_memo);
                     break;
                 case eUtility:
                     adapter.setSelectItem(clubInfo.getUtility());
+                    tv_utilityMemo.setText(clubInfo.utility_memo);
                     break;
                 case eIron:
                     clubInfo.getIron2().clear();
@@ -320,16 +322,19 @@ public class ClubInfoDialog extends Dialog {
                     }
 
                     adapter.setSelectItem(clubInfo.getIron());
-
+                    tv_ironMemo.setText(clubInfo.iron_memo);
                     break;
                 case eIron2:
                     adapter.setSelectItem(clubInfo.getIron2());
+                    tv_ironMemo.setText(clubInfo.iron_memo);
                     break;
                 case eWedge:
                     adapter.setSelectItem(clubInfo.getWedge());
+                    tv_wedgeMemo.setText(clubInfo.wedge_memo);
                     break;
                 case ePutter:
                     adapter.setSelectItem(clubInfo.getPutter());
+                    tv_putterMemo.setText(clubInfo.putter_memo);
                     break;
             }
         }
