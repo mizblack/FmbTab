@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
@@ -126,6 +127,10 @@ public class CourseFragment extends BaseFragment {
         tvHereToHole = mainView.findViewById(R.id.tv_here_to_hole);
         btnChangeCourse = mainView.findViewById(R.id.btn_change_course);
 
+        if (BuildConfig.DEBUG) {
+            tvHereToHole.setVisibility(View.GONE);
+        }
+
         gpsView.setDistanceListener(new GpsView.IDistanceListener() {
             @Override
             public void onDistance(double distance1, double distance2) {
@@ -196,10 +201,27 @@ public class CourseFragment extends BaseFragment {
         if (mCourseInfoList == null)
             return;
 
-        Global.CurrentCourse = getCurrentCourse(cartInfo.nearby_hole_list);
-        int position = getCurrentHoleIndex(cartInfo.nearby_hole_list);
-        if (position < 0)
-            return;
+        int position = 0;
+        if (!BuildConfig.DEBUG) {
+            Global.CurrentCourse = getCurrentCourse(cartInfo.nearby_hole_list);
+            position = getCurrentHoleIndex(cartInfo.nearby_hole_list);
+            if (position < 0)
+                return;
+        } else {
+            position = 3;
+        }
+
+
+        Hole currentHole = Global.CurrentCourse.holes.get(position);
+        Hole prevHole = null;
+        Hole nextHole = null;
+
+        if (position > 0)
+            prevHole = Global.CurrentCourse.holes.get(position-1);
+        if (position < 8)
+            nextHole = Global.CurrentCourse.holes.get(position+1);
+
+        cartPosView.setCurrentHoleInfo(currentHole, prevHole, nextHole);
 
         setDrawPage(position);
         drawHoleCup(position);
@@ -209,7 +231,7 @@ public class CourseFragment extends BaseFragment {
         for (GpsInfo gpsInfo : cartInfo.nearby_hole_list) {
 
             CartPos cartPos = new CartPos(
-                    Global.caddieName,
+                    gpsInfo.getGuestName(),
                     gpsInfo.getCart_status(),
                     gpsInfo.getLat(), gpsInfo.getLng(),
                     gpsInfo.getCart_no(),
@@ -409,6 +431,9 @@ public class CourseFragment extends BaseFragment {
                 .getSize(new SizeReadyCallback() {
                     @Override
                     public void onSizeReady(int width, int height) {
+                        if (Global.CurrentCourse == null)
+                            return;
+
                         Hole h = Global.CurrentCourse.holes.get(position);
                         gpsView.setHolePos(new Point(h.course_hole_width_per, h.course_hole_height_per), h.hole_image_meter, width);
 
@@ -443,6 +468,9 @@ public class CourseFragment extends BaseFragment {
                 .getSize(new SizeReadyCallback() {
                     @Override
                     public void onSizeReady(int width, int height) {
+                        if (Global.CurrentCourse == null)
+                            return;
+
                         Hole h = Global.CurrentCourse.holes.get(position);
                         holeCupPointView.setHolePos(new Point(h.hole_pin_width_per, h.hole_pin_height_per), h.hole_image_meter, width);
                     }

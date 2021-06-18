@@ -146,6 +146,25 @@ public class BitmapUtils {
 		return path;
 	}
 
+	public static Bitmap inversionBitmap(Bitmap bitmap, int inverse) {
+
+		Matrix sideInversion = new Matrix();
+
+		if(inverse ==0 )
+			sideInversion.setScale(1, 1); // 원본
+		else if(inverse == 1)
+			sideInversion.setScale(-1, 1);  // 좌우반전
+		else if(inverse == 2)
+			sideInversion.setScale(1, 1); // 원본
+		else
+			sideInversion.setScale(1, -1);  // 상하반전
+
+		Bitmap sideInversionImg = Bitmap.createBitmap(bitmap, 0, 0,
+				bitmap.getWidth(), bitmap.getHeight(), sideInversion, false);
+
+		return sideInversionImg;
+	}
+
 	public static String getUUID() {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}

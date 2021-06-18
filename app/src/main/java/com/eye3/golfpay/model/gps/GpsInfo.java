@@ -9,6 +9,13 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class GpsInfo implements Serializable {
 
+    public GpsInfo(String name, String gubun, int percent, String cart_no) {
+        this.guestName = name;
+        this.gubun = gubun;
+        this.percent = percent;
+        this.cart_no = cart_no;
+        cart_status = "G";
+    }
     @SerializedName("guestName")
     @Expose
     String guestName;
@@ -103,5 +110,9 @@ public class GpsInfo implements Serializable {
 
     public int getPercent() {
         return percent;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
     }
 }

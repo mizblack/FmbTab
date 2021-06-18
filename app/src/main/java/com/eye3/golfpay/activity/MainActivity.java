@@ -612,7 +612,47 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                     UIThread.executeInUIThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            getCourseFragment().updateCourse(response.getData());
+
+                                            if (BuildConfig.DEBUG) {
+
+                                                ResponseCartInfo cartInfo = response.getData();
+
+                                                if (cartInfo.nearby_hole_list.size() == 0) {
+                                                    GpsInfo gpsInfoMe = new GpsInfo("나야나나", "me", 40, "118");
+                                                    cartInfo.nearby_hole_list.add(gpsInfoMe);
+                                                } else
+                                                    cartInfo.nearby_hole_list.get(0).setPercent(40);
+
+                                                GpsInfo gpsInfo1 = new GpsInfo("버즈", "back", 10, "56");
+                                                GpsInfo gpsInfo2 = new GpsInfo("10cm", "back", 20, "18");
+                                                GpsInfo gpsInfo3 = new GpsInfo("소란", "back", 40, "83");
+                                                GpsInfo gpsInfo4 = new GpsInfo("고영배", "front", 20, "33");
+                                                GpsInfo gpsInfo5 = new GpsInfo("장범준", "front", 50, "20");
+                                                GpsInfo gpsInfo6 = new GpsInfo("김태리", "front", 80, "22");
+                                                GpsInfo gpsInfo7 = new GpsInfo("최지우", "front", 95, "33");
+                                                GpsInfo gpsInfo8 = new GpsInfo("전지현", "same_hole", 10, "117");
+                                                GpsInfo gpsInfo9 = new GpsInfo("정유미", "same_hole", 20, "45");
+                                                GpsInfo gpsInfo10 = new GpsInfo("송가인", "same_hole", 60, "153");
+                                                GpsInfo gpsInfo11 = new GpsInfo("안영미", "same_hole", 80, "9");
+
+                                                cartInfo.nearby_hole_list.add(gpsInfo1);
+                                                cartInfo.nearby_hole_list.add(gpsInfo2);
+                                                cartInfo.nearby_hole_list.add(gpsInfo3);
+                                                cartInfo.nearby_hole_list.add(gpsInfo4);
+                                                cartInfo.nearby_hole_list.add(gpsInfo5);
+                                                cartInfo.nearby_hole_list.add(gpsInfo6);
+                                                cartInfo.nearby_hole_list.add(gpsInfo7);
+                                                cartInfo.nearby_hole_list.add(gpsInfo8);
+                                                cartInfo.nearby_hole_list.add(gpsInfo9);
+                                                cartInfo.nearby_hole_list.add(gpsInfo10);
+                                                cartInfo.nearby_hole_list.add(gpsInfo11);
+
+                                                getCourseFragment().updateCourse(cartInfo);
+                                            } else {
+                                                getCourseFragment().updateCourse(response.getData());
+                                            }
+
+
                                         }
                                     });
                                 }

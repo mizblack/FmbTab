@@ -88,4 +88,12 @@ public class Hole implements Serializable {
     @SerializedName("score")
     @Expose
     public Score playedScore;
+
+    @SerializedName("hole_length")
+    @Expose
+    public int hole_length;
+
+    @SerializedName("distance_between_hole")
+    @Expose
+    public int distance_between_hole;
 }

@@ -346,10 +346,9 @@
 
             <com.eye3.golfpay.view.CartPosView
                 android:id="@+id/view_cartPos"
-                android:layout_width="400dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="70dp"
-                android:layout_marginBottom="32dp"
+                android:layout_width="500dp"
+                android:layout_height="130dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
