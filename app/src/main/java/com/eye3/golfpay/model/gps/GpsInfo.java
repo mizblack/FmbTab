@@ -20,6 +20,10 @@ public class GpsInfo implements Serializable {
     @Expose
     String guestName;
 
+    @SerializedName("caddyName")
+    @Expose
+    String caddyName;
+
     @SerializedName("cart_status")
     @Expose
     String cart_status;
@@ -66,6 +70,10 @@ public class GpsInfo implements Serializable {
 
     public String getGuestName() {
         return guestName;
+    }
+
+    public String getCaddyName() {
+        return caddyName;
     }
 
     public String getCart_status() {

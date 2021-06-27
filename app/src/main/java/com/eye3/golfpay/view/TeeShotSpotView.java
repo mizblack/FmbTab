@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 
 public class TeeShotSpotView extends ConstraintLayout {
@@ -65,8 +66,18 @@ public class TeeShotSpotView extends ConstraintLayout {
     }
 
     public void setValue(String text, String meter, String colorText) {
+
+
+        if (Global.isYard) {
+            int nMeter = Integer.parseInt(meter);
+            Integer yard = AppDef.MeterToYard(nMeter);
+            tvMeter.setText(yard.toString());
+        } else {
+            tvMeter.setText(meter);
+        }
+
         tvText.setText(text);
-        tvMeter.setText(meter);
+
         try {
             colorText = "#" + colorText;
             color = Color.parseColor(colorText);

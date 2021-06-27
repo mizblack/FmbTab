@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.eye3.golfpay.R;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 
 public class GpsView extends View {
@@ -165,6 +166,36 @@ public class GpsView extends View {
 
         String text1 = String.format("%dM", (int) distance1);
         String text2 = String.format("%dM", (int) distance2);
+
+        if (Global.isYard) {
+            int yard1 = (int)distance1;
+            if (Global.isYard) {
+                yard1 = AppDef.MeterToYard(yard1);
+            }
+
+            int yard2 = (int)distance2;
+            if (Global.isYard) {
+                yard2 = AppDef.MeterToYard(yard2);
+            }
+
+            text1 = String.format("%dYD", yard1);
+            text2 = String.format("%dYD", yard2);
+        }
+
+        if (Global.isYard) {
+            int yard1 = (int)distance1;
+            if (Global.isYard) {
+                yard1 = AppDef.MeterToYard(yard1);
+            }
+
+            int yard2 = (int)distance2;
+            if (Global.isYard) {
+                yard2 = AppDef.MeterToYard(yard2);
+            }
+
+            text1 = String.format("%dYD", yard1);
+            text2 = String.format("%dYD", yard2);
+        }
 
         if (rcDestObject2.right > rect.right- 50) {
             rc.offset(-20, 0);

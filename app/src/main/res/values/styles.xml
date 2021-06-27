@@ -1111,6 +1111,14 @@
         <item name="android:textSize">74sp</item>
     </style>
 
+    <style name="GlobalTextView.52SP.irisBlue.NotoSans.Medium" parent="AppTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/irisBlue</item>
+        <item name="android:textSize">52sp</item>
+    </style>
+
     <style name="GlobalTextView.52SP.irisBlue.NotoSans.Regular" parent="AppTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

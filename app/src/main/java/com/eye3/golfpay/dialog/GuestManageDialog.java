@@ -181,6 +181,9 @@ public class GuestManageDialog extends Dialog {
 
         tvName.setText(name);
 
+        if (carNumber == null)
+            carNumber = "";
+
         tvCarNumber.setText(carNumber);
         if (carNumber.isEmpty()) {
             tvCarNumber.setHint("-");

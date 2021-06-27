@@ -124,55 +124,50 @@
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox1"
-                android:layout_width="110dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:meter="375/356"
                 app:oval_color="#6c2126"
                 app:title="Black" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox2"
-                android:layout_width="110dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tbox1"
-                app:meter="338/320"
                 app:oval_color="#ffffff"
                 app:title="White" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox3"
-                android:layout_width="110dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tbox2"
-                app:meter="286/263"
                 app:oval_color="#dc3053"
                 app:title="Ladies" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox4"
-                android:layout_width="160dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 app:layout_constraintStart_toEndOf="@+id/tbox1"
                 app:layout_constraintTop_toTopOf="parent"
-                app:meter="338/320"
                 app:oval_color="#416f9d"
                 app:title="Championship" />
 
             <com.eye3.golfpay.view.TeeShotSpotView
                 android:id="@+id/tbox5"
-                android:layout_width="160dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 app:layout_constraintStart_toStartOf="@+id/tbox4"
                 app:layout_constraintTop_toBottomOf="@+id/tbox4"
-                app:meter="286/263"
                 app:oval_color="#dc763e"
                 app:title="Front" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -397,11 +392,34 @@
 
         <TextView
             android:id="@+id/tv_here_to_hole"
-            style="@style/GlobalTextView.74SP.irisBlue.NotoSans.Medium"
+            style="@style/GlobalTextView.52SP.irisBlue.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:text="73M"
             app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_convert_my"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic__m_to_yd"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_here_to_hole"
+            app:layout_constraintStart_toEndOf="@+id/tv_here_to_hole"
+            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                style="@style/GlobalTextView.12SP.irisBlue.NotoSans.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="M / Y"
+                android:textSize="10sp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

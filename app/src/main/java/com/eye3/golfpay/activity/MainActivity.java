@@ -635,24 +635,30 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                                 GpsInfo gpsInfo10 = new GpsInfo("송가인", "same_hole", 60, "153");
                                                 GpsInfo gpsInfo11 = new GpsInfo("안영미", "same_hole", 80, "9");
 
-                                                cartInfo.nearby_hole_list.add(gpsInfo1);
-                                                cartInfo.nearby_hole_list.add(gpsInfo2);
-                                                cartInfo.nearby_hole_list.add(gpsInfo3);
-                                                cartInfo.nearby_hole_list.add(gpsInfo4);
-                                                cartInfo.nearby_hole_list.add(gpsInfo5);
-                                                cartInfo.nearby_hole_list.add(gpsInfo6);
-                                                cartInfo.nearby_hole_list.add(gpsInfo7);
-                                                cartInfo.nearby_hole_list.add(gpsInfo8);
-                                                cartInfo.nearby_hole_list.add(gpsInfo9);
-                                                cartInfo.nearby_hole_list.add(gpsInfo10);
-                                                cartInfo.nearby_hole_list.add(gpsInfo11);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo1);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo2);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo3);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo4);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo5);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo6);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo7);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo8);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo9);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo10);
+//                                                cartInfo.nearby_hole_list.add(gpsInfo11);
 
-                                                getCourseFragment().updateCourse(cartInfo);
+                                                try {
+                                                    getCourseFragment().updateCourse(cartInfo);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
                                             } else {
-                                                getCourseFragment().updateCourse(response.getData());
+                                                try {
+                                                    getCourseFragment().updateCourse(response.getData());
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
-
-
                                         }
                                     });
                                 }

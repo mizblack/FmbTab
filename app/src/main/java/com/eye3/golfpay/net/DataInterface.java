@@ -195,7 +195,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                      callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getCourseInfo", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -217,7 +217,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-               //     showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getReserveScore", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -238,7 +238,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Restaurant>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getRestaurantMenu", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -259,7 +259,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<RestaurantMenu>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getStoreMenu", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -281,7 +281,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<StoreOrder>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getStoreOrder", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -303,7 +303,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "cancelOrder", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -325,7 +325,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setScore", t.getMessage());
                 }
 
             });
@@ -371,7 +371,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "sendGpsInfo", t.getMessage());
                 }
             });
 
@@ -395,6 +395,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                    showDialog(context, "getNoticeList", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -417,6 +418,8 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+
+                    showDialog(context, "caddyBoardCheck", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -459,7 +462,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "sendShadeOrders", t.getMessage());
                 }
 
             });
@@ -482,7 +485,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setPlayStatus", t.getMessage());
                 }
 
             });
@@ -554,7 +557,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getGameTypeScore", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -580,7 +583,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setGameTypeScore", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -603,7 +606,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setReserveGameType", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -629,7 +632,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getReserveGameType", t.getMessage());
                 }
             });
 
@@ -675,7 +678,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseCaddyNote> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getCaddyNoteInfo", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -707,7 +710,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setClubInfo", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -731,7 +734,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setPersonalInfo", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -754,7 +757,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setTeamMemo", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -777,7 +780,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<ResponseGallery>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "getCaddyPhotos", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -800,7 +803,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "deletePhoto", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -825,7 +828,7 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "checkChangeCourse", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -848,7 +851,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "changeCourse", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -871,7 +874,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<CType>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "changeCourseList", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -893,7 +896,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "sendSMS", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -916,7 +919,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "setCeoImage", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -939,7 +942,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<ChatData>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "initSetMessage", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -962,7 +965,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseChatNameList> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "tabletChattingNameList", t.getMessage());
                 }
             });
         } catch (Exception ex) {
@@ -985,7 +988,7 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
-                    showDialog(context, null, "네트웍상태를 확인해주세요.");
+                    showDialog(context, "logout", t.getMessage());
                 }
             });
         } catch (Exception ex) {

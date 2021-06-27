@@ -52,6 +52,7 @@ import com.eye3.golfpay.util.Util;
 import com.eye3.golfpay.view.NameOrderView;
 import com.eye3.golfpay.view.OrderItemInvoiceView;
 import com.eye3.golfpay.view.SnappingLinearLayoutManager;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -865,6 +866,14 @@ public class OrderFragment extends BaseFragment {
                     clearOrderItemInvoiceArrView();
                     Toast.makeText(getActivity(), "주문이 저장되었습니다.", Toast.LENGTH_SHORT).show();
                 } else {
+                    Snackbar snackbar = Snackbar.make(binding.orderOrApplyBtn, response.getResultMessage(), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("확인", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            snackbar.dismiss();
+                        }
+                    });
+                    snackbar.show();
                     hideProgress();
                 }
             }

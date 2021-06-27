@@ -77,6 +77,13 @@ public class GuestSettingActivity extends AppCompatActivity {
 
         editText.setHint(value);
 
+        if (type.equals("memo") || type.equals("club")) {
+            assert value != null;
+            if (!value.isEmpty()) {
+                editText.setText(value);
+            }
+        }
+
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

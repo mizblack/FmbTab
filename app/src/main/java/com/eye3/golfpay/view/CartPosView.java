@@ -170,7 +170,7 @@ public class CartPosView extends View {
         ////////////////////////////////////////////////////////////////////////////////////////////
         //* Prev Hole Line
         if (prevHole == null) {
-            holeLinePrevLength = 0;
+            holeLinePrevLength = (int)(350 * distance_to_pixel_ratio);
         } else {
             holeLinePrevLength = (int)(prevHole.hole_length * distance_to_pixel_ratio);
         }
@@ -194,7 +194,7 @@ public class CartPosView extends View {
         ////////////////////////////////////////////////////////////////////////////////////////////
         //* Next Hole Line
         if (nextHole == null) {
-            holeLineNextLength = 0;
+            holeLineNextLength = (int)(350 * distance_to_pixel_ratio);
         } else {
             holeLineNextLength = (int)(nextHole.hole_length * distance_to_pixel_ratio);
         }

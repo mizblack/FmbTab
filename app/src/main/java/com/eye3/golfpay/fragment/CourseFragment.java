@@ -3,6 +3,7 @@ package com.eye3.golfpay.fragment;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.eye3.golfpay.BuildConfig;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
+import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ChangeCourseDialog;
@@ -67,6 +69,7 @@ public class CourseFragment extends BaseFragment {
     private ConstraintLayout btnChangeCourse;
     private int advertisingCount = 0;
     private boolean advertsingContinue = true;
+    private ResponseCartInfo cartInfo;
     int mapPosition = 0;
     int currentHoleIndex = -1;
 
@@ -128,7 +131,7 @@ public class CourseFragment extends BaseFragment {
         btnChangeCourse = mainView.findViewById(R.id.btn_change_course);
 
         if (BuildConfig.DEBUG) {
-            tvHereToHole.setVisibility(View.GONE);
+            //tvHereToHole.setVisibility(View.GONE);
         }
 
         gpsView.setDistanceListener(new GpsView.IDistanceListener() {
@@ -136,6 +139,22 @@ public class CourseFragment extends BaseFragment {
             public void onDistance(double distance1, double distance2) {
                 String text1 = String.format("%dM", (int) distance1);
                 String text2 = String.format("%dM", (int) distance2);
+
+                if (Global.isYard) {
+                    int yard1 = (int)distance1;
+                    if (Global.isYard) {
+                        yard1 = AppDef.MeterToYard(yard1);
+                    }
+
+                    int yard2 = (int)distance2;
+                    if (Global.isYard) {
+                        yard2 = AppDef.MeterToYard(yard2);
+                    }
+
+                    text1 = String.format("%dYD", yard1);
+                    text2 = String.format("%dYD", yard2);
+                }
+
                 tvDistance1.setText(text1);
                 tvDistance2.setText(text2);
             }
@@ -148,9 +167,8 @@ public class CourseFragment extends BaseFragment {
                 (mParentActivity).getViewMenuFragment().selectMenu(R.id.view_score);
             }
         });
+
         (mParentActivity).showMainBottomBar();
-
-
         mainView.findViewById(R.id.iv_goal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,6 +179,19 @@ public class CourseFragment extends BaseFragment {
                 setDrawPage(mapPosition);
                 drawHoleCup(mapPosition);
                 drawMap(mapPosition++);
+            }
+        });
+
+        mainView.findViewById(R.id.btn_convert_my).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Global.isYard ^= true;
+
+                try {
+                    updateCourse(cartInfo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -195,8 +226,11 @@ public class CourseFragment extends BaseFragment {
 
     }
 
+    public void updateCourse(ResponseCartInfo cartInfo) throws Exception {
 
-    public void updateCourse(ResponseCartInfo cartInfo) {
+        //미터 야드 즉각적인 변환을 위해 멤버변수로 저장해 놓음
+        //아니면 5초에 한번씩 갱신될 때마다 변경됨.
+        this.cartInfo = cartInfo;
 
         if (mCourseInfoList == null)
             return;
@@ -208,9 +242,8 @@ public class CourseFragment extends BaseFragment {
             if (position < 0)
                 return;
         } else {
-            position = 3;
+            position = 0;
         }
-
 
         Hole currentHole = Global.CurrentCourse.holes.get(position);
         Hole prevHole = null;
@@ -226,12 +259,22 @@ public class CourseFragment extends BaseFragment {
         setDrawPage(position);
         drawHoleCup(position);
         drawMap(position);
-        tvHereToHole.setText(String.format("%dM", cartInfo.here_to_hole));
+
+        if (cartInfo.here_to_hole > 1000)
+            cartInfo.here_to_hole = 999;
+
+        if (!Global.isYard) {
+            tvHereToHole.setText(String.format("%dM", cartInfo.here_to_hole));
+        } else {
+            int yard = AppDef.MeterToYard(cartInfo.here_to_hole);
+            tvHereToHole.setText(String.format("%dYD", yard));
+        }
+
         cartPosView.clearCart();
         for (GpsInfo gpsInfo : cartInfo.nearby_hole_list) {
 
             CartPos cartPos = new CartPos(
-                    gpsInfo.getGuestName(),
+                    gpsInfo.getCaddyName(),
                     gpsInfo.getCart_status(),
                     gpsInfo.getLat(), gpsInfo.getLng(),
                     gpsInfo.getCart_no(),

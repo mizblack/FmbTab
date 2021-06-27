@@ -55,14 +55,17 @@ public class HoleInfoLinear extends LinearLayout {
         tvPar = v.findViewById(R.id.hole_par);
         tvPar.setText("Par" + hole.par);
         tvMeter = v.findViewById(R.id.hole_meter);
+
         //여기서 변환식 사용할것
-        if (Global.isYard) {
-            if (hole.hole_total_size != null)
-                tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(hole.hole_total_size))));
-            else
-                tvMeter.setText("");
-        } else
-            tvMeter.setText(hole.hole_total_size);
+//        if (Global.isYard) {
+//            if (hole.hole_total_size != null)
+//                tvMeter.setText(String.valueOf(AppDef.MeterToYard(Integer.valueOf(hole.hole_total_size))));
+//            else
+//                tvMeter.setText("");
+//        } else
+//            tvMeter.setText(hole.hole_total_size);
+
+        tvMeter.setText(hole.hole_total_size);
 
         //변경된 UI로 미터 표시 안함
         tvMeter.setVisibility(View.INVISIBLE);
