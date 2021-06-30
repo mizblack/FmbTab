@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -121,6 +122,27 @@ public class ScoreInserter extends RelativeLayout {
                     } else if (type.equals("putt")) {
                         isVisible = selectPutt(i, j, view);
                     }
+                }
+
+                //시작값이 없거나 '-' 이거면 0으로 선택
+                if ((oldScore.get(i).par.isEmpty() || oldScore.get(i).par.equals("-")) && j == 0 && type.equals("par")) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (view.getVisibility() == View.GONE)
+                                item.performClick();
+                        }
+                    }, 30);
+                }
+                //시작값이 없거나 '-' 이거면 0으로 선택
+                if ((oldScore.get(i).putting.isEmpty() || oldScore.get(i).putting.equals("-")) && j == 0 && type.equals("putt")) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (view.getVisibility() == View.GONE)
+                                item.performClick();
+                        }
+                    }, 30);
                 }
 
                 final int cal = j;

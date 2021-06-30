@@ -195,6 +195,11 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                      callback.onFailure(t);
+
+                     if (t.getMessage().contains("ETIMEDOUT")) {
+                         return;
+                     }
+
                     showDialog(context, "getCourseInfo", t.getMessage());
                 }
             });
@@ -217,6 +222,11 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "getReserveScore", t.getMessage());
                 }
             });
@@ -238,6 +248,11 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Restaurant>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "getRestaurantMenu", t.getMessage());
                 }
             });
@@ -259,6 +274,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<RestaurantMenu>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getStoreMenu", t.getMessage());
                 }
             });
@@ -281,6 +300,15 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<StoreOrder>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "getStoreOrder", t.getMessage());
                 }
             });
@@ -303,6 +331,11 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "cancelOrder", t.getMessage());
                 }
             });
@@ -325,6 +358,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setScore", t.getMessage());
                 }
 
@@ -371,6 +408,10 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "sendGpsInfo", t.getMessage());
                 }
             });
@@ -395,6 +436,10 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getNoticeList", t.getMessage());
                 }
             });
@@ -419,6 +464,9 @@ public class DataInterface extends BasicDataInterface {
                     t.printStackTrace();
                     callback.onFailure(t);
 
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "caddyBoardCheck", t.getMessage());
                 }
             });
@@ -462,6 +510,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "sendShadeOrders", t.getMessage());
                 }
 
@@ -485,6 +537,9 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setPlayStatus", t.getMessage());
                 }
 
@@ -557,6 +612,9 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getGameTypeScore", t.getMessage());
                 }
             });
@@ -583,6 +641,9 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setGameTypeScore", t.getMessage());
                 }
             });
@@ -606,6 +667,9 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setReserveGameType", t.getMessage());
                 }
             });
@@ -632,6 +696,9 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getReserveGameType", t.getMessage());
                 }
             });
@@ -678,6 +745,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseCaddyNote> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getCaddyNoteInfo", t.getMessage());
                 }
             });
@@ -710,6 +781,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setClubInfo", t.getMessage());
                 }
             });
@@ -734,6 +809,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setPersonalInfo", t.getMessage());
                 }
             });
@@ -757,6 +836,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setTeamMemo", t.getMessage());
                 }
             });
@@ -780,6 +863,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<ResponseGallery>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "getCaddyPhotos", t.getMessage());
                 }
             });
@@ -803,6 +890,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "deletePhoto", t.getMessage());
                 }
             });
@@ -828,6 +919,10 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "checkChangeCourse", t.getMessage());
                 }
             });
@@ -851,6 +946,11 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "changeCourse", t.getMessage());
                 }
             });
@@ -874,6 +974,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<CType>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "changeCourseList", t.getMessage());
                 }
             });
@@ -919,6 +1023,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "setCeoImage", t.getMessage());
                 }
             });
@@ -942,6 +1050,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<ChatData>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "initSetMessage", t.getMessage());
                 }
             });
@@ -965,6 +1077,10 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseChatNameList> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
                     showDialog(context, "tabletChattingNameList", t.getMessage());
                 }
             });
@@ -988,6 +1104,11 @@ public class DataInterface extends BasicDataInterface {
                 public void onFailure(Call<ResponseData<Object>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
                     showDialog(context, "logout", t.getMessage());
                 }
             });
