@@ -134,16 +134,7 @@ public class ScoreInserter extends RelativeLayout {
                         }
                     }, 30);
                 }
-                //시작값이 없거나 '-' 이거면 0으로 선택
-                if ((oldScore.get(i).putting.isEmpty() || oldScore.get(i).putting.equals("-")) && j == 0 && type.equals("putt")) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (view.getVisibility() == View.GONE)
-                                item.performClick();
-                        }
-                    }, 30);
-                }
+
 
                 final int cal = j;
                 item.setOnClickListener(new OnClickListener() {

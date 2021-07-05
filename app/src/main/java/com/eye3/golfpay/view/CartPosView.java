@@ -170,6 +170,7 @@ public class CartPosView extends View {
         ////////////////////////////////////////////////////////////////////////////////////////////
         //* Prev Hole Line
         if (prevHole == null) {
+            //이전 홀이 없으면 임의로 라인만 그린다.
             holeLinePrevLength = (int)(350 * distance_to_pixel_ratio);
         } else {
             holeLinePrevLength = (int)(prevHole.hole_length * distance_to_pixel_ratio);
@@ -193,13 +194,18 @@ public class CartPosView extends View {
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         //* Next Hole Line
+
+        int nextDistanceBetweenHole;
         if (nextHole == null) {
+            //다음 홀이 없으면 임의로 라인만 그린다.
             holeLineNextLength = (int)(350 * distance_to_pixel_ratio);
+            nextDistanceBetweenHole = currentHole.distance_between_hole;
         } else {
             holeLineNextLength = (int)(nextHole.hole_length * distance_to_pixel_ratio);
+            nextDistanceBetweenHole = nextHole.distance_between_hole;
         }
 
-        distance_between_hole = (int)(nextHole.distance_between_hole * distance_to_pixel_ratio);
+        distance_between_hole = (int)(nextDistanceBetweenHole * distance_to_pixel_ratio);
         nextHoleStartPos = currentHoleStartPos+distance_between_hole+holeLineCurrentLength;
         paint.setColor(Color.parseColor("#9aabb1"));
         canvas.drawLine(nextHoleStartPos, holeY, nextHoleStartPos+holeLineNextLength, holeY, paint);
