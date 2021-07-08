@@ -286,7 +286,7 @@ public class LoginFragment extends BaseFragment {
                     if (compareVersion(response.getVersion(), currentVersion))
                         update(response.getVersion());
 
-                }catch (PackageManager.NameNotFoundException e) {
+                } catch (PackageManager.NameNotFoundException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }

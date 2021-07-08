@@ -89,6 +89,22 @@ public class BaseURLSettingActivity extends AppCompatActivity {
                 editText.setSelection(editText.getText().length());
             }
         });
+
+        findViewById(R.id.btn_silk_real).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.append("http://erp.silkvalleygc.co.kr");
+                editText.setSelection(editText.getText().length());
+            }
+        });
+
+        findViewById(R.id.btn_silk_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText.append("http://silktest.golfpay.co.kr");
+                editText.setSelection(editText.getText().length());
+            }
+        });
     }
 
     @Override

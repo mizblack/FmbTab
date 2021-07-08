@@ -205,7 +205,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
-
                     Log.d("locationCallback", String.format("%f, %f", latitude, longitude));
                 }
             }

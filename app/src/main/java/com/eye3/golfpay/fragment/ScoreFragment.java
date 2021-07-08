@@ -24,6 +24,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
@@ -160,15 +161,16 @@ public class ScoreFragment extends BaseFragment {
                 //NearestLongestDialogFragment nearestLongestDialogFragment = new NearestLongestDialogFragment();
                 //showDialogFragment(nearestLongestDialogFragment);
 
-                Bundle  bundle = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("ani_direction", "up");
                 GoNativeScreen(new NearestLongestFragment(), null);
             }
         });
 
-        tabBar.findViewById(R.id.btn_gps).setOnClickListener(new View.OnClickListener() {
+        tabBar.findViewById(R.id.btn_gps).setOnClickListener(new SingleClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onSingleClick(View v) {
+                tabBar.findViewById(R.id.btn_gps).setEnabled(false);
                 CourseFragment courseFragment = new CourseFragment();
                 GoNativeScreen(courseFragment, null);
                 Global.courseFragment = courseFragment;
@@ -191,7 +193,7 @@ public class ScoreFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 
-                Bundle  bundle = new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("ani_direction", "up");
                 GoNativeScreen(new RankingFragment(), bundle);
                 mParentActivity.getViewMenuFragment().selectMenu(R.id.view_ranking);
@@ -256,6 +258,7 @@ public class ScoreFragment extends BaseFragment {
         rightLinearLayoutOnClick();
 
     }
+
     //순위에따른 위치고정 함수
     @Deprecated
     private void reArrangeOrder(List<Player> playerList) {
@@ -268,6 +271,7 @@ public class ScoreFragment extends BaseFragment {
             }
         }
     }
+
     //순위에따른 위치고정 함수의 초기값 설정함수
     @Deprecated
     private void getFirstGuestIdList(List<Player> playerList) {
@@ -279,112 +283,112 @@ public class ScoreFragment extends BaseFragment {
         showProgress("스코어 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(),
                 Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
-            @Override
-            public void onSuccess(ResponseData<Player> response) {
-                hideProgress();
+                    @Override
+                    public void onSuccess(ResponseData<Player> response) {
+                        hideProgress();
 
-                if (response.getResultCode().equals("ok")) {
-                    mPlayerList = response.getList();
+                        if (response.getResultCode().equals("ok")) {
+                            mPlayerList = response.getList();
 
-                    //swap
-                    if (Global.guestOrdering != null) {
-                        for (int i = 0; i < Global.guestOrdering.size(); i++) {
-                            String flag = Global.guestOrdering.get(i);
-                            for (int j = i; j < mPlayerList.size(); j++) {
-                                if (flag.equals(mPlayerList.get(j).guest_id)) {
-                                    if (i == j) {
-                                        break;
+                            //swap
+                            if (Global.guestOrdering != null) {
+                                for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                                    String flag = Global.guestOrdering.get(i);
+                                    for (int j = i; j < mPlayerList.size(); j++) {
+                                        if (flag.equals(mPlayerList.get(j).guest_id)) {
+                                            if (i == j) {
+                                                break;
+                                            }
+
+                                            Collections.swap(mPlayerList, i, j);
+                                        }
                                     }
-
-                                    Collections.swap(mPlayerList, i, j);
                                 }
                             }
+
+                            //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+                            mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+                            Global.courseInfoList = getCtypedCourseforCourseList(Global.courseInfoList);
+
+                            if (Global.CurrentScoreCourse == null)
+                                Global.CurrentScoreCourse = mCourseList.get(0);
+
+                            if (Global.CurrentScoreCourse.holes.size() > 0) {
+                                Global.CurrentHole = Global.CurrentScoreCourse.holes.get(0);
+
+                                NUM_OF_COURSE = mCourseList.size();
+                                CourseTabBar = new TextView[NUM_OF_COURSE];
+
+                                createTabBar(CourseTabBar, Global.courseInfoList);
+                                initScoreBoard();
+                                getNearLongHole();
+                            } else {
+                                Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else if (response.getResultCode().equals("fail")) {
+                            Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
-               //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
-                     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
-                     Global.courseInfoList =  getCtypedCourseforCourseList(Global.courseInfoList);
-
-                    if (Global.CurrentScoreCourse == null)
-                        Global.CurrentScoreCourse = mCourseList.get(0);
-
-                    if(Global.CurrentScoreCourse.holes.size() > 0 ) {
-                        Global.CurrentHole = Global.CurrentScoreCourse.holes.get(0);
-
-                        NUM_OF_COURSE = mCourseList.size();
-                        CourseTabBar = new TextView[NUM_OF_COURSE];
-
-                        createTabBar(CourseTabBar, Global.courseInfoList);
-                        initScoreBoard();
-                        getNearLongHole();
-                    }else{
-                        Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onError(ResponseData<Player> response) {
+                        hideProgress();
+                        response.getError();
                     }
 
-                } else if (response.getResultCode().equals("fail")) {
-                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(ResponseData<Player> response) {
-                hideProgress();
-                response.getError();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                getReserveScore();
-                hideProgress();
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable t) {
+                        getReserveScore();
+                        hideProgress();
+                    }
+                });
     }
 
     private void refreshScore() {
         showProgress("스코어 정보를 갱신 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId,
                 "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
-            @Override
-            public void onSuccess(ResponseData<Player> response) {
-                hideProgress();
-                if (response.getResultCode().equals("ok")) {
-                    mPlayerList = response.getList();
+                    @Override
+                    public void onSuccess(ResponseData<Player> response) {
+                        hideProgress();
+                        if (response.getResultCode().equals("ok")) {
+                            mPlayerList = response.getList();
 
-                    //swap
-                    if (Global.guestOrdering != null) {
-                        for (int i = 0; i < Global.guestOrdering.size(); i++) {
-                            String flag = Global.guestOrdering.get(i);
-                            for (int j = i; j < mPlayerList.size(); j++) {
-                                if (flag.equals(mPlayerList.get(j).guest_id)) {
-                                    if (i == j) {
-                                        break;
+                            //swap
+                            if (Global.guestOrdering != null) {
+                                for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                                    String flag = Global.guestOrdering.get(i);
+                                    for (int j = i; j < mPlayerList.size(); j++) {
+                                        if (flag.equals(mPlayerList.get(j).guest_id)) {
+                                            if (i == j) {
+                                                break;
+                                            }
+
+                                            Collections.swap(mPlayerList, i, j);
+                                        }
                                     }
-
-                                    Collections.swap(mPlayerList, i, j);
                                 }
                             }
+
+                            createScoreTab(mPlayerList, mTabIdx);
+
+                        } else if (response.getResultCode().equals("fail")) {
+                            Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
-                    createScoreTab(mPlayerList, mTabIdx);
+                    @Override
+                    public void onError(ResponseData<Player> response) {
+                        hideProgress();
+                        response.getError();
+                    }
 
-                } else if (response.getResultCode().equals("fail")) {
-                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(ResponseData<Player> response) {
-                hideProgress();
-                response.getError();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                hideProgress();
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable t) {
+                        hideProgress();
+                    }
+                });
     }
 
     private void getNearLongHole() {
@@ -405,17 +409,17 @@ public class ScoreFragment extends BaseFragment {
                     int longest = -1;
                     if (course.contains(Global.courseInfoList.get(0).courseName)) {
                         if (response.course_near.equals(Global.courseInfoList.get(0).courseName)) {
-                            nearest = response.hole_no_near-1;
+                            nearest = response.hole_no_near - 1;
                         }
                         if (response.course_long.equals(Global.courseInfoList.get(0).courseName)) {
-                            longest = response.hole_no_long-1;
+                            longest = response.hole_no_long - 1;
                         }
                     } else if (course.contains(Global.courseInfoList.get(1).courseName)) {
                         if (response.course_near.equals(Global.courseInfoList.get(1).courseName)) {
-                            nearest = response.hole_no_near-1;
+                            nearest = response.hole_no_near - 1;
                         }
                         if (response.course_long.equals(Global.courseInfoList.get(1).courseName)) {
-                            longest = response.hole_no_long-1;
+                            longest = response.hole_no_long - 1;
                         }
                     }
 
@@ -428,17 +432,18 @@ public class ScoreFragment extends BaseFragment {
                     });
 
                     hideProgress();
+                    tabBar.findViewById(R.id.btn_gps).setEnabled(true);
                 }
             }
 
             @Override
             public void onError(ReserveGameType response) {
-
+                tabBar.findViewById(R.id.btn_gps).setEnabled(true);
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                tabBar.findViewById(R.id.btn_gps).setEnabled(true);
             }
         });
     }
@@ -458,14 +463,14 @@ public class ScoreFragment extends BaseFragment {
                 if (!advertsingContinue)
                     return;
 
-                switch(advertisingCount%3) {
-                    case 0 :
+                switch (advertisingCount % 3) {
+                    case 0:
                         changeAdvertising(ivAdvertising1, ivAdvertising2);
                         break;
-                    case 1 :
+                    case 1:
                         changeAdvertising(ivAdvertising2, ivAdvertising3);
                         break;
-                    case 2 :
+                    case 2:
                         changeAdvertising(ivAdvertising3, ivAdvertising1);
                         break;
                 }
@@ -489,7 +494,7 @@ public class ScoreFragment extends BaseFragment {
                     ivOut.setVisibility(View.GONE);
                     ivIn.setAnimation(slowly_appear);
                     ivIn.setVisibility(View.VISIBLE);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

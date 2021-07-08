@@ -114,6 +114,7 @@
         android:background="@drawable/shape_round_dark_bg"
         android:gravity="center"
         android:text="GPS"
+        android:enabled="false"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

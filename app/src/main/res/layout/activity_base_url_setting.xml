@@ -109,6 +109,32 @@
         app:layout_constraintTop_toBottomOf="@+id/edit" />
 
     <TextView
+        android:id="@+id/btn_silk_real"
+        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_round_shortcut_bg"
+        android:gravity="center"
+        android:text="Silk Real"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_com"
+        app:layout_constraintTop_toBottomOf="@+id/edit" />
+
+    <TextView
+        android:id="@+id/btn_silk_test"
+        style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Regular"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_round_shortcut_bg"
+        android:gravity="center"
+        android:text="Silk Test"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_silk_real"
+        app:layout_constraintTop_toBottomOf="@+id/edit" />
+
+    <TextView
         android:id="@+id/btn_close"
         style="@style/GlobalTextView.16SP.white.NotoSans.Bold"
         android:layout_width="62dp"

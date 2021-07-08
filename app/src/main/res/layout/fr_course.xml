@@ -182,6 +182,7 @@
             android:background="@drawable/ripple_blend_score_button"
             android:gravity="center"
             android:text="스코어"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

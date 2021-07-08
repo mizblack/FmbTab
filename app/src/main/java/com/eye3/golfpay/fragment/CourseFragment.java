@@ -28,6 +28,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
+import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ChangeCourseDialog;
 import com.eye3.golfpay.model.chat.ChatData;
@@ -160,9 +161,10 @@ public class CourseFragment extends BaseFragment {
             }
         });
 
-        mainView.findViewById(R.id.tv_score).setOnClickListener(new View.OnClickListener() {
+        mainView.findViewById(R.id.tv_score).setOnClickListener(new SingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
+                mainView.findViewById(R.id.tv_score).setEnabled(false);
                 GoNativeScreen(new ScoreFragment(), null);
                 (mParentActivity).getViewMenuFragment().selectMenu(R.id.view_score);
             }
@@ -378,7 +380,6 @@ public class CourseFragment extends BaseFragment {
 
             @Override
             public void onSuccess(ResponseData<Course> response) {
-                hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     mCourseInfoList = (ArrayList<Course>) response.getList();
                     Global.courseInfoList = mCourseInfoList;
@@ -421,6 +422,8 @@ public class CourseFragment extends BaseFragment {
                     }
 
                     setDrawPage(0);
+                    mainView.findViewById(R.id.tv_score).setEnabled(true);
+                    hideProgress();
 
                 } else if (response.getResultCode().equals("fail")) {
                     Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -430,11 +433,13 @@ public class CourseFragment extends BaseFragment {
             @Override
             public void onError(ResponseData<Course> response) {
                 hideProgress();
+                mainView.findViewById(R.id.tv_score).setEnabled(true);
             }
 
             @Override
             public void onFailure(Throwable t) {
                 hideProgress();
+                mainView.findViewById(R.id.tv_score).setEnabled(true);
             }
         });
     }
