@@ -308,17 +308,7 @@ public class TeeUpFragment extends BaseFragment {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 hideProgress();
-                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
-                GoNavigationDrawer(new LoginFragment(), null);
-
-                mParentActivity.setPreviousBaseFragment(new LoginFragment());
-                mParentActivity.GoRootScreenAdd(null);
-                mParentActivity.hideMainBottomBar();
-
-                //stopTimer(); //getTodayReservesForCaddy Timer Stop
-                ((MainActivity)mParentActivity).stopLocationUpdates();
-                //((MainActivity)mParentActivity).stopGpsTimerTask();
-                ((MainActivity)mParentActivity).stopTimerTask();
+                ((MainActivity)mParentActivity).logout();
             }
 
             @Override

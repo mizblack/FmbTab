@@ -7,15 +7,11 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Player implements Serializable, Comparable<Player>{
+public class GuestLight implements Serializable {
 
     @SerializedName("id")
     @Expose
-    public String guest_id;
-
-    @SerializedName("bagName")
-    @Expose
-    public String bagName;
+    public String id;
 
     @SerializedName("guestName")
     @Expose
@@ -25,13 +21,37 @@ public class Player implements Serializable, Comparable<Player>{
     @Expose
     public String reserve_id;
 
-    @SerializedName("teeoff")
+    @SerializedName("putting")
     @Expose
-    public String teeoff = "";
+    public String putting;
 
-    @SerializedName("team_no")
+    @SerializedName("tee_shot")
     @Expose
-    public int team_no = 0;
+    public String tee_shot = "";
+
+    @SerializedName("par")
+    @Expose
+    public String par = "";
+
+    @SerializedName("tar")
+    @Expose
+    public String tar = "";
+
+    @SerializedName("hole_no")
+    @Expose
+    public String hole_no = "";
+
+    @SerializedName("handiCap")
+    @Expose
+    public String handiCap = "";
+
+    @SerializedName("hole_total_size")
+    @Expose
+    public String hole_total_size = "";
+
+    @SerializedName("lastHoleNo")
+    @Expose
+    public int lastHoleNo = 0;
 
     @SerializedName("course")
     @Expose
@@ -45,9 +65,13 @@ public class Player implements Serializable, Comparable<Player>{
     @Expose
     public int totalTar;
 
-    @SerializedName("lastHoleNo")
+    @SerializedName("totalPutting")
     @Expose
-    public int lastHoleNo;
+    public int totalPutting;
+
+    @SerializedName("team_no")
+    @Expose
+    public int team_no;
 
     @SerializedName("Ranking")
     @Expose
@@ -57,18 +81,4 @@ public class Player implements Serializable, Comparable<Player>{
     @Expose
     public int totalRankingPutting;
 
-    @SerializedName("totalPutting")
-    @Expose
-    public int totalPutting;
-
-
-    @Override
-    public int compareTo(Player o) {
-        if (ranking < o.ranking) {
-            return -1;
-        } else if (ranking > o.ranking) {
-            return 1;
-        }
-        return 0;
-    }
 }

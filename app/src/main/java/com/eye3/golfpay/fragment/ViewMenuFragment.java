@@ -347,18 +347,7 @@ public class ViewMenuFragment extends BaseFragment {
             @Override
             public void onSuccess(ResponseData<Object> response) {
                 hideProgress();
-                ((MainActivity)mParentActivity).navigationView.setVisibility(View.VISIBLE);
-                GoNavigationDrawer(new LoginFragment(), null);
-
-                mParentActivity.closeFragment();
-                mParentActivity.setPreviousBaseFragment(new LoginFragment());
-                mParentActivity.GoRootScreenAdd(null);
-                mParentActivity.hideMainBottomBar();
-
-                ((MainActivity)mParentActivity).stopLocationUpdates();
-                //((MainActivity)mParentActivity).stopGpsTimerTask();
-                ((MainActivity)mParentActivity).stopTimerTask();
-
+                ((MainActivity)mParentActivity).logout();
                 AppDef.gOrderItemInvoiceArrayList = null;
                 AppDef.orderDetailList = null;
             }

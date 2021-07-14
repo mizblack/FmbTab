@@ -31,6 +31,7 @@ import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.teeup.Player;
+import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.view.TabCourseLinear;
@@ -281,50 +282,14 @@ public class ScoreFragment extends BaseFragment {
 
     private void getReserveScore() {
         showProgress("스코어 정보를 가져오는 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(),
-                Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScoreLight(getActivity(),
+                Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
                     @Override
-                    public void onSuccess(ResponseData<Player> response) {
-                        hideProgress();
-
+                    public void onSuccess(ResponseData<Player2> response) {
                         if (response.getResultCode().equals("ok")) {
-                            mPlayerList = response.getList();
-
-                            //swap
-                            if (Global.guestOrdering != null) {
-                                for (int i = 0; i < Global.guestOrdering.size(); i++) {
-                                    String flag = Global.guestOrdering.get(i);
-                                    for (int j = i; j < mPlayerList.size(); j++) {
-                                        if (flag.equals(mPlayerList.get(j).guest_id)) {
-                                            if (i == j) {
-                                                break;
-                                            }
-
-                                            Collections.swap(mPlayerList, i, j);
-                                        }
-                                    }
-                                }
-                            }
-
-                            //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
-                            mCourseList = getCtypedCourseForPlayerList(mPlayerList);
-                            Global.courseInfoList = getCtypedCourseforCourseList(Global.courseInfoList);
-
-                            if (Global.CurrentScoreCourse == null)
-                                Global.CurrentScoreCourse = mCourseList.get(0);
-
-                            if (Global.CurrentScoreCourse.holes.size() > 0) {
-                                Global.CurrentHole = Global.CurrentScoreCourse.holes.get(0);
-
-                                NUM_OF_COURSE = mCourseList.size();
-                                CourseTabBar = new TextView[NUM_OF_COURSE];
-
-                                createTabBar(CourseTabBar, Global.courseInfoList);
-                                initScoreBoard();
-                                getNearLongHole();
-                            } else {
-                                Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
-                            }
+                            hideProgress();
+                            ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                            scoreProcess(scoreConverter.adapter());
 
                         } else if (response.getResultCode().equals("fail")) {
                             Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
@@ -332,7 +297,7 @@ public class ScoreFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(ResponseData<Player> response) {
+                    public void onError(ResponseData<Player2> response) {
                         hideProgress();
                         response.getError();
                     }
@@ -343,6 +308,46 @@ public class ScoreFragment extends BaseFragment {
                         hideProgress();
                     }
                 });
+    }
+
+    private void scoreProcess(ResponseData<Player> score) {
+
+        mPlayerList = score.getList();
+        //swap
+        if (Global.guestOrdering != null) {
+            for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                String flag = Global.guestOrdering.get(i);
+                for (int j = i; j < mPlayerList.size(); j++) {
+                    if (flag.equals(mPlayerList.get(j).guest_id)) {
+                        if (i == j) {
+                            break;
+                        }
+
+                        Collections.swap(mPlayerList, i, j);
+                    }
+                }
+            }
+        }
+
+        //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+        mCourseList = getCtypedCourseForPlayerList(mPlayerList);
+        Global.courseInfoList = getCtypedCourseforCourseList(Global.courseInfoList);
+
+        if (Global.CurrentScoreCourse == null)
+            Global.CurrentScoreCourse = mCourseList.get(0);
+
+        if (Global.CurrentScoreCourse.holes.size() > 0) {
+            Global.CurrentHole = Global.CurrentScoreCourse.holes.get(0);
+
+            NUM_OF_COURSE = mCourseList.size();
+            CourseTabBar = new TextView[NUM_OF_COURSE];
+
+            createTabBar(CourseTabBar, Global.courseInfoList);
+            initScoreBoard();
+            getNearLongHole();
+        } else {
+            Toast.makeText(getActivity(), "홀정보가 없습니다. 관리자에게 연락하십시요.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void refreshScore() {

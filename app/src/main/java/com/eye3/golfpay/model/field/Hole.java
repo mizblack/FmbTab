@@ -29,6 +29,10 @@ public class Hole implements Serializable {
     @Expose
     public String par = "";
 
+    @SerializedName("handiCap")
+    @Expose
+    public String handiCap = "";
+
     @SerializedName("ctype")
     @Expose
     public String ctype;

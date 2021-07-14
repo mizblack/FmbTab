@@ -32,6 +32,7 @@ import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
+import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.util.FmbCustomDialog;
 
@@ -219,6 +220,33 @@ public class DataInterface extends BasicDataInterface {
 
                 @Override
                 public void onFailure(Call<ResponseData<Player>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
+                    showDialog(context, "getReserveScore", t.getMessage());
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getReserveScoreLight(final Context context, String reserve_id, String type, final ResponseCallback<ResponseData<Player2>> callback) {
+        try {
+            Call<ResponseData<Player2>> call = service.getReserveScoreLight(reserve_id, type);
+            call.enqueue(new Callback<ResponseData<Player2>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Player2>> call, Response<ResponseData<Player2>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Player2>> call, Throwable t) {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);

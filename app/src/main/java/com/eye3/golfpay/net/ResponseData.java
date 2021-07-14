@@ -24,7 +24,7 @@ public class ResponseData<T> {
 
 	@SerializedName("list")
 	@Expose
-	private List<T> list;
+	public List<T> list;
 
 	public String getResultCode() {
 		return resultCode;

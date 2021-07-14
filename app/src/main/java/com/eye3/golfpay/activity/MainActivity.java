@@ -60,6 +60,7 @@ import com.eye3.golfpay.service.CartLocationService;
 import com.eye3.golfpay.service.GpsTracker;
 import com.eye3.golfpay.util.DateUtils;
 import com.eye3.golfpay.util.Util;
+import com.eye3.golfpay.util.VincentyDistanceCalculator;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -90,6 +91,7 @@ import net.mrbin99.laravelechoandroid.channel.SocketIOPrivateChannel;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -124,6 +126,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private LocationCallback locationCallback;
     private static final int REQUEST_CHECK_SETTINGS = 33;
 
+    //실제 기록할 gps위치
+    double real_latitude = 0.0f;
+    double real_longitude = 0.0f;
+    int gpsFailCount = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,10 +163,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void initLocation() {
         mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(5000);
-        //mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        startGPSTimer();
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
         Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
@@ -204,7 +211,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
+
+                    //초기에는 무조건 값을 넣는다.
+                    if (real_latitude == 0.0f && real_longitude == 0.0f) {
+                        real_latitude = latitude;
+                        real_longitude = longitude;
+                    } else {
+                        if (Global.gameTimeStatus != Global.GameStatus.eEnd && Global.gameTimeStatus != Global.GameStatus.eNone) {
+                            double distance = VincentyDistanceCalculator.getDistance(real_latitude, real_longitude, latitude, longitude);
+                            if (distance < 10 || gpsFailCount > 3) {
+                                real_latitude = latitude;
+                                real_longitude = longitude;
+                                gpsFailCount = 0;
+                            } else  {
+                                gpsFailCount++;
+                            }
+                        } else {
+                            gpsFailCount = 0;
+                            real_latitude = latitude;
+                            real_longitude = longitude;
+                        }
+                    }
+
                     Log.d("locationCallback", String.format("%f, %f", latitude, longitude));
                 }
             }
@@ -236,16 +264,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void stopLocationUpdates() {
         if (fusedLocationClient != null)
             fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
 
-//    public void startLocationService() {
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            startForegroundService(new Intent(getApplicationContext(), CartLocationService.class));
-//        } else {
-//            startService(new Intent(getApplicationContext(), CartLocationService.class));
-//        }
-//    }
+        stopGpsTimerTask();
+    }
 
     public void openDrawerLayout() {
         if (drawer_layout != null)
@@ -286,7 +307,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
 
                 dlg.show();
-
             }
         });
 
@@ -475,66 +495,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    private int traversalByGuestId(String guestId) {
-        int index = 0;
-        for (int i = 0; i < Global.guestList.size(); i++) {
-            if (guestId.equals(Global.guestList.get(i).getId())) {
-                index = i;
-            }
-        }
-        return index;
-    }
-
-
-//    private final int LOCATION_REFRESH_DISTANCE = 1; // 30 meters. The Minimum Distance to be changed to get location update
-//    private final int MY_PERMISSIONS_REQUEST_LOCATION = 100;
-//    private final int interval = 3;
-//    public void startListeningUserLocation() {
-//
-//        // check for permissions
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//
-//            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, interval, LOCATION_REFRESH_DISTANCE, locationListener);
-//
-//        } else {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-//                // permission is denined by user, you can show your alert dialog here to send user to App settings to enable permission
-//            } else {
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{
-//                                Manifest.permission.ACCESS_FINE_LOCATION,
-//                                Manifest.permission.ACCESS_COARSE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_LOCATION);
-//            }
-//        }
-//    }
-
-    public void startListeningUserLocation2() {
-        gpsTracker = new GpsTracker(MainActivity.this);
-        startGPSTimer();
-    }
-
     TimerTask gpsTimerTask;
     Timer gpsTimer = new Timer();
     public void startGPSTimer() {
         gpsTimerTask = new TimerTask() {
-
             @Override
             public void run() {
-                gpsTracker.getLocation();
-                double latitude = gpsTracker.getLatitude();
-                double longitude = gpsTracker.getLongitude();
-
-//                UIThread.executeInUIThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(MainActivity.this, "현재위치 \n위도 " + latitude + "\n경도 " + longitude, Toast.LENGTH_LONG).show();
-//                    }
-//                });
-
-                sendGpsInfo(Global.CaddyNo, latitude, longitude, Global.reserveId);
+                sendGpsInfo(Global.CaddyNo, real_latitude, real_longitude, Global.reserveId);
             }
         };
 
@@ -552,33 +519,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             gpsTimerTask = null;
         }
     }
-
-    private void stopListeningUserLocation() {
-        mLocationManager.removeUpdates(locationListener);
-    }
-
-    //define the listener
-    LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            sendGpsInfo(Global.CaddyNo, location.getLatitude(), location.getLongitude(), Global.reserveId);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
 
     public void sendGpsInfo(String caddy_num, double lat, double lng, String reserve_id) {
 
@@ -933,6 +873,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 if (iGameTimerListener != null)
                     iGameTimerListener.onGameTimer();
+
+
+                //자정체크
+                Calendar rightNow = Calendar.getInstance();
+                int hour = rightNow.get(Calendar.HOUR);
+                int min = rightNow.get(Calendar.MINUTE);
+                if (hour == 0 && min == 0) {
+                    logout();
+                }
             }
         };
         timer.schedule(timerTask, 0, 1000);
@@ -947,6 +896,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             timerTask.cancel();
             timerTask = null;
         }
+    }
+
+    public void logout() {
+        navigationView.setVisibility(View.VISIBLE);
+        GoNavigationDrawer(new LoginFragment(), null);
+        setPreviousBaseFragment(new LoginFragment());
+        GoRootScreenAdd(null);
+        hideMainBottomBar();
+        stopLocationUpdates();
+        stopTimerTask();
     }
 
     double[][] latlng = {

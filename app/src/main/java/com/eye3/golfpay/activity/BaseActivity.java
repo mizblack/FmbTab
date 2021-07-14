@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.ser.Serializers;
 import java.util.Objects;
 
 
+//테스트커밋입니다.//
+//테틍앙러을아테스트테스트
 public class BaseActivity<T extends ViewDataBinding> extends FragmentActivity {
     protected String TAG = getClass().getSimpleName();
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 2000;

@@ -29,6 +29,7 @@ import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Player;
+import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 
 import okhttp3.MultipartBody;
@@ -63,6 +64,9 @@ public interface HttpService {
 
     @GET("getReserveScore?")
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
+
+    @GET("getReserveScoreTablet?")
+    Call<ResponseData<Player2>> getReserveScoreLight(@Query("reserve_id") String reserveId, @Query("type") String type);
 
     @POST("setReserveScore")
     Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);
