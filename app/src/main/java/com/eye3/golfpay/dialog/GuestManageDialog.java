@@ -189,13 +189,17 @@ public class GuestManageDialog extends Dialog {
             tvCarNumber.setHint("-");
         }
 
-        String phoneNumberFormat = PhoneNumberUtils.formatNumber(phoneNumber, Locale.getDefault().getCountry());
-        if (phoneNumberFormat == null)
-            phoneNumberFormat = "";
+        try {
+            String phoneNumberFormat = PhoneNumberUtils.formatNumber(phoneNumber, Locale.getDefault().getCountry());
+            if (phoneNumberFormat == null)
+                phoneNumberFormat = "";
 
-        tvPhoneNumber.setText(phoneNumberFormat);
-        if (phoneNumberFormat.isEmpty()) {
-            tvPhoneNumber.setHint("-");
+            tvPhoneNumber.setText(phoneNumberFormat);
+            if (phoneNumberFormat.isEmpty()) {
+                tvPhoneNumber.setHint("-");
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         if (!bagName.isEmpty()) {

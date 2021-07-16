@@ -313,21 +313,8 @@ public class ScoreFragment extends BaseFragment {
     private void scoreProcess(ResponseData<Player> score) {
 
         mPlayerList = score.getList();
-        //swap
-        if (Global.guestOrdering != null) {
-            for (int i = 0; i < Global.guestOrdering.size(); i++) {
-                String flag = Global.guestOrdering.get(i);
-                for (int j = i; j < mPlayerList.size(); j++) {
-                    if (flag.equals(mPlayerList.get(j).guest_id)) {
-                        if (i == j) {
-                            break;
-                        }
 
-                        Collections.swap(mPlayerList, i, j);
-                    }
-                }
-            }
-        }
+        swapScore();
 
         //     mCourseList = getCtypedCourseForPlayerList(mPlayerList);
         mCourseList = getCtypedCourseForPlayerList(mPlayerList);
@@ -352,30 +339,15 @@ public class ScoreFragment extends BaseFragment {
 
     private void refreshScore() {
         showProgress("스코어 정보를 갱신 중입니다.");
-        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScore(getActivity(), Global.reserveId,
-                "null", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScoreLight(getActivity(), Global.reserveId,
+                "null", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
                     @Override
-                    public void onSuccess(ResponseData<Player> response) {
+                    public void onSuccess(ResponseData<Player2> response) {
                         hideProgress();
                         if (response.getResultCode().equals("ok")) {
-                            mPlayerList = response.getList();
-
-                            //swap
-                            if (Global.guestOrdering != null) {
-                                for (int i = 0; i < Global.guestOrdering.size(); i++) {
-                                    String flag = Global.guestOrdering.get(i);
-                                    for (int j = i; j < mPlayerList.size(); j++) {
-                                        if (flag.equals(mPlayerList.get(j).guest_id)) {
-                                            if (i == j) {
-                                                break;
-                                            }
-
-                                            Collections.swap(mPlayerList, i, j);
-                                        }
-                                    }
-                                }
-                            }
-
+                            ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                            mPlayerList = scoreConverter.adapter().getList();
+                            swapScore();
                             createScoreTab(mPlayerList, mTabIdx);
 
                         } else if (response.getResultCode().equals("fail")) {
@@ -384,7 +356,7 @@ public class ScoreFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(ResponseData<Player> response) {
+                    public void onError(ResponseData<Player2> response) {
                         hideProgress();
                         response.getError();
                     }
@@ -394,6 +366,23 @@ public class ScoreFragment extends BaseFragment {
                         hideProgress();
                     }
                 });
+    }
+
+    private void swapScore() {
+        if (Global.guestOrdering != null) {
+            for (int i = 0; i < Global.guestOrdering.size(); i++) {
+                String flag = Global.guestOrdering.get(i);
+                for (int j = i; j < mPlayerList.size(); j++) {
+                    if (flag.equals(mPlayerList.get(j).guest_id)) {
+                        if (i == j) {
+                            break;
+                        }
+
+                        Collections.swap(mPlayerList, i, j);
+                    }
+                }
+            }
+        }
     }
 
     private void getNearLongHole() {

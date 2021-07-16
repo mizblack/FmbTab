@@ -25,21 +25,22 @@
             android:layout_marginEnd="120dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_GolfId"
+            <TextView
+                android:id="@+id/tv_caddy_name"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="골프장 ID"
-                android:inputType="textWebEditText"
+                android:hint="캐디를 선택해 주세요"
+                android:inputType="text"
                 android:maxLines="1"
                 android:paddingStart="20dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/mediumTurquoise"
                 android:textSize="24dp"
                 android:textStyle="bold"
-                android:visibility="gone"
+                android:drawableRight="@drawable/ic_expand_more_white_24dp"
+                android:paddingRight="12dp"
                 tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
 
             <View
@@ -49,8 +50,8 @@
                 android:visibility="gone"
                 android:background="@color/white" />
 
-            <EditText
-                android:id="@+id/nameEditText"
+            <TextView
+                android:id="@+id/nameText"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@null"

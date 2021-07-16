@@ -24,6 +24,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.teeup.Player;
+import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
@@ -479,17 +480,19 @@ public class RankingFragment extends BaseFragment {
 
     private void getReserveScore(String type) {
         showProgress("랭킹 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+        DataInterface.getInstance().getReserveScoreLight(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
             @Override
-            public void onSuccess(ResponseData<Player> response) {
+            public void onSuccess(ResponseData<Player2> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
-                    mPlayerList = response.getList();
+                    //mPlayerList = response.getList();
+                    ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                    mPlayerList = scoreConverter.adapter().getList();
+
                     mPlayerList.sort(Comparator.naturalOrder());
                     mCourseList = Global.courseInfoList;
-                    NUM_OF_COURSE = response.getList().get(0).course.size(); //코스수를 지정한다. courseNum 을 요청할것
+                    NUM_OF_COURSE = mPlayerList.get(0).course.size(); //코스수를 지정한다. courseNum 을 요청할것
                     holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
-
                     initRecyclerView(mRankingRecyclerView, mPlayerList);
 
                 } else if (response.getResultCode().equals("fail")) {
@@ -498,7 +501,7 @@ public class RankingFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(ResponseData<Player> response) {
+            public void onError(ResponseData<Player2> response) {
                 hideProgress();
                 response.getError();
             }

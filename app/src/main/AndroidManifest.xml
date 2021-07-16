@@ -34,6 +34,10 @@
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateAlwaysVisible"
             tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".activity.CaddySelectActivity"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateAlwaysVisible"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".activity.BaseURLSettingActivity"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateAlwaysVisible"

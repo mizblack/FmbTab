@@ -28,6 +28,7 @@ import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
+import com.eye3.golfpay.model.teeup.Caddy;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
@@ -54,6 +55,9 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("caddyLogin")
     Call<Login> doCaddyLogin(@Field("id") String id, @Field("pwd") String pwd);
+
+    @GET("getAllCaddyList")
+    Call<ResponseData<Caddy>> getAllCaddyList();
 
     @FormUrlEncoded
     @POST("getTodayReservesForCaddy")

@@ -24,20 +24,24 @@ import androidx.annotation.Nullable;
 
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.BaseURLSettingActivity;
+import com.eye3.golfpay.activity.CaddySelectActivity;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.dialog.YesNoDialog;
 import com.eye3.golfpay.model.info.VersionInfo;
 import com.eye3.golfpay.model.login.Login;
+import com.eye3.golfpay.model.teeup.Caddy;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 import com.eye3.golfpay.net.DataInterface;
+import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Security;
 import com.eye3.golfpay.util.Util;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Objects;
 
 import javax.crypto.BadPaddingException;
@@ -48,7 +52,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class LoginFragment extends BaseFragment {
     TextView mStartTextView;
-    EditText editId, editPwd;
+    EditText editPwd;
+    TextView Id, caddyName;
     ImageView mCancelIcon;
     CheckBox cbSave;
     String golfId;
@@ -63,17 +68,17 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fr_drawer_login, container, false);
-        //editGolfId = v.findViewById(R.id.edit_GolfId);
+        caddyName = v.findViewById(R.id.tv_caddy_name);
         editPwd = v.findViewById(R.id.phoneNumberEditText);
-        editId = v.findViewById(R.id.nameEditText);
+        Id = v.findViewById(R.id.nameText);
         mStartTextView = v.findViewById(R.id.startTextView);
         mCancelIcon = v.findViewById(R.id.cancelIcon);
         cbSave = v.findViewById(R.id.cb_save);
         init(v);
-
         checkUpdate();
 
         SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
+        String name = pref.getString("name", "");
         String id = pref.getString("id", "");
         String pwd = pref.getString("password", "");
         boolean check = pref.getBoolean("save", false);
@@ -85,8 +90,17 @@ public class LoginFragment extends BaseFragment {
 //        }
 
         //editGolfId.setText(golfId);
-        editId.setText(id);
+        caddyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CaddySelectActivity.class);
+                startActivityForResult(intent, CaddySelectActivity.Id);
+            }
+        });
+
+        Id.setText(id);
         editPwd.setText(pwd);
+        caddyName.setText(name);
         cbSave.setChecked(check);
 
         Bundle bundle = getArguments();
@@ -137,7 +151,7 @@ public class LoginFragment extends BaseFragment {
             public void onSingleClick(View v) {
 
                 try {
-                    login(editId.getText().toString().trim(), Security.encrypt(editPwd.getText().toString()));
+                    login(Id.getText().toString().trim(), Security.encrypt(editPwd.getText().toString()));
                 } catch (NoSuchPaddingException
                         | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException
@@ -147,7 +161,7 @@ public class LoginFragment extends BaseFragment {
                     e.printStackTrace();
                 }
 
-                closeKeyboard(editId);
+                closeKeyboard(Id);
                 closeKeyboard(editPwd);
             }
         });
@@ -193,17 +207,18 @@ public class LoginFragment extends BaseFragment {
                     getTodayReservesForCaddy(getContext(), Global.CaddyNo);
 
                     if (cbSave.isChecked()) {
-                        saveAccount(golfId, id, editPwd.getText().toString(), true);
+                        saveAccount(golfId, id, caddyName.getText().toString(), editPwd.getText().toString(), true);
                     } else {
-                        saveAccount("", "", "", false);
+                        saveAccount("", "", "","", false);
                     }
 
                 } else {
                     Toast.makeText(getActivity(), "ID와 패스워드를 확인해주세요", Toast.LENGTH_SHORT).show();
-                    editId.setEnabled(true);
+                    Id.setEnabled(true);
                     editPwd.setEnabled(true);
-                    editId.setText("");
+                    Id.setText("");
                     editPwd.setText("");
+                    caddyName.setText("");
                 }
             }
 
@@ -221,12 +236,13 @@ public class LoginFragment extends BaseFragment {
         });
     }
 
-    private void saveAccount(String golfId, String id, String pwd, boolean check) {
+    private void saveAccount(String golfId, String id, String name, String pwd, boolean check) {
         try {
             SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("golf_id", golfId);
             editor.putString("id", id);
+            editor.putString("name", name);
             editor.putString("password", pwd);
             editor.putBoolean("save", check);
             editor.apply();
@@ -364,7 +380,13 @@ public class LoginFragment extends BaseFragment {
         if (requestCode == BaseURLSettingActivity.Id && resultCode == 100) {
             SharedPreferences pref = getActivity().getSharedPreferences("config", MODE_PRIVATE);
             String id = pref.getString("id", "");
-            editId.setText(id);
+            Id.setText(id);
+        } else if (requestCode == CaddySelectActivity.Id && resultCode == 100) { //get All Caddy
+            String id = data.getStringExtra("email");
+            String name = data.getStringExtra("name");
+            caddyName.setText(name);
+            Id.setText(id);
+            editPwd.setText("");
         }
     }
 }

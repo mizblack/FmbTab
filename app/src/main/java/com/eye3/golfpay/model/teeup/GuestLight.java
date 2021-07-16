@@ -17,10 +17,6 @@ public class GuestLight implements Serializable {
     @Expose
     public String guestName;
 
-    @SerializedName("reserve_id")
-    @Expose
-    public String reserve_id;
-
     @SerializedName("putting")
     @Expose
     public String putting;

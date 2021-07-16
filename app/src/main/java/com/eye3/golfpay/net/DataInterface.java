@@ -31,6 +31,7 @@ import com.eye3.golfpay.model.order.StoreOrder;
 import com.eye3.golfpay.model.photo.PhotoResponse;
 import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
+import com.eye3.golfpay.model.teeup.Caddy;
 import com.eye3.golfpay.model.teeup.Player;
 import com.eye3.golfpay.model.teeup.Player2;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
@@ -151,6 +152,33 @@ public class DataInterface extends BasicDataInterface {
                     if (callback == null) return;
                     t.printStackTrace();
                     callback.onFailure(t);
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getAllCaddyList(Context context, final ResponseCallback<ResponseData<Caddy>> callback) {
+        try {
+            Call<ResponseData<Caddy>> call = service.getAllCaddyList();
+            call.enqueue(new Callback<ResponseData<Caddy>>() {
+                @Override
+                public void onResponse(Call<ResponseData<Caddy>> call, Response<ResponseData<Caddy>> response) {
+                    solveCommonError(context, callback, response, false);
+                }
+
+                @Override
+                public void onFailure(Call<ResponseData<Caddy>> call, Throwable t) {
+                    if (callback == null) return;
+                    t.printStackTrace();
+                    callback.onFailure(t);
+
+                    if (t.getMessage().contains("ETIMEDOUT")) {
+                        return;
+                    }
+
+                    showDialog(context, "getCourseInfo", t.getMessage());
                 }
             });
         } catch (Exception ex) {

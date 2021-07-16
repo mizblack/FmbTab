@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.exifinterface.media.ExifInterface;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -900,6 +901,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public void logout() {
         navigationView.setVisibility(View.VISIBLE);
+        closeFragment();
         GoNavigationDrawer(new LoginFragment(), null);
         setPreviousBaseFragment(new LoginFragment());
         GoRootScreenAdd(null);

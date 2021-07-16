@@ -33,8 +33,8 @@ public class ScoreConverter {
             player.guest_id = guests.get(i).id;
             player.bagName = "";
             player.guestName = guests.get(i).guestName;
-            player.reserve_id = guests.get(i).reserve_id;
-            player.course = getCourse();
+            player.reserve_id = getLastReserveId(guests.get(i).id);
+            player.course = getCourse(i);
             player.totalPar = guests.get(i).totalPar;
             player.totalTar = guests.get(i).totalTar;
             player.totalRankingPutting = guests.get(i).totalPutting;
@@ -59,7 +59,7 @@ public class ScoreConverter {
         return guests.size();
     }
 
-    private List<Course> getCourse() {
+    private List<Course> getCourse(int guestIndex) {
         List<Course> courses = new ArrayList<>();
 
         for (int courseIndex = 0; courseIndex < response.size(); courseIndex++) {
@@ -76,12 +76,11 @@ public class ScoreConverter {
                 hole.hole_no = getHoleToken(response.get(courseIndex).hole_no, i, null);
                 hole.handiCap = getHoleToken(response.get(courseIndex).handiCap, i, null);
                 hole.hole_total_size = getHoleToken(response.get(courseIndex).hole_total_size, i, null);
-                hole.playedScore = getPlayedScore(courseIndex, i);
+                hole.playedScore = getPlayedScore(guestIndex, i);
                 course.holes.add(hole);
             }
             courses.add(course);
         }
-
 
         return courses;
     }
@@ -95,7 +94,7 @@ public class ScoreConverter {
     private String getHoleToken(String tokenizer, int index, String defaultValue) {
         String[] tokens = tokenizer.split(",");
 
-        if (tokens == null || tokens.length == 0) {
+        if (tokens == null || tokens.length == 0 || tokens.length <= index) {
             return defaultValue == null ? "" : defaultValue;
         }
 

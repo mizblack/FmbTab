@@ -398,6 +398,11 @@ public class CaddieFragment extends BaseFragment implements ICaddyNoteListener  
                     CaddyNoteInfo caddyNoteInfo = response.getData().get(i);
                     CaddieGuestItem view = (CaddieGuestItem)viewMain.getChildAt(i);
                     ClubInfo clubInfo = makeClubInfo(caddyNoteInfo);
+
+                    if (caddieInfo.getGuestInfo().size() <= i) {
+                        break;
+                    }
+
                     caddieInfo.getGuestInfo().get(i).clubInfo = clubInfo;
                     view.drawName(caddieInfo.getGuestInfo().get(i).getGuestName(), caddieInfo.getGuestInfo().get(i).getBagName());
                     view.drawClubInfo(clubInfo);

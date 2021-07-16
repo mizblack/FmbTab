@@ -77,7 +77,7 @@ public class GuestSettingActivity extends AppCompatActivity {
 
         editText.setHint(value);
 
-        if (type.equals("memo") || type.equals("club")) {
+        if (type.equals("memo") || type.equals("club") || type.equals("name")) {
             assert value != null;
             if (!value.isEmpty()) {
                 editText.setText(value);
