@@ -124,6 +124,11 @@ public class FmbCustomDialog extends Dialog {
         this.mSingleTitle = btnTitle;
     }
 
+    public void setContent(String msg) {
+        this.mContent = msg;
+        mContentView.setText(mContent);
+    }
+
     // 클릭버튼이 확인과 취소 두개일때 생성자 함수로 이벤트를 받는다
     public FmbCustomDialog(Context context, String title, String content, String leftBtnTitle, String rightBtnTitle,
                            View.OnClickListener leftListener,

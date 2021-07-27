@@ -66,7 +66,7 @@ public class RankingFragment extends BaseFragment {
         } else {
             type = "group";
         }
-        getReserveScore(type);
+        getReserveScore2(type);
     }
 
     @Override
@@ -476,6 +476,39 @@ public class RankingFragment extends BaseFragment {
         public int getItemCount() {
             return playerList.size();
         }
+    }
+
+    private void getReserveScore2(String type) {
+        showProgress("랭킹 정보를 가져오는 중입니다.");
+        DataInterface.getInstance().getReserveScore(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player>>() {
+            @Override
+            public void onSuccess(ResponseData<Player> response) {
+                hideProgress();
+                if (response.getResultCode().equals("ok")) {
+                    mPlayerList = response.getList();
+                    mPlayerList.sort(Comparator.naturalOrder());
+                    mCourseList = Global.courseInfoList;
+                    NUM_OF_COURSE = response.getList().get(0).course.size(); //코스수를 지정한다. courseNum 을 요청할것
+                    holeInfoLinear = new TextView[NUM_OF_COURSE][NUM_OF_HOLE];
+
+                    initRecyclerView(mRankingRecyclerView, mPlayerList);
+
+                } else if (response.getResultCode().equals("fail")) {
+                    Toast.makeText(getActivity(), response.getResultMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ResponseData<Player> response) {
+                hideProgress();
+                response.getError();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                hideProgress();
+            }
+        });
     }
 
     private void getReserveScore(String type) {

@@ -17,7 +17,7 @@ public class ScoreConverter {
 
     private List<Player2> response;
     private ResponseData<Player> score = new ResponseData<>();
-    private List<GuestLight> guests = new ArrayList<>();
+    private List<GuestLight[]> guests = new ArrayList<GuestLight[]>();
 
     public ScoreConverter(List<Player2> responseData) {
         this.response = responseData;
@@ -26,21 +26,29 @@ public class ScoreConverter {
     public ResponseData<Player> adapter() {
         setGuestData();
         score.list = new ArrayList<>();
-        int guestCount = getTotalGuestCount();
+
+        //전반 후반
+        for (int courseIndex = 0; courseIndex < 2; courseIndex++) {
+
+
+
+        }
+
+        int guestCount = getTotalGuestCount(0);
         for (int i = 0; i < guestCount; i++) {
             Player player = new Player();
 
-            player.guest_id = guests.get(i).id;
+            player.guest_id = guests.get(0)[i].id;
             player.bagName = "";
-            player.guestName = guests.get(i).guestName;
-            player.reserve_id = getLastReserveId(guests.get(i).id);
+            player.guestName = guests.get(0)[i].guestName;
+            player.reserve_id = getLastReserveId(guests.get(0)[i].id);
             player.course = getCourse(i);
-            player.totalPar = guests.get(i).totalPar;
-            player.totalTar = guests.get(i).totalTar;
-            player.totalRankingPutting = guests.get(i).totalPutting;
-            player.totalRankingPutting = guests.get(i).totalRankingPutting;
-            player.ranking = guests.get(i).ranking;
-            player.lastHoleNo = getLastHoleNumber(guests.get(i).id);
+            player.totalPar = guests.get(0)[i].totalPar;
+            player.totalTar = guests.get(0)[i].totalTar;
+            player.totalRankingPutting = guests.get(0)[i].totalPutting;
+            player.totalRankingPutting = guests.get(0)[i].totalRankingPutting;
+            player.ranking = guests.get(0)[i].ranking;
+            player.lastHoleNo = getLastHoleNumber(guests.get(0)[i].id);
 
             score.getList().add(player);
         }
@@ -50,13 +58,23 @@ public class ScoreConverter {
     }
 
     private void setGuestData() {
-        for (ScoreReserve scoreReserve : response.get(0).reserves) {
-            guests.addAll(scoreReserve.guest);
+        GuestLight[][] guestLights = new GuestLight[2][];
+        guestLights[0] = new GuestLight[response.get(0).reserves.get(0).guest.size()];
+        guestLights[1] = new GuestLight[response.get(1).reserves.get(0).guest.size()];
+
+        for (int i = 0; i < response.get(0).reserves.get(0).guest.size(); i++) {
+            guestLights[0][i] = response.get(0).reserves.get(0).guest.get(i);
         }
+        for (int i = 0; i < response.get(1).reserves.get(0).guest.size(); i++) {
+            guestLights[1][i] = response.get(1).reserves.get(0).guest.get(i);
+        }
+
+        guests.add(guestLights[0]);
+        guests.add(guestLights[1]);
     }
 
-    private int getTotalGuestCount() {
-        return guests.size();
+    private int getTotalGuestCount(int courseIdx) {
+        return guests.get(courseIdx).length;
     }
 
     private List<Course> getCourse(int guestIndex) {
@@ -76,7 +94,7 @@ public class ScoreConverter {
                 hole.hole_no = getHoleToken(response.get(courseIndex).hole_no, i, null);
                 hole.handiCap = getHoleToken(response.get(courseIndex).handiCap, i, null);
                 hole.hole_total_size = getHoleToken(response.get(courseIndex).hole_total_size, i, null);
-                hole.playedScore = getPlayedScore(guestIndex, i);
+                hole.playedScore = getPlayedScore(courseIndex, guestIndex, i);
                 course.holes.add(hole);
             }
             courses.add(course);
@@ -104,12 +122,12 @@ public class ScoreConverter {
         return tokens[index];
     }
 
-    private Score getPlayedScore(int index, int holeIndex) {
+    private Score getPlayedScore(int courseIndex, int index, int holeIndex) {
         Score score = new Score();
-        score.par = getHoleToken(guests.get(index).par, holeIndex, "-");
-        score.tar = getHoleToken(guests.get(index).tar, holeIndex, "-");
-        score.putting = getHoleToken(guests.get(index).putting, holeIndex, "-");
-        score.teeShot = getHoleToken(guests.get(index).tee_shot, holeIndex, null);
+        score.par = getHoleToken(guests.get(courseIndex)[index].par, holeIndex, "-");
+        score.tar = getHoleToken(guests.get(courseIndex)[index].tar, holeIndex, "-");
+        score.putting = getHoleToken(guests.get(courseIndex)[index].putting, holeIndex, "-");
+        score.teeShot = getHoleToken(guests.get(courseIndex)[index].tee_shot, holeIndex, null);
 
         return score;
     }

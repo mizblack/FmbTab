@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/ebonyBlack">
 
     <LinearLayout
@@ -162,17 +162,18 @@
                         style="@style/GlobalTextView.14SP.White.NotoSans.Medium"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:gravity="center"
-                        android:visibility="gone"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/shape_oval_red"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="1" />
+                        android:background="@drawable/shape_oval_red"
+                        android:gravity="center"
+                        android:text="1"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
             </FrameLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,20 +199,20 @@
                     android:id="@+id/btn_menu_control"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground" >
+                    android:background="?attr/selectableItemBackground">
 
                     <TextView
                         android:id="@+id/tv_control_new"
                         style="@style/GlobalTextView.14SP.White.NotoSans.Medium"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:gravity="center"
                         android:layout_alignParentRight="true"
-                        android:background="@drawable/shape_oval_red"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:visibility="gone"
-                        android:text="22" />
+                        android:background="@drawable/shape_oval_red"
+                        android:gravity="center"
+                        android:text="22"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
             </FrameLayout>
@@ -255,8 +256,8 @@
                     android:id="@+id/btn_menu_team"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:foreground="#aa555555"
-                    android:background="?attr/selectableItemBackground" />
+                    android:background="?attr/selectableItemBackground"
+                    android:foreground="#aa555555" />
             </FrameLayout>
 
             <FrameLayout
@@ -276,8 +277,8 @@
                     android:id="@+id/btn_menu_beto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:foreground="#aa555555"
-                    android:background="?attr/selectableItemBackground" />
+                    android:background="?attr/selectableItemBackground"
+                    android:foreground="#aa555555" />
             </FrameLayout>
 
         </LinearLayout>
@@ -314,8 +315,8 @@
                 android:id="@+id/view_special_camera"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="2dp"
+                android:layout_weight="1"
                 android:background="@color/FMB_Color_494B4E">
 
                 <ImageView
@@ -336,8 +337,8 @@
                 android:id="@+id/view_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="2dp"
+                android:layout_weight="1"
                 android:background="@color/FMB_Color_494B4E">
 
                 <ImageView
@@ -387,35 +388,61 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/btn_logout"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginStart="14dp"
-        android:src="@drawable/exit_transparent"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintStart_toEndOf="@+id/btn_home"
-        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie">
 
-    <ImageView
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="14dp"
+            android:src="@drawable/exit_transparent" />
+
+        <TextView
+            style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:text="로그아웃" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/btn_home"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:src="@drawable/btn_home"
         android:layout_marginStart="18dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintStart_toEndOf="@+id/tv_caddie"
-        app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
+        app:layout_constraintTop_toTopOf="@+id/tv_caddie">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/btn_home" />
+
+        <TextView
+            style="@style/GlobalTextView.20SP.white.NotoSans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:text="예약목록" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/btn_close"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="38dp"
         android:src="@drawable/btn_menu_close"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/tv_caddie"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="38dp"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/tv_caddie" />
 
 

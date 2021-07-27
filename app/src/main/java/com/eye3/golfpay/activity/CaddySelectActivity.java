@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CaddySelectActivity extends AppCompatActivity {
+public class CaddySelectActivity extends BaseActivity {
     static public final int Id = 0x7234;
     private RecyclerView recyclerView;
     String golfId;

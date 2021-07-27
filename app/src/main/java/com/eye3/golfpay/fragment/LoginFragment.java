@@ -53,7 +53,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class LoginFragment extends BaseFragment {
     TextView mStartTextView;
     EditText editPwd;
-    TextView Id, caddyName;
+    EditText Id;
+    TextView caddyName;
     ImageView mCancelIcon;
     CheckBox cbSave;
     String golfId;

@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.eye3.golfpay.R;
 
 /**
@@ -19,7 +22,6 @@ public class PopupDialog extends Dialog {
     private TextView tvSender;
     private TextView tvTime;
     private IListenerDialogTouch mListener;
-
     public interface  IListenerDialogTouch {
         void onTouch();
     }

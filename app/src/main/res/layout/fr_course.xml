@@ -155,7 +155,7 @@
                 android:id="@+id/tbox4"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="36dp"
                 app:layout_constraintStart_toEndOf="@+id/tbox1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:oval_color="#416f9d"
@@ -275,10 +275,10 @@
                 <TextView
                     android:id="@+id/textView"
                     style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="274M"
+                    android:text="2740M"
                     android:textColor="@color/ebonyBlack"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_arrow1"
                     app:layout_constraintStart_toEndOf="@+id/iv_arrow1"
@@ -314,10 +314,10 @@
                 <TextView
                     android:id="@+id/textView2"
                     style="@style/GlobalTextView.16SP.ebonyBlack.NotoSans.Medium"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="243M"
+                    android:text="2403M"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_spot2"
                     app:layout_constraintStart_toEndOf="@+id/iv_arrow3"
                     app:layout_constraintTop_toTopOf="@+id/iv_spot2" />
@@ -396,7 +396,7 @@
             style="@style/GlobalTextView.52SP.irisBlue.NotoSans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="73M"
+            android:text="--- M"
             app:layout_constraintStart_toStartOf="@+id/textView9"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 

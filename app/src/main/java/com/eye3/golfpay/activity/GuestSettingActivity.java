@@ -16,7 +16,7 @@ import com.eye3.golfpay.R;
 
 import java.util.Objects;
 
-public class GuestSettingActivity extends AppCompatActivity {
+public class GuestSettingActivity extends BaseActivity {
     static public final int Id = 0x8834;
     private EditText editText;
     private String type;

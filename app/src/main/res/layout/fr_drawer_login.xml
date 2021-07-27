@@ -41,7 +41,8 @@
                 android:textStyle="bold"
                 android:drawableRight="@drawable/ic_expand_more_white_24dp"
                 android:paddingRight="12dp"
-                tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage" />
+                tools:ignore="Autofill,HardcodedText,RtlSymmetry,SpUsage"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/golfIdDivider"
@@ -50,7 +51,7 @@
                 android:visibility="gone"
                 android:background="@color/white" />
 
-            <TextView
+            <EditText
                 android:id="@+id/nameText"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"

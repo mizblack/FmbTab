@@ -21,6 +21,14 @@ public class ResponseCartInfo {
     @Expose
     public int here_to_hole;
 
+    @SerializedName("hole_lat")
+    @Expose
+    public double hole_lat;
+
+    @SerializedName("hole_lng")
+    @Expose
+    public double hole_lon;
+
     @SerializedName("time_data")
     @Expose
     public TimeData time_data;

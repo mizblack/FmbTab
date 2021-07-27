@@ -40,6 +40,16 @@ public class ReserveScore implements Serializable {
 
     public ReserveScore(List<Player> playerList,  String reserve_id, String hole_id, int tabIdx, int mHoleScoreLayoutIdx) {
         for (int i = 0; playerList.size() > i; i++) {
+
+            if (tabIdx == 0) {
+                if (i >= playerList.size()/2) {
+                    break;
+                }
+            } else  {
+                if (i < playerList.size()/2) {
+                    continue;
+                }
+            }
             Hole aHole = playerList.get(i).course.get(tabIdx).holes.get(mHoleScoreLayoutIdx);
 
             guest_score_list.add(new ScoreSend(playerList.get(i).guest_id, aHole.playedScore.par,

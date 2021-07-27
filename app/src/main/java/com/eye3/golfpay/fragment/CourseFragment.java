@@ -3,7 +3,6 @@ package com.eye3.golfpay.fragment;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,13 +30,10 @@ import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.common.UIThread;
 import com.eye3.golfpay.dialog.ChangeCourseDialog;
-import com.eye3.golfpay.model.chat.ChatData;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.field.Hole;
-import com.eye3.golfpay.model.gallery.ResponseGallery;
 import com.eye3.golfpay.model.gps.CartPos;
 import com.eye3.golfpay.model.gps.GpsInfo;
-import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.gps.TimeData;
 import com.eye3.golfpay.net.DataInterface;
@@ -47,8 +43,12 @@ import com.eye3.golfpay.view.CartPosView;
 import com.eye3.golfpay.view.GpsView;
 import com.eye3.golfpay.view.HoleCupPointView;
 import com.eye3.golfpay.view.TeeShotSpotView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.eye3.golfpay.common.Global.GameStatus.eNone;
 
 public class CourseFragment extends BaseFragment {
@@ -81,11 +81,13 @@ public class CourseFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAllCourseInfo(getActivity());
+        startTimerTask();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopTimerTask();
         advertsingContinue = false;
     }
 
@@ -238,14 +240,10 @@ public class CourseFragment extends BaseFragment {
             return;
 
         int position = 0;
-        if (!BuildConfig.DEBUG) {
-            Global.CurrentCourse = getCurrentCourse(cartInfo.nearby_hole_list);
-            position = getCurrentHoleIndex(cartInfo.nearby_hole_list);
-            if (position < 0)
-                return;
-        } else {
-            position = 0;
-        }
+        Global.CurrentCourse = getCurrentCourse(cartInfo.nearby_hole_list);
+        position = getCurrentHoleIndex(cartInfo.nearby_hole_list);
+        if (position < 0)
+            return;
 
         Hole currentHole = Global.CurrentCourse.holes.get(position);
         Hole prevHole = null;
@@ -264,13 +262,6 @@ public class CourseFragment extends BaseFragment {
 
         if (cartInfo.here_to_hole > 1000)
             cartInfo.here_to_hole = 999;
-
-        if (!Global.isYard) {
-            tvHereToHole.setText(String.format("%dM", cartInfo.here_to_hole));
-        } else {
-            int yard = AppDef.MeterToYard(cartInfo.here_to_hole);
-            tvHereToHole.setText(String.format("%dYD", yard));
-        }
 
         cartPosView.clearCart();
         for (GpsInfo gpsInfo : cartInfo.nearby_hole_list) {
@@ -680,6 +671,45 @@ public class CourseFragment extends BaseFragment {
         dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
         dlg.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dlg.show();
+    }
+
+    TimerTask timerTask;
+    Timer timer = new Timer();
+    public void startTimerTask() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+
+                if (tvHereToHole == null)
+                    return;
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int hereToHole = ((MainActivity)getActivity()).hereToHole;
+
+                        if (hereToHole > 1000) {
+                            tvHereToHole.setText("--- M");
+                            return;
+                        }
+                        if (!Global.isYard) {
+                            tvHereToHole.setText(String.format("%dM", hereToHole));
+                        } else {
+                            int yard = AppDef.MeterToYard(hereToHole);
+                            tvHereToHole.setText(String.format("%dYD", yard));
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, 1000);
+    }
+
+    public void stopTimerTask() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +19,13 @@ import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gps.CType;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
+import com.eye3.golfpay.util.Util;
 
 /**
  * Created by Administrator on 2017-09-22.
  */
 
 public class ChangeCourseDialog extends Dialog {
-
 
     public interface  IListenerDialog {
         void onChangeCourse();
@@ -84,7 +85,26 @@ public class ChangeCourseDialog extends Dialog {
         tvSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeCourse(getContext(), tvBeginChangeCourse.getText().toString(), tvEndChangeCourse.getText().toString());
+
+                YesNoDialog dlg = new YesNoDialog(getContext(), R.style.DialogTheme);
+                WindowManager.LayoutParams wmlp = dlg.getWindow().getAttributes();
+                wmlp.gravity = Gravity.CENTER;
+
+                // Set alertDialog "not focusable" so nav bar still hiding:
+                dlg.getWindow().
+                        setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+
+                dlg.setCanceledOnTouchOutside(false);
+                dlg.getWindow().getDecorView().setSystemUiVisibility(Util.DlgUIFalg);
+                dlg.show();
+                dlg.setContentTitle("코스를 변경하면 해당 코스 스코어가 초기화 됩니다.\n변경하시겠습니까?");
+                dlg.setListener(new YesNoDialog.IListenerYesNo() {
+                    @Override
+                    public void onConfirm() {
+                        changeCourse(getContext(), tvBeginChangeCourse.getText().toString(), tvEndChangeCourse.getText().toString());
+                    }
+                });
             }
         });
 

@@ -232,8 +232,14 @@ public class TeeUpFragment extends BaseFragment {
                         Global.reserveId = String.valueOf(teeUpAdapter.getItem(position).getId());
                         getReserveGuestList(Global.teeUpTime.getTodayReserveList().get(Global.selectedTeeUpIndex).getId());
 
-                        //((MainActivity)mParentActivity).startListeningUserLocationDebug();
-                        //((MainActivity)mParentActivity).startListeningUserLocation2();
+                        //////////////////////////////////////////////////////////////////
+                        // Debug Mode
+//                        ((MainActivity)mParentActivity).startTimerTask();
+//                        ((MainActivity)mParentActivity).startListeningUserLocationDebug();
+                        ////////////////////////////////////////////////////////////////
+
+                        ////////////////////////////////////////////////////////////////
+                        // Real~
                         ((MainActivity)mParentActivity).initLocation();
                         ((MainActivity)mParentActivity).setLaravel();
                     }

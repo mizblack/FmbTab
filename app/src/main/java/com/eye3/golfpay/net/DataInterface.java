@@ -49,7 +49,7 @@ import retrofit2.Response;
 public class DataInterface extends BasicDataInterface {
     private static DataInterface instance;
     protected String TAG = getClass().getSimpleName();
-    private FmbCustomDialog dialog;
+    private static FmbCustomDialog dialog;
 
     public interface ResponseCallback<T> {
         void onSuccess(T response);
@@ -123,6 +123,12 @@ public class DataInterface extends BasicDataInterface {
     }
 
     private void showDialog(Context context, String title, String msg) {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.setTitle(title);
+            dialog.setContent(msg);
+            return;
+        }
+
         dialog = new FmbCustomDialog(context, title, msg, "확인", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -418,9 +424,8 @@ public class DataInterface extends BasicDataInterface {
                     if (t.getMessage().contains("ETIMEDOUT")) {
                         return;
                     }
-                    showDialog(context, "setScore", t.getMessage());
+                    //showDialog(context, "setScore", t.getMessage());
                 }
-
             });
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -449,6 +454,7 @@ public class DataInterface extends BasicDataInterface {
         }
     }
 
+    int nnnn = 0;
     public void sendGpsInfo(final Context context, String caddy_num, double lat, double lng, String reserve_id, final ResponseCallback<ResponseData<ResponseCartInfo>> callback) {
         try {
 
