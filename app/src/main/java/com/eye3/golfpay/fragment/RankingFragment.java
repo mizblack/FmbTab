@@ -24,7 +24,7 @@ import com.eye3.golfpay.R;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.teeup.Player;
-import com.eye3.golfpay.model.teeup.Player2;
+import com.eye3.golfpay.model.teeup.LiteScore;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.util.Util;
@@ -66,7 +66,7 @@ public class RankingFragment extends BaseFragment {
         } else {
             type = "group";
         }
-        getReserveScore2(type);
+        getReserveScore(type);
     }
 
     @Override
@@ -236,7 +236,6 @@ public class RankingFragment extends BaseFragment {
         TextView endHole = ranking_column_detail.findViewById(R.id.tv_endHole);
         beginHole.setText(Global.courseInfoList.get(0).ctype);
         endHole.setText(Global.courseInfoList.get(1).ctype);
-
     }
 
     private void initRecyclerDetailView(RecyclerView rankingRecyclerView, List<Player> playerList) {
@@ -513,13 +512,13 @@ public class RankingFragment extends BaseFragment {
 
     private void getReserveScore(String type) {
         showProgress("랭킹 정보를 가져오는 중입니다.");
-        DataInterface.getInstance().getReserveScoreLight(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
+        DataInterface.getInstance().getReserveScoreLight(getActivity(), Global.reserveId, "group", new DataInterface.ResponseCallback<ResponseData<LiteScore>>() {
             @Override
-            public void onSuccess(ResponseData<Player2> response) {
+            public void onSuccess(ResponseData<LiteScore> response) {
                 hideProgress();
                 if (response.getResultCode().equals("ok")) {
                     //mPlayerList = response.getList();
-                    ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                    ScoreConverter scoreConverter = new ScoreConverter(response.getData());
                     mPlayerList = scoreConverter.adapter().getList();
 
                     mPlayerList.sort(Comparator.naturalOrder());
@@ -534,7 +533,7 @@ public class RankingFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(ResponseData<Player2> response) {
+            public void onError(ResponseData<LiteScore> response) {
                 hideProgress();
                 response.getError();
             }

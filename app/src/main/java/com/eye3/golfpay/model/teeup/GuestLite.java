@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class GuestLight implements Serializable {
+public class GuestLite implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -17,41 +17,37 @@ public class GuestLight implements Serializable {
     @Expose
     public String guestName;
 
-    @SerializedName("putting")
+    @SerializedName("putting_a")
     @Expose
-    public String putting;
+    public String putting_a;
 
-    @SerializedName("tee_shot")
+    @SerializedName("tee_shot_a")
     @Expose
-    public String tee_shot = "";
+    public String tee_shot_a = "";
 
-    @SerializedName("par")
+    @SerializedName("par_a")
     @Expose
-    public String par = "";
+    public String par_a = "";
 
-    @SerializedName("tar")
+    @SerializedName("tar_a")
     @Expose
-    public String tar = "";
+    public String tar_a = "";
 
-    @SerializedName("hole_no")
+    @SerializedName("putting_b")
     @Expose
-    public String hole_no = "";
+    public String putting_b;
 
-    @SerializedName("handiCap")
+    @SerializedName("tee_shot_b")
     @Expose
-    public String handiCap = "";
+    public String tee_shot_b = "";
 
-    @SerializedName("hole_total_size")
+    @SerializedName("par_b")
     @Expose
-    public String hole_total_size = "";
+    public String par_b = "";
 
-    @SerializedName("lastHoleNo")
+    @SerializedName("tar_b")
     @Expose
-    public int lastHoleNo = 0;
-
-    @SerializedName("course")
-    @Expose
-    public List<Course> course;
+    public String tar_b = "";
 
     @SerializedName("totalPar")
     @Expose
@@ -69,7 +65,7 @@ public class GuestLight implements Serializable {
     @Expose
     public int team_no;
 
-    @SerializedName("Ranking")
+    @SerializedName("ranking")
     @Expose
     public int ranking;
 

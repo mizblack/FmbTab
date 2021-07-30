@@ -19,19 +19,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.eye3.golfpay.R;
 import com.eye3.golfpay.activity.MainActivity;
 import com.eye3.golfpay.common.AppDef;
 import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.common.SingleClickListener;
 import com.eye3.golfpay.common.UIThread;
-import com.eye3.golfpay.dialog.GameHoleDialog;
 import com.eye3.golfpay.listener.ScoreInputFinishListener;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.order.ReserveGameType;
 import com.eye3.golfpay.model.teeup.Player;
-import com.eye3.golfpay.model.teeup.Player2;
+import com.eye3.golfpay.model.teeup.LiteScore;
 import com.eye3.golfpay.net.DataInterface;
 import com.eye3.golfpay.net.ResponseData;
 import com.eye3.golfpay.view.TabCourseLinear;
@@ -67,7 +65,7 @@ public class ScoreFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getReserveScore2();
+        getReserveScore();
     }
 
     @Override
@@ -283,12 +281,12 @@ public class ScoreFragment extends BaseFragment {
     private void getReserveScore() {
         showProgress("스코어 정보를 가져오는 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScoreLight(getActivity(),
-                Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
+                Global.reserveId, "null", new DataInterface.ResponseCallback<ResponseData<LiteScore>>() {
                     @Override
-                    public void onSuccess(ResponseData<Player2> response) {
+                    public void onSuccess(ResponseData<LiteScore> response) {
                         if (response.getResultCode().equals("ok")) {
                             hideProgress();
-                            ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                            ScoreConverter scoreConverter = new ScoreConverter(response.getData());
                             scoreProcess(scoreConverter.adapter());
 
                         } else if (response.getResultCode().equals("fail")) {
@@ -297,7 +295,7 @@ public class ScoreFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(ResponseData<Player2> response) {
+                    public void onError(ResponseData<LiteScore> response) {
                         hideProgress();
                         response.getError();
                     }
@@ -452,12 +450,12 @@ public class ScoreFragment extends BaseFragment {
     private void refreshScore() {
         showProgress("스코어 정보를 갱신 중입니다.");
         DataInterface.getInstance(Global.HOST_ADDRESS_AWS).getReserveScoreLight(getActivity(), Global.reserveId,
-                "null", new DataInterface.ResponseCallback<ResponseData<Player2>>() {
+                "null", new DataInterface.ResponseCallback<ResponseData<LiteScore>>() {
                     @Override
-                    public void onSuccess(ResponseData<Player2> response) {
+                    public void onSuccess(ResponseData<LiteScore> response) {
                         hideProgress();
                         if (response.getResultCode().equals("ok")) {
-                            ScoreConverter scoreConverter = new ScoreConverter(response.getList());
+                            ScoreConverter scoreConverter = new ScoreConverter(response.getData());
                             mPlayerList = scoreConverter.adapter().getList();
                             swapScore();
                             createScoreTab(mPlayerList, mTabIdx);
@@ -468,7 +466,7 @@ public class ScoreFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(ResponseData<Player2> response) {
+                    public void onError(ResponseData<LiteScore> response) {
                         hideProgress();
                         response.getError();
                     }
@@ -533,7 +531,7 @@ public class ScoreFragment extends BaseFragment {
                     mScoreBoard.setOnScoreInputFinishListener(new ScoreInputFinishListener() {
                         @Override
                         public void OnScoreInputFinished(List<Player> playerList) {
-                            refreshScore2();
+                            refreshScore();
                         }
                     });
 

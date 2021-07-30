@@ -1,7 +1,5 @@
 package com.eye3.golfpay.net;
 
-import com.eye3.golfpay.common.AppDef;
-import com.eye3.golfpay.common.Global;
 import com.eye3.golfpay.model.caddyNote.ResponseCaddyNote;
 import com.eye3.golfpay.model.caddyNote.SendSMS;
 import com.eye3.golfpay.model.chat.ChatData;
@@ -10,7 +8,6 @@ import com.eye3.golfpay.model.control.ChatHotKey;
 import com.eye3.golfpay.model.field.Course;
 import com.eye3.golfpay.model.gallery.ResponseGallery;
 import com.eye3.golfpay.model.gps.CType;
-import com.eye3.golfpay.model.gps.GpsInfo;
 import com.eye3.golfpay.model.gps.ResCheckChangeCourse;
 import com.eye3.golfpay.model.gps.ResponseCartInfo;
 import com.eye3.golfpay.model.guest.ReserveGuestList;
@@ -30,7 +27,7 @@ import com.eye3.golfpay.model.score.NearLongScoreBoard;
 import com.eye3.golfpay.model.score.ReserveScore;
 import com.eye3.golfpay.model.teeup.Caddy;
 import com.eye3.golfpay.model.teeup.Player;
-import com.eye3.golfpay.model.teeup.Player2;
+import com.eye3.golfpay.model.teeup.LiteScore;
 import com.eye3.golfpay.model.teeup.TeeUpTime;
 
 import okhttp3.MultipartBody;
@@ -40,7 +37,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -70,7 +66,7 @@ public interface HttpService {
     Call<ResponseData<Player>> getReserveScore(@Query("reserve_id") String reserveId, @Query("type") String type);
 
     @GET("getReserveScoreTablet?")
-    Call<ResponseData<Player2>> getReserveScoreLight(@Query("reserve_id") String reserveId, @Query("type") String type);
+    Call<ResponseData<LiteScore>> getReserveScoreLight(@Query("reserve_id") String reserveId, @Query("type") String type);
 
     @POST("setReserveScore")
     Call<ResponseData<Object>> sendScore(@Body ReserveScore reserveScore);

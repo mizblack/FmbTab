@@ -12,7 +12,19 @@ public class ScoreReserve implements Serializable {
     @Expose
     public String reserve_id;
 
+    @SerializedName("lastHoleNo")
+    @Expose
+    public int lastHoleNo = 0;
+
+    @SerializedName("course_a_id")
+    @Expose
+    public String course_a_id = "";
+
+    @SerializedName("course_b_id")
+    @Expose
+    public String course_b_id = "";
+
     @SerializedName("guest")
     @Expose
-    public List<GuestLight> guest;
+    public List<GuestLite> guest;
 }

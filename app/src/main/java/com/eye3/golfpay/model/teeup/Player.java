@@ -64,6 +64,10 @@ public class Player implements Serializable, Comparable<Player>{
 
     @Override
     public int compareTo(Player o) {
+
+        if (ranking == 0)
+            return 1;
+
         if (ranking < o.ranking) {
             return -1;
         } else if (ranking > o.ranking) {

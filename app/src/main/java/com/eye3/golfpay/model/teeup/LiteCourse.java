@@ -3,12 +3,7 @@ package com.eye3.golfpay.model.teeup;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-public class Player2 implements Serializable {
-
+public class LiteCourse {
     @SerializedName("course_id")
     @Expose
     public String course_id;
@@ -40,12 +35,4 @@ public class Player2 implements Serializable {
     @SerializedName("hole_total_size")
     @Expose
     public String hole_total_size = "";
-
-    @SerializedName("lastHoleNo")
-    @Expose
-    public int lastHoleNo = 0;
-
-   @SerializedName("reserves")
-   @Expose
-   public List<ScoreReserve> reserves = new ArrayList<>();
 }
