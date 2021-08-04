@@ -14,7 +14,7 @@ android {
         //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.65"
+        versionName "1.0.66"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
